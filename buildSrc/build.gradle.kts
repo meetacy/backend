@@ -9,4 +9,5 @@ repositories {
 
 dependencies  {
     implementation(Deps.Plugins.Dependencies.Classpath)
+    implementation(Deps.Plugins.Serialization.Classpath)
 }
