@@ -2,7 +2,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.post
+import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
@@ -10,8 +10,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
-    val name: String,
-    val surname: String
+    val id: Int,
+    val username: String,
+    val fullname: String?,
+    val email: String,
+    val bio: String
+
 )
 
 suspend fun main() {
@@ -22,10 +26,11 @@ suspend fun main() {
     }
 
     val result = httpClient
-        .post("http://localhost:8080/greeting") {
+        .get("http://localhost:8080") {
             contentType(ContentType.Application.Json)
         }
         .body<List<User>>()
+
 
     println(result)
 }
