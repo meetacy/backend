@@ -19,7 +19,7 @@ fun startEndpoints(port: Int, wait: Boolean) =
         }
 
         routing {
-            get () {
+            get {
                 val users = listOf<User>(
                     User(0, "Abba", "Abbazov Ilshat Zagfyarovich", "Abbaz1962@meetacy.app", "Judge of the Moscow City Court.\n" +
                             "Responsible for the criminal prosecution of\n" +
