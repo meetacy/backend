@@ -6,11 +6,12 @@ import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.server.response.respond
-import io.ktor.server.routing.get
-import io.ktor.server.routing.routing
 import app.meetacy.backend.domain.User
-
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import app.meetacy.backend.domain.UserAuthorization
+import io.ktor.server.request.*
+import app.meetacy.backend.domain.AuthorizationStatus
 
 fun startEndpoints(port: Int, wait: Boolean) =
     embeddedServer(CIO, port) {
@@ -19,7 +20,7 @@ fun startEndpoints(port: Int, wait: Boolean) =
         }
 
         routing {
-            get {
+            get () {
                 val users = listOf(
                     User(0, "Abba", "Abbazov Ilshat Zagfyarovich", "Abbaz1962@meetacy.app", "Judge of the Moscow City Court.\n" +
                             "Responsible for the criminal prosecution of\n" +
@@ -90,6 +91,13 @@ fun startEndpoints(port: Int, wait: Boolean) =
                 )
                 call.respond(users)
             }
+
+
+            post ("/users/") {
+                val userauth = call.receive<UserAuthorization>()
+                if (userauth.login == "admin" && userauth.password == "admin") {
+                    call.respond(AuthorizationStatus(status = true))
+                } else call.respond(AuthorizationStatus(status = false))
+            }
         }
     }.start(wait)
-
