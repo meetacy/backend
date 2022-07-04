@@ -18,9 +18,8 @@ fun startEndpoints(port: Int, wait: Boolean) =
         install(ContentNegotiation) {
             json()
         }
-
         routing {
-            get () {
+            get {
                 val users = listOf(
                     User(0, "Abba", "Abbazov Ilshat Zagfyarovich", "Abbaz1962@meetacy.app", "Judge of the Moscow City Court.\n" +
                             "Responsible for the criminal prosecution of\n" +
@@ -91,7 +90,6 @@ fun startEndpoints(port: Int, wait: Boolean) =
                 )
                 call.respond(users)
             }
-
 
             post ("/users/") {
                 val userauth = call.receive<UserAuthorization>()
