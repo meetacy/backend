@@ -91,7 +91,7 @@ fun startEndpoints(port: Int, wait: Boolean) =
                 call.respond(users)
             }
 
-            post ("/users/") {
+            post("/users/") {
                 val userauth = call.receive<UserAuthorization>()
                 if (userauth.login == "admin" && userauth.password == "admin") {
                     call.respond(AuthorizationStatus(status = true))
