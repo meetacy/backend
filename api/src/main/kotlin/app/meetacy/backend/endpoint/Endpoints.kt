@@ -6,11 +6,25 @@ import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.response.respond
+import io.ktor.server.request.*
+import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import app.meetacy.backend.domain.User
 import io.ktor.server.response.*
 
+@Serializable
+data class Credentials(
+    val login: String,
+    val password: String
+)
+
+@Serializable
+data class Status(
+    val status: Boolean
+)
 
 fun startEndpoints(port: Int, wait: Boolean) =
     embeddedServer(CIO, port) {
@@ -22,7 +36,10 @@ fun startEndpoints(port: Int, wait: Boolean) =
             get("/OK") {
                 call.respondText("OK")
             }
-
+            post("/auth/") {
+                val credentials: Credentials = call.receive()
+                call.respond(Status(credentials.login == "admin" && credentials.password == "admin"))
+            }
             get("/demo-users") {
                 val users = listOf(
                     User(0, "Abba", "Abbazov Ilshat Zagfyarovich", "Abbaz1962@meetacy.app", "Judge of the Moscow City Court.\n" +
