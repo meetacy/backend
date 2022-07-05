@@ -20,8 +20,6 @@ dependencies {
     testImplementation(Deps.Libs.Ktor.Client.ContentNegotiation)
 }
 
-val service = "meetacy"
-
 val propertiesFile = rootProject.file("deploy.properties")
 
 deploy {
@@ -36,7 +34,7 @@ deploy {
         knownHostsFile = properties.getProperty("knownHosts")
 
         mainClass = "app.meetacy.backend.MainKt"
-        serviceName = service
+        serviceName = properties.getProperty("serviceName")
     } else {
         ignore = true
     }
