@@ -163,16 +163,23 @@ object Deps {
                 const val Mpp = "k-mpp"
                 const val Jvm = "k-jvm"
                 const val Js = "k-js"
+
                 object Android {
                     const val App = "k-android-app"
                     const val Library = "k-android-library"
                 }
             }
         }
+
+        object Deploy {
+            const val Id = "deploy"
+        }
+
         object Dependencies {
             const val Id = "dependencies"
             const val Classpath = "dependencies:dependencies:SNAPSHOT"
         }
+
         object Kotlin {
             const val Multiplatform = "org.jetbrains.kotlin.multiplatform"
             const val Jvm = "org.jetbrains.kotlin.jvm"
