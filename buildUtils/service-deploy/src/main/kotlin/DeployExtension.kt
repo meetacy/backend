@@ -1,16 +1,14 @@
 open class DeployExtension {
-    var ignore = false
+    internal val targets: MutableMap<String, TargetConfiguration> = mutableMapOf()
 
-    // Required
-    var host: String? = null
-    var mainClass: String? = null
-    var serviceName: String? = null
-    var deployPath: String? = null
-
-    // Optional
-    var user: String? = null
-    var password: String? = null
-    var knownHostsFile: String? = null
-    var implementationTitle: String? = mainClass
-    var archiveName = "app.jar"
+    fun target(name: String, block: TargetConfiguration.() -> Unit) {
+        val configuration = TargetConfiguration().apply(block)
+        targets[name] = configuration
+    }
 }
+
+/**
+ * Default configuration that used as fallback when some value wasn't specified.
+ * Use it to avoid code-repeating.
+ */
+fun DeployExtension.default(block: TargetConfiguration.() -> Unit) = target("default", block)
