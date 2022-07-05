@@ -31,6 +31,7 @@ deploy {
             user = properties.getProperty("user")
             password = properties.getProperty("password")
             knownHostsFile = properties.getProperty("knownHosts")
+            archiveName = "app.jar"
 
             mainClass = "app.meetacy.backend.MainKt"
         }
