@@ -1,10 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.getByName
-import org.gradle.kotlin.dsl.the
+import org.gradle.kotlin.dsl.*
 import org.gradle.util.GUtil.loadProperties
 import org.hidetake.groovy.ssh.connection.AllowAnyHosts
 import org.hidetake.groovy.ssh.core.Remote
@@ -23,14 +20,14 @@ class DeployPlugin : Plugin<Project> {
             val default = extension.targets["default"]
             extension.targets.filter { it.key != "default" }.forEach { configuration ->
                 configuration.value.apply {
-                    host ?: default?.host ?: error ("`host` should be defined in `deploy`")
+                    host ?: default?.host ?: error("`host` should be defined in `deploy`")
                     destination ?: default?.destination ?: error("`destination` should be defined in `deploy`")
                     mainClass ?: default?.mainClass ?: error("`mainClass` should be defined in `deploy`")
                     serviceName ?: default?.serviceName ?: error("`service name` should be defined in `deploy`")
                 }
 
-                val shadowJar = target.tasks.create<ShadowJar>("${configuration.key}ShadowJar") {
-                    archiveFileName.set(configuration.value.archiveName ?: default?.mainClass)
+                val shadowJar = tasks.named<ShadowJar>("shadowJar") {
+                    archiveFileName.set(configuration.value.archiveName ?: default?.archiveName)
                     mergeServiceFiles()
                     manifest {
                         attributes(mapOf("Main-Class" to (configuration.value.mainClass ?: default?.mainClass)))
@@ -42,7 +39,8 @@ class DeployPlugin : Plugin<Project> {
                         "host" to (configuration.value.host ?: default?.host),
                         "user" to (configuration.value.user ?: default?.user),
                         "password" to (configuration.value.password ?: default?.password),
-                        "knownHosts" to ((configuration.value.knownHostsFile ?: default?.knownHostsFile)?.let(::File) ?: AllowAnyHosts.instance)
+                        "knownHosts" to ((configuration.value.knownHostsFile ?: default?.knownHostsFile)?.let(::File)
+                            ?: AllowAnyHosts.instance)
                     )
                 )
 
@@ -56,7 +54,7 @@ class DeployPlugin : Plugin<Project> {
                         target.extensions.getByName<SshSessionExtension>("${configuration.key}SshSession").invoke {
                             put(
                                 hashMapOf(
-                                    "from" to shadowJar.archiveFile.get().asFile,
+                                    "from" to shadowJar.get().archiveFile.get().asFile,
                                     "into" to configuration.value.destination
                                 )
                             )
