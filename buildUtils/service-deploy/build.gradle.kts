@@ -1,6 +1,6 @@
 plugins {
     `kotlin-dsl`
-    id("dependencies")
+    id(Deps.Plugins.Dependencies.Id)
 }
 
 group = "service-deploy"
