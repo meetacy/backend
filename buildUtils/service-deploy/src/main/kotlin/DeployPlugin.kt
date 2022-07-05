@@ -3,7 +3,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.the
 import org.gradle.util.GUtil.loadProperties
 import org.hidetake.groovy.ssh.connection.AllowAnyHosts
@@ -17,50 +17,51 @@ class DeployPlugin : Plugin<Project> {
         target.apply(plugin = Deps.Plugins.Application.Id)
         target.apply(plugin = Deps.Plugins.Shadow.Id)
 
-        val configuration = target.extensions.create<DeployExtension>(name = "deploy")
+        val extension = target.extensions.create<DeployExtension>(name = "deploy")
 
         target.afterEvaluate {
-            configuration.apply {
-                if (ignore) return@afterEvaluate
-                host ?: error("`host` should be defined in `deploy`")
-                deployPath ?: error("`deployPath` should be defined in `deploy`")
-                mainClass ?: error("`mainClass` should be defined in `deploy`")
-                serviceName ?: error("`serviceName` should be defined in `deploy`")
-            }
-
-            val webServer = Remote(
-                mapOf(
-                    "host" to configuration.host,
-                    "user" to configuration.user,
-                    "password" to configuration.password,
-                    "knownHosts" to (configuration.knownHostsFile?.let(::File) ?: AllowAnyHosts.instance)
-                )
-            )
-
-            target.extensions.create<SshSessionExtension>("sshSession", target, webServer)
-
-            val shadowJar = tasks.named<ShadowJar>("shadowJar") {
-                archiveFileName.set(configuration.archiveName)
-                mergeServiceFiles()
-                manifest {
-                    attributes(mapOf("Main-Class" to configuration.mainClass))
+            val default = extension.targets["default"]
+            extension.targets.filter { it.key != "default" }.forEach { configuration ->
+                configuration.value.apply {
+                    host ?: default?.host ?: error ("`host` should be defined in `deploy`")
+                    destination ?: default?.destination ?: error("`destination` should be defined in `deploy`")
+                    mainClass ?: default?.mainClass ?: error("`mainClass` should be defined in `deploy`")
+                    serviceName ?: default?.serviceName ?: error("`service name` should be defined in `deploy`")
                 }
-            }
 
-            target.task("deploy") {
-                group = "deploy"
+                val shadowJar = target.tasks.create<ShadowJar>("${configuration.key}ShadowJar") {
+                    archiveFileName.set(configuration.value.archiveName ?: default?.mainClass)
+                    mergeServiceFiles()
+                    manifest {
+                        attributes(mapOf("Main-Class" to (configuration.value.mainClass ?: default?.mainClass)))
+                    }
+                }
 
-                dependsOn(shadowJar)
+                val webServer = Remote(
+                    mapOf(
+                        "host" to (configuration.value.host ?: default?.host),
+                        "user" to (configuration.value.user ?: default?.user),
+                        "password" to (configuration.value.password ?: default?.password),
+                        "knownHosts" to ((configuration.value.knownHostsFile ?: default?.knownHostsFile)?.let(::File) ?: AllowAnyHosts.instance)
+                    )
+                )
 
-                doLast {
-                    target.the<SshSessionExtension>().invoke {
-                        put(
-                            hashMapOf(
-                                "from" to shadowJar.get().archiveFile.get().asFile,
-                                "into" to configuration.deployPath
+                target.extensions.create<SshSessionExtension>("${configuration.key}SshSession", target, webServer)
+
+                target.task("${configuration.key}Deploy") {
+                    group = "deploy"
+                    dependsOn(shadowJar)
+
+                    doLast {
+                        target.extensions.getByName<SshSessionExtension>("${configuration.key}SshSession").invoke {
+                            put(
+                                hashMapOf(
+                                    "from" to shadowJar.archiveFile.get().asFile,
+                                    "into" to configuration.value.destination
+                                )
                             )
-                        )
-                        execute("systemctl restart ${configuration.serviceName}")
+                            execute("systemctl restart ${configuration.value.serviceName ?: default?.serviceName}")
+                        }
                     }
                 }
             }
