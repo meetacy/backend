@@ -1,9 +1,9 @@
 package app.meetacy.backend
 
-import app.meetacy.backend.endpoint.startEndpoints
+import app.meetacy.backend.integration.mockEndpoint.startMockEndpoints
 
 fun main() {
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
 
-    startEndpoints(port, wait = true)
+    startMockEndpoints(port, wait = true)
 }
