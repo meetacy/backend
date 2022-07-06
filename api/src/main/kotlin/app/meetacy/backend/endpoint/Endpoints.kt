@@ -36,7 +36,7 @@ fun startEndpoints(port: Int, wait: Boolean) =
             get("/OK") {
                 call.respondText("OK")
             }
-            post("/auth/") {
+            post("/auth") {
                 val credentials: Credentials = call.receive()
                 call.respond(Status(credentials.login == "admin" && credentials.password == "admin"))
             }
