@@ -1,8 +1,8 @@
-package app.meetacy.backend.endpoint.users
+package app.meetacy.backend.mock
 
 import app.meetacy.backend.domain.User
 
-object MockUsersProvider {
+object MockUsers {
     fun getUsers(): List<User> = listOf(
         User(
             id = 0,
