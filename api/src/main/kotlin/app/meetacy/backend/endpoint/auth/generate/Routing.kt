@@ -13,7 +13,7 @@ interface TokenGeneration {
     fun generateToken(nickname: GenerateParam): String
 }
 
-fun Route.getToken(tokenGeneration: TokenGeneration) = post ("/generate") {
+fun Route.generateToken(tokenGeneration: TokenGeneration) = post ("/generate") {
     val generateParam = call.receive<GenerateParam>()
     val token = tokenGeneration.generateToken(generateParam)
     call.respond(token)
