@@ -5,30 +5,24 @@ import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
-import kotlinx.serialization.Serializable
 import io.ktor.server.routing.routing
 import app.meetacy.backend.endpoint.auth.auth
-
-@Serializable
-data class Credentials(
-    val login: String,
-    val password: String
-)
-
-@Serializable
-data class Status(
-    val status: Boolean
-)
+import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmStorage
+import app.meetacy.backend.endpoint.auth.email.link.LinkEmailStorage
+import app.meetacy.backend.endpoint.auth.email.link.Mailer
 
 fun startEndpoints(
     port: Int,
     wait: Boolean,
+    mailer: Mailer,
+    linkEmailStorage: LinkEmailStorage,
+    confirmStorage: ConfirmStorage
 ) = embeddedServer(CIO, port) {
     install(ContentNegotiation) {
         json()
     }
 
     routing {
-        auth()
+        auth(mailer, linkEmailStorage, confirmStorage)
     }
 }.start(wait)

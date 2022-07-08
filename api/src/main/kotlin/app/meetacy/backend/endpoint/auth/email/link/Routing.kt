@@ -8,22 +8,29 @@ import io.ktor.server.routing.post
 import kotlinx.serialization.Serializable
 
 @Serializable
-private data class LinkParameters(
+data class LinkParameters(
     val email: String,
     val token: String
 )
 
 @Serializable
-private data class LinkResponse(
-    val status: Boolean = true
+data class LinkResponse(
+    val status: Boolean = true,
+    val errorCode: Int? = null,
+    val errorMessage: String? = null
 )
 
 interface Mailer {
     fun sendConfirmEmail(email: String, confirmHash: String)
 }
 
+sealed interface ConfirmHashResult {
+    object TokenInvalid : ConfirmHashResult
+    class Success(val confirmHash: String) : ConfirmHashResult
+}
+
 interface LinkEmailStorage {
-    suspend fun registerConfirmHash(token: String, email: String): String
+    suspend fun registerConfirmHash(token: String, email: String): ConfirmHashResult
 }
 
 /**
@@ -35,8 +42,21 @@ fun Route.linkEmail(
 ) = post("/link") {
     val parameters = call.receive<LinkParameters>()
 
-    val confirmHash = storage.registerConfirmHash(parameters.token, parameters.email)
-    mailer.sendConfirmEmail(parameters.email, confirmHash)
-
-    call.respond(LinkResponse())
+    when (
+        val result = storage.registerConfirmHash(parameters.token, parameters.email)
+    ) {
+        is ConfirmHashResult.Success -> {
+            mailer.sendConfirmEmail(parameters.email, result.confirmHash)
+            call.respond(LinkResponse())
+        }
+        is ConfirmHashResult.TokenInvalid -> {
+            call.respond(
+                LinkResponse(
+                    status = false,
+                    errorCode = 1,
+                    errorMessage = "The token you've provided is invalid"
+                )
+            )
+        }
+    }
 }
