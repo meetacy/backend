@@ -10,13 +10,16 @@ import app.meetacy.backend.endpoint.auth.auth
 import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmStorage
 import app.meetacy.backend.endpoint.auth.email.link.LinkEmailStorage
 import app.meetacy.backend.endpoint.auth.email.link.Mailer
+import app.meetacy.backend.endpoint.users.UserProvider
+import app.meetacy.backend.endpoint.users.getUser
 
 fun startEndpoints(
     port: Int,
     wait: Boolean,
     mailer: Mailer,
     linkEmailStorage: LinkEmailStorage,
-    confirmStorage: ConfirmStorage
+    confirmStorage: ConfirmStorage,
+    getUsersProvider: UserProvider
 ) = embeddedServer(CIO, port) {
     install(ContentNegotiation) {
         json()
@@ -24,5 +27,7 @@ fun startEndpoints(
 
     routing {
         auth(mailer, linkEmailStorage, confirmStorage)
+        getUser(getUsersProvider)
     }
 }.start(wait)
+
