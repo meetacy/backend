@@ -10,12 +10,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LinkParameters(
     val email: String,
-    val token: String
+    val accessToken: String
 )
 
 @Serializable
 data class LinkResponse(
-    val status: Boolean = true,
+    val status: Boolean,
     val errorCode: Int? = null,
     val errorMessage: String? = null
 )
@@ -43,11 +43,11 @@ fun Route.linkEmail(
     val parameters = call.receive<LinkParameters>()
 
     when (
-        val result = storage.registerConfirmHash(parameters.token, parameters.email)
+        val result = storage.registerConfirmHash(parameters.accessToken, parameters.email)
     ) {
         is ConfirmHashResult.Success -> {
             mailer.sendConfirmEmail(parameters.email, result.confirmHash)
-            call.respond(LinkResponse())
+            call.respond(LinkResponse(status = true))
         }
         is ConfirmHashResult.TokenInvalid -> {
             call.respond(

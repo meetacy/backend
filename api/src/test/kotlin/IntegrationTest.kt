@@ -27,8 +27,8 @@ suspend fun main() {
     }
 
     UsersStorage.addUser(
-        id = 0,
-        nickname = "y9san9"
+        nickname = "y9san9",
+        accessHash = "..."
     )
 
     TokensStorage.addToken(
@@ -40,7 +40,7 @@ suspend fun main() {
 
     httpClient.post("http://localhost:8080/auth/email/link") {
         contentType(ContentType.Application.Json)
-        setBody(LinkParameters(email = "y9san9@gmail.com", token = "testtoken"))
+        setBody(LinkParameters(email = "y9san9@gmail.com", accessToken = "testtoken"))
     }.bodyAsText()
 
     println(UsersStorage.getUser(id = 0))
@@ -53,7 +53,7 @@ suspend fun main() {
 
     val result = httpClient.post("http://localhost:8080/auth/email/confirm") {
         contentType(ContentType.Application.Json)
-        setBody(ConfirmParams(userId = 0, email = "y9san9@gmail.com", confirmHash))
+        setBody(ConfirmParams(email = "y9san9@gmail.com", confirmHash))
     }.bodyAsText()
 
     println(result)

@@ -4,17 +4,24 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class GenerateParam(
     val nickname: String
 )
 
-interface TokenGeneration {
-    fun generateToken(nickname: GenerateParam): String
+@Serializable
+data class GenerateTokenResponse(
+    val result: String
+)
+
+interface TokenGenerator {
+    fun generateToken(nickname: String): String
 }
 
-fun Route.generateToken(tokenGeneration: TokenGeneration) = post ("/generate") {
+fun Route.generateToken(tokenGenerator: TokenGenerator) = post ("/generate") {
     val generateParam = call.receive<GenerateParam>()
-    val token = tokenGeneration.generateToken(generateParam)
-    call.respond(token)
+    val token = tokenGenerator.generateToken(generateParam.nickname)
+    call.respond(GenerateTokenResponse(token))
 }

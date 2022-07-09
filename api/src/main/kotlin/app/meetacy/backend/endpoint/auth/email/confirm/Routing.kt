@@ -9,7 +9,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfirmParams(
-    val userId: Int,
     val email: String,
     val confirmHash: String
 )
@@ -29,13 +28,13 @@ sealed interface ConfirmHashResult {
 }
 
 interface ConfirmStorage {
-    suspend fun checkConfirmHash(userId: Int, email: String, confirmHash: String): ConfirmHashResult
+    suspend fun checkConfirmHash(email: String, confirmHash: String): ConfirmHashResult
 }
 
 fun Route.confirmEmail(storage: ConfirmStorage) = post("/confirm") {
     val parameters = call.receive<ConfirmParams>()
 
-    val response = when (storage.checkConfirmHash(parameters.userId, parameters.email, parameters.confirmHash)) {
+    val response = when (storage.checkConfirmHash(parameters.email, parameters.confirmHash)) {
         ConfirmHashResult.LinkExpired -> ConfirmResponse(
             status = false,
             errorCode = 1,

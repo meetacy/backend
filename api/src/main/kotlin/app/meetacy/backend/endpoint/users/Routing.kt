@@ -12,8 +12,8 @@ interface UserProvider{
 
 @Serializable
 data class GetUserParams(
-    val id: Int?,
-    val accessHash: Int?,
+    val id: Int? = null,
+    val accessHash: String? = null,
     val accessToken: String
 )
 
@@ -26,10 +26,11 @@ data class GetUserResponse(
 data class UserResponse(
     val id: Int,
     val nickname: String,
-    val email: String?
+    val email: String?,
+    val emailVerified: Boolean?
 )
 
-fun Route.getUser(provider: UserProvider) = post("/users") {
+fun Route.getUser(provider: UserProvider) = post("/users/get") {
     val params = call.receive<GetUserParams>()
     val result = provider.getUser(params)
     call.respond(GetUserResponse(result))
