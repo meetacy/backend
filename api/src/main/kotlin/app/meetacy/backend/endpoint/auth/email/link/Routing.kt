@@ -20,36 +20,24 @@ data class LinkResponse(
     val errorMessage: String? = null
 )
 
-interface Mailer {
-    fun sendConfirmEmail(email: String, confirmHash: String)
-}
-
 sealed interface ConfirmHashResult {
     object TokenInvalid : ConfirmHashResult
-    class Success(val confirmHash: String) : ConfirmHashResult
+    object Success : ConfirmHashResult
 }
 
-interface LinkEmailStorage {
-    suspend fun registerConfirmHash(token: String, email: String): ConfirmHashResult
+interface LinkEmailRepository {
+    suspend fun linkEmail(token: String, email: String): ConfirmHashResult
 }
 
 /**
  * TODO: check for *email* format
  */
-fun Route.linkEmail(
-    mailer: Mailer,
-    storage: LinkEmailStorage
-) = post("/link") {
+fun Route.linkEmail(repository: LinkEmailRepository) = post("/link") {
     val parameters = call.receive<LinkParameters>()
 
-    when (
-        val result = storage.registerConfirmHash(parameters.accessToken, parameters.email)
-    ) {
-        is ConfirmHashResult.Success -> {
-            mailer.sendConfirmEmail(parameters.email, result.confirmHash)
-            call.respond(LinkResponse(status = true))
-        }
-        is ConfirmHashResult.TokenInvalid -> {
+    when (repository.linkEmail(parameters.accessToken, parameters.email)) {
+        is ConfirmHashResult.Success -> call.respond(LinkResponse(status = true))
+        is ConfirmHashResult.TokenInvalid ->
             call.respond(
                 LinkResponse(
                     status = false,
@@ -57,6 +45,5 @@ fun Route.linkEmail(
                     errorMessage = "The token you've provided is invalid"
                 )
             )
-        }
     }
 }

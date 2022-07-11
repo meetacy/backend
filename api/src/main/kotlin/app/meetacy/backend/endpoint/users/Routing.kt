@@ -12,7 +12,7 @@ interface UserProvider{
 
 @Serializable
 data class GetUserParams(
-    val id: Int? = null,
+    val id: Long? = null,
     val accessHash: String? = null,
     val accessToken: String
 )
@@ -24,7 +24,7 @@ data class GetUserResponse(
 
 @Serializable
 data class UserResponse(
-    val id: Int,
+    val id: Long,
     val nickname: String,
     val email: String?,
     val emailVerified: Boolean?

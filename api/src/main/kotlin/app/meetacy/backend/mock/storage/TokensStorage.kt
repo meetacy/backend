@@ -4,7 +4,7 @@ object TokensStorage {
     private val data: MutableList<MockToken> = mutableListOf()
 
     fun addToken(
-        userId: Int,
+        userId: Long,
         token: String
     ) {
         data += MockToken(

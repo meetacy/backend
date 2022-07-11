@@ -1,4 +1,4 @@
-package app.meetacy.backend.integration.mock.generateToken
+package app.meetacy.backend.endpoint.integration.mock.generateToken
 
 import app.meetacy.backend.endpoint.auth.generate.TokenGenerator
 import app.meetacy.backend.mock.storage.MockUser

@@ -4,7 +4,7 @@ object MockEmailSender {
     fun sendEmail(
         email: String,
         text: String,
-        onEmailReceived: (String, String) -> Unit
+        onEmailReceived: (String, String) -> Unit = { _, _ -> }
     ) {
         println("""
             NEW MESSAGE SENT TO $email:

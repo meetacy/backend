@@ -1,4 +1,4 @@
-package app.meetacy.backend.integration.mock.getUser
+package app.meetacy.backend.endpoint.integration.mock.getUser
 
 import app.meetacy.backend.endpoint.users.GetUserParams
 import app.meetacy.backend.endpoint.users.UserProvider

@@ -8,8 +8,7 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
 import app.meetacy.backend.endpoint.auth.auth
 import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmStorage
-import app.meetacy.backend.endpoint.auth.email.link.LinkEmailStorage
-import app.meetacy.backend.endpoint.auth.email.link.Mailer
+import app.meetacy.backend.endpoint.auth.email.link.LinkEmailRepository
 import app.meetacy.backend.endpoint.auth.generate.TokenGenerator
 import app.meetacy.backend.endpoint.users.UserProvider
 import app.meetacy.backend.endpoint.users.getUser
@@ -20,8 +19,7 @@ import kotlinx.serialization.json.Json
 fun startEndpoints(
     port: Int,
     wait: Boolean,
-    mailer: Mailer,
-    linkEmailStorage: LinkEmailStorage,
+    linkEmailRepository: LinkEmailRepository,
     confirmStorage: ConfirmStorage,
     tokenGenerator: TokenGenerator,
     getUsersProvider: UserProvider
@@ -35,7 +33,7 @@ fun startEndpoints(
     }
 
     routing {
-        auth(mailer, linkEmailStorage, confirmStorage, tokenGenerator)
+        auth(linkEmailRepository, confirmStorage, tokenGenerator)
         getUser(getUsersProvider)
     }
 }.start(wait)
