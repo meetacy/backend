@@ -11,6 +11,7 @@ import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmStorage
 import app.meetacy.backend.endpoint.auth.email.link.LinkEmailStorage
 import app.meetacy.backend.endpoint.auth.email.link.Mailer
 import app.meetacy.backend.endpoint.auth.generate.TokenGenerator
+import app.meetacy.backend.endpoint.meet.meetings
 import app.meetacy.backend.endpoint.users.UserProvider
 import app.meetacy.backend.endpoint.users.getUser
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -37,5 +38,7 @@ fun startEndpoints(
     routing {
         auth(mailer, linkEmailStorage, confirmStorage, tokenGenerator)
         getUser(getUsersProvider)
+        meetings()
+
     }
 }.start(wait)
