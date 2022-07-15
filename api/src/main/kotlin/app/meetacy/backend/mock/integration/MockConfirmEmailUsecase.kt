@@ -1,4 +1,4 @@
-package app.meetacy.backend.usecase.integration.mock
+package app.meetacy.backend.mock.integration
 
 import app.meetacy.backend.mock.storage.ConfirmationStorage
 import app.meetacy.backend.mock.storage.UsersStorage

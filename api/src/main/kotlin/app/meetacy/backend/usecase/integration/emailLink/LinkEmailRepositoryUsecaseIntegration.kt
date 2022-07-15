@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.integration.usecase.emailLink
+package app.meetacy.backend.usecase.integration.emailLink
 
 import app.meetacy.backend.endpoint.auth.email.link.ConfirmHashResult
 import app.meetacy.backend.endpoint.auth.email.link.LinkEmailRepository

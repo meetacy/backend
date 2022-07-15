@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.integration.mock.generateToken
+package app.meetacy.backend.integration.mock.generateToken
 
 import app.meetacy.backend.mock.generator.MockHashGenerator
 

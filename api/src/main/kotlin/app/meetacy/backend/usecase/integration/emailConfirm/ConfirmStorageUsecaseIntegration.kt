@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.integration.usecase.emailConfirm
+package app.meetacy.backend.usecase.integration.emailConfirm
 
 import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmHashResult
 import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmStorage
