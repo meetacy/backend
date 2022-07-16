@@ -10,6 +10,8 @@ interface UserProvider{
     fun getUser(getUserParams: GetUserParams): UserResponse?
 }
 
+
+
 @Serializable
 data class GetUserParams(
     val id: Int? = null,
