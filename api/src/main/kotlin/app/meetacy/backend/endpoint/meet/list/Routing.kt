@@ -1,20 +1,56 @@
 package app.meetacy.backend.endpoint.meet.list
 
+import app.meetacy.backend.endpoint.models.Meeting
 import io.ktor.server.application.*
 import io.ktor.server.request.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ListParam(
-    val accessHash: String
+    val accessToken: String
 )
 
-interface GetListMeet {
-    fun getList(accessHash: String)
+sealed interface ListMeetingsResult {
+    class Success(val meetings: List<Meeting>) : ListMeetingsResult
+    object TokenInvalid : ListMeetingsResult
 }
 
-fun Route.listMeet() = post("/create") {
-    val params = call.receive<ListParam>()
+interface GetListMeet {
+    suspend fun getList(accessToken: String): ListMeetingsResult
+}
 
+data class MeetingListResponse(
+    val status: Boolean,
+    val result: List<Meeting>?,
+    val errorCode: Int?,
+    val errorMessage: String?
+)
+
+
+fun Route.listMeet(getListMeet: GetListMeet) = post("/list") {
+    val params = call.receive<ListParam>()
+    val result = getListMeet.getList(params.accessToken)
+
+    when(result) {
+        is ListMeetingsResult.Success -> call.respond(
+            MeetingListResponse(
+                status = true,
+                result = result.meetings,
+                errorCode = null,
+                errorMessage = null
+            )
+        )
+        is ListMeetingsResult.TokenInvalid -> call.respond(
+            MeetingListResponse(
+                status = false,
+                result = null,
+                errorCode = 1,
+                errorMessage = "Please provide a valid token" /* There is also an option
+                  to make just one generic "List Meetings not found" response to
+                  all three errors as a protection against brute force. */
+            )
+        )
+    }
 }
