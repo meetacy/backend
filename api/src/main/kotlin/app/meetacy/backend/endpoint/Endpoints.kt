@@ -11,9 +11,9 @@ import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmStorage
 import app.meetacy.backend.endpoint.auth.email.link.LinkEmailStorage
 import app.meetacy.backend.endpoint.auth.email.link.Mailer
 import app.meetacy.backend.endpoint.auth.generate.TokenGenerator
-import app.meetacy.backend.endpoint.friends.addNew.AddFriendsProvider
+import app.meetacy.backend.endpoint.friends.add.AddFriendRepository
 import app.meetacy.backend.endpoint.friends.friends
-import app.meetacy.backend.endpoint.friends.get.GetFriendsProvider
+import app.meetacy.backend.endpoint.friends.get.GetFriendsRepository
 import app.meetacy.backend.endpoint.users.UserProvider
 import app.meetacy.backend.endpoint.users.getUser
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -28,8 +28,8 @@ fun startEndpoints(
     confirmStorage: ConfirmStorage,
     tokenGenerator: TokenGenerator,
     getUsersProvider: UserProvider,
-    provider: AddFriendsProvider,
-    getProvider: GetFriendsProvider
+    addFriendRepository: AddFriendRepository,
+    getFriendsRepository: GetFriendsRepository
 ) = embeddedServer(CIO, port) {
     install(ContentNegotiation) {
         json(
@@ -41,7 +41,7 @@ fun startEndpoints(
 
     routing {
         auth(mailer, linkEmailStorage, confirmStorage, tokenGenerator)
-        friends(provider, getProvider)
+        friends(addFriendRepository, getFriendsRepository)
         getUser(getUsersProvider)
     }
 }.start(wait)

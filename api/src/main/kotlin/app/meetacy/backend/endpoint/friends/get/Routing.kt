@@ -19,7 +19,7 @@ data class ResultOfSearching(
     val errorMessage: String? = null
 )
 
-interface GetFriendsProvider{
+interface GetFriendsRepository {
     fun getFriends(token: GetFrendsToken): GetFriendsResult
 }
 
@@ -28,7 +28,7 @@ sealed interface GetFriendsResult {
     class Success(val friends: List<User>, val subscriptions: List<User>) : GetFriendsResult
 }
 
-fun Route.getFriend(getProvider: GetFriendsProvider) = post("/get") {
+fun Route.getFriend(getProvider: GetFriendsRepository) = post("/get") {
     val friendToken = call.receive<GetFrendsToken>()
     val result = getProvider.getFriends(friendToken)
     when(result) {
