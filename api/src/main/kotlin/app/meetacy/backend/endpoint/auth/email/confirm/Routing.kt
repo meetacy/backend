@@ -27,11 +27,11 @@ sealed interface ConfirmHashResult {
     object Success : ConfirmHashResult
 }
 
-interface ConfirmStorage {
+interface ConfirmEmailRepository {
     suspend fun checkConfirmHash(email: String, confirmHash: String): ConfirmHashResult
 }
 
-fun Route.confirmEmail(storage: ConfirmStorage) = post("/confirm") {
+fun Route.confirmEmail(storage: ConfirmEmailRepository) = post("/confirm") {
     val parameters = call.receive<ConfirmParams>()
 
     val response = when (storage.checkConfirmHash(parameters.email, parameters.confirmHash)) {

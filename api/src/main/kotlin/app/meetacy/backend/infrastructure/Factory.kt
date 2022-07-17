@@ -5,10 +5,16 @@ import app.meetacy.backend.integration.mock.generateToken.MockAccessHashGenerato
 import app.meetacy.backend.integration.mock.generateToken.MockHashGeneratorIntegration
 import app.meetacy.backend.integration.mock.generateToken.MockTokenGeneratorIntegration
 import app.meetacy.backend.integration.mock.generateToken.MockUserGeneratorIntegration
+import app.meetacy.backend.integration.test.TestAddFriendRepository
+import app.meetacy.backend.integration.test.TestCreateMeetingRepository
+import app.meetacy.backend.integration.test.TestGetFriendsRepository
+import app.meetacy.backend.integration.test.TestMeetingProvider
+import app.meetacy.backend.integration.test.TestMeetingsProvider
+import app.meetacy.backend.integration.test.TestParticipateMeetingRepository
 import app.meetacy.backend.mock.integration.mockConfirmEmailUsecase
 import app.meetacy.backend.mock.integration.mockGetUserUsecase
-import app.meetacy.backend.usecase.integration.emailConfirm.ConfirmStorageUsecaseIntegration
-import app.meetacy.backend.usecase.integration.emailLink.LinkEmailRepositoryUsecaseIntegration
+import app.meetacy.backend.usecase.integration.emailConfirm.usecaseConfirmEmailRepository
+import app.meetacy.backend.usecase.integration.emailLink.usecaseLinkEmailRepository
 import app.meetacy.backend.usecase.integration.mock.mockLinkEmailUsecase
 import app.meetacy.backend.usecase.integration.users.usecaseUserProvider
 
@@ -19,14 +25,20 @@ fun startMockEndpoints(
     startEndpoints(
         port = port,
         wait = wait,
-        linkEmailRepository = LinkEmailRepositoryUsecaseIntegration(mockLinkEmailUsecase()),
-        confirmStorage = ConfirmStorageUsecaseIntegration(mockConfirmEmailUsecase()),
-        getUsersProvider = usecaseUserProvider(mockGetUserUsecase()),
+        linkEmailRepository = usecaseLinkEmailRepository(mockLinkEmailUsecase()),
+        confirmEmailRepository = usecaseConfirmEmailRepository(mockConfirmEmailUsecase()),
+        userProvider = usecaseUserProvider(mockGetUserUsecase()),
         tokenGenerator = MockTokenGeneratorIntegration(
             userGenerator = MockUserGeneratorIntegration(
                 MockAccessHashGeneratorIntegration
             ),
             hashGenerator = MockHashGeneratorIntegration
-        )
+        ),
+        meetingsProvider = TestMeetingsProvider,
+        createMeetingRepository = TestCreateMeetingRepository,
+        meetingProvider = TestMeetingProvider,
+        participateMeetingRepository = TestParticipateMeetingRepository,
+        addFriendRepository = TestAddFriendRepository,
+        getFriendsRepository = TestGetFriendsRepository
     )
 }

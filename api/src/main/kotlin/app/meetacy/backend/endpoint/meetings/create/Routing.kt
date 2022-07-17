@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.meet.create
+package app.meetacy.backend.endpoint.meetings.create
 
 import app.meetacy.backend.domain.Location
 import io.ktor.server.application.*
@@ -21,7 +21,7 @@ sealed interface CreateMeetingResult {
     object TokenInvalid : CreateMeetingResult
 }
 
-interface CreateMeetResult {
+interface CreateMeetingRepository {
     fun createMeet(createParam: CreateParam) : CreateMeetingResult
 }
 
@@ -32,9 +32,9 @@ data class CreateMeetResponse(
     val errorMessage: String?
 )
 
-fun Route.createMeet(createMeetResult: CreateMeetResult) = post("/create") {
+fun Route.createMeet(createMeetingRepository: CreateMeetingRepository) = post("/create") {
     val params = call.receive<CreateParam>()
-    val result = createMeetResult.createMeet(params)
+    val result = createMeetingRepository.createMeet(params)
 
     when(result) {
         is CreateMeetingResult.Success -> call.respond(

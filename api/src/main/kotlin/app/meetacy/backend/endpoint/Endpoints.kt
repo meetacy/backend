@@ -7,14 +7,14 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
 import app.meetacy.backend.endpoint.auth.auth
-import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmStorage
+import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmEmailRepository
 import app.meetacy.backend.endpoint.auth.email.link.LinkEmailRepository
 import app.meetacy.backend.endpoint.auth.generate.TokenGenerator
-import app.meetacy.backend.endpoint.meet.create.CreateMeetResult
-import app.meetacy.backend.endpoint.meet.get.GetMeeting
-import app.meetacy.backend.endpoint.meet.list.GetListMeet
-import app.meetacy.backend.endpoint.meet.meetings
-import app.meetacy.backend.endpoint.meet.participate.ParticipateMeeting
+import app.meetacy.backend.endpoint.meetings.create.CreateMeetingRepository
+import app.meetacy.backend.endpoint.meetings.get.MeetingProvider
+import app.meetacy.backend.endpoint.meetings.list.MeetingsProvider
+import app.meetacy.backend.endpoint.meetings.meetings
+import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepository
 import app.meetacy.backend.endpoint.friends.add.AddFriendRepository
 import app.meetacy.backend.endpoint.friends.friends
 import app.meetacy.backend.endpoint.friends.get.GetFriendsRepository
@@ -28,13 +28,13 @@ fun startEndpoints(
     port: Int,
     wait: Boolean,
     linkEmailRepository: LinkEmailRepository,
-    confirmStorage: ConfirmStorage,
+    confirmEmailRepository: ConfirmEmailRepository,
     tokenGenerator: TokenGenerator,
     userProvider: UserProvider,
-    getListMeet: GetListMeet,
-    createMeetResult: CreateMeetResult,
-    getMeeting: GetMeeting,
-    participateMeeting: ParticipateMeeting,
+    meetingsProvider: MeetingsProvider,
+    createMeetingRepository: CreateMeetingRepository,
+    meetingProvider: MeetingProvider,
+    participateMeetingRepository: ParticipateMeetingRepository,
     addFriendRepository: AddFriendRepository,
     getFriendsRepository: GetFriendsRepository
 ) = embeddedServer(CIO, port) {
@@ -47,9 +47,9 @@ fun startEndpoints(
     }
 
     routing {
-        auth(linkEmailRepository, confirmStorage, tokenGenerator)
+        auth(linkEmailRepository, confirmEmailRepository, tokenGenerator)
         getUser(userProvider)
-        meetings(getListMeet, getMeeting, createMeetResult, participateMeeting)
+        meetings(meetingsProvider, meetingProvider, createMeetingRepository, participateMeetingRepository)
         friends(addFriendRepository, getFriendsRepository)
     }
 }.start(wait)

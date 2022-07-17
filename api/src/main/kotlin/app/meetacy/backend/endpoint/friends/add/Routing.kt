@@ -4,17 +4,20 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
 
 interface AddFriendRepository {
     fun addFriend(addFriendParams: AddFriendParams): AddFriendResult
 }
 
+@Serializable
 data class AddFriendParams(
     val accessToken: String,
     val friendId: Long,
     val friendAccessHash: String
 )
 
+@Serializable
 data class AddFriendResponse(
     val status: Boolean = false,
     val errorCode: Int? = null,

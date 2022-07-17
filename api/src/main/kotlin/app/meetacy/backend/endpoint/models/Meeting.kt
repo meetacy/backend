@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class Meeting(
     val id: Long,
     val accessHash: String,
-    val creator: Creator,
+    val creator: User,
     val date: String,
     val location: Location,
     val title: String?,

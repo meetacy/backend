@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.meet.list
+package app.meetacy.backend.endpoint.meetings.list
 
 import app.meetacy.backend.endpoint.models.Meeting
 import io.ktor.server.application.*
@@ -17,10 +17,11 @@ sealed interface ListMeetingsResult {
     object TokenInvalid : ListMeetingsResult
 }
 
-interface GetListMeet {
+interface MeetingsProvider {
     suspend fun getList(accessToken: String): ListMeetingsResult
 }
 
+@Serializable
 data class MeetingListResponse(
     val status: Boolean,
     val result: List<Meeting>?,
@@ -29,7 +30,7 @@ data class MeetingListResponse(
 )
 
 
-fun Route.listMeet(getListMeet: GetListMeet) = post("/list") {
+fun Route.listMeet(getListMeet: MeetingsProvider) = post("/list") {
     val params = call.receive<ListParam>()
     val result = getListMeet.getList(params.accessToken)
 

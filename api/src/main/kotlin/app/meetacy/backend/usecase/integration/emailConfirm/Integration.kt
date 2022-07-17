@@ -1,12 +1,12 @@
 package app.meetacy.backend.usecase.integration.emailConfirm
 
 import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmHashResult
-import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmStorage
+import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmEmailRepository
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 
-class ConfirmStorageUsecaseIntegration(
+private class Integration(
     private val usecase: ConfirmEmailUsecase
-) : ConfirmStorage {
+) : ConfirmEmailRepository {
     override suspend fun checkConfirmHash(email: String, confirmHash: String): ConfirmHashResult =
         when (usecase.confirm(email, confirmHash)) {
             ConfirmEmailUsecase.ConfirmResult.LinkInvalid ->
@@ -15,3 +15,6 @@ class ConfirmStorageUsecaseIntegration(
                 ConfirmHashResult.Success
         }
 }
+
+fun usecaseConfirmEmailRepository(usecase: ConfirmEmailUsecase): ConfirmEmailRepository =
+    Integration(usecase)
