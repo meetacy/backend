@@ -1,0 +1,48 @@
+package app.meetacy.backend.endpoint.friends.add
+
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+
+interface AddFriendRepository {
+    fun addFriend(addFriendParams: AddFriendParams): AddFriendResult
+}
+
+data class AddFriendParams(
+    val accessToken: String,
+    val friendId: Long,
+    val friendAccessHash: String
+)
+
+data class AddFriendResponse(
+    val status: Boolean = false,
+    val errorCode: Int? = null,
+    val errorMessage: String? = null
+)
+
+sealed interface AddFriendResult {
+    object Success : AddFriendResult
+    object InvalidToken : AddFriendResult
+    object FriendNotFound : AddFriendResult
+}
+
+fun Route.addFriend(provider: AddFriendRepository) = post("/add") {
+    val params = call.receive<AddFriendParams>()
+    val result = when(provider.addFriend(params)) {
+        AddFriendResult.FriendNotFound -> AddFriendResponse(
+            status = false,
+            errorCode = 2,
+            errorMessage = "Friend was not found"
+        )
+        AddFriendResult.InvalidToken -> AddFriendResponse(
+            status = false,
+            errorCode = 1,
+            errorMessage = "Please provide a valid token"
+        )
+        AddFriendResult.Success -> AddFriendResponse(
+            status = true
+        )
+    }
+    call.respond(result)
+}
