@@ -11,5 +11,6 @@ data class Meeting(
     val date: String,
     val location: Location,
     val title: String?,
-    val description: String?
+    val description: String?,
+    val participantsCount: Int
 )
