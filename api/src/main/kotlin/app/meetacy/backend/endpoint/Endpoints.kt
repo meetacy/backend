@@ -18,10 +18,14 @@ import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepos
 import app.meetacy.backend.endpoint.friends.add.AddFriendRepository
 import app.meetacy.backend.endpoint.friends.friends
 import app.meetacy.backend.endpoint.friends.get.GetFriendsRepository
+import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
+import app.meetacy.backend.endpoint.notifications.notifications
 import app.meetacy.backend.endpoint.users.UserProvider
 import app.meetacy.backend.endpoint.users.getUser
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.plus
 
 @OptIn(ExperimentalSerializationApi::class)
 fun startEndpoints(
@@ -36,7 +40,8 @@ fun startEndpoints(
     meetingProvider: MeetingProvider,
     participateMeetingRepository: ParticipateMeetingRepository,
     addFriendRepository: AddFriendRepository,
-    getFriendsRepository: GetFriendsRepository
+    getFriendsRepository: GetFriendsRepository,
+    notificationsDependencies: NotificationsDependencies
 ) = embeddedServer(CIO, port) {
     install(ContentNegotiation) {
         json(
@@ -51,5 +56,6 @@ fun startEndpoints(
         getUser(userProvider)
         meetings(meetingsProvider, meetingProvider, createMeetingRepository, participateMeetingRepository)
         friends(addFriendRepository, getFriendsRepository)
+        notifications(notificationsDependencies)
     }
 }.start(wait)
