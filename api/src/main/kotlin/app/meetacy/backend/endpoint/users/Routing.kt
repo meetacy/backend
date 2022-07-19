@@ -60,7 +60,7 @@ fun Route.getUser(provider: UserProvider) = post("/users/get") {
             status = false,
             result = null,
             errorCode = 2,
-            errorMessage = "User not found"
+            errorMessage = "FullUser not found"
         )
     }
 

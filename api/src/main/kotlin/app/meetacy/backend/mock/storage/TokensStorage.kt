@@ -1,11 +1,13 @@
 package app.meetacy.backend.mock.storage
 
+import app.meetacy.backend.domain.AccessToken
+
 object TokensStorage {
     private val data: MutableList<MockToken> = mutableListOf()
 
     fun addToken(
         userId: Long,
-        token: String
+        token: AccessToken
     ) {
         data += MockToken(
             ownerId = userId,
@@ -13,5 +15,5 @@ object TokensStorage {
         )
     }
 
-    fun getToken(token: String): MockToken? = data.firstOrNull { token == it.value }
+    fun getToken(token: AccessToken): MockToken? = data.firstOrNull { token == it.value }
 }

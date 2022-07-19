@@ -4,24 +4,24 @@ import app.meetacy.backend.endpoint.users.GetUserParams
 import app.meetacy.backend.endpoint.users.GetUserResult
 import app.meetacy.backend.endpoint.users.UserProvider
 import app.meetacy.backend.endpoint.users.UserResponse
-import app.meetacy.backend.usecase.users.GetUserUsecase
+import app.meetacy.backend.usecase.users.GetUserSafeUsecase
 
-private class UserProviderIntegration(private val usecase: GetUserUsecase) : UserProvider {
+private class UserProviderIntegration(private val usecase: GetUserSafeUsecase) : UserProvider {
     override fun getUser(getUserParams: GetUserParams): GetUserResult {
-        val request = if (getUserParams.accessHash == null && getUserParams.id == null)
-            GetUserUsecase.Request.Self(
+        val params = if (getUserParams.accessHash == null && getUserParams.id == null)
+            GetUserSafeUsecase.Params.Self(
                 accessToken = getUserParams.accessToken
             )
         else if (getUserParams.accessHash != null && getUserParams.id != null)
-            GetUserUsecase.Request.User(
+            GetUserSafeUsecase.Params.User(
                 id = getUserParams.id,
                 accessHash = getUserParams.accessHash,
                 accessToken = getUserParams.accessToken
             )
         else return GetUserResult.UserNotFound
 
-        return when (val result = usecase.getUser(request)) {
-            is GetUserUsecase.Result.Success -> GetUserResult.Success(
+        return when (val result = usecase.getUser(params)) {
+            is GetUserSafeUsecase.Result.Success -> GetUserResult.Success(
                 UserResponse(
                     id = result.user.id,
                     accessHash = result.user.accessHash,
@@ -30,10 +30,10 @@ private class UserProviderIntegration(private val usecase: GetUserUsecase) : Use
                     emailVerified = result.user.emailVerified
                 )
             )
-            is GetUserUsecase.Result.InvalidToken -> GetUserResult.InvalidToken
-            is GetUserUsecase.Result.UserNotFound -> GetUserResult.UserNotFound
+            is GetUserSafeUsecase.Result.InvalidToken -> GetUserResult.InvalidToken
+            is GetUserSafeUsecase.Result.UserNotFound -> GetUserResult.UserNotFound
         }
     }
 }
 
-fun usecaseUserProvider(usecase: GetUserUsecase): UserProvider = UserProviderIntegration(usecase)
+fun usecaseUserProvider(usecase: GetUserSafeUsecase): UserProvider = UserProviderIntegration(usecase)
