@@ -1,6 +1,8 @@
 package app.meetacy.backend.integration.test
 
 import app.meetacy.backend.domain.Location
+import app.meetacy.backend.domain.MeetingId
+import app.meetacy.backend.domain.UserId
 import app.meetacy.backend.endpoint.meetings.list.ListMeetingsResult
 import app.meetacy.backend.endpoint.meetings.list.MeetingsProvider
 import app.meetacy.backend.endpoint.models.User
@@ -11,10 +13,10 @@ object TestMeetingsProvider : MeetingsProvider {
         ListMeetingsResult.Success(
             meetings = listOf(
                 Meeting(
-                    id = 0,
+                    id = MeetingId(0),
                     accessHash = "...",
                     creator = User(
-                        id = 0,
+                        id = UserId(0),
                         accessHash = "...",
                         nickname = "Elon Musk"
                     ),
@@ -32,10 +34,10 @@ object TestMeetingsProvider : MeetingsProvider {
                     participantsCount = 1_000_000
                 ),
                 Meeting(
-                    id = 0,
+                    id = MeetingId(0),
                     accessHash = "...",
                     creator = User(
-                        id = 0,
+                        id = UserId(0),
                         accessHash = "...",
                         nickname = "Emma Watson"
                     ),
@@ -51,10 +53,10 @@ object TestMeetingsProvider : MeetingsProvider {
                     participantsCount = 1_200
                 ),
                 Meeting(
-                    id = 0,
+                    id = MeetingId(0),
                     accessHash = "...",
                     creator = User(
-                        id = 0,
+                        id = UserId(0),
                         accessHash = "...",
                         nickname = "Timothy Cookothy"
                     ),
