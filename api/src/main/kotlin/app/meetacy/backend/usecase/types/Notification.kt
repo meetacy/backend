@@ -1,6 +1,4 @@
-@file:UseSerializers(NotificationIdSerializer::class, DateSerializer::class)
-
-package app.meetacy.backend.endpoint.models
+package app.meetacy.backend.usecase.types
 
 import app.meetacy.backend.domain.Date
 import app.meetacy.backend.domain.NotificationId
@@ -10,13 +8,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
-@Serializable
 sealed interface Notification {
     val id: NotificationId
     val isNew: Boolean
 
-    @SerialName("subscription")
-    @Serializable
     class Subscription(
         override val isNew: Boolean,
         override val id: NotificationId,
@@ -24,8 +19,6 @@ sealed interface Notification {
         val date: Date
     ) : Notification
 
-    @SerialName("meeting_invitation")
-    @Serializable
     class Invitation(
         override val id: NotificationId,
         override val isNew: Boolean,
