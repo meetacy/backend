@@ -13,19 +13,25 @@ object TestGetFriendsRepository : GetFriendsRepository {
                 User(
                     id = UserId(0),
                     accessHash = "...",
-                    nickname = "Emma Watson"
+                    nickname = "Emma Watson",
+                    email = null,
+                    emailVerified = null
                 )
             ),
             subscriptions = listOf(
                 User(
                     id = UserId(1),
                     accessHash = "...",
-                    nickname = "Elon Musk"
+                    nickname = "Elon Musk",
+                    email = null,
+                    emailVerified = null
                 ),
                 User(
                     id = UserId(2),
                     accessHash = "...",
-                    nickname = "Timothy Cookothy"
+                    nickname = "Timothy Cookothy",
+                    email = null,
+                    emailVerified = null
                 )
             )
         )

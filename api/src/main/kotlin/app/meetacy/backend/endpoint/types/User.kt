@@ -11,5 +11,7 @@ import kotlinx.serialization.UseSerializers
 data class User(
     val id: UserId,
     val accessHash: String,
-    val nickname: String
+    val nickname: String,
+    val email: Boolean?,
+    val emailVerified: Boolean?
 )
