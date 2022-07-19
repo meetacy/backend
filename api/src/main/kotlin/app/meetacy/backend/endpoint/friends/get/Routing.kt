@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.friends.get
 
-import app.meetacy.backend.endpoint.models.User
+import app.meetacy.backend.endpoint.types.User
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*

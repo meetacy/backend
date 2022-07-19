@@ -1,6 +1,4 @@
-@file:UseSerializers(MeetingIdSerializer::class, LocationSerializer::class)
-
-package app.meetacy.backend.endpoint.models
+package app.meetacy.backend.usecase.types
 
 import app.meetacy.backend.domain.Location
 import app.meetacy.backend.domain.MeetingId
@@ -9,7 +7,6 @@ import app.meetacy.backend.serialization.MeetingIdSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
-@Serializable
 data class Meeting(
     val id: MeetingId,
     val accessHash: String,
@@ -17,6 +14,5 @@ data class Meeting(
     val date: String,
     val location: Location,
     val title: String?,
-    val description: String?,
-    val participantsCount: Int
+    val description: String?
 )

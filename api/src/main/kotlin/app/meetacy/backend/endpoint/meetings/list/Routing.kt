@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.meetings.list
 
-import app.meetacy.backend.endpoint.models.Meeting
+import app.meetacy.backend.endpoint.types.Meeting
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*

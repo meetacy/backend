@@ -5,8 +5,8 @@ import app.meetacy.backend.domain.MeetingId
 import app.meetacy.backend.domain.UserId
 import app.meetacy.backend.endpoint.meetings.list.ListMeetingsResult
 import app.meetacy.backend.endpoint.meetings.list.MeetingsProvider
-import app.meetacy.backend.endpoint.models.User
-import app.meetacy.backend.endpoint.models.Meeting
+import app.meetacy.backend.endpoint.types.User
+import app.meetacy.backend.endpoint.types.Meeting
 
 object TestMeetingsProvider : MeetingsProvider {
     override suspend fun getList(accessToken: String): ListMeetingsResult =

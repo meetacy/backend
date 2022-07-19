@@ -3,14 +3,13 @@
 package app.meetacy.backend.endpoint.notifications.get
 
 import app.meetacy.backend.domain.AccessToken
-import app.meetacy.backend.endpoint.models.Notification
+import app.meetacy.backend.endpoint.types.Notification
 import app.meetacy.backend.serialization.AccessTokenSerializer
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
