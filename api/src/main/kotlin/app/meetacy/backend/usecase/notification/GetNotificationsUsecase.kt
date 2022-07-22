@@ -6,14 +6,17 @@ import app.meetacy.backend.domain.MeetingId
 import app.meetacy.backend.domain.NotificationId
 import app.meetacy.backend.domain.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
+import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
+import app.meetacy.backend.usecase.types.GetUsersViewsRepository
 import app.meetacy.backend.usecase.types.Notification
 import app.meetacy.backend.usecase.types.authorize
-import app.meetacy.backend.usecase.users.GetUsersViewsUsecase
+import app.meetacy.backend.usecase.types.getMeetingsViews
+import app.meetacy.backend.usecase.types.getUsersViews
 
 class GetNotificationsUsecase(
     private val authRepository: AuthRepository,
-    private val usersRepository: GetUsersViewsUsecase,
-    private val meetingsRepository: MeetingsRepository,
+    private val usersRepository: GetUsersViewsRepository,
+    private val meetingsRepository: GetMeetingsViewsRepository,
     private val storage: Storage
 ) {
     suspend fun getNotifications(
@@ -31,14 +34,13 @@ class GetNotificationsUsecase(
         val usersIterator = notifications
             .filterIsInstance<NotificationFromStorage.Subscription>()
             .map { it.subscriberId }
-            .let { usersRepository.viewUsers(userId, it) }
-            .filterNotNull()
+            .let { usersRepository.getUsersViews(userId, it) }
             .iterator()
 
         val meetingsIterator = notifications
             .filterIsInstance<NotificationFromStorage.Invitation>()
             .map { it.meetingId }
-            .let { meetingsRepository.getMeetings(it) }
+            .let { meetingsRepository.getMeetingsViews(userId, it) }
             .iterator()
 
         val result = notifications
