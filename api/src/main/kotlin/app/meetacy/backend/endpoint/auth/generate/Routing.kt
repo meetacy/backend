@@ -13,15 +13,16 @@ data class GenerateParam(
 
 @Serializable
 data class GenerateTokenResponse(
+    val status: Boolean,
     val result: String
 )
 
 interface TokenGenerator {
-    fun generateToken(nickname: String): String
+    suspend fun generateToken(nickname: String): String
 }
 
 fun Route.generateToken(tokenGenerator: TokenGenerator) = post ("/generate") {
     val generateParam = call.receive<GenerateParam>()
     val token = tokenGenerator.generateToken(generateParam.nickname)
-    call.respond(GenerateTokenResponse(token))
+    call.respond(GenerateTokenResponse(status = true, result = token))
 }

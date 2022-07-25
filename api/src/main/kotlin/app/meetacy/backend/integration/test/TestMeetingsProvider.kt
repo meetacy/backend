@@ -28,7 +28,8 @@ object TestMeetingsProvider : MeetingsProvider {
                             " the thrust pushing the rocket up is greater than the force " +
                             "of gravity pulling the rocket down. A rocket needs to speed " +
                             "up to at least 17,800 miles per hour—and fly above most of the " +
-                            "atmosphere, in a curved path around Earth."
+                            "atmosphere, in a curved path around Earth.",
+                    participantsCount = 1_000_000
                 ),
                 Meeting(
                     id = 0,
@@ -46,7 +47,8 @@ object TestMeetingsProvider : MeetingsProvider {
                     title = "Meeting with an idol",
                     description = "Hi, friend. In this meeting, we will communicate and discuss pressing topics. " +
                             "You can always leave if you get bored or don't like something. Join our meeting - " +
-                            "it will be fun."
+                            "it will be fun.",
+                    participantsCount = 1_200
                 ),
                 Meeting(
                     id = 0,
@@ -66,7 +68,8 @@ object TestMeetingsProvider : MeetingsProvider {
                             "it’s logical we’ll see a successor at some point. " +
                             "What’s more, there are suggestions it might not be far away," +
                             " with Microsoft rumoured to already be working on Windows 12 internally." +
-                            " Here’s everything we know at this early stage."
+                            " Here’s everything we know at this early stage.",
+                    participantsCount = 4
                 )
             )
         )
