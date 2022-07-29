@@ -5,6 +5,6 @@ import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingResul
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateParam
 
 object TestParticipateMeetingRepository : ParticipateMeetingRepository {
-    override fun participateMeet(participateParam: ParticipateParam): ParticipateMeetingResult =
+    override fun participateMeeting(participateParam: ParticipateParam): ParticipateMeetingResult =
         ParticipateMeetingResult.MeetingNotFound
 }

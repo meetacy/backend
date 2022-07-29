@@ -18,7 +18,9 @@ object TestMeetingsProvider : MeetingsProvider {
                     creator = User(
                         id = UserId(0),
                         accessHash = "...",
-                        nickname = "Elon Musk",,
+                        nickname = "Elon Musk",
+                        email = false,
+                        emailVerified = false
                     ),
                     date = "2022-08-17T14:40:42+0100",
                     location = Location(
@@ -39,7 +41,9 @@ object TestMeetingsProvider : MeetingsProvider {
                     creator = User(
                         id = UserId(0),
                         accessHash = "...",
-                        nickname = "Emma Watson",,
+                        nickname = "Emma Watson",
+                        email = false,
+                        emailVerified = false
                     ),
                     date = "2023-08-17T14:40:42+0100",
                     location = Location(
@@ -58,7 +62,9 @@ object TestMeetingsProvider : MeetingsProvider {
                     creator = User(
                         id = UserId(0),
                         accessHash = "...",
-                        nickname = "Timothy Cookothy",,
+                        nickname = "Timothy Cookothy",
+                        email = false,
+                        emailVerified = true
                     ),
                     date = "2033-08-17T14:40:42+0100",
                     location = Location(

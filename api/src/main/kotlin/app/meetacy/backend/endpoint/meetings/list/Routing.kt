@@ -30,11 +30,9 @@ data class MeetingListResponse(
 )
 
 
-fun Route.listMeet(getListMeet: MeetingsProvider) = post("/list") {
+fun Route.listMeetings(meetingsProvider: MeetingsProvider) = post("/list") {
     val params = call.receive<ListParam>()
-    val result = getListMeet.getList(params.accessToken)
-
-    when(result) {
+    when(val result = meetingsProvider.getList(params.accessToken)) {
         is ListMeetingsResult.Success -> call.respond(
             MeetingListResponse(
                 status = true,

@@ -5,6 +5,6 @@ import app.meetacy.backend.endpoint.meetings.create.CreateMeetingResult
 import app.meetacy.backend.endpoint.meetings.create.CreateParam
 
 object TestCreateMeetingRepository : CreateMeetingRepository {
-    override fun createMeet(createParam: CreateParam): CreateMeetingResult =
+    override fun createMeeting(createParam: CreateParam): CreateMeetingResult =
         CreateMeetingResult.Success
 }

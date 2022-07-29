@@ -21,7 +21,7 @@ sealed interface GetMeetingResult {
 }
 
 interface MeetingProvider {
-    fun getMeet(getParam: GetParam) : GetMeetingResult
+    fun getMeeting(getParam: GetParam) : GetMeetingResult
 }
 
 @Serializable
@@ -32,10 +32,10 @@ data class GetMeetingResponse(
     val errorMessage: String?
 )
 
-fun Route.getMeet(meetingProvider: MeetingProvider) = post("/get") {
+fun Route.getMeeting(meetingProvider: MeetingProvider) = post("/get") {
     val params = call.receive<GetParam>()
 
-    val result = when(val result = meetingProvider.getMeet(params)) {
+    val result = when(val result = meetingProvider.getMeeting(params)) {
         is GetMeetingResult.Success -> GetMeetingResponse(
             status = true,
             result = result.meeting,

@@ -5,6 +5,6 @@ import app.meetacy.backend.endpoint.meetings.get.GetParam
 import app.meetacy.backend.endpoint.meetings.get.MeetingProvider
 
 object TestMeetingProvider : MeetingProvider {
-    override fun getMeet(getParam: GetParam): GetMeetingResult =
+    override fun getMeeting(getParam: GetParam): GetMeetingResult =
         GetMeetingResult.MeetingNotFound
 }

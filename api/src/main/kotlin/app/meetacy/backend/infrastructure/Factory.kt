@@ -1,5 +1,9 @@
 package app.meetacy.backend.infrastructure
 
+import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
+import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
+import app.meetacy.backend.endpoint.notifications.get.GetNotificationsRepository
+import app.meetacy.backend.endpoint.notifications.read.ReadNotificationsRepository
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.integration.test.TestAddFriendRepository
 import app.meetacy.backend.integration.test.TestCreateMeetingRepository
@@ -27,11 +31,17 @@ fun startMockEndpoints(
         confirmEmailRepository = usecaseConfirmEmailRepository(mockConfirmEmailUsecase()),
         userProvider = usecaseUserProvider(mockGetUserUsecase()),
         tokenGenerator = usecaseTokenGenerator(mockGenerateTokenUsecase()),
-        meetingsProvider = TestMeetingsProvider,
-        createMeetingRepository = TestCreateMeetingRepository,
-        meetingProvider = TestMeetingProvider,
-        participateMeetingRepository = TestParticipateMeetingRepository,
         addFriendRepository = TestAddFriendRepository,
-        getFriendsRepository = TestGetFriendsRepository
+        getFriendsRepository = TestGetFriendsRepository,
+        meetingsDependencies = MeetingsDependencies(
+            meetingsProvider = TestMeetingsProvider,
+            createMeetingRepository = TestCreateMeetingRepository,
+            meetingProvider = TestMeetingProvider,
+            participateMeetingRepository = TestParticipateMeetingRepository,
+        ),
+        notificationsDependencies = NotificationsDependencies(
+            getNotificationsRepository = GetNotificationsRepository,
+            readNotificationsRepository = ReadNotificationsRepository
+        )
     )
 }

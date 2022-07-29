@@ -21,7 +21,7 @@ sealed interface ParticipateMeetingResult {
 }
 
 interface ParticipateMeetingRepository {
-    fun participateMeet(participateParam: ParticipateParam) : ParticipateMeetingResult
+    fun participateMeeting(participateParam: ParticipateParam) : ParticipateMeetingResult
 }
 
 @Serializable
@@ -31,10 +31,10 @@ data class ParticipateMeetResponse(
     val errorMessage: String?
 )
 
-fun Route.participateMeet(participateMeetingRepository: ParticipateMeetingRepository) = post("/participate") {
+fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRepository) = post("/participate") {
     val params = call.receive<ParticipateParam>()
 
-    val result = when(participateMeetingRepository.participateMeet(params)) {
+    val result = when(participateMeetingRepository.participateMeeting(params)) {
         is ParticipateMeetingResult.Success -> ParticipateMeetResponse(
             status = true,
             errorCode = null,

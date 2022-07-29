@@ -1,11 +1,15 @@
+@file:UseSerializers(LocationSerializer::class)
+
 package app.meetacy.backend.endpoint.meetings.create
 
 import app.meetacy.backend.domain.Location
+import app.meetacy.backend.serialization.LocationSerializer
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class CreateParam(
@@ -22,7 +26,7 @@ sealed interface CreateMeetingResult {
 }
 
 interface CreateMeetingRepository {
-    fun createMeet(createParam: CreateParam) : CreateMeetingResult
+    fun createMeeting(createParam: CreateParam) : CreateMeetingResult
 }
 
 @Serializable
@@ -32,11 +36,10 @@ data class CreateMeetResponse(
     val errorMessage: String?
 )
 
-fun Route.createMeet(createMeetingRepository: CreateMeetingRepository) = post("/create") {
+fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post("/create") {
     val params = call.receive<CreateParam>()
-    val result = createMeetingRepository.createMeet(params)
 
-    when(result) {
+    when(createMeetingRepository.createMeeting(params)) {
         is CreateMeetingResult.Success -> call.respond(
             CreateMeetResponse(
                 status = true,

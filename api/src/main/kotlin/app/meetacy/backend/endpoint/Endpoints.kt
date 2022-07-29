@@ -10,22 +10,18 @@ import app.meetacy.backend.endpoint.auth.auth
 import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmEmailRepository
 import app.meetacy.backend.endpoint.auth.email.link.LinkEmailRepository
 import app.meetacy.backend.endpoint.auth.generate.TokenGenerator
-import app.meetacy.backend.endpoint.meetings.create.CreateMeetingRepository
-import app.meetacy.backend.endpoint.meetings.get.MeetingProvider
-import app.meetacy.backend.endpoint.meetings.list.MeetingsProvider
 import app.meetacy.backend.endpoint.meetings.meetings
-import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepository
 import app.meetacy.backend.endpoint.friends.add.AddFriendRepository
 import app.meetacy.backend.endpoint.friends.friends
 import app.meetacy.backend.endpoint.friends.get.GetFriendsRepository
+import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.notifications.notifications
 import app.meetacy.backend.endpoint.users.UserProvider
 import app.meetacy.backend.endpoint.users.getUser
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.plus
+
 
 @OptIn(ExperimentalSerializationApi::class)
 fun startEndpoints(
@@ -35,12 +31,9 @@ fun startEndpoints(
     confirmEmailRepository: ConfirmEmailRepository,
     tokenGenerator: TokenGenerator,
     userProvider: UserProvider,
-    meetingsProvider: MeetingsProvider,
-    createMeetingRepository: CreateMeetingRepository,
-    meetingProvider: MeetingProvider,
-    participateMeetingRepository: ParticipateMeetingRepository,
     addFriendRepository: AddFriendRepository,
     getFriendsRepository: GetFriendsRepository,
+    meetingsDependencies: MeetingsDependencies,
     notificationsDependencies: NotificationsDependencies
 ) = embeddedServer(CIO, port) {
     install(ContentNegotiation) {
@@ -54,7 +47,7 @@ fun startEndpoints(
     routing {
         auth(linkEmailRepository, confirmEmailRepository, tokenGenerator)
         getUser(userProvider)
-        meetings(meetingsProvider, meetingProvider, createMeetingRepository, participateMeetingRepository)
+        meetings(meetingsDependencies)
         friends(addFriendRepository, getFriendsRepository)
         notifications(notificationsDependencies)
     }
