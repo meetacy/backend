@@ -1,5 +1,7 @@
 package app.meetacy.backend.usecase.email
 
+import app.meetacy.backend.domain.UserId
+
 class ConfirmEmailUsecase(private val storage: Storage) {
     sealed interface ConfirmResult {
         object Success : ConfirmResult
@@ -20,8 +22,8 @@ class ConfirmEmailUsecase(private val storage: Storage) {
         /**
          * @return null if confirm hash invalid
          */
-        suspend fun getConfirmHashOwnerId(email: String, confirmHash: String): Long?
+        suspend fun getConfirmHashOwnerId(email: String, confirmHash: String): UserId?
         suspend fun deleteHashes(email: String)
-        suspend fun verifyEmail(userId: Long)
+        suspend fun verifyEmail(userId: UserId)
     }
 }

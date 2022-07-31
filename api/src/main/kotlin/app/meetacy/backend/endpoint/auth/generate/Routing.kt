@@ -1,10 +1,15 @@
+@file:UseSerializers(AccessTokenSerializer::class)
+
 package app.meetacy.backend.endpoint.auth.generate
 
+import app.meetacy.backend.domain.AccessToken
+import app.meetacy.backend.serialization.AccessTokenSerializer
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class GenerateParam(
@@ -14,11 +19,11 @@ data class GenerateParam(
 @Serializable
 data class GenerateTokenResponse(
     val status: Boolean,
-    val result: String
+    val result: AccessToken
 )
 
 interface TokenGenerator {
-    suspend fun generateToken(nickname: String): String
+    suspend fun generateToken(nickname: String): AccessToken
 }
 
 fun Route.generateToken(tokenGenerator: TokenGenerator) = post ("/generate") {

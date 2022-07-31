@@ -29,7 +29,11 @@ private data class ResponseBody(
 )
 
 interface GetNotificationsRepository {
-    fun getNotifications(accessToken: AccessToken): Result
+    suspend fun getNotifications(
+        accessToken: AccessToken,
+        offset: Long,
+        amount: Int
+    ): Result
 
     sealed interface Result {
         object TokenInvalid : Result
@@ -39,7 +43,14 @@ interface GetNotificationsRepository {
 
 fun Route.get(repository: GetNotificationsRepository) = post("/get") {
     val requestBody = call.receive<RequestBody>()
-    val result = when (val result = repository.getNotifications(requestBody.accessToken)) {
+
+    val result = when (
+        val result = repository.getNotifications(
+            accessToken = requestBody.accessToken,
+            offset = requestBody.offset,
+            amount = requestBody.amount
+        )
+    ) {
         is GetNotificationsRepository.Result.Success -> ResponseBody(
             status = true,
             result = result.notifications
@@ -51,5 +62,6 @@ fun Route.get(repository: GetNotificationsRepository) = post("/get") {
             errorMessage = "Please provide a valid token"
         )
     }
+
     call.respond(result)
 }

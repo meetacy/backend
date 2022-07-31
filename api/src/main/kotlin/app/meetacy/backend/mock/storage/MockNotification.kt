@@ -10,6 +10,7 @@ data class MockNotification(
     val ownerId: UserId,
     val type: Type,
     val date: Date,
+    val inviterId: UserId? = null,
     val subscriberId: UserId? = null,
     val invitedMeetingId: MeetingId? = null
 ) {

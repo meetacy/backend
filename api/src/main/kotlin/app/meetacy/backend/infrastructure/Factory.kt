@@ -28,13 +28,13 @@ fun startMockEndpoints(
         getFriendsRepository = TestGetFriendsRepository,
         meetingsDependencies = MeetingsDependencies(
             meetingsProvider = TestMeetingsProvider,
-            createMeetingRepository = TestCreateMeetingRepository,
+            createMeetingRepository = usecaseCreateMeetingRepository(mockCreateMeetingUsecase()),
             meetingProvider = TestMeetingProvider,
             participateMeetingRepository = TestParticipateMeetingRepository,
         ),
         notificationsDependencies = NotificationsDependencies(
-            getNotificationsRepository = GetNotificationsRepository,
-            readNotificationsRepository = ReadNotificationsRepository
+            getNotificationsRepository = usecaseGetNotificationsRepository(mockGetNotificationsUsecase()),
+            readNotificationsRepository = usecaseReadNotificationsRepository(mockReadNotificationsUsecase())
         )
     )
 }

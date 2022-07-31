@@ -1,12 +1,13 @@
 package app.meetacy.backend.usecase.integration.auth
 
+import app.meetacy.backend.domain.AccessToken
 import app.meetacy.backend.endpoint.auth.generate.TokenGenerator
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 
 private class Integration(
     private val usecase: GenerateTokenUsecase
 ): TokenGenerator {
-    override suspend fun generateToken(nickname: String): String =
+    override suspend fun generateToken(nickname: String): AccessToken =
         usecase.generateToken(nickname)
 }
 

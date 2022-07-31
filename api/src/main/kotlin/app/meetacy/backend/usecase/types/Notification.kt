@@ -18,6 +18,7 @@ sealed interface Notification {
         override val id: NotificationId,
         override val isNew: Boolean,
         val meeting: MeetingView,
+        val inviter: UserView,
         val date: Date
     ) : Notification
 }

@@ -22,8 +22,14 @@ class GetNotificationsUsecase(
             .getNotifications(userId, offset, count)
 
         val usersIterator = notifications
-            .filterIsInstance<NotificationFromStorage.Subscription>()
-            .map { it.subscriberId }
+            .map { notification ->
+                when (notification) {
+                    is NotificationFromStorage.Invitation ->
+                        notification.inviterId
+                    is NotificationFromStorage.Subscription ->
+                        notification.subscriberId
+                }
+            }
             .let { usersRepository.getUsersViews(userId, it) }
             .iterator()
 
@@ -41,7 +47,9 @@ class GetNotificationsUsecase(
                     is NotificationFromStorage.Invitation ->
                         Notification.Invitation(
                             notification.id, isNew,
-                            meetingsIterator.next(), notification.date
+                            meetingsIterator.next(),
+                            usersIterator.next(),
+                            notification.date
                         )
                     is NotificationFromStorage.Subscription ->
                         Notification.Subscription(
@@ -56,7 +64,7 @@ class GetNotificationsUsecase(
 
     sealed interface Result {
         object TokenInvalid : Result
-        class Success(val result: List<Notification>) : Result
+        class Success(val notifications: List<Notification>) : Result
     }
 
     sealed interface NotificationFromStorage {
@@ -71,6 +79,7 @@ class GetNotificationsUsecase(
         class Invitation(
             override val id: NotificationId,
             val meetingId: MeetingId,
+            val inviterId: UserId,
             val date: Date
         ) : NotificationFromStorage
     }

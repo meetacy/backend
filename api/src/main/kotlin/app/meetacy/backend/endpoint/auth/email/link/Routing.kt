@@ -1,16 +1,20 @@
+@file:UseSerializers(AccessTokenSerializer::class)
+
 package app.meetacy.backend.endpoint.auth.email.link
 
-import io.ktor.server.application.call
-import io.ktor.server.request.receive
-import io.ktor.server.response.respond
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.post
+import app.meetacy.backend.domain.AccessToken
+import app.meetacy.backend.serialization.AccessTokenSerializer
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class LinkParameters(
     val email: String,
-    val accessToken: String
+    val accessToken: AccessToken
 )
 
 @Serializable
@@ -26,7 +30,7 @@ sealed interface ConfirmHashResult {
 }
 
 interface LinkEmailRepository {
-    suspend fun linkEmail(token: String, email: String): ConfirmHashResult
+    suspend fun linkEmail(token: AccessToken, email: String): ConfirmHashResult
 }
 
 /**

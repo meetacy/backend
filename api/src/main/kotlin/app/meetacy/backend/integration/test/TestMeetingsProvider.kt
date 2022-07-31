@@ -31,7 +31,8 @@ object TestMeetingsProvider : MeetingsProvider {
                             "of gravity pulling the rocket down. A rocket needs to speed " +
                             "up to at least 17,800 miles per hour—and fly above most of the " +
                             "atmosphere, in a curved path around Earth.",
-                    participantsCount = 1_000_000
+                    participantsCount = 1_000_000,
+                    isParticipating = true
                 ),
                 Meeting(
                     id = MeetingId(0),
@@ -52,7 +53,8 @@ object TestMeetingsProvider : MeetingsProvider {
                     description = "Hi, friend. In this meeting, we will communicate and discuss pressing topics. " +
                             "You can always leave if you get bored or don't like something. Join our meeting - " +
                             "it will be fun.",
-                    participantsCount = 1_200
+                    participantsCount = 1_200,
+                    isParticipating = true
                 ),
                 Meeting(
                     id = MeetingId(0),
@@ -75,7 +77,8 @@ object TestMeetingsProvider : MeetingsProvider {
                             "What’s more, there are suggestions it might not be far away," +
                             " with Microsoft rumoured to already be working on Windows 12 internally." +
                             " Here’s everything we know at this early stage.",
-                    participantsCount = 4
+                    participantsCount = 4,
+                    isParticipating = true
                 )
             )
         )

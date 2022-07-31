@@ -31,7 +31,8 @@ object TestCreateMeetingRepository : CreateMeetingRepository {
                         "of gravity pulling the rocket down. A rocket needs to speed " +
                         "up to at least 17,800 miles per hour—and fly above most of the " +
                         "atmosphere, in a curved path around Earth.",
-                participantsCount = 1_000_000
+                participantsCount = 1_000_000,
+                isParticipating = true
             )
         )
 }

@@ -29,6 +29,14 @@ private fun MockNotification.mapToIntegration(): NotificationFromStorage =
             )
         MockNotification.Type.Invitation ->
             NotificationFromStorage.Invitation(
-                id, invitedMeetingId!!, date
+                id, invitedMeetingId!!, inviterId!!, date
             )
     }
+
+fun mockGetNotificationsUsecase(): GetNotificationsUsecase =
+    GetNotificationsUsecase(
+        authRepository = MockAuthRepository,
+        usersRepository = MockGetUsersViewsRepository,
+        meetingsRepository = MockGetMeetingsViewsRepository,
+        storage = GetNotificationStorage
+    )

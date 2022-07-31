@@ -20,4 +20,7 @@ object MeetingsStorage {
         data += meeting
         return meeting
     }
+
+    fun getMeetingOrNull(id: MeetingId): MockMeeting? =
+        data.firstOrNull { it.id == id }
 }

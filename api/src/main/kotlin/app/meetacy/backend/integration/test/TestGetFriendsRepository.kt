@@ -13,7 +13,7 @@ object TestGetFriendsRepository : GetFriendsRepository {
             friends = listOf(
                 User(
                     id = UserId(0),
-                    accessHash = "...",
+                    accessHash = AccessHash("..."),
                     nickname = "Emma Watson",
                     email = null,
                     emailVerified = null
@@ -22,14 +22,14 @@ object TestGetFriendsRepository : GetFriendsRepository {
             subscriptions = listOf(
                 User(
                     id = UserId(1),
-                    accessHash = "...",
+                    accessHash = AccessHash("..."),
                     nickname = "Elon Musk",
                     email = null,
                     emailVerified = null
                 ),
                 User(
                     id = UserId(2),
-                    accessHash = "...",
+                    accessHash = AccessHash("..."),
                     nickname = "Timothy Cookothy",
                     email = null,
                     emailVerified = null
