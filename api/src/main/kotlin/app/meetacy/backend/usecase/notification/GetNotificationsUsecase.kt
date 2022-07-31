@@ -1,17 +1,7 @@
 package app.meetacy.backend.usecase.notification
 
-import app.meetacy.backend.domain.AccessToken
-import app.meetacy.backend.domain.Date
-import app.meetacy.backend.domain.MeetingId
-import app.meetacy.backend.domain.NotificationId
-import app.meetacy.backend.domain.UserId
-import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
-import app.meetacy.backend.usecase.types.GetUsersViewsRepository
-import app.meetacy.backend.usecase.types.Notification
-import app.meetacy.backend.usecase.types.authorize
-import app.meetacy.backend.usecase.types.getMeetingsViews
-import app.meetacy.backend.usecase.types.getUsersViews
+import app.meetacy.backend.domain.*
+import app.meetacy.backend.usecase.types.*
 
 class GetNotificationsUsecase(
     private val authRepository: AuthRepository,

@@ -40,6 +40,6 @@ class CreateMeetingUsecase(
         ): FullMeeting
     }
     interface ViewMeetingRepository {
-        fun viewMeeting(viewer: UserId, meeting: FullMeeting): MeetingView
+        suspend fun viewMeeting(viewer: UserId, meeting: FullMeeting): MeetingView
     }
 }

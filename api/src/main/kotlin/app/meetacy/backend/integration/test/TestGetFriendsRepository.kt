@@ -1,5 +1,6 @@
 package app.meetacy.backend.integration.test
 
+import app.meetacy.backend.domain.AccessHash
 import app.meetacy.backend.domain.UserId
 import app.meetacy.backend.endpoint.friends.get.GetFrendsToken
 import app.meetacy.backend.endpoint.friends.get.GetFriendsRepository
