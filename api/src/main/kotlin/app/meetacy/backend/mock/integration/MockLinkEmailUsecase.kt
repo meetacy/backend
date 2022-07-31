@@ -1,8 +1,9 @@
 package app.meetacy.backend.mock.integration
 
+import app.meetacy.backend.domain.AccessToken
+import app.meetacy.backend.domain.UserId
 import app.meetacy.backend.mock.email.MockEmailSender
 import app.meetacy.backend.mock.email.MockEmailText
-import app.meetacy.backend.mock.generator.MockHashGenerator
 import app.meetacy.backend.mock.storage.ConfirmationStorage
 import app.meetacy.backend.mock.storage.TokensStorage
 import app.meetacy.backend.mock.storage.UsersStorage
@@ -12,14 +13,14 @@ private object MockLinkEmailStorage : LinkEmailUsecase.Storage {
     override suspend fun isEmailOccupied(email: String): Boolean =
         UsersStorage.isEmailOccupied(email)
 
-    override suspend fun getUserId(token: String): Long? =
+    override suspend fun getUserId(token: AccessToken): UserId? =
         TokensStorage.getToken(token)?.ownerId
 
-    override suspend fun udateEmail(userId: Long, email: String) {
+    override suspend fun updateEmail(userId: UserId, email: String) {
         UsersStorage.updateEmail(userId, email)
     }
 
-    override suspend fun addConfirmationHash(userId: Long, email: String, confirmationHash: String) {
+    override suspend fun addConfirmationHash(userId: UserId, email: String, confirmationHash: String) {
         ConfirmationStorage.addHash(userId, email, confirmationHash)
     }
 }
@@ -32,12 +33,8 @@ private object MockLinkEmailMailer : LinkEmailUsecase.Mailer {
         MockEmailSender.sendEmail(email, MockEmailText.getConfirmationText(email, confirmationHash))
 }
 
-private object MockLinkEmailHashGenerator : LinkEmailUsecase.HashGenerator {
-    override fun generate() = MockHashGenerator.generate()
-}
-
 fun mockLinkEmailUsecase(): LinkEmailUsecase = LinkEmailUsecase(
     storage = MockLinkEmailStorage,
     mailer = MockLinkEmailMailer,
-    hashGenerator = MockLinkEmailHashGenerator
+    hashGenerator = MockHashGeneratorIntegration
 )

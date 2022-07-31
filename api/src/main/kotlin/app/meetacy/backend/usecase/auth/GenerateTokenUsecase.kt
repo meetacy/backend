@@ -1,21 +1,20 @@
 package app.meetacy.backend.usecase.auth
 
-class GenerateTokenUsecase(private val storage: Storage, private val tokenGenerator: TokenGenerator) {
+import app.meetacy.backend.domain.AccessToken
+import app.meetacy.backend.domain.UserId
+import app.meetacy.backend.usecase.types.HashGenerator
 
-    suspend fun generateToken(nickname: String): String {
+class GenerateTokenUsecase(private val storage: Storage, private val tokenGenerator: HashGenerator) {
+
+    suspend fun generateToken(nickname: String): AccessToken {
         val newUserId = storage.createUser(nickname)
-        val token = tokenGenerator.generateToken()
+        val token = AccessToken(tokenGenerator.generate())
         storage.addToken(newUserId, token)
         return token
     }
 
-
     interface Storage {
-        suspend fun createUser(nickname: String): Long
-        suspend fun addToken(id: Long, token: String)
-    }
-
-    interface TokenGenerator {
-        fun generateToken(): String
+        suspend fun createUser(nickname: String): UserId
+        suspend fun addToken(id: UserId, token: AccessToken)
     }
 }

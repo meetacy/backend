@@ -1,5 +1,9 @@
 package app.meetacy.backend.usecase.email
 
+import app.meetacy.backend.domain.AccessToken
+import app.meetacy.backend.domain.UserId
+import app.meetacy.backend.usecase.types.HashGenerator
+
 class LinkEmailUsecase(
     private val storage: Storage,
     private val mailer: Mailer,
@@ -10,7 +14,7 @@ class LinkEmailUsecase(
         object TokenInvalid : LinkResult
     }
 
-    suspend fun linkEmail(email: String, token: String): LinkResult {
+    suspend fun linkEmail(email: String, token: AccessToken): LinkResult {
         val userId = storage.getUserId(token) ?: return LinkResult.TokenInvalid
 
         if (storage.isEmailOccupied(email)) {
@@ -20,7 +24,7 @@ class LinkEmailUsecase(
 
         val confirmationHash = hashGenerator.generate()
 
-        storage.udateEmail(userId, email)
+        storage.updateEmail(userId, email)
         storage.addConfirmationHash(userId, email, confirmationHash)
 
         mailer.sendConfirmationMessage(email, confirmationHash)
@@ -30,17 +34,13 @@ class LinkEmailUsecase(
 
     interface Storage {
         suspend fun isEmailOccupied(email: String): Boolean
-        suspend fun getUserId(token: String): Long?
-        suspend fun udateEmail(userId: Long, email: String)
-        suspend fun addConfirmationHash(userId: Long, email: String, confirmationHash: String)
+        suspend fun getUserId(token: AccessToken): UserId?
+        suspend fun updateEmail(userId: UserId, email: String)
+        suspend fun addConfirmationHash(userId: UserId, email: String, confirmationHash: String)
     }
 
     interface Mailer {
         fun sendEmailOccupiedMessage(email: String)
         fun sendConfirmationMessage(email: String, confirmationHash: String)
-    }
-
-    interface HashGenerator {
-        fun generate(): String
     }
 }

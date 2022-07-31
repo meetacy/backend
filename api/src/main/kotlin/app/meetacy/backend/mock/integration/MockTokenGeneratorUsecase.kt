@@ -1,23 +1,19 @@
 package app.meetacy.backend.mock.integration
 
-import app.meetacy.backend.mock.generator.MockHashGenerator
+import app.meetacy.backend.domain.AccessToken
+import app.meetacy.backend.domain.UserId
 import app.meetacy.backend.mock.storage.TokensStorage
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 
 private object MockTokenGenerateStorage : GenerateTokenUsecase.Storage {
-    override suspend fun createUser(nickname: String): Long =
+    override suspend fun createUser(nickname: String): UserId =
         mockCreateUserUsecase().createUser(nickname)
 
-    override suspend fun addToken(id: Long, token: String) =
+    override suspend fun addToken(id: UserId, token: AccessToken) =
         TokensStorage.addToken(id, token)
-}
-
-private object MockTokenGenerateTokenGenerator : GenerateTokenUsecase.TokenGenerator {
-    override fun generateToken(): String =
-        MockHashGenerator.generate()
 }
 
 fun mockGenerateTokenUsecase(): GenerateTokenUsecase = GenerateTokenUsecase(
     MockTokenGenerateStorage,
-    MockTokenGenerateTokenGenerator
+    MockHashGeneratorIntegration
 )

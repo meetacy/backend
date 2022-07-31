@@ -1,8 +1,6 @@
 package app.meetacy.backend.integration.test
 
-import app.meetacy.backend.domain.Location
-import app.meetacy.backend.domain.MeetingId
-import app.meetacy.backend.domain.UserId
+import app.meetacy.backend.domain.*
 import app.meetacy.backend.endpoint.meetings.list.ListMeetingsResult
 import app.meetacy.backend.endpoint.meetings.list.MeetingsProvider
 import app.meetacy.backend.endpoint.types.User
@@ -14,15 +12,15 @@ object TestMeetingsProvider : MeetingsProvider {
             meetings = listOf(
                 Meeting(
                     id = MeetingId(0),
-                    accessHash = "...",
+                    accessHash = AccessHash("..."),
                     creator = User(
                         id = UserId(0),
-                        accessHash = "...",
+                        accessHash = AccessHash("..."),
                         nickname = "Elon Musk",
-                        email = false,
+                        email = "clown3@meetacy.app",
                         emailVerified = false
                     ),
-                    date = "2022-08-17T14:40:42+0100",
+                    date = Date("2022-08-17T14:40:42+0100"),
                     location = Location(
                         latitude = 34.750535,
                         longitude = -120.524396
@@ -37,15 +35,15 @@ object TestMeetingsProvider : MeetingsProvider {
                 ),
                 Meeting(
                     id = MeetingId(0),
-                    accessHash = "...",
+                    accessHash = AccessHash("..."),
                     creator = User(
                         id = UserId(0),
-                        accessHash = "...",
+                        accessHash = AccessHash("..."),
                         nickname = "Emma Watson",
-                        email = false,
+                        email = "clown2@meetacy.app",
                         emailVerified = false
                     ),
-                    date = "2023-08-17T14:40:42+0100",
+                    date = Date("2023-08-17T14:40:42+0100"),
                     location = Location(
                         latitude = 38.897518,
                         longitude = -77.036090
@@ -58,15 +56,15 @@ object TestMeetingsProvider : MeetingsProvider {
                 ),
                 Meeting(
                     id = MeetingId(0),
-                    accessHash = "...",
+                    accessHash = AccessHash("..."),
                     creator = User(
                         id = UserId(0),
-                        accessHash = "...",
+                        accessHash = AccessHash("..."),
                         nickname = "Timothy Cookothy",
-                        email = false,
+                        email = "clown@meetacy.app",
                         emailVerified = true
                     ),
-                    date = "2033-08-17T14:40:42+0100",
+                    date = Date("2033-08-17T14:40:42+0100"),
                     location = Location(
                         latitude = 35.077559,
                         longitude = -106.575164

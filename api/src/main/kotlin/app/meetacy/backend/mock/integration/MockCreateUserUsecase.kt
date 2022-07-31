@@ -1,19 +1,16 @@
 package app.meetacy.backend.mock.integration
 
-import app.meetacy.backend.mock.generator.MockHashGenerator
+import app.meetacy.backend.domain.AccessHash
+import app.meetacy.backend.domain.UserId
 import app.meetacy.backend.mock.storage.UsersStorage
 import app.meetacy.backend.usecase.users.CreateUserUsecase
 
 private object CreateUserStorageIntegration : CreateUserUsecase.Storage {
-    override suspend fun addUser(accessHash: String, nickname: String): Long =
+    override suspend fun addUser(accessHash: AccessHash, nickname: String): UserId =
         UsersStorage.addUser(accessHash, nickname).id
-}
-private object CreateUserHashGeneratorIntegration : CreateUserUsecase.HashGenerator {
-    override fun generateHash(): String =
-        MockHashGenerator.generate()
 }
 
 fun mockCreateUserUsecase(): CreateUserUsecase = CreateUserUsecase(
-    CreateUserHashGeneratorIntegration,
+    MockHashGeneratorIntegration,
     CreateUserStorageIntegration
 )
