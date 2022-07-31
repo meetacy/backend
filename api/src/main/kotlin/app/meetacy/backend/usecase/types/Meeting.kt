@@ -1,13 +1,12 @@
 package app.meetacy.backend.usecase.types
 
-import app.meetacy.backend.domain.Location
-import app.meetacy.backend.domain.MeetingId
+import app.meetacy.backend.domain.*
 
 data class FullMeeting(
     val id: MeetingId,
-    val accessHash: String,
-    val creator: FullUser,
-    val date: String,
+    val accessHash: AccessHash,
+    val creatorId: UserId,
+    val date: Date,
     val location: Location,
     val title: String?,
     val description: String?
@@ -15,10 +14,11 @@ data class FullMeeting(
 
 data class MeetingView(
     val id: MeetingId,
-    val accessHash: String,
-    val creator: FullUser,
-    val date: String,
+    val accessHash: AccessHash,
+    val creator: UserView,
+    val date: Date,
     val location: Location,
     val title: String?,
-    val description: String?
+    val description: String?,
+    val participantsCount: Int
 )

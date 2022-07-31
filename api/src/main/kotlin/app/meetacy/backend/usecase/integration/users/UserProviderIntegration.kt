@@ -7,7 +7,7 @@ import app.meetacy.backend.endpoint.users.UserResponse
 import app.meetacy.backend.usecase.users.GetUserSafeUsecase
 
 private class UserProviderIntegration(private val usecase: GetUserSafeUsecase) : UserProvider {
-    override fun getUser(getUserParams: GetUserParams): GetUserResult {
+    override suspend fun getUser(getUserParams: GetUserParams): GetUserResult {
         val params = if (getUserParams.accessHash == null && getUserParams.id == null)
             GetUserSafeUsecase.Params.Self(
                 accessToken = getUserParams.accessToken
