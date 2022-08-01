@@ -5,21 +5,21 @@ import app.meetacy.backend.domain.UserId
 import app.meetacy.backend.usecase.types.HashGenerator
 
 class LinkEmailUsecase(
-    private val storage: Storage,
-    private val mailer: Mailer,
+    private val storage: app.meetacy.backend.usecase.email.LinkEmailUsecase.Storage,
+    private val mailer: app.meetacy.backend.usecase.email.LinkEmailUsecase.Mailer,
     private val hashGenerator: HashGenerator
 ) {
     sealed interface LinkResult {
-        object Success : LinkResult
-        object TokenInvalid : LinkResult
+        object Success : app.meetacy.backend.usecase.email.LinkEmailUsecase.LinkResult
+        object TokenInvalid : app.meetacy.backend.usecase.email.LinkEmailUsecase.LinkResult
     }
 
-    suspend fun linkEmail(email: String, token: AccessToken): LinkResult {
-        val userId = storage.getUserId(token) ?: return LinkResult.TokenInvalid
+    suspend fun linkEmail(email: String, token: AccessToken): app.meetacy.backend.usecase.email.LinkEmailUsecase.LinkResult {
+        val userId = storage.getUserId(token) ?: return app.meetacy.backend.usecase.email.LinkEmailUsecase.LinkResult.TokenInvalid
 
         if (storage.isEmailOccupied(email)) {
             mailer.sendEmailOccupiedMessage(email)
-            return LinkResult.Success
+            return app.meetacy.backend.usecase.email.LinkEmailUsecase.LinkResult.Success
         }
 
         val confirmationHash = hashGenerator.generate()
@@ -29,7 +29,7 @@ class LinkEmailUsecase(
 
         mailer.sendConfirmationMessage(email, confirmationHash)
 
-        return LinkResult.Success
+        return app.meetacy.backend.usecase.email.LinkEmailUsecase.LinkResult.Success
     }
 
     interface Storage {
