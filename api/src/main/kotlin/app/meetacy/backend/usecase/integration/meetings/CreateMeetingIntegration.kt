@@ -6,7 +6,7 @@ import app.meetacy.backend.endpoint.meetings.create.CreateParam
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.meetings.CreateMeetingUsecase
 
-private class Integration(
+private class CreateMeetingIntegration(
     private val usecase: CreateMeetingUsecase
 ): CreateMeetingRepository {
     override suspend fun createMeeting(
@@ -22,4 +22,4 @@ private class Integration(
 }
 
 fun usecaseCreateMeetingRepository(usecase: CreateMeetingUsecase): CreateMeetingRepository =
-    Integration(usecase)
+    CreateMeetingIntegration(usecase)
