@@ -10,10 +10,13 @@ object ParticipantsStorage {
         data += MockParticipant(meetingId, userId)
     }
 
-    fun participantsCount(meetingId: MeetingId) =
+    fun participantsCount(meetingId: MeetingId): Int =
         data.count { it.meetingId == meetingId }
 
-    fun isParticipating(meetingId: MeetingId, userId: UserId) =
+    fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =
         data.any { it.meetingId == meetingId && it.userId == userId }
 
+    fun getMeetingIds(userId: UserId): List<MeetingId> = data
+        .filter { it.userId == userId }
+        .map { it.meetingId }
 }

@@ -21,5 +21,5 @@ private class GetListMeetingsIntegration(
                 ListMeetingsResult.TokenInvalid
         }
 }
-fun usecaseGetListMeetingsRepository(usecase: GetListMeetingsUsecase): MeetingsProvider =
+fun usecaseGetMeetingsListRepository(usecase: GetMeetingsListUsecase): MeetingsProvider =
     GetListMeetingsIntegration(usecase)

@@ -1,23 +1,23 @@
 package app.meetacy.backend.usecase.meetings
 
 import app.meetacy.backend.domain.AccessToken
+import app.meetacy.backend.domain.MeetingId
 import app.meetacy.backend.domain.UserId
-import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.FullMeeting
-import app.meetacy.backend.usecase.types.MeetingView
-import app.meetacy.backend.usecase.types.authorize
+import app.meetacy.backend.usecase.types.*
 
 class GetMeetingsListUsecase(
     private val authRepository: AuthRepository,
     private val storage: Storage,
-    private val viewMeetingsRepository: ViewMeetingsRepository
+    private val getMeetingsViewsRepository: GetMeetingsViewsRepository
 ) {
 
     suspend fun getMeetingsList(accessToken: AccessToken): Result {
         val memberId = authRepository.authorize(accessToken) { return Result.TokenInvalid }
-        val listMeetings = storage.getList(memberId)
 
-        return Result.Success(viewMeetingsRepository.viewMeetings(memberId, listMeetings))
+        val meetingIds = storage.getMeetingsList(memberId)
+        val meetings = getMeetingsViewsRepository.getMeetingsViews(memberId, meetingIds)
+
+        return Result.Success(meetings)
     }
 
     sealed interface Result {

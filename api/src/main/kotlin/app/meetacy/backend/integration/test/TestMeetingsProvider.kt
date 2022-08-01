@@ -7,7 +7,7 @@ import app.meetacy.backend.endpoint.types.Meeting
 import app.meetacy.backend.endpoint.types.User
 
 object TestMeetingsProvider : MeetingsProvider {
-    override suspend fun getList(accessToken: String): ListMeetingsResult =
+    override suspend fun getList(accessToken: AccessToken): ListMeetingsResult =
         ListMeetingsResult.Success(
             meetings = listOf(
                 Meeting(
