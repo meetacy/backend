@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.meetings
 
-import app.meetacy.backend.domain.*
+import app.meetacy.backend.types.*
 import app.meetacy.backend.usecase.types.*
 
 class CreateMeetingUsecase(

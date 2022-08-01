@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.types
 
-import app.meetacy.backend.domain.*
+import app.meetacy.backend.types.*
 
 data class FullMeeting(
     val id: MeetingId,

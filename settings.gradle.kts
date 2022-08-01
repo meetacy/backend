@@ -13,7 +13,14 @@ includeBuild("buildUtils/service-deploy")
 //includeBuild("buildUtils/library-deploy")
 
 include(
-    "api",
+    "application",
+    "endpoints",
     "usecase",
-    "usecase:integration"
+    "usecase:endpoints-integration",
+    "mock",
+    "mock:usecase-integration",
+    "types",
+    "types:serialization-integration",
+    "hash-generator",
+    "hash-generator:usecase-integration"
 )

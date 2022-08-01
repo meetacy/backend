@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.users
 
-import app.meetacy.backend.domain.UserId
+import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.FullUser
 import app.meetacy.backend.usecase.types.UserView
 

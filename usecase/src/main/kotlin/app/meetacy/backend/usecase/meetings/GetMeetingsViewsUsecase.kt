@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.meetings
 
-import app.meetacy.backend.domain.MeetingId
-import app.meetacy.backend.domain.UserId
+import app.meetacy.backend.types.MeetingId
+import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.FullMeeting
 import app.meetacy.backend.usecase.types.MeetingView
 

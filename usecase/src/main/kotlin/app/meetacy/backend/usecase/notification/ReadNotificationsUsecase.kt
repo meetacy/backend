@@ -1,8 +1,8 @@
 package app.meetacy.backend.usecase.notification
 
-import app.meetacy.backend.domain.AccessToken
-import app.meetacy.backend.domain.NotificationId
-import app.meetacy.backend.domain.UserId
+import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.NotificationId
+import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.authorize
 

@@ -1,7 +1,8 @@
 package app.meetacy.backend.usecase.types
 
-import app.meetacy.backend.domain.AccessHash
-import app.meetacy.backend.domain.UserId
+import app.meetacy.backend.types.AccessHash
+import app.meetacy.backend.types.UserId
+
 
 data class FullUser(
     val id: UserId,

@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.types
 
-import app.meetacy.backend.domain.Date
-import app.meetacy.backend.domain.NotificationId
+import app.meetacy.backend.types.Date
+import app.meetacy.backend.types.NotificationId
 
 sealed interface Notification {
     val id: NotificationId

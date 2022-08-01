@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.types
 
-import app.meetacy.backend.domain.AccessToken
-import app.meetacy.backend.domain.UserId
+import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.UserId
 
 interface AuthRepository {
     suspend fun authorize(accessToken: AccessToken): Result

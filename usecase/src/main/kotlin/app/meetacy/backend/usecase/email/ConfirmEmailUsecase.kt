@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.email
 
-import app.meetacy.backend.domain.UserId
+import app.meetacy.backend.types.UserId
 
 class ConfirmEmailUsecase(private val storage: app.meetacy.backend.usecase.email.ConfirmEmailUsecase.Storage) {
     sealed interface ConfirmResult {

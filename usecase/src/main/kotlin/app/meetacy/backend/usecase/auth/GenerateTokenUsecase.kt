@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.auth
 
-import app.meetacy.backend.domain.AccessToken
-import app.meetacy.backend.domain.UserId
+import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.HashGenerator
 
 class GenerateTokenUsecase(private val storage: app.meetacy.backend.usecase.auth.GenerateTokenUsecase.Storage, private val tokenGenerator: HashGenerator) {

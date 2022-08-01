@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.types
 
-import app.meetacy.backend.domain.UserId
+import app.meetacy.backend.types.UserId
 
 interface GetUsersViewsRepository {
     suspend fun getUsersViewsOrNull(viewerId: UserId, userIds: List<UserId>): List<UserView?>
