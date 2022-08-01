@@ -10,12 +10,12 @@ fun UsecaseNotification.mapToEndpoint(): EndpointNotification =
             isNew = isNew,
             meeting = meeting.mapToEndpoint(),
             date = date,
-            inviter = inviter.mapToDomain()
+            inviter = inviter.mapToEndpoint()
         )
         is UsecaseNotification.Subscription -> EndpointNotification.Subscription(
             id = id,
             isNew = isNew,
-            subscriber = subscriber.mapToDomain(),
+            subscriber = subscriber.mapToEndpoint(),
             date = date
         )
     }

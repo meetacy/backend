@@ -7,13 +7,13 @@ import app.meetacy.backend.usecase.types.FullMeeting
 import app.meetacy.backend.usecase.types.MeetingView
 import app.meetacy.backend.usecase.types.authorize
 
-class GetListMeetingsUsecase(
+class GetMeetingsListUsecase(
     private val authRepository: AuthRepository,
     private val storage: Storage,
     private val viewMeetingsRepository: ViewMeetingsRepository
 ) {
 
-    suspend fun getListMeetings(accessToken: AccessToken): Result {
+    suspend fun getMeetingsList(accessToken: AccessToken): Result {
         val memberId = authRepository.authorize(accessToken) { return Result.TokenInvalid }
         val listMeetings = storage.getList(memberId)
 
@@ -26,11 +26,6 @@ class GetListMeetingsUsecase(
     }
 
     interface Storage {
-        fun getList(memberId: UserId): List<FullMeeting>
-
-    }
-
-    interface ViewMeetingsRepository {
-        suspend fun viewMeetings(memberId: UserId, meetings: List<FullMeeting>): List<MeetingView>
+        fun getMeetingsList(memberId: UserId): List<MeetingId>
     }
 }

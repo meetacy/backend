@@ -3,8 +3,8 @@ package app.meetacy.backend.integration.test
 import app.meetacy.backend.domain.*
 import app.meetacy.backend.endpoint.meetings.list.ListMeetingsResult
 import app.meetacy.backend.endpoint.meetings.list.MeetingsProvider
-import app.meetacy.backend.endpoint.types.User
 import app.meetacy.backend.endpoint.types.Meeting
+import app.meetacy.backend.endpoint.types.User
 
 object TestMeetingsProvider : MeetingsProvider {
     override suspend fun getList(accessToken: String): ListMeetingsResult =

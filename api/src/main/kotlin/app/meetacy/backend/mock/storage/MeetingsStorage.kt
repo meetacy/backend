@@ -21,6 +21,12 @@ object MeetingsStorage {
         return meeting
     }
 
+    fun getMeetings(idsList: List<MeetingId>): List<MockMeeting> =
+        data.filter { it.id in idsList }
+            .apply {
+                require(size == idsList.size) { "Cannot find every meeting id ($idsList)" }
+            }
+
     fun getMeetingOrNull(id: MeetingId): MockMeeting? =
         data.firstOrNull { it.id == id }
 }
