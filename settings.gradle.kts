@@ -12,4 +12,8 @@ includeBuild("buildUtils/configuration")
 includeBuild("buildUtils/service-deploy")
 //includeBuild("buildUtils/library-deploy")
 
-include("api")
+include(
+    "api",
+    "usecase",
+    "usecase:integration"
+)
