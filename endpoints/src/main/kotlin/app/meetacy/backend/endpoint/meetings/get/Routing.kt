@@ -1,17 +1,28 @@
+@file:UseSerializers(AccessHashSerializer::class, AccessTokenSerializer::class, UserIdSerializer::class, MeetingIdSerializer::class)
+
 package app.meetacy.backend.endpoint.meetings.get
 
 import app.meetacy.backend.endpoint.types.Meeting
+import app.meetacy.backend.types.AccessHash
+import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.MeetingId
+import app.meetacy.backend.types.serialization.AccessHashSerializer
+import app.meetacy.backend.types.serialization.AccessTokenSerializer
+import app.meetacy.backend.types.serialization.MeetingIdSerializer
+import app.meetacy.backend.types.serialization.UserIdSerializer
+
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class GetParam(
-    val accessToken: String,
-    val meetingId: Long,
-    val meetingAccessHash: String
+    val accessToken: AccessToken,
+    val meetingId: MeetingId,
+    val meetingAccessHash: AccessHash
 )
 
 sealed interface GetMeetingResult {
@@ -21,7 +32,11 @@ sealed interface GetMeetingResult {
 }
 
 interface MeetingRepository {
-    fun getMeeting(getParam: GetParam) : GetMeetingResult
+    fun getMeeting(
+        accessToken: AccessToken,
+        meetingId: MeetingId,
+        meetingAccessHash: AccessHash
+    ) : GetMeetingResult
 }
 
 @Serializable
@@ -35,7 +50,13 @@ data class GetMeetingResponse(
 fun Route.getMeeting(meetingRepository: MeetingRepository) = post("/get") {
     val params = call.receive<GetParam>()
 
-    val result = when(val result = meetingRepository.getMeeting(params)) {
+    val result = when(
+        val result = meetingRepository.getMeeting(
+            params.accessToken,
+            params.meetingId,
+            params.meetingAccessHash
+        )
+    ) {
         is GetMeetingResult.Success -> GetMeetingResponse(
             status = true,
             result = result.meeting,

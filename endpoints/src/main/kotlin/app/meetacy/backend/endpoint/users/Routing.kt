@@ -15,8 +15,12 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
-interface UserRepository{
-    suspend fun getUser(getUserParams: GetUserParams): GetUserResult
+interface UserRepository {
+    suspend fun getUser(
+        id: UserId? = null,
+        accessHash: AccessHash? = null,
+        accessToken: AccessToken
+    ): GetUserResult
 }
 
 sealed interface GetUserResult {
@@ -52,7 +56,7 @@ data class GetUserResponse(
 fun Route.getUser(provider: UserRepository) = post("/users/get") {
     val params = call.receive<GetUserParams>()
 
-    val result = when (val result = provider.getUser(params)) {
+    val result = when (val result = provider.getUser(params.id, params.accessHash, params.accessToken)) {
         is GetUserResult.Success -> GetUserResponse(
             status = true,
             result = result.user,

@@ -1,17 +1,24 @@
+@file:UseSerializers(AccessTokenSerializer::class, MeetingIdSerializer::class)
+
 package app.meetacy.backend.endpoint.meetings.participate
 
 
+import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.MeetingId
+import app.meetacy.backend.types.serialization.AccessTokenSerializer
+import app.meetacy.backend.types.serialization.MeetingIdSerializer
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class ParticipateParam(
-    val meetingId: Long,
+    val meetingId: MeetingId,
     val meetingAccessHash: String,
-    val accessToken: String
+    val accessToken: AccessToken
 )
 
 sealed interface ParticipateMeetingResult {
@@ -21,7 +28,11 @@ sealed interface ParticipateMeetingResult {
 }
 
 interface ParticipateMeetingRepository {
-    fun participateMeeting(participateParam: ParticipateParam) : ParticipateMeetingResult
+    fun participateMeeting(
+        meetingId: MeetingId,
+        meetingAccessHash: String,
+        accessToken: AccessToken
+    ) : ParticipateMeetingResult
 }
 
 @Serializable
@@ -34,7 +45,13 @@ data class ParticipateMeetResponse(
 fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRepository) = post("/participate") {
     val params = call.receive<ParticipateParam>()
 
-    val result = when(participateMeetingRepository.participateMeeting(params)) {
+    val result = when(
+        participateMeetingRepository.participateMeeting(
+            params.meetingId,
+            params.meetingAccessHash,
+            params.accessToken
+        )
+    ) {
         is ParticipateMeetingResult.Success -> ParticipateMeetResponse(
             status = true,
             errorCode = null,

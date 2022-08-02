@@ -1,15 +1,24 @@
+@file:UseSerializers(AccessHashSerializer::class, AccessTokenSerializer::class, UserIdSerializer::class, MeetingIdSerializer::class)
+
+
 package app.meetacy.backend.endpoint.friends.get
 
 import app.meetacy.backend.endpoint.types.User
+import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.serialization.AccessHashSerializer
+import app.meetacy.backend.types.serialization.AccessTokenSerializer
+import app.meetacy.backend.types.serialization.MeetingIdSerializer
+import app.meetacy.backend.types.serialization.UserIdSerializer
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class GetFriendsToken(
-    val accessToken: String
+    val accessToken: AccessToken
 )
 
 @Serializable
@@ -32,8 +41,7 @@ sealed interface GetFriendsResult {
 
 fun Route.getFriend(getProvider: GetFriendsRepository) = post("/get") {
     val friendToken = call.receive<GetFriendsToken>()
-    val result = getProvider.getFriends(friendToken)
-    when(result) {
+    when(val result = getProvider.getFriends(friendToken)) {
         is GetFriendsResult.Success -> call.respond(ResultOfSearching(
             status = false,
             friends = result.friends,
