@@ -4,7 +4,7 @@ import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.HashGenerator
 
-class GenerateTokenUsecase(private val storage: app.meetacy.backend.usecase.auth.GenerateTokenUsecase.Storage, private val tokenGenerator: HashGenerator) {
+class GenerateTokenUsecase(private val storage: Storage, private val tokenGenerator: HashGenerator) {
 
     suspend fun generateToken(nickname: String): AccessToken {
         val newUserId = storage.createUser(nickname)
