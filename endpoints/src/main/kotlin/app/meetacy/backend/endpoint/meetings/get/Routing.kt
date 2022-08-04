@@ -32,7 +32,7 @@ sealed interface GetMeetingResult {
 }
 
 interface MeetingRepository {
-    fun getMeeting(
+    suspend fun getMeeting(
         accessToken: AccessToken,
         meetingId: MeetingId,
         meetingAccessHash: AccessHash
