@@ -31,7 +31,7 @@ sealed interface GetMeetingResult {
     object MeetingNotFound : GetMeetingResult
 }
 
-interface MeetingRepository {
+interface GetMeetingRepository {
     suspend fun getMeeting(
         accessToken: AccessToken,
         meetingId: MeetingId,
@@ -47,11 +47,11 @@ data class GetMeetingResponse(
     val errorMessage: String?
 )
 
-fun Route.getMeeting(meetingRepository: MeetingRepository) = post("/get") {
+fun Route.getMeeting(getMeetingRepository: GetMeetingRepository) = post("/get") {
     val params = call.receive<GetParam>()
 
     val result = when(
-        val result = meetingRepository.getMeeting(
+        val result = getMeetingRepository.getMeeting(
             params.accessToken,
             params.meetingId,
             params.meetingAccessHash
