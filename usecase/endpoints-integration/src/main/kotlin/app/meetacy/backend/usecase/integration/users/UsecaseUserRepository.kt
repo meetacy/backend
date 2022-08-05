@@ -6,6 +6,7 @@ import app.meetacy.backend.endpoint.users.UserResponse
 import app.meetacy.backend.types.AccessHash
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.serialization.serializable
 import app.meetacy.backend.usecase.users.GetUserSafeUsecase
 
 class UsecaseUserRepository(private val usecase: GetUserSafeUsecase) : UserRepository {
@@ -26,8 +27,8 @@ class UsecaseUserRepository(private val usecase: GetUserSafeUsecase) : UserRepos
         return when (val result = usecase.getUser(params)) {
             is GetUserSafeUsecase.Result.Success -> GetUserResult.Success(
                 UserResponse(
-                    id = result.user.id,
-                    accessHash = result.user.accessHash,
+                    id = result.user.id.serializable(),
+                    accessHash = result.user.accessHash.serializable(),
                     nickname = result.user.nickname,
                     email = result.user.email,
                     emailVerified = result.user.emailVerified

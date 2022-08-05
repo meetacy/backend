@@ -1,9 +1,8 @@
-@file:UseSerializers(AccessTokenSerializer::class)
-
 package app.meetacy.backend.endpoint.auth.generate
 
 import app.meetacy.backend.types.AccessToken
-import app.meetacy.backend.types.serialization.AccessTokenSerializer
+import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.serialization.serializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -19,7 +18,7 @@ data class GenerateParam(
 @Serializable
 data class GenerateTokenResponse(
     val status: Boolean,
-    val result: AccessToken
+    val result: AccessTokenSerializable
 )
 
 interface TokenGenerateRepository {
@@ -29,5 +28,5 @@ interface TokenGenerateRepository {
 fun Route.generateToken(tokenGenerateRepository: TokenGenerateRepository) = post ("/generate") {
     val generateParam = call.receive<GenerateParam>()
     val token = tokenGenerateRepository.generateToken(generateParam.nickname)
-    call.respond(GenerateTokenResponse(status = true, result = token))
+    call.respond(GenerateTokenResponse(status = true, result = token.serializable()))
 }

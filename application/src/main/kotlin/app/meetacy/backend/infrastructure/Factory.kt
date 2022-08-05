@@ -6,7 +6,6 @@ import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.test.TestAddFriendRepository
 import app.meetacy.backend.test.TestGetFriendsRepository
-import app.meetacy.backend.test.TestMeetingRepository
 import app.meetacy.backend.test.TestParticipateMeetingRepository
 import app.meetacy.backend.mock.integration.*
 import app.meetacy.backend.mock.integration.types.MockAuthRepository
@@ -19,14 +18,17 @@ import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateReposito
 import app.meetacy.backend.usecase.integration.email.confirm.UsecaseConfirmEmailRepository
 import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
+import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.list.UsecaseMeetingsListRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.users.UsecaseUserRepository
 import app.meetacy.backend.usecase.meetings.CreateMeetingUsecase
+import app.meetacy.backend.usecase.meetings.GetMeetingUsecase
 import app.meetacy.backend.usecase.meetings.GetMeetingsListUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
+import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.users.GetUserSafeUsecase
 
 fun startMockEndpoints(
@@ -78,7 +80,12 @@ fun startMockEndpoints(
                     viewMeetingRepository = MockCreateMeetingViewMeetingRepository
                 )
             ),
-            meetingRepository = TestMeetingRepository,
+            getMeetingRepository = UsecaseGetMeetingRepository(
+                usecase = GetMeetingUsecase(
+                    authRepository = MockAuthRepository,
+                    getMeetingsViewsRepository = MockGetMeetingsViewsRepository
+                )
+            ),
             participateMeetingRepository = TestParticipateMeetingRepository,
         ),
         notificationsDependencies = NotificationsDependencies(

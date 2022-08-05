@@ -1,14 +1,12 @@
-@file:UseSerializers(LocationSerializer::class, AccessTokenSerializer::class, DateSerializer::class)
-
 package app.meetacy.backend.endpoint.meetings.create
 
 import app.meetacy.backend.endpoint.types.Meeting
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.Date
 import app.meetacy.backend.types.Location
-import app.meetacy.backend.types.serialization.AccessTokenSerializer
-import app.meetacy.backend.types.serialization.DateSerializer
-import app.meetacy.backend.types.serialization.LocationSerializer
+import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.serialization.DateSerializable
+import app.meetacy.backend.types.serialization.LocationSerializable
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -19,11 +17,11 @@ import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class CreateParam(
-    val accessToken: AccessToken,
+    val accessToken: AccessTokenSerializable,
     val title: String?,
     val description: String?,
-    val date: Date,
-    val location: Location
+    val date: DateSerializable,
+    val location: LocationSerializable
 )
 
 sealed interface CreateMeetingResult {

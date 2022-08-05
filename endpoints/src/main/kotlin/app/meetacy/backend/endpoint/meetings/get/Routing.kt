@@ -1,15 +1,13 @@
-@file:UseSerializers(AccessHashSerializer::class, AccessTokenSerializer::class, UserIdSerializer::class, MeetingIdSerializer::class)
-
 package app.meetacy.backend.endpoint.meetings.get
 
 import app.meetacy.backend.endpoint.types.Meeting
 import app.meetacy.backend.types.AccessHash
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.MeetingId
-import app.meetacy.backend.types.serialization.AccessHashSerializer
-import app.meetacy.backend.types.serialization.AccessTokenSerializer
-import app.meetacy.backend.types.serialization.MeetingIdSerializer
-import app.meetacy.backend.types.serialization.UserIdSerializer
+import app.meetacy.backend.types.serialization.AccessHashSerializable
+import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.serialization.MeetingIdSerializable
+import app.meetacy.backend.types.serialization.UserIdSerializable
 
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -20,9 +18,9 @@ import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class GetParam(
-    val accessToken: AccessToken,
-    val meetingId: MeetingId,
-    val meetingAccessHash: AccessHash
+    val accessToken: AccessTokenSerializable,
+    val meetingId: MeetingIdSerializable,
+    val meetingAccessHash: AccessHashSerializable
 )
 
 sealed interface GetMeetingResult {
@@ -52,9 +50,9 @@ fun Route.getMeeting(getMeetingRepository: GetMeetingRepository) = post("/get") 
 
     val result = when(
         val result = getMeetingRepository.getMeeting(
-            params.accessToken,
-            params.meetingId,
-            params.meetingAccessHash
+            params.accessToken.type(),
+            params.meetingId.type(),
+            params.meetingAccessHash.type()
         )
     ) {
         is GetMeetingResult.Success -> GetMeetingResponse(
