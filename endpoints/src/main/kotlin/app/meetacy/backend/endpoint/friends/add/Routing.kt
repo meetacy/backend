@@ -1,9 +1,13 @@
 package app.meetacy.backend.endpoint.friends.add
 
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import app.meetacy.backend.types.serialization.AccessHashSerializable
+import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.serialization.UserIdSerializable
+import io.ktor.server.application.call
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.post
 import kotlinx.serialization.Serializable
 
 interface AddFriendRepository {
@@ -12,9 +16,9 @@ interface AddFriendRepository {
 
 @Serializable
 data class AddFriendParams(
-    val accessToken: String,
-    val friendId: Long,
-    val friendAccessHash: String
+    val accessToken: AccessTokenSerializable,
+    val friendId: UserIdSerializable,
+    val friendAccessHash: AccessHashSerializable
 )
 
 @Serializable

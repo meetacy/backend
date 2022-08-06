@@ -1,13 +1,11 @@
-@file:UseSerializers(AccessHashSerializer::class, AccessTokenSerializer::class, UserIdSerializer::class)
-
 package app.meetacy.backend.endpoint.users
 
 import app.meetacy.backend.types.AccessHash
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
-import app.meetacy.backend.types.serialization.AccessHashSerializer
-import app.meetacy.backend.types.serialization.AccessTokenSerializer
-import app.meetacy.backend.types.serialization.UserIdSerializer
+import app.meetacy.backend.types.serialization.AccessHashSerializable
+import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.serialization.UserIdSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -15,8 +13,12 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
-interface UserRepository{
-    suspend fun getUser(getUserParams: GetUserParams): GetUserResult
+interface UserRepository {
+    suspend fun getUser(
+        id: UserId? = null,
+        accessHash: AccessHash? = null,
+        accessToken: AccessToken
+    ): GetUserResult
 }
 
 sealed interface GetUserResult {
@@ -27,8 +29,8 @@ sealed interface GetUserResult {
 
 @Serializable
 data class UserResponse(
-    val id: UserId,
-    val accessHash: AccessHash,
+    val id: UserIdSerializable,
+    val accessHash: AccessHashSerializable,
     val nickname: String,
     val email: String?,
     val emailVerified: Boolean?
@@ -36,9 +38,9 @@ data class UserResponse(
 
 @Serializable
 data class GetUserParams(
-    val id: UserId? = null,
-    val accessHash: AccessHash? = null,
-    val accessToken: AccessToken
+    val id: UserIdSerializable? = null,
+    val accessHash: AccessHashSerializable? = null,
+    val accessToken: AccessTokenSerializable
 )
 
 @Serializable
@@ -52,7 +54,13 @@ data class GetUserResponse(
 fun Route.getUser(provider: UserRepository) = post("/users/get") {
     val params = call.receive<GetUserParams>()
 
-    val result = when (val result = provider.getUser(params)) {
+    val result = when (
+        val result = provider.getUser(
+            id = params.id?.type(),
+            accessHash = params.accessHash?.type(),
+            accessToken = params.accessToken.type()
+        )
+    ) {
         is GetUserResult.Success -> GetUserResponse(
             status = true,
             result = result.user,

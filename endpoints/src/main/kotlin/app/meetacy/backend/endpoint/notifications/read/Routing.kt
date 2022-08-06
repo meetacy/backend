@@ -1,23 +1,20 @@
-@file:UseSerializers(AccessTokenSerializer::class, NotificationIdSerializer::class)
-
 package app.meetacy.backend.endpoint.notifications.read
 
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.NotificationId
-import app.meetacy.backend.types.serialization.AccessTokenSerializer
-import app.meetacy.backend.types.serialization.NotificationIdSerializer
+import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.serialization.NotificationIdSerializable
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseSerializers
 
 @Serializable
 private data class RequestBody(
-    val accessToken: AccessToken,
-    val lastNotificationId: NotificationId
+    val accessToken: AccessTokenSerializable,
+    val lastNotificationId: NotificationIdSerializable
 )
 
 @Serializable
@@ -39,7 +36,7 @@ interface ReadNotificationsRepository {
 
 fun Route.read(repository: ReadNotificationsRepository) = post("/read") {
     val requestBody = call.receive<RequestBody>()
-    val result = when (repository.read(requestBody.accessToken, requestBody.lastNotificationId)) {
+    val result = when (repository.read(requestBody.accessToken.type(), requestBody.lastNotificationId.type())) {
         ReadNotificationsRepository.Result.Success -> ResponseBody(
             status = true
         )
