@@ -11,7 +11,7 @@ import io.ktor.server.routing.post
 import kotlinx.serialization.Serializable
 
 interface AddFriendRepository {
-    fun addFriend(addFriendParams: AddFriendParams): AddFriendResult
+    suspend fun addFriend(addFriendParams: AddFriendParams): AddFriendResult
 }
 
 @Serializable
