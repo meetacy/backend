@@ -9,7 +9,7 @@ import app.meetacy.backend.endpoint.types.User
 import app.meetacy.backend.types.serialization.serializable
 
 object TestGetFriendsRepository : GetFriendsRepository {
-    override fun getFriends(token: GetFriendsToken): GetFriendsResult =
+    override suspend fun getFriends(token: GetFriendsToken): GetFriendsResult =
         GetFriendsResult.Success(
             friends = listOf(
                 User(

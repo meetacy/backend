@@ -1,4 +1,4 @@
-package app.meetacy.backend.usecase.friends
+package app.meetacy.backend.usecase.friends.add
 
 import app.meetacy.backend.types.AccessHash
 import app.meetacy.backend.types.AccessToken
@@ -24,7 +24,7 @@ class AddFriendUsecase(
             ?: return Result.FriendNotFound
         if (friend.accessHash != friendAccessHash) return Result.FriendNotFound
 
-        storage.addFriend(friendId)
+        storage.addFriend(userId, friendId)
         return Result.Success
     }
     sealed interface Result {
@@ -34,6 +34,7 @@ class AddFriendUsecase(
     }
     interface Storage {
         suspend fun addFriend(
+            userId: UserId,
             friendId: UserId
         )
     }

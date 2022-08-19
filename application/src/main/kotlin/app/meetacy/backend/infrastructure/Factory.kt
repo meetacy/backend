@@ -1,24 +1,30 @@
 package app.meetacy.backend.infrastructure
 
+import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
-import app.meetacy.backend.test.TestAddFriendRepository
-import app.meetacy.backend.test.TestGetFriendsRepository
 import app.meetacy.backend.mock.integration.*
+import app.meetacy.backend.mock.integration.friends.MockAddFriendStorage
+import app.meetacy.backend.mock.integration.friends.MockGetFriendsStorage
 import app.meetacy.backend.mock.integration.meetings.create.MockCreateMeetingStorage
 import app.meetacy.backend.mock.integration.meetings.create.MockCreateMeetingViewMeetingRepository
 import app.meetacy.backend.mock.integration.meetings.participate.MockParticipateMeetingStorage
 import app.meetacy.backend.mock.integration.types.MockAuthRepository
 import app.meetacy.backend.mock.integration.types.MockGetMeetingsViewsRepository
 import app.meetacy.backend.mock.integration.types.MockGetUsersViewsRepository
+import app.meetacy.backend.mock.integration.users.MockGetUserSafeStorage
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
+import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
+import app.meetacy.backend.usecase.friends.get.GetFriendsUsecase
 import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
 import app.meetacy.backend.usecase.integration.email.confirm.UsecaseConfirmEmailRepository
 import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
+import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
+import app.meetacy.backend.usecase.integration.friends.get.UsecaseGetFriendsRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.list.UsecaseMeetingsListRepository
@@ -65,8 +71,22 @@ fun startMockEndpoints(
                 tokenGenerator = DefaultHashGenerator
             )
         ),
-        addFriendRepository = TestAddFriendRepository,
-        getFriendsRepository = TestGetFriendsRepository,
+        friendsDependencies = FriendsDependencies(
+            addFriendRepository = UsecaseAddFriendRepository(
+                usecase = AddFriendUsecase(
+                    authRepository = MockAuthRepository,
+                    getUsersViewsRepository = MockGetUsersViewsRepository,
+                    storage = MockAddFriendStorage
+                )
+            ),
+            getFriendsRepository = UsecaseGetFriendsRepository(
+                usecase = GetFriendsUsecase(
+                    authRepository = MockAuthRepository,
+                    getUsersViewsRepository = MockGetUsersViewsRepository,
+                    storage = MockGetFriendsStorage
+                )
+            )
+        ),
         meetingsDependencies = MeetingsDependencies(
             meetingsListRepository = UsecaseMeetingsListRepository(
                 usecase = GetMeetingsListUsecase(

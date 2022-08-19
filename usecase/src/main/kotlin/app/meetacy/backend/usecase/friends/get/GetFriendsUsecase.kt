@@ -1,6 +1,7 @@
 package app.meetacy.backend.usecase.friends.get
 
 import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.FriendsAndSubscriptions
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.*
 
@@ -13,10 +14,13 @@ class GetFriendsUsecase(
         accessToken: AccessToken
     ): Result {
         val userId = authRepository.authorize(accessToken) { return Result.InvalidToken }
-        val friends = storage.getFriends(userId)
-        val viewFriends = getUsersViewsRepository.getUsersViewsOrNull(userId, friends)
-        val subscriptions = storage.getSubscriptions(userId)
-        return Result.Success(friends,subscriptions)
+        val friendsAndSubscriptions = storage
+            .getFriendsAndSubscriptions(userId)
+
+        val friendsViews = getUsersViewsRepository.getUsersViews(userId, friendsAndSubscriptions.friends)
+        val subscriptionsViews = getUsersViewsRepository.getUsersViews(userId, friendsAndSubscriptions.subscriptions)
+
+        return Result.Success(friendsViews, subscriptionsViews)
     }
 
     sealed interface Result {
@@ -25,11 +29,8 @@ class GetFriendsUsecase(
     }
 
     interface Storage{
-        fun getFriends(
+        fun getFriendsAndSubscriptions(
             userId: UserId
-        ): List<FullUser>
-        fun getSubscriptions(
-            userId: UserId
-        ): List<FullUser>
+        ): FriendsAndSubscriptions
     }
 }

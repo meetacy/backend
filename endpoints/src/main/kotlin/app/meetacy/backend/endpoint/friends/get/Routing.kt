@@ -24,7 +24,7 @@ data class ResultOfSearching(
 )
 
 interface GetFriendsRepository {
-    fun getFriends(token: GetFriendsToken): GetFriendsResult
+    suspend fun getFriends(token: GetFriendsToken): GetFriendsResult
 }
 
 sealed interface GetFriendsResult {

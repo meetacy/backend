@@ -1,4 +1,4 @@
-package app.meetacy.backend.mock.integration
+package app.meetacy.backend.mock.integration.meetings.participate
 
 import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.UserId

@@ -1,5 +1,6 @@
 package app.meetacy.backend.mock.integration
 
+import app.meetacy.backend.mock.integration.meetings.participate.MockViewMeetingsUsecaseStorage
 import app.meetacy.backend.mock.integration.types.MockGetUsersViewsRepository
 import app.meetacy.backend.mock.integration.types.mapToUsecase
 import app.meetacy.backend.types.MeetingId
