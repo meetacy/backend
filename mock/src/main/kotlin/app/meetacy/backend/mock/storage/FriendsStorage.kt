@@ -7,11 +7,13 @@ object FriendsStorage {
     private val data: MutableList<MockFriend> = mutableListOf()
 
     fun addFriend(userId: UserId, friendId: UserId) {
-        data.add(
-            MockFriend(
-                userId , friendId
+        if (!isSubscribed(userId, friendId) && userId != friendId){
+            data.add(
+                MockFriend(
+                    userId , friendId
+                )
             )
-        )
+        }
     }
 
     fun isSubscribed(userId: UserId, friendId: UserId): Boolean = data
