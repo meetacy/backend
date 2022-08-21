@@ -1,4 +1,4 @@
-package app.meetacy.backend.mock.integration
+package app.meetacy.backend.mock.integration.users
 
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.mock.storage.TokensStorage

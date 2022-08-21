@@ -8,7 +8,7 @@ import app.meetacy.backend.usecase.meetings.CreateMeetingUsecase
 
 class UsecaseCreateMeetingRepository(
     private val usecase: CreateMeetingUsecase
-): CreateMeetingRepository {
+) : CreateMeetingRepository {
     override suspend fun createMeeting(
         createParam: CreateParam
     ): CreateMeetingResult = with(createParam) {

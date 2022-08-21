@@ -5,6 +5,6 @@ import app.meetacy.backend.endpoint.friends.add.AddFriendRepository
 import app.meetacy.backend.endpoint.friends.add.AddFriendResult
 
 object TestAddFriendRepository : AddFriendRepository {
-    override fun addFriend(addFriendParams: AddFriendParams): AddFriendResult =
+    override suspend fun addFriend(addFriendParams: AddFriendParams): AddFriendResult =
         AddFriendResult.FriendNotFound
 }
