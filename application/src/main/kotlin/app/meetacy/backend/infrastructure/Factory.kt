@@ -1,11 +1,15 @@
 package app.meetacy.backend.infrastructure
 
+import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
+import app.meetacy.backend.endpoint.auth.AuthDependencies
+import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.mock.integration.*
+import app.meetacy.backend.mock.integration.email.MockConfirmEmailStorage
 import app.meetacy.backend.mock.integration.friends.MockAddFriendStorage
 import app.meetacy.backend.mock.integration.friends.MockGetFriendsStorage
 import app.meetacy.backend.mock.integration.meetings.create.MockCreateMeetingStorage
@@ -39,36 +43,42 @@ import app.meetacy.backend.usecase.meetings.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.users.GetUserSafeUsecase
+import org.jetbrains.exposed.sql.Database
 
 fun startMockEndpoints(
     port: Int,
+    database: Database,
     wait: Boolean
 ) {
     startEndpoints(
         port = port,
         wait = wait,
-        linkEmailRepository = UsecaseLinkEmailRepository(
-            usecase = LinkEmailUsecase(
-                storage = MockLinkEmailStorage,
-                mailer = MockLinkEmailMailer,
-                hashGenerator = DefaultHashGenerator
-            )
-        ),
-        confirmEmailRepository = UsecaseConfirmEmailRepository(
-            usecase = ConfirmEmailUsecase(
-                storage = MockConfirmEmailStorage
+        authDependencies = AuthDependencies(
+            emailDependencies = EmailDependencies(
+                linkEmailRepository = UsecaseLinkEmailRepository(
+                    usecase = LinkEmailUsecase(
+                        storage = MockLinkEmailStorage(database),
+                        mailer = MockLinkEmailMailer,
+                        hashGenerator = DefaultHashGenerator
+                    )
+                ),
+                confirmEmailRepository = UsecaseConfirmEmailRepository(
+                    usecase = ConfirmEmailUsecase(
+                        storage = DatabaseConfirmEmailStorage(database)
+                    )
+                )
+            ),
+            tokenGenerateRepository = UsecaseTokenGenerateRepository(
+                usecase = GenerateTokenUsecase(
+                    storage = MockGenerateTokenStorage(DefaultHashGenerator),
+                    tokenGenerator = DefaultHashGenerator
+                )
             )
         ),
         userRepository = UsecaseUserRepository(
             usecase = GetUserSafeUsecase(
                 storage = MockGetUserSafeStorage,
                 usersViewsRepository = MockGetUsersViewsRepository
-            )
-        ),
-        tokenGenerateRepository = UsecaseTokenGenerateRepository(
-            usecase = GenerateTokenUsecase(
-                storage = MockGenerateTokenStorage(DefaultHashGenerator),
-                tokenGenerator = DefaultHashGenerator
             )
         ),
         friendsDependencies = FriendsDependencies(

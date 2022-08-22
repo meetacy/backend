@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint
 
+import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.auth
 import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmEmailRepository
 import app.meetacy.backend.endpoint.auth.email.link.LinkEmailRepository
@@ -25,9 +26,7 @@ import kotlinx.serialization.json.Json
 fun startEndpoints(
     port: Int,
     wait: Boolean,
-    linkEmailRepository: LinkEmailRepository,
-    confirmEmailRepository: ConfirmEmailRepository,
-    tokenGenerateRepository: TokenGenerateRepository,
+    authDependencies: AuthDependencies,
     userRepository: UserRepository,
     friendsDependencies: FriendsDependencies,
     meetingsDependencies: MeetingsDependencies,
@@ -42,10 +41,10 @@ fun startEndpoints(
     }
 
     routing {
-        auth(linkEmailRepository, confirmEmailRepository, tokenGenerateRepository)
+        auth(authDependencies)
         getUser(userRepository)
         meetings(meetingsDependencies)
-        friends(friendsDependencies.addFriendRepository, friendsDependencies.getFriendsRepository)
+        friends(friendsDependencies)
         notifications(notificationsDependencies)
     }
 }.start(wait)

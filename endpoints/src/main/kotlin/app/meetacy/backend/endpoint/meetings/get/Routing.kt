@@ -7,17 +7,15 @@ import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.serialization.AccessHashSerializable
 import app.meetacy.backend.types.serialization.AccessTokenSerializable
 import app.meetacy.backend.types.serialization.MeetingIdSerializable
-import app.meetacy.backend.types.serialization.UserIdSerializable
 
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class GetParam(
+data class GetMeetingsParam(
     val accessToken: AccessTokenSerializable,
     val meetingId: MeetingIdSerializable,
     val meetingAccessHash: AccessHashSerializable
@@ -45,8 +43,8 @@ data class GetMeetingResponse(
     val errorMessage: String?
 )
 
-fun Route.getMeeting(getMeetingRepository: GetMeetingRepository) = post("/get") {
-    val params = call.receive<GetParam>()
+fun Route.getMeetings(getMeetingRepository: GetMeetingRepository) = post("/get") {
+    val params = call.receive<GetMeetingsParam>()
 
     val result = when(
         val result = getMeetingRepository.getMeeting(
@@ -61,7 +59,7 @@ fun Route.getMeeting(getMeetingRepository: GetMeetingRepository) = post("/get") 
             errorCode = null,
             errorMessage = null
         )
-        is  GetMeetingResult.TokenInvalid -> GetMeetingResponse(
+        is GetMeetingResult.TokenInvalid -> GetMeetingResponse(
             status = false,
             result = null,
             errorCode = 1,

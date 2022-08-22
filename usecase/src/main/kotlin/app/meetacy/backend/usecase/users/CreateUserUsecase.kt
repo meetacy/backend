@@ -12,6 +12,7 @@ class CreateUserUsecase(
         val accessHash = AccessHash(generator.generate())
         return storage.addUser(accessHash, nickname)
     }
+
     interface Storage {
         suspend fun addUser(accessHash: AccessHash, nickname: String): UserId
     }

@@ -1,5 +1,6 @@
 package app.meetacy.backend.mock.integration
 
+import app.meetacy.backend.database.ConfirmationTable
 import app.meetacy.backend.mock.email.MockEmailSender
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
@@ -8,8 +9,11 @@ import app.meetacy.backend.mock.storage.ConfirmationStorage
 import app.meetacy.backend.mock.storage.TokensStorage
 import app.meetacy.backend.mock.storage.UsersStorage
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
+import org.jetbrains.exposed.sql.Database
 
-object MockLinkEmailStorage : LinkEmailUsecase.Storage {
+class MockLinkEmailStorage(private val db: Database) : LinkEmailUsecase.Storage {
+    private val confirmationTable = ConfirmationTable(db)
+
     override suspend fun isEmailOccupied(email: String): Boolean =
         UsersStorage.isEmailOccupied(email)
 
@@ -21,7 +25,7 @@ object MockLinkEmailStorage : LinkEmailUsecase.Storage {
     }
 
     override suspend fun addConfirmationHash(userId: UserId, email: String, confirmationHash: String) {
-        ConfirmationStorage.addHash(userId, email, confirmationHash)
+        confirmationTable.addHash(userId, email, confirmationHash)
     }
 }
 

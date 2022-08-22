@@ -4,6 +4,5 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.Usecase))
-    api(project(Deps.Projects.Mock))
     api(project(Deps.Projects.Database))
 }

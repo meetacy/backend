@@ -11,10 +11,7 @@ class FriendsDependencies(
     val getFriendsRepository: GetFriendsRepository
 )
 
-fun Route.friends(
-    addFriendRepository: AddFriendRepository,
-    getFriendsRepository: GetFriendsRepository
-) = route("/friends") {
-    addFriend(addFriendRepository)
-    getFriend(getFriendsRepository)
+fun Route.friends(dependencies: FriendsDependencies) = route("/friends") {
+    addFriend(dependencies.addFriendRepository)
+    getFriend(dependencies.getFriendsRepository)
 }

@@ -1,4 +1,4 @@
-package app.meetacy.backend.mock.integration
+package app.meetacy.backend.mock.integration.email
 
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.mock.storage.ConfirmationStorage
@@ -17,5 +17,4 @@ object MockConfirmEmailStorage : ConfirmEmailUsecase.Storage {
     override suspend fun verifyEmail(userId: UserId) {
         UsersStorage.verifyEmail(userId)
     }
-
 }

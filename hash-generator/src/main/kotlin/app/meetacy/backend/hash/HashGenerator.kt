@@ -8,5 +8,8 @@ private fun getRandomString(@Suppress("SameParameterValue") length: Int) : Strin
 }
 
 object HashGenerator {
-    fun generate() = getRandomString(length = 256) + System.currentTimeMillis()
+    fun generate(): String {
+        val time = "${System.currentTimeMillis()}"
+        return getRandomString(length = 256 - time.length) + time
+    }
 }

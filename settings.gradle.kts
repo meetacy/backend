@@ -22,5 +22,7 @@ include(
     "types",
     "types:serialization-integration",
     "hash-generator",
-    "hash-generator:usecase-integration"
+    "hash-generator:usecase-integration",
+    "database",
+    "database:usecase-integration"
 )

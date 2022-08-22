@@ -225,5 +225,7 @@ object Deps {
         const val TypesSerialization = ":types:serialization-integration"
         const val HashGenerator = ":hash-generator"
         const val HashGeneratorUsecase = ":hash-generator:usecase-integration"
+        const val Database = ":database"
+        const val DatabaseUsecase = ":database:usecase-integration"
     }
 }
