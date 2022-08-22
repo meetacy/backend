@@ -12,16 +12,6 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
-// Database
-// - Users Table
-// - Friends Table
-// - Meetings Table
-
-// select - выбрать
-// insert – вставить
-// update - обновить
-// delete - удалить
-
 class ConfirmationTable(private val db: Database) : Table() {
     private val OWNER_ID = long("OWNER_ID")
     private val EMAIL = varchar("EMAIL", length = 320)

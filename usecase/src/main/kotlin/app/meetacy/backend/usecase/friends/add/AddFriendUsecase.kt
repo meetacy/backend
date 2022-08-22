@@ -24,7 +24,8 @@ class AddFriendUsecase(
             ?: return Result.FriendNotFound
         if (friend.accessHash != friendAccessHash) return Result.FriendNotFound
 
-        storage.addFriend(userId, friendId)
+        if (!storage.isSubscribed(userId, friendId)) storage.addFriend(userId, friendId)
+
         return Result.Success
     }
     sealed interface Result {
@@ -37,5 +38,6 @@ class AddFriendUsecase(
             userId: UserId,
             friendId: UserId
         )
+        suspend fun isSubscribed(userId: UserId, friendId: UserId): Boolean
     }
 }

@@ -8,4 +8,7 @@ object MockAddFriendStorage : AddFriendUsecase.Storage {
     override suspend fun addFriend(userId: UserId, friendId: UserId) =
         FriendsStorage
             .addFriend(userId, friendId)
+
+    override suspend fun isSubscribed(userId: UserId, friendId: UserId): Boolean =
+        FriendsStorage.isSubscribed(userId, friendId)
 }

@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.friends.get
 
 import app.meetacy.backend.types.AccessToken
-import app.meetacy.backend.types.FriendsAndSubscriptions
+import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.*
 
@@ -14,11 +14,16 @@ class GetFriendsUsecase(
         accessToken: AccessToken
     ): Result {
         val userId = authRepository.authorize(accessToken) { return Result.InvalidToken }
-        val friendsAndSubscriptions = storage
-            .getFriendsAndSubscriptions(userId)
 
-        val friendsViews = getUsersViewsRepository.getUsersViews(userId, friendsAndSubscriptions.friends)
-        val subscriptionsViews = getUsersViewsRepository.getUsersViews(userId, friendsAndSubscriptions.subscriptions)
+        val (friends, subscriptions) = storage.getSubscriptions(userId)
+            .partition { friendId -> storage.isSubscribed(friendId, userId) }
+
+        val usersViewsIterator = getUsersViewsRepository
+            .getUsersViews(userId, userIds = friends + subscriptions)
+            .iterator()
+
+        val friendsViews = friends.map { usersViewsIterator.next() }
+        val subscriptionsViews = subscriptions.map { usersViewsIterator.next() }
 
         return Result.Success(friendsViews, subscriptionsViews)
     }
@@ -29,8 +34,9 @@ class GetFriendsUsecase(
     }
 
     interface Storage{
-        fun getFriendsAndSubscriptions(
+        suspend fun getSubscriptions(
             userId: UserId
-        ): FriendsAndSubscriptions
+        ): List<UserId>
+        suspend fun isSubscribed(userId: UserId, friendId: UserId): Boolean
     }
 }

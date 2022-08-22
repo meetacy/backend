@@ -1,6 +1,8 @@
 package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
+import app.meetacy.backend.database.integration.friends.DatabaseAddFriendStorage
+import app.meetacy.backend.database.integration.friends.DatabaseGetFriendsStorage
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
@@ -9,8 +11,6 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.mock.integration.*
-import app.meetacy.backend.mock.integration.email.MockConfirmEmailStorage
-import app.meetacy.backend.mock.integration.friends.MockAddFriendStorage
 import app.meetacy.backend.mock.integration.friends.MockGetFriendsStorage
 import app.meetacy.backend.mock.integration.meetings.create.MockCreateMeetingStorage
 import app.meetacy.backend.mock.integration.meetings.create.MockCreateMeetingViewMeetingRepository
@@ -47,7 +47,7 @@ import org.jetbrains.exposed.sql.Database
 
 fun startMockEndpoints(
     port: Int,
-    database: Database,
+    db: Database,
     wait: Boolean
 ) {
     startEndpoints(
@@ -57,14 +57,14 @@ fun startMockEndpoints(
             emailDependencies = EmailDependencies(
                 linkEmailRepository = UsecaseLinkEmailRepository(
                     usecase = LinkEmailUsecase(
-                        storage = MockLinkEmailStorage(database),
+                        storage = MockLinkEmailStorage(db),
                         mailer = MockLinkEmailMailer,
                         hashGenerator = DefaultHashGenerator
                     )
                 ),
                 confirmEmailRepository = UsecaseConfirmEmailRepository(
                     usecase = ConfirmEmailUsecase(
-                        storage = DatabaseConfirmEmailStorage(database)
+                        storage = DatabaseConfirmEmailStorage(db)
                     )
                 )
             ),
@@ -86,14 +86,14 @@ fun startMockEndpoints(
                 usecase = AddFriendUsecase(
                     authRepository = MockAuthRepository,
                     getUsersViewsRepository = MockGetUsersViewsRepository,
-                    storage = MockAddFriendStorage
+                    storage = DatabaseAddFriendStorage(db)
                 )
             ),
             getFriendsRepository = UsecaseGetFriendsRepository(
                 usecase = GetFriendsUsecase(
                     authRepository = MockAuthRepository,
                     getUsersViewsRepository = MockGetUsersViewsRepository,
-                    storage = MockGetFriendsStorage
+                    storage = DatabaseGetFriendsStorage(db)
                 )
             )
         ),
