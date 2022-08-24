@@ -10,6 +10,7 @@ import app.meetacy.backend.mock.integration.friends.MockAddFriendStorage
 import app.meetacy.backend.mock.integration.friends.MockGetFriendsStorage
 import app.meetacy.backend.mock.integration.meetings.create.MockCreateMeetingStorage
 import app.meetacy.backend.mock.integration.meetings.create.MockCreateMeetingViewMeetingRepository
+import app.meetacy.backend.mock.integration.meetings.list.MockGetMeetingsListStorage
 import app.meetacy.backend.mock.integration.meetings.participate.MockParticipateMeetingStorage
 import app.meetacy.backend.mock.integration.types.MockAuthRepository
 import app.meetacy.backend.mock.integration.types.MockGetMeetingsViewsRepository

@@ -29,4 +29,10 @@ object MeetingsStorage {
 
     fun getMeetingOrNull(id: MeetingId): MockMeeting? =
         data.firstOrNull { it.id == id }
+
+    fun getMeetingCreator(creatorId: UserId): List<MeetingId> {
+        return data
+            .filter { it.creatorId == creatorId }
+            .map { it.id }
+    }
 }
