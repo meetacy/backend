@@ -1,5 +1,6 @@
 package app.meetacy.backend.infrastructure
 
+import app.meetacy.backend.database.integration.DatabaseCreateMeetingStorage
 import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
 import app.meetacy.backend.database.integration.friends.DatabaseAddFriendStorage
 import app.meetacy.backend.database.integration.friends.DatabaseGetFriendsStorage
@@ -11,8 +12,6 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.mock.integration.*
-import app.meetacy.backend.mock.integration.friends.MockGetFriendsStorage
-import app.meetacy.backend.mock.integration.meetings.create.MockCreateMeetingStorage
 import app.meetacy.backend.mock.integration.meetings.create.MockCreateMeetingViewMeetingRepository
 import app.meetacy.backend.mock.integration.meetings.participate.MockParticipateMeetingStorage
 import app.meetacy.backend.mock.integration.types.MockAuthRepository
@@ -108,7 +107,7 @@ fun startMockEndpoints(
             createMeetingRepository = UsecaseCreateMeetingRepository(
                 usecase = CreateMeetingUsecase(
                     hashGenerator = DefaultHashGenerator,
-                    storage = MockCreateMeetingStorage,
+                    storage = DatabaseCreateMeetingStorage(db),
                     authRepository = MockAuthRepository,
                     viewMeetingRepository = MockCreateMeetingViewMeetingRepository
                 )

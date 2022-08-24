@@ -1,19 +1,12 @@
 package app.meetacy.backend.endpoint.meetings.create
 
 import app.meetacy.backend.endpoint.types.Meeting
-import app.meetacy.backend.types.AccessToken
-import app.meetacy.backend.types.Date
-import app.meetacy.backend.types.Location
-import app.meetacy.backend.types.serialization.AccessTokenSerializable
-import app.meetacy.backend.types.serialization.DateSerializable
-import app.meetacy.backend.types.serialization.LocationSerializable
-import io.ktor.server.application.call
-import io.ktor.server.request.receive
-import io.ktor.server.response.respond
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.post
+import app.meetacy.backend.types.serialization.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class CreateParam(
@@ -37,18 +30,23 @@ interface CreateMeetingRepository {
 data class CreateMeetResponse(
     val status: Boolean,
     val errorCode: Int?,
-    val errorMessage: String?
+    val errorMessage: String?,
+    val resultId: MeetingIdSerializable?,
+    val resultHash: AccessHashSerializable?
+
 )
 
 fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post("/create") {
     val params = call.receive<CreateParam>()
 
-    when(createMeetingRepository.createMeeting(params)) {
+    when(val result = createMeetingRepository.createMeeting(params)) {
         is CreateMeetingResult.Success -> call.respond(
             CreateMeetResponse(
                 status = true,
                 errorCode = null,
-                errorMessage = null
+                errorMessage = null,
+                resultId = result.meeting.id,
+                resultHash = result.meeting.accessHash
             )
         )
         is CreateMeetingResult.TokenInvalid -> call.respond(
@@ -57,7 +55,9 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
                 errorCode = 1,
                 errorMessage = "Please provide a valid token" /* There is also an option
                   to make just one generic "Meeting not create" response to
-                  all three errors as a protection against brute force. */
+                  all three errors as a protection against brute force. */,
+                resultId = null,
+                resultHash = null
             )
         )
     }
