@@ -8,7 +8,14 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class MeetingsTable(private val db: Database) : Table() {
-    private val MEETING_ID = long("MEETING_ID").autoIncrement()
+    private val my_sequence = Sequence(
+        name = "my_sequence",
+        startWith = 0,
+        incrementBy = 1,
+        minValue = 0
+    )
+
+    private val MEETING_ID = long("MEETING_ID").autoIncrement("my_sequence")
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = 256)
     private val CREATOR_ID = long("CREATOR_ID")
     private val DATE = varchar("DATE", length = 50)
@@ -21,6 +28,7 @@ class MeetingsTable(private val db: Database) : Table() {
 
     init {
         transaction(db) {
+            SchemaUtils.createSequence(my_sequence)
             SchemaUtils.create(this@MeetingsTable)
         }
     }
