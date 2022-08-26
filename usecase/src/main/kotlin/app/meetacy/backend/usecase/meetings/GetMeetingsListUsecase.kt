@@ -12,10 +12,10 @@ class GetMeetingsListUsecase(
 ) {
 
     suspend fun getMeetingsList(accessToken: AccessToken): Result {
-        val memberId = authRepository.authorize(accessToken) { return Result.TokenInvalid }
+        val id = authRepository.authorize(accessToken) { return Result.TokenInvalid }
 
-        val meetingIds = storage.getMeetingsList(memberId)
-        val meetings = getMeetingsViewsRepository.getMeetingsViews(memberId, meetingIds)
+        val meetingIds = storage.getSelfMeetings(id) + storage.getParticipatingMeetings(id)
+        val meetings = getMeetingsViewsRepository.getMeetingsViews(id, meetingIds)
 
         return Result.Success(meetings)
     }
@@ -26,6 +26,7 @@ class GetMeetingsListUsecase(
     }
 
     interface Storage {
-        fun getMeetingsList(memberId: UserId): List<MeetingId>
+        suspend fun getSelfMeetings(creatorId: UserId): List<MeetingId>
+        suspend fun getParticipatingMeetings(memberId: UserId): List<MeetingId>
     }
 }

@@ -12,7 +12,10 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.mock.integration.*
+import app.meetacy.backend.mock.integration.email.MockLinkEmailMailer
+import app.meetacy.backend.mock.integration.email.MockLinkEmailStorage
 import app.meetacy.backend.mock.integration.meetings.create.MockCreateMeetingViewMeetingRepository
+import app.meetacy.backend.mock.integration.meetings.list.MockGetMeetingsListStorage
 import app.meetacy.backend.mock.integration.meetings.participate.MockParticipateMeetingStorage
 import app.meetacy.backend.mock.integration.types.MockAuthRepository
 import app.meetacy.backend.mock.integration.types.MockGetMeetingsViewsRepository

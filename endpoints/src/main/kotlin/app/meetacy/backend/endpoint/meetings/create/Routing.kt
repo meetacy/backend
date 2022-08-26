@@ -31,8 +31,7 @@ data class CreateMeetResponse(
     val status: Boolean,
     val errorCode: Int?,
     val errorMessage: String?,
-    val resultId: MeetingIdSerializable?,
-    val resultHash: AccessHashSerializable?
+    val result: Meeting?
 
 )
 
@@ -45,8 +44,7 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
                 status = true,
                 errorCode = null,
                 errorMessage = null,
-                resultId = result.meeting.id,
-                resultHash = result.meeting.accessHash
+                result = result.meeting
             )
         )
         is CreateMeetingResult.TokenInvalid -> call.respond(
@@ -56,8 +54,7 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
                 errorMessage = "Please provide a valid token" /* There is also an option
                   to make just one generic "Meeting not create" response to
                   all three errors as a protection against brute force. */,
-                resultId = null,
-                resultHash = null
+                result = null
             )
         )
     }

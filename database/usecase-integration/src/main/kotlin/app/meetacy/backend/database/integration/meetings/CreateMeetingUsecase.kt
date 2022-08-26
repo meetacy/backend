@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.integration
 
-import app.meetacy.backend.database.MeetingsTable
+import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.types.AccessHash
 import app.meetacy.backend.types.Date
 import app.meetacy.backend.types.Location

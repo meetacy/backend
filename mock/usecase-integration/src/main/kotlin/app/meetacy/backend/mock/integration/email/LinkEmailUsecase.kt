@@ -1,11 +1,10 @@
-package app.meetacy.backend.mock.integration
+package app.meetacy.backend.mock.integration.email
 
-import app.meetacy.backend.database.ConfirmationTable
+import app.meetacy.backend.database.email.ConfirmationTable
 import app.meetacy.backend.mock.email.MockEmailSender
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.mock.email.MockEmailText
-import app.meetacy.backend.mock.storage.ConfirmationStorage
 import app.meetacy.backend.mock.storage.TokensStorage
 import app.meetacy.backend.mock.storage.UsersStorage
 import app.meetacy.backend.usecase.email.LinkEmailUsecase

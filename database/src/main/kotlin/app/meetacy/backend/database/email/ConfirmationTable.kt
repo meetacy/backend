@@ -1,6 +1,6 @@
 @file:Suppress("PrivatePropertyName")
 
-package app.meetacy.backend.database
+package app.meetacy.backend.database.email
 
 import app.meetacy.backend.types.UserId
 import org.jetbrains.exposed.sql.Database
