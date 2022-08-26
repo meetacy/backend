@@ -1,4 +1,4 @@
-package app.meetacy.backend.mock.integration
+package app.meetacy.backend.mock.integration.meetings.get
 
 import app.meetacy.backend.mock.integration.meetings.participate.MockViewMeetingsUsecaseStorage
 import app.meetacy.backend.mock.integration.types.MockGetUsersViewsRepository

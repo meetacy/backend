@@ -1,7 +1,7 @@
 package app.meetacy.backend.mock.integration.types
 
-import app.meetacy.backend.mock.integration.MockGetMeetingsViewsMeetingsProvider
-import app.meetacy.backend.mock.integration.MockGetMeetingsViewsViewMeetingsRepository
+import app.meetacy.backend.mock.integration.meetings.get.MockGetMeetingsViewsMeetingsProvider
+import app.meetacy.backend.mock.integration.meetings.get.MockGetMeetingsViewsViewMeetingsRepository
 import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.meetings.GetMeetingsViewsUsecase

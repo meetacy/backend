@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.integration.friends
 
-import app.meetacy.backend.database.FriendsTable
+import app.meetacy.backend.database.friends.FriendsTable
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.friends.get.GetFriendsUsecase
 import org.jetbrains.exposed.sql.Database
