@@ -3,6 +3,7 @@
 package app.meetacy.backend.database.auth
 
 import app.meetacy.backend.database.types.DatabaseToken
+import app.meetacy.backend.database.types.HASH_LENGTH
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
 import org.jetbrains.exposed.sql.*
@@ -10,7 +11,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class TokensTable(private val db: Database) : Table() {
     private val OWNER_ID = long("OWNER_ID")
-    private val ACCESS_TOKEN = varchar("ACCESS_TOKEN", length = 256)
+    private val ACCESS_TOKEN = varchar("ACCESS_TOKEN", length = HASH_LENGTH)
 
     init {
         transaction(db) {
