@@ -2,27 +2,27 @@
 
 package app.meetacy.backend.database.meetings
 
-import app.meetacy.backend.database.types.DatabaseMeeting
+import app.meetacy.backend.database.types.*
 import app.meetacy.backend.types.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class MeetingsTable(private val db: Database) : Table() {
     private val my_sequence = Sequence(
-        name = "my_sequence",
-        startWith = 0,
-        incrementBy = 1,
-        minValue = 0
+        name = NAME_SEQ,
+        startWith = STAR_WITH_SEQ.toLong(),
+        incrementBy = INCREMENTED_BY_SEQ.toLong(),
+        minValue = MIN_VALUE_SEQ.toLong()
     )
 
     private val MEETING_ID = long("MEETING_ID").autoIncrement("my_sequence")
-    private val ACCESS_HASH = varchar("ACCESS_HASH", length = 256)
+    private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     private val CREATOR_ID = long("CREATOR_ID")
-    private val DATE = varchar("DATE", length = 50)
+    private val DATE = varchar("DATE", length = DATA_MAX_LIMIT)
     private val LATITUDE = double("LATITUDE")
     private val LONGITUDE = double("LONGITUDE")
-    private val TITLE = varchar("TITLE", length = 100).nullable()
-    private val DESCRIPTION = varchar("DESCRIPTION", length = 400).nullable()
+    private val TITLE = varchar("TITLE", length = TITLE_MAX_LIMIT).nullable()
+    private val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT).nullable()
 
     override val primaryKey = PrimaryKey(MEETING_ID)
 
