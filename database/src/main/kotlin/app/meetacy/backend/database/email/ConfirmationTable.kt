@@ -2,6 +2,8 @@
 
 package app.meetacy.backend.database.email
 
+import app.meetacy.backend.database.types.EMAIL_MAX_LIMIT
+import app.meetacy.backend.database.types.HASH_LENGTH
 import app.meetacy.backend.types.UserId
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -14,8 +16,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class ConfirmationTable(private val db: Database) : Table() {
     private val OWNER_ID = long("OWNER_ID")
-    private val EMAIL = varchar("EMAIL", length = 320)
-    private val CONFIRM_HASH = varchar("CONFIRM_HASH", length = 256)
+    private val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT)
+    private val CONFIRM_HASH = varchar("CONFIRM_HASH", length = HASH_LENGTH)
 
     init {
         transaction(db) {
