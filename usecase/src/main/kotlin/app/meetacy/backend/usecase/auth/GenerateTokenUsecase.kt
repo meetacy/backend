@@ -8,7 +8,8 @@ class GenerateTokenUsecase(private val storage: Storage, private val tokenGenera
 
     suspend fun generateToken(nickname: String): AccessToken {
         val newUserId = storage.createUser(nickname)
-        val token = AccessToken(tokenGenerator.generate())
+        val newUserIdString = newUserId.toString()
+        val token = AccessToken("$newUserIdString:" + tokenGenerator.generate().drop(newUserIdString.length))
         storage.addToken(newUserId, token)
         return token
     }

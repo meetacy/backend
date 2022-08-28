@@ -1,5 +1,7 @@
 package app.meetacy.backend.hash
 
+import app.meetacy.backend.types.HASH_LENGTH
+
 private fun getRandomString(@Suppress("SameParameterValue") length: Int) : String {
     val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
     return (1..length)
@@ -9,7 +11,6 @@ private fun getRandomString(@Suppress("SameParameterValue") length: Int) : Strin
 
 object HashGenerator {
     fun generate(): String {
-        val time = "${System.currentTimeMillis()}"
-        return getRandomString(length = 256 - time.length) + time
+        return getRandomString(length = HASH_LENGTH)
     }
 }

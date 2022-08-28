@@ -3,7 +3,7 @@
 package app.meetacy.backend.database.auth
 
 import app.meetacy.backend.database.types.DatabaseToken
-import app.meetacy.backend.database.types.HASH_LENGTH
+import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
 import org.jetbrains.exposed.sql.*

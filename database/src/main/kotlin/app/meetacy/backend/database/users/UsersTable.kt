@@ -3,20 +3,12 @@
 package app.meetacy.backend.database.users
 
 import app.meetacy.backend.database.types.*
-import app.meetacy.backend.types.AccessHash
-import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class UsersTable(private val db: Database) : Table() {
-    private val my_sequence = Sequence(
-        name = NAME_SEQ,
-        startWith = STAR_WITH_SEQ.toLong(),
-        incrementBy = INCREMENTED_BY_SEQ.toLong(),
-        minValue = MIN_VALUE_SEQ.toLong()
-    )
-
-    private val USER_ID = long("USER_ID").autoIncrement("my_sequence")
+    private val USER_ID = long("USER_ID").autoIncrement()
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     private val NICKNAME = varchar("NICKNAME", length = NICKNAME_MAX_LIMIT)
     private val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT).nullable()
@@ -24,7 +16,6 @@ class UsersTable(private val db: Database) : Table() {
 
     init {
         transaction(db) {
-            SchemaUtils.createSequence(my_sequence)
             SchemaUtils.create(this@UsersTable)
         }
     }

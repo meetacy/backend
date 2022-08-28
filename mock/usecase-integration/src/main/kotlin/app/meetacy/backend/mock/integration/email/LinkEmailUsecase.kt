@@ -10,7 +10,7 @@ import app.meetacy.backend.mock.storage.UsersStorage
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import org.jetbrains.exposed.sql.Database
 
-class MockLinkEmailStorage(private val db: Database) : LinkEmailUsecase.Storage {
+class DatabaseLinkEmailStorage(private val db: Database) : LinkEmailUsecase.Storage {
     private val confirmationTable = ConfirmationTable(db)
 
     override suspend fun isEmailOccupied(email: String): Boolean =

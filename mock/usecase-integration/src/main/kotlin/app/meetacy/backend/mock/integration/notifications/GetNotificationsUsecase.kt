@@ -1,4 +1,4 @@
-package app.meetacy.backend.mock.integration
+package app.meetacy.backend.mock.integration.notifications
 
 import app.meetacy.backend.mock.integration.types.mapToUsecase
 import app.meetacy.backend.types.NotificationId

@@ -1,9 +1,17 @@
 package app.meetacy.backend.infrastructure
 
-import app.meetacy.backend.database.integration.DatabaseCreateMeetingStorage
 import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
 import app.meetacy.backend.database.integration.friends.DatabaseAddFriendStorage
 import app.meetacy.backend.database.integration.friends.DatabaseGetFriendsStorage
+import app.meetacy.backend.database.integration.meetings.DatabaseCreateMeetingStorage
+import app.meetacy.backend.database.integration.meetings.DatabaseCreateMeetingViewMeetingRepository
+import app.meetacy.backend.database.integration.meetings.list.DatabaseGetMeetingsListStorage
+import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
+import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateTokenStorage
+import app.meetacy.backend.database.integration.types.DatabaseAuthRepository
+import app.meetacy.backend.database.integration.types.DatabaseGetMeetingsViewsRepository
+import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
+import app.meetacy.backend.database.integration.users.DatabaseGetUserSafeStorage
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
@@ -11,16 +19,10 @@ import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
-import app.meetacy.backend.mock.integration.*
+import app.meetacy.backend.mock.integration.notifications.MockGetNotificationStorage
+import app.meetacy.backend.mock.integration.MockReadNotificationsStorage
+import app.meetacy.backend.mock.integration.email.DatabaseLinkEmailStorage
 import app.meetacy.backend.mock.integration.email.MockLinkEmailMailer
-import app.meetacy.backend.mock.integration.email.MockLinkEmailStorage
-import app.meetacy.backend.mock.integration.meetings.create.MockCreateMeetingViewMeetingRepository
-import app.meetacy.backend.mock.integration.meetings.list.MockGetMeetingsListStorage
-import app.meetacy.backend.mock.integration.meetings.participate.MockParticipateMeetingStorage
-import app.meetacy.backend.mock.integration.types.MockAuthRepository
-import app.meetacy.backend.mock.integration.types.MockGetMeetingsViewsRepository
-import app.meetacy.backend.mock.integration.types.MockGetUsersViewsRepository
-import app.meetacy.backend.mock.integration.users.MockGetUserSafeStorage
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
@@ -59,7 +61,7 @@ fun startMockEndpoints(
             emailDependencies = EmailDependencies(
                 linkEmailRepository = UsecaseLinkEmailRepository(
                     usecase = LinkEmailUsecase(
-                        storage = MockLinkEmailStorage(db),
+                        storage = DatabaseLinkEmailStorage(db),
                         mailer = MockLinkEmailMailer,
                         hashGenerator = DefaultHashGenerator
                     )
@@ -72,29 +74,29 @@ fun startMockEndpoints(
             ),
             tokenGenerateRepository = UsecaseTokenGenerateRepository(
                 usecase = GenerateTokenUsecase(
-                    storage = MockGenerateTokenStorage(DefaultHashGenerator),
+                    storage = DatabaseGenerateTokenStorage(DefaultHashGenerator, db),
                     tokenGenerator = DefaultHashGenerator
                 )
             )
         ),
         userRepository = UsecaseUserRepository(
             usecase = GetUserSafeUsecase(
-                storage = MockGetUserSafeStorage,
-                usersViewsRepository = MockGetUsersViewsRepository
+                storage = DatabaseGetUserSafeStorage(db),
+                usersViewsRepository = DatabaseGetUsersViewsRepository(db)
             )
         ),
         friendsDependencies = FriendsDependencies(
             addFriendRepository = UsecaseAddFriendRepository(
                 usecase = AddFriendUsecase(
-                    authRepository = MockAuthRepository,
-                    getUsersViewsRepository = MockGetUsersViewsRepository,
+                    authRepository = DatabaseAuthRepository(db),
+                    getUsersViewsRepository = DatabaseGetUsersViewsRepository(db),
                     storage = DatabaseAddFriendStorage(db)
                 )
             ),
             getFriendsRepository = UsecaseGetFriendsRepository(
                 usecase = GetFriendsUsecase(
-                    authRepository = MockAuthRepository,
-                    getUsersViewsRepository = MockGetUsersViewsRepository,
+                    authRepository = DatabaseAuthRepository(db),
+                    getUsersViewsRepository = DatabaseGetUsersViewsRepository(db),
                     storage = DatabaseGetFriendsStorage(db)
                 )
             )
@@ -102,45 +104,45 @@ fun startMockEndpoints(
         meetingsDependencies = MeetingsDependencies(
             meetingsListRepository = UsecaseMeetingsListRepository(
                 usecase = GetMeetingsListUsecase(
-                    authRepository = MockAuthRepository,
-                    storage = MockGetMeetingsListStorage,
-                    getMeetingsViewsRepository = MockGetMeetingsViewsRepository
+                    authRepository = DatabaseAuthRepository(db),
+                    storage = DatabaseGetMeetingsListStorage(db),
+                    getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
                 )
             ),
             createMeetingRepository = UsecaseCreateMeetingRepository(
                 usecase = CreateMeetingUsecase(
                     hashGenerator = DefaultHashGenerator,
                     storage = DatabaseCreateMeetingStorage(db),
-                    authRepository = MockAuthRepository,
-                    viewMeetingRepository = MockCreateMeetingViewMeetingRepository
+                    authRepository = DatabaseAuthRepository(db),
+                    viewMeetingRepository = DatabaseCreateMeetingViewMeetingRepository(db)
                 )
             ),
             getMeetingRepository = UsecaseGetMeetingRepository(
                 usecase = GetMeetingUsecase(
-                    authRepository = MockAuthRepository,
-                    getMeetingsViewsRepository = MockGetMeetingsViewsRepository
+                    authRepository = DatabaseAuthRepository(db),
+                    getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
                 )
             ),
             participateMeetingRepository = UsecaseParticipateMeetingRepository(
                 usecase = ParticipateMeetingUsecase(
-                    authRepository = MockAuthRepository,
-                    storage = MockParticipateMeetingStorage,
-                    getMeetingsViewsRepository = MockGetMeetingsViewsRepository
+                    authRepository = DatabaseAuthRepository(db),
+                    storage = DatabaseParticipateMeetingStorage(db),
+                    getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
                 )
             ),
         ),
         notificationsDependencies = NotificationsDependencies(
             getNotificationsRepository = UsecaseGetNotificationsRepository(
                 usecase = GetNotificationsUsecase(
-                    authRepository = MockAuthRepository,
-                    usersRepository = MockGetUsersViewsRepository,
-                    meetingsRepository = MockGetMeetingsViewsRepository,
+                    authRepository = DatabaseAuthRepository(db),
+                    usersRepository = DatabaseGetUsersViewsRepository(db),
+                    meetingsRepository = DatabaseGetMeetingsViewsRepository(db),
                     storage = MockGetNotificationStorage
                 )
             ),
             readNotificationsRepository = UsecaseReadNotificationsRepository(
                 usecase = ReadNotificationsUsecase(
-                    authRepository = MockAuthRepository,
+                    authRepository = DatabaseAuthRepository(db),
                     storage = MockReadNotificationsStorage
                 )
             )
