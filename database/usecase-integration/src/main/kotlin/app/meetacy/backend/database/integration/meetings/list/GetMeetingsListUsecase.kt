@@ -8,11 +8,13 @@ import app.meetacy.backend.usecase.meetings.GetMeetingsListUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseGetMeetingsListStorage(private val db: Database) : GetMeetingsListUsecase.Storage {
+    private val meetingsTable = MeetingsTable(db)
+    private val participantsTable = ParticipantsTable(db)
 
     override suspend fun getSelfMeetings(creatorId: UserId): List<MeetingId> =
-        MeetingsTable(db).getMeetingCreator(creatorId)
+        meetingsTable.getMeetingCreator(creatorId)
 
 
     override suspend fun getParticipatingMeetings(memberId: UserId): List<MeetingId> =
-        ParticipantsTable(db).getMeetingIds(memberId)
+        participantsTable.getMeetingIds(memberId)
 }

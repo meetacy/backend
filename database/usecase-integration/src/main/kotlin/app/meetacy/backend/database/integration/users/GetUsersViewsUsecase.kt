@@ -9,13 +9,12 @@ import app.meetacy.backend.usecase.users.GetUsersViewsUsecase
 import app.meetacy.backend.usecase.users.ViewUserUsecase
 import org.jetbrains.exposed.sql.Database
 
-class DatabaseGetUsersViewsStorage(private val db: Database) : GetUsersViewsUsecase.Storage {
+class DatabaseGetUsersViewsStorage(db: Database) : GetUsersViewsUsecase.Storage {
+    private val usersTable = UsersTable(db)
+
     override suspend fun getUsers(userIds: List<UserId>): List<FullUser?> =
-        userIds
-            .map { UsersTable(db)
-                .getUser(it)
-            }
-            .map {  user -> user?.mapToUsecase() }
+        usersTable.getUsers(userIds)
+            .map { user -> user.mapToUsecase() }
 }
 
 object DatabaseGetUsersViewsViewUserRepository : GetUsersViewsUsecase.ViewUserRepository {

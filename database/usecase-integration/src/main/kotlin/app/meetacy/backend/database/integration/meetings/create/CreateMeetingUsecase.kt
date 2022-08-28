@@ -1,4 +1,4 @@
-package app.meetacy.backend.database.integration.meetings
+package app.meetacy.backend.database.integration.meetings.create
 
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseViewMeetingsUsecaseStorage
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
@@ -14,7 +14,7 @@ import app.meetacy.backend.usecase.types.MeetingView
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsecase.Storage {
-
+    private val meetingsTable = MeetingsTable(db)
 
     override suspend fun addMeeting(
         accessHash: AccessHash,
@@ -24,7 +24,7 @@ class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsec
         title: String?,
         description: String?
     ): FullMeeting {
-        val meetingId = MeetingsTable(db).addMeeting(accessHash, creatorId, date, location, title, description)
+        val meetingId = meetingsTable.addMeeting(accessHash, creatorId, date, location, title, description)
         return FullMeeting(
             id = meetingId,
             accessHash = accessHash,

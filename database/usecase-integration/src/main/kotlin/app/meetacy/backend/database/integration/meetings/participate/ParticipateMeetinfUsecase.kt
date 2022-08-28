@@ -7,8 +7,8 @@ import app.meetacy.backend.usecase.meetings.ParticipateMeetingUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseParticipateMeetingStorage(private val db: Database) : ParticipateMeetingUsecase.Storage {
+    private val participantsTable = ParticipantsTable(db)
     override suspend fun addParticipant(meetingId: MeetingId, userId: UserId) {
-        ParticipantsTable(db)
-            .addParticipant(meetingId, userId)
+        participantsTable.addParticipant(meetingId, userId)
     }
 }

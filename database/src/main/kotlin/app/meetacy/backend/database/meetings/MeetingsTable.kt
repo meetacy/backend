@@ -34,7 +34,6 @@ class MeetingsTable(private val db: Database) : Table() {
         description: String?
     ): MeetingId =
         transaction(db) {
-
             val meetingId = insert { statement ->
                 statement[ACCESS_HASH] = accessHash.string
                 statement[CREATOR_ID] = creatorId.long
@@ -53,6 +52,15 @@ class MeetingsTable(private val db: Database) : Table() {
                 .map { statement -> statement.toDatabaseMeeting() }
             return@transaction result.filter { it.id == id }
         }.firstOrNull()
+
+    // Важно! Если использовать просто inList, то оно
+    // вернёт список, длина которого меньше meetingIds, в
+    // случае, если какой-то митинг не найден.
+    // В таком случае необходимо как-то это обработать
+    // и на место не найденных встреч поставить null
+    fun getMeetingsOrNull(meetingIds: List<MeetingId>): List<DatabaseMeeting?> {
+
+    }
 
     fun getMeetingCreator(creatorId: UserId): List<MeetingId> =
         transaction(db) {

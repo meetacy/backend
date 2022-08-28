@@ -44,6 +44,10 @@ class UsersTable(private val db: Database) : Table() {
        return@transaction result.toUser()
     }
 
+    fun getUsers(userIds: List<UserId>): List<DatabaseUser> {
+
+    }
+
     fun isEmailOccupied(
         email: String
     ): Boolean = transaction(db) {
