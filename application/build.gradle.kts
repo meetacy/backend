@@ -19,18 +19,18 @@ deploy {
         val properties = loadProperties(propertiesFile)
 
         default {
-            host = properties.getProperty("host")
-            user = properties.getProperty("user")
-            password = properties.getProperty("password")
-            knownHostsFile = properties.getProperty("knownHosts")
+            host = properties.getProperty("host") ?: System.getenv("SSH_HOST")
+            user = properties.getProperty("user") ?: System.getenv("SSH_USER")
+            password = properties.getProperty("password") ?: System.getenv("SSH_PASSWORD")
+            knownHostsFile = properties.getProperty("knownHosts") ?: System.getenv("SSH_KNOWN_HOST_FILE")
             archiveName = "app.jar"
 
             mainClass = "app.meetacy.backend.MainKt"
         }
 
         target("production") {
-            destination = properties.getProperty("prod.destination")
-            serviceName = properties.getProperty("prod.serviceName")
+            destination = properties.getProperty("prod.destination") ?: System.getenv("DEPLOY_DESTINATION")
+            serviceName = properties.getProperty("prod.serviceName") ?: System.getenv("DEPLOY_SERVICE_NAME")
         }
     }
 }
