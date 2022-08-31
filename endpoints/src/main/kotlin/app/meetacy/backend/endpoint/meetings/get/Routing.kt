@@ -1,11 +1,9 @@
 package app.meetacy.backend.endpoint.meetings.get
 
 import app.meetacy.backend.endpoint.types.Meeting
-import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.MeetingIdentity
-import app.meetacy.backend.types.serialization.AccessHashSerializable
-import app.meetacy.backend.types.serialization.AccessTokenSerializable
-import app.meetacy.backend.types.serialization.MeetingIdSerializable
+import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.MeetingIdentitySerializable
 
 import io.ktor.server.application.*
@@ -16,7 +14,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetMeetingsParam(
-    val accessToken: AccessTokenSerializable,
+    val accessToken: AccessIdentitySerializable,
     val meetingIdentity: MeetingIdentitySerializable
 )
 
@@ -28,7 +26,7 @@ sealed interface GetMeetingResult {
 
 interface GetMeetingRepository {
     suspend fun getMeeting(
-        accessToken: AccessToken,
+        accessIdentity: AccessIdentity,
         meetingIdentity: MeetingIdentity
     ) : GetMeetingResult
 }

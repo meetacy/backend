@@ -2,7 +2,7 @@ package app.meetacy.backend.usecase.integration.meetings.get
 
 import app.meetacy.backend.endpoint.meetings.get.GetMeetingRepository
 import app.meetacy.backend.endpoint.meetings.get.GetMeetingResult
-import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.MeetingIdentity
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.meetings.GetMeetingUsecase
@@ -12,11 +12,11 @@ class UsecaseGetMeetingRepository(
 ) : GetMeetingRepository {
 
     override suspend fun getMeeting(
-        accessToken: AccessToken,
+        accessIdentity: AccessIdentity,
         meetingIdentity: MeetingIdentity
     ): GetMeetingResult =
 
-        when (val result = usecase.getMeeting(accessToken, meetingIdentity)) {
+        when (val result = usecase.getMeeting(accessIdentity, meetingIdentity)) {
             is GetMeetingUsecase.Result.Success ->
                 GetMeetingResult.Success(
                     result.meeting.mapToEndpoint()

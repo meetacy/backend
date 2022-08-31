@@ -1,12 +1,11 @@
 package app.meetacy.backend.usecase.friends.add
 
-import app.meetacy.backend.types.AccessHash
-import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.types.UserIdentity
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetUsersViewsRepository
-import app.meetacy.backend.usecase.types.authorize
+import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 
 class AddFriendUsecase(
@@ -15,10 +14,10 @@ class AddFriendUsecase(
     private val storage: Storage
 ) {
     suspend fun addFriendUsecase(
-        accessToken: AccessToken,
+        accessIdentity: AccessIdentity,
         friendIdentity: UserIdentity
     ): Result {
-        val userId = authRepository.authorize(accessToken) { return Result.InvalidToken }
+        val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidToken }
 
         val friend = getUsersViewsRepository.getUsersViewsOrNull(userId, listOf(friendIdentity.userId))
             .first()

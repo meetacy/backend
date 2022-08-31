@@ -10,11 +10,11 @@ class GetNotificationsUsecase(
     private val storage: Storage
 ) {
     suspend fun getNotifications(
-        accessToken: AccessToken,
+        accessIdentity: AccessIdentity,
         offset: Long,
         count: Int
     ): Result {
-        val userId = authRepository.authorize(accessToken) { return Result.TokenInvalid }
+        val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
         val lastReadNotificationId = storage.getLastReadNotification(userId)
 

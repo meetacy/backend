@@ -1,8 +1,8 @@
 package app.meetacy.backend.endpoint.notifications.read
 
-import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.NotificationId
-import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.NotificationIdSerializable
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 private data class RequestBody(
-    val accessToken: AccessTokenSerializable,
+    val accessToken: AccessIdentitySerializable,
     val lastNotificationId: NotificationIdSerializable
 )
 
@@ -25,7 +25,7 @@ private data class ResponseBody(
 )
 
 interface ReadNotificationsRepository {
-    suspend fun read(accessToken: AccessToken, lastNotificationId: NotificationId): Result
+    suspend fun read(accessIdentity: AccessIdentity, lastNotificationId: NotificationId): Result
 
     sealed interface Result {
         object TokenInvalid : Result

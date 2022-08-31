@@ -1,7 +1,7 @@
 package app.meetacy.backend.endpoint.friends.get
 
 import app.meetacy.backend.endpoint.types.User
-import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetFriendsToken(
-    val accessToken: AccessTokenSerializable
+    val accessToken: AccessIdentitySerializable
 )
 
 @Serializable

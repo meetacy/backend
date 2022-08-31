@@ -1,8 +1,8 @@
 package app.meetacy.backend.mock.storage
 
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
-import app.meetacy.backend.types.UserIdentity
 
 object TokensStorage {
     private val data: MutableList<MockToken> = mutableListOf()
@@ -17,5 +17,6 @@ object TokensStorage {
         )
     }
 
-    fun getToken(token: AccessToken): MockToken? = data.firstOrNull { token == it.value }
+    fun getToken(token: AccessIdentity): MockToken? =
+        data.firstOrNull { token.accessToken == it.value }
 }

@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.meetings
 
-import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.*
@@ -11,8 +11,8 @@ class GetMeetingsListUsecase(
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository
 ) {
 
-    suspend fun getMeetingsList(accessToken: AccessToken): Result {
-        val id = authRepository.authorize(accessToken) { return Result.TokenInvalid }
+    suspend fun getMeetingsList(accessIdentity: AccessIdentity): Result {
+        val id = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
         val meetingIds = storage.getSelfMeetings(id) + storage.getParticipatingMeetings(id)
         val meetings = getMeetingsViewsRepository.getMeetingsViews(id, meetingIds)

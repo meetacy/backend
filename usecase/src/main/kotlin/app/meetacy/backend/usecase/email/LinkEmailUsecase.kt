@@ -1,11 +1,11 @@
 package app.meetacy.backend.usecase.email
 
-import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.UserId
-import app.meetacy.backend.types.UserIdentity
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.HashGenerator
 import app.meetacy.backend.usecase.types.authorize
+import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class LinkEmailUsecase(
     private val storage: Storage,
@@ -18,8 +18,8 @@ class LinkEmailUsecase(
         object TokenInvalid : LinkResult
     }
 
-    suspend fun linkEmail(email: String, token: AccessToken): LinkResult {
-        val userId = authRepository.authorize(token)  { return LinkResult.TokenInvalid }
+    suspend fun linkEmail(email: String, token: AccessIdentity): LinkResult {
+        val userId = authRepository.authorizeWithUserId(token)  { return LinkResult.TokenInvalid }
 
         if (storage.isEmailOccupied(email)) {
             mailer.sendEmailOccupiedMessage(email)
@@ -38,9 +38,9 @@ class LinkEmailUsecase(
 
     interface Storage {
         suspend fun isEmailOccupied(email: String): Boolean
-        suspend fun getUserId(token: AccessToken): UserId?
-        suspend fun updateEmail(userIdentity: UserId, email: String)
-        suspend fun addConfirmationHash(userIdentity: UserId, email: String, confirmationHash: String)
+        suspend fun getUserId(token: AccessIdentity): UserId?
+        suspend fun updateEmail(userId: UserId, email: String)
+        suspend fun addConfirmationHash(userId: UserId, email: String, confirmationHash: String)
     }
 
     interface Mailer {

@@ -1,19 +1,18 @@
 package app.meetacy.backend.endpoint.notifications.get
 
 import app.meetacy.backend.endpoint.types.Notification
-import app.meetacy.backend.types.AccessToken
-import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseSerializers
 
 @Serializable
 private data class RequestBody(
-    val accessToken: AccessTokenSerializable,
+    val accessToken: AccessIdentitySerializable,
     val offset: Long,
     val amount: Int
 )
@@ -28,7 +27,7 @@ private data class ResponseBody(
 
 interface GetNotificationsRepository {
     suspend fun getNotifications(
-        accessToken: AccessToken,
+        accessIdentity: AccessIdentity,
         offset: Long,
         amount: Int
     ): Result
@@ -44,7 +43,7 @@ fun Route.get(repository: GetNotificationsRepository) = post("/get") {
 
     val result = when (
         val result = repository.getNotifications(
-            accessToken = requestBody.accessToken.type(),
+            accessIdentity = requestBody.accessToken.type(),
             offset = requestBody.offset,
             amount = requestBody.amount
         )

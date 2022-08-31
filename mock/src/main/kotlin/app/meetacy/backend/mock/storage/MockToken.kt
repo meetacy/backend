@@ -1,5 +1,6 @@
 package app.meetacy.backend.mock.storage
 
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
 

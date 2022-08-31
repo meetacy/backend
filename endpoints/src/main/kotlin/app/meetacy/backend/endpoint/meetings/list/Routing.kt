@@ -1,18 +1,17 @@
 package app.meetacy.backend.endpoint.meetings.list
 
 import app.meetacy.backend.endpoint.types.Meeting
-import app.meetacy.backend.types.AccessToken
-import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseSerializers
 
 @Serializable
 data class ListParam(
-    val accessToken: AccessTokenSerializable
+    val accessToken: AccessIdentitySerializable
 )
 
 sealed interface ListMeetingsResult {
@@ -21,7 +20,7 @@ sealed interface ListMeetingsResult {
 }
 
 interface MeetingsListRepository {
-    suspend fun getList(accessToken: AccessToken): ListMeetingsResult
+    suspend fun getList(accessIdentity: AccessIdentity): ListMeetingsResult
 }
 
 @Serializable

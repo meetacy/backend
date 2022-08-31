@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 
 @JvmInline
 @Serializable
-value class MeetingIdentitySerializable(val identity: String) {
+value class MeetingIdentitySerializable(val string: String) {
     init {
         type()
     }
-    fun type() = MeetingIdentity.parse(identity)!!
+    fun type() = MeetingIdentity.parse(string)!!
 }
 
-fun MeetingIdentity.serializable() = MeetingIdentitySerializable(identity)
+fun MeetingIdentity.serializable() = MeetingIdentitySerializable(string)

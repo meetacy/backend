@@ -11,7 +11,6 @@ import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateT
 import app.meetacy.backend.database.integration.types.DatabaseAuthRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetMeetingsViewsRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
-import app.meetacy.backend.database.integration.users.DatabaseGetUserSafeStorage
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
@@ -55,6 +54,7 @@ fun startMockEndpoints(
     wait: Boolean
 ) {
     val authRepository = DatabaseAuthRepository(db)
+
     startEndpoints(
         port = port,
         wait = wait,
@@ -83,7 +83,7 @@ fun startMockEndpoints(
         ),
         userRepository = UsecaseUserRepository(
             usecase = GetUserSafeUsecase(
-                storage = DatabaseGetUserSafeStorage(db),
+                authRepository = authRepository,
                 usersViewsRepository = DatabaseGetUsersViewsRepository(db)
             )
         ),

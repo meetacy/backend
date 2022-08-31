@@ -1,7 +1,7 @@
 package app.meetacy.backend.endpoint.auth.generate
 
-import app.meetacy.backend.types.AccessToken
-import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.serializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -17,11 +17,11 @@ data class GenerateParam(
 @Serializable
 data class GenerateTokenResponse(
     val status: Boolean,
-    val result: AccessTokenSerializable
+    val result: AccessIdentitySerializable
 )
 
 interface TokenGenerateRepository {
-    suspend fun generateToken(nickname: String): AccessToken
+    suspend fun generateToken(nickname: String): AccessIdentity
 }
 
 fun Route.generateToken(tokenGenerateRepository: TokenGenerateRepository) = post ("/generate") {

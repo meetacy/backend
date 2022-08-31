@@ -2,16 +2,16 @@ package app.meetacy.backend.types
 
 // a combination of meeting id and access hash
 @JvmInline
-value class MeetingIdentity private constructor(val identity: String) {
+value class MeetingIdentity private constructor(val string: String) {
     constructor(meetingId: MeetingId, accessHash: AccessHash) : this("$meetingId:$accessHash")
 
-    val meetingId get() = identity
+    val meetingId get() = string
         .split(":")
         .first()
         .toLong()
         .let(::MeetingId)
 
-    val accessHash get() = identity
+    val accessHash get() = string
         .split(":", limit = 2)
         .last()
         .let(::AccessHash)

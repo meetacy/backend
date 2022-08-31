@@ -1,9 +1,9 @@
 package app.meetacy.backend.endpoint.users
 
 import app.meetacy.backend.endpoint.types.User
-import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.UserIdentity
-import app.meetacy.backend.types.serialization.AccessTokenSerializable
+import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.UserIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 interface UserRepository {
     suspend fun getUser(
         identity: UserIdentity? = null,
-        accessToken: AccessToken
+        accessIdentity: AccessIdentity
     ): GetUserResult
 }
 
@@ -27,7 +27,7 @@ sealed interface GetUserResult {
 @Serializable
 data class GetUserParams(
     val identity: UserIdentitySerializable? = null,
-    val accessToken: AccessTokenSerializable
+    val accessToken: AccessIdentitySerializable
 )
 
 @Serializable
@@ -44,7 +44,7 @@ fun Route.getUser(provider: UserRepository) = post("/users/get") {
     val result = when (
         val result = provider.getUser(
             identity = params.identity?.type(),
-            accessToken = params.accessToken.type()
+            accessIdentity = params.accessToken.type()
         )
     ) {
         is GetUserResult.Success -> GetUserResponse(
