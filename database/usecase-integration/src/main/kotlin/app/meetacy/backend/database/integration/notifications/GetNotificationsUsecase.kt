@@ -12,6 +12,7 @@ import org.jetbrains.exposed.sql.Database
 class DatabaseGetNotificationStorage(db: Database) : GetNotificationsUsecase.Storage {
     private val notificationsTable = NotificationsTable(db)
     private val lastReadNotificationsTable = LastReadNotificationsTable(db)
+
     override suspend fun getLastReadNotification(userId: UserId): NotificationId =
         lastReadNotificationsTable.getLastReadNotificationId(userId)
 
@@ -25,4 +26,3 @@ class DatabaseGetNotificationStorage(db: Database) : GetNotificationsUsecase.Sto
             .map(DatabaseNotification::mapToUsecase)
 
 }
-

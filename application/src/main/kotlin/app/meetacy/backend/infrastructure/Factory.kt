@@ -7,6 +7,8 @@ import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMe
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
 import app.meetacy.backend.database.integration.meetings.list.DatabaseGetMeetingsListStorage
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
+import app.meetacy.backend.database.integration.notifications.DatabaseGetNotificationStorage
+import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
 import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateTokenStorage
 import app.meetacy.backend.database.integration.types.DatabaseAuthRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetMeetingsViewsRepository
@@ -18,8 +20,6 @@ import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
-import app.meetacy.backend.mock.integration.notifications.MockGetNotificationStorage
-import app.meetacy.backend.mock.integration.notifications.MockReadNotificationsStorage
 import app.meetacy.backend.mock.integration.email.DatabaseLinkEmailStorage
 import app.meetacy.backend.mock.integration.email.MockLinkEmailMailer
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
@@ -139,13 +139,13 @@ fun startMockEndpoints(
                     authRepository = authRepository,
                     usersRepository = DatabaseGetUsersViewsRepository(db),
                     meetingsRepository = DatabaseGetMeetingsViewsRepository(db),
-                    storage = MockGetNotificationStorage
+                    storage = DatabaseGetNotificationStorage(db)
                 )
             ),
             readNotificationsRepository = UsecaseReadNotificationsRepository(
                 usecase = ReadNotificationsUsecase(
                     authRepository = authRepository,
-                    storage = MockReadNotificationsStorage
+                    storage = DatabaseReadNotificationsStorage(db)
                 )
             )
         )
