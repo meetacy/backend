@@ -4,8 +4,7 @@ import app.meetacy.backend.mock.storage.MockMeeting
 import app.meetacy.backend.usecase.types.FullMeeting
 
 fun MockMeeting.mapToUsecase() = FullMeeting(
-    id = id,
-    accessHash = accessHash,
+    identity = identity,
     creatorId = creatorId,
     date = date,
     location = location,

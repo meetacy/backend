@@ -71,8 +71,10 @@ class MeetingsTable(private val db: Database) : Table() {
         }
 
     private fun ResultRow.toDatabaseMeeting() = DatabaseMeeting(
-        id = MeetingId(this[MEETING_ID]),
-        accessHash = AccessHash(this[ACCESS_HASH]),
+        identity = MeetingIdentity(
+            meetingId = MeetingId(this[MEETING_ID]),
+            accessHash = AccessHash(this[ACCESS_HASH])
+        ),
         creatorId = UserId(this[CREATOR_ID]),
         date = Date(this[DATE]),
         location = Location(this[LATITUDE], this[LONGITUDE]),

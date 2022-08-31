@@ -6,6 +6,7 @@ import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.types.AccessHash
 import app.meetacy.backend.types.Date
 import app.meetacy.backend.types.Location
+import app.meetacy.backend.types.MeetingIdentity
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.meetings.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.ViewMeetingsUsecase
@@ -26,8 +27,7 @@ class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsec
     ): FullMeeting {
         val meetingId = meetingsTable.addMeeting(accessHash, creatorId, date, location, title, description)
         return FullMeeting(
-            id = meetingId,
-            accessHash = accessHash,
+            identity = MeetingIdentity(meetingId, accessHash),
             creatorId = creatorId,
             date = date,
             location = location,

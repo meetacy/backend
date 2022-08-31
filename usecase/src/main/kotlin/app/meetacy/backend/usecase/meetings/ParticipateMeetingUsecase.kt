@@ -3,6 +3,7 @@ package app.meetacy.backend.usecase.meetings
 import app.meetacy.backend.types.AccessHash
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.MeetingId
+import app.meetacy.backend.types.MeetingIdentity
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
@@ -15,21 +16,20 @@ class ParticipateMeetingUsecase(
 ) {
 
     suspend fun participateMeeting(
-        meetingId: MeetingId,
-        meetingAccessHash: AccessHash,
+        meetingIdentity: MeetingIdentity,
         accessToken: AccessToken
     ): Result {
         val userId = authRepository.authorize(accessToken) { return Result.TokenInvalid }
 
         val meeting = getMeetingsViewsRepository
-            .getMeetingsViewsOrNull(userId, listOf(meetingId))
+            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.meetingId))
             .first()
             ?: return Result.MeetingNotFound
 
-        if (meetingAccessHash != meeting.accessHash)
+        if (meetingIdentity.accessHash != meeting.identity.accessHash)
             return Result.MeetingNotFound
 
-        storage.addParticipant(meetingId, userId)
+        storage.addParticipant(meetingIdentity.meetingId, userId)
 
         return Result.Success
     }

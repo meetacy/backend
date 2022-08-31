@@ -1,12 +1,12 @@
 package app.meetacy.backend.endpoint.meetings.get
 
 import app.meetacy.backend.endpoint.types.Meeting
-import app.meetacy.backend.types.AccessHash
 import app.meetacy.backend.types.AccessToken
-import app.meetacy.backend.types.MeetingId
+import app.meetacy.backend.types.MeetingIdentity
 import app.meetacy.backend.types.serialization.AccessHashSerializable
 import app.meetacy.backend.types.serialization.AccessTokenSerializable
 import app.meetacy.backend.types.serialization.MeetingIdSerializable
+import app.meetacy.backend.types.serialization.MeetingIdentitySerializable
 
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -17,8 +17,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GetMeetingsParam(
     val accessToken: AccessTokenSerializable,
-    val meetingId: MeetingIdSerializable,
-    val meetingAccessHash: AccessHashSerializable
+    val meetingIdentity: MeetingIdentitySerializable
 )
 
 sealed interface GetMeetingResult {
@@ -30,8 +29,7 @@ sealed interface GetMeetingResult {
 interface GetMeetingRepository {
     suspend fun getMeeting(
         accessToken: AccessToken,
-        meetingId: MeetingId,
-        meetingAccessHash: AccessHash
+        meetingIdentity: MeetingIdentity
     ) : GetMeetingResult
 }
 
@@ -49,8 +47,7 @@ fun Route.getMeetings(getMeetingRepository: GetMeetingRepository) = post("/get")
     val result = when(
         val result = getMeetingRepository.getMeeting(
             params.accessToken.type(),
-            params.meetingId.type(),
-            params.meetingAccessHash.type()
+            params.meetingIdentity.type()
         )
     ) {
         is GetMeetingResult.Success -> GetMeetingResponse(

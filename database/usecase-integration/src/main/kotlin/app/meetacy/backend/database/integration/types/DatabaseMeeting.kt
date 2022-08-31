@@ -4,8 +4,7 @@ import app.meetacy.backend.database.types.DatabaseMeeting
 import app.meetacy.backend.usecase.types.FullMeeting
 
 fun DatabaseMeeting.mapToUsecase() = FullMeeting(
-    id = id,
-    accessHash = accessHash,
+    identity = identity,
     creatorId = creatorId,
     date = date,
     location = location,

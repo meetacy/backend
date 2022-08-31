@@ -15,7 +15,12 @@ object MeetingsStorage {
     ): MockMeeting {
         val id = MeetingId(data.size.toLong())
         val meeting = MockMeeting(
-            id, accessHash, creatorId, date, location, title, description
+            identity = MeetingIdentity(id, accessHash),
+            creatorId = creatorId,
+            date = date,
+            location = location,
+            title = title,
+            description = description
         )
         data += meeting
         return meeting
