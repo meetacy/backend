@@ -19,7 +19,7 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.mock.integration.notifications.MockGetNotificationStorage
-import app.meetacy.backend.mock.integration.MockReadNotificationsStorage
+import app.meetacy.backend.mock.integration.notifications.MockReadNotificationsStorage
 import app.meetacy.backend.mock.integration.email.DatabaseLinkEmailStorage
 import app.meetacy.backend.mock.integration.email.MockLinkEmailMailer
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase

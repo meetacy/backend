@@ -28,7 +28,8 @@ class ParticipateMeetingUsecase(
         if (meetingIdentity.accessHash != meeting.identity.accessHash)
             return Result.MeetingNotFound
 
-        storage.addParticipant(meetingIdentity.meetingId, userId)
+        if(!storage.isParticipating(meetingIdentity.meetingId, userId))
+            storage.addParticipant(meetingIdentity.meetingId, userId)
 
         return Result.Success
     }
@@ -44,5 +45,10 @@ class ParticipateMeetingUsecase(
             meetingId: MeetingId,
             userId: UserId
         )
+
+        suspend fun isParticipating(
+            meetingId: MeetingId, userId: UserId
+        ): Boolean
     }
+
 }

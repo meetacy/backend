@@ -10,4 +10,7 @@ object MockParticipateMeetingStorage : ParticipateMeetingUsecase.Storage {
         ParticipantsStorage
             .addParticipant(meetingId, userId)
     }
+    override suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =
+        ParticipantsStorage
+            .isParticipating(meetingId, userId)
 }

@@ -36,7 +36,7 @@ class ParticipantsTable(private val db: Database) : Table() {
     fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =
         transaction(db) {
             select { (MEETING_ID eq meetingId.long) and (USER_ID eq userId.long) }
-                .empty()
+                .any()
         }
 
     fun getMeetingIds(userId: UserId): List<MeetingId> =

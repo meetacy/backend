@@ -33,7 +33,7 @@ class FriendsTable(private val db: Database) : Table()  {
     fun isSubscribed(userId: UserId, friendId: UserId): Boolean = transaction(db) {
         select {
             (USER_ID eq userId.long) and (FRIEND_ID eq friendId.long)
-        }.firstOrNull() != null
+        }.any()
     }
 
     fun getSubscriptions(userId: UserId): List<UserId> = transaction(db) {
