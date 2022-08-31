@@ -9,8 +9,8 @@ import app.meetacy.backend.usecase.users.GetUsersViewsUsecase
 import app.meetacy.backend.usecase.users.ViewUserUsecase
 
 object MockGetUsersViewsStorage : GetUsersViewsUsecase.Storage {
-    override suspend fun getUsers(userIds: List<UserId>): List<FullUser?> =
-        userIds
+    override suspend fun getUsers(userIdentities: List<UserId>): List<FullUser?> =
+        userIdentities
             .map { UsersStorage.getUser(it) }
             .map {  user -> user?.mapToUsecase() }
 }

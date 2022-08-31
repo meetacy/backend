@@ -3,6 +3,7 @@ package app.meetacy.backend.usecase.friends.add
 import app.meetacy.backend.types.AccessHash
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.UserIdentity
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetUsersViewsRepository
 import app.meetacy.backend.usecase.types.authorize
@@ -15,16 +16,17 @@ class AddFriendUsecase(
 ) {
     suspend fun addFriendUsecase(
         accessToken: AccessToken,
-        friendId: UserId,
-        friendAccessHash: AccessHash
+        friendIdentity: UserIdentity
     ): Result {
         val userId = authRepository.authorize(accessToken) { return Result.InvalidToken }
-        val friend = getUsersViewsRepository.getUsersViewsOrNull(userId, listOf(friendId))
+
+        val friend = getUsersViewsRepository.getUsersViewsOrNull(userId, listOf(friendIdentity.userId))
             .first()
             ?: return Result.FriendNotFound
-        if (friend.accessHash != friendAccessHash) return Result.FriendNotFound
 
-        if (!storage.isSubscribed(userId, friendId)) storage.addFriend(userId, friendId)
+        if (friend.identity.accessHash != friendIdentity.accessHash) return Result.FriendNotFound
+
+        if (!storage.isSubscribed(userId, friendIdentity.userId)) storage.addFriend(userId, friendIdentity.userId)
 
         return Result.Success
     }

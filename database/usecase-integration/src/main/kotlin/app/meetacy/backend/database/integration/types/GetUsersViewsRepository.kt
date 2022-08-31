@@ -9,9 +9,9 @@ import app.meetacy.backend.usecase.users.GetUsersViewsUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseGetUsersViewsRepository(private val db: Database) : GetUsersViewsRepository {
-    override suspend fun getUsersViewsOrNull(viewerId: UserId, userIds: List<UserId>): List<UserView?> =
+    override suspend fun getUsersViewsOrNull(viewerId: UserId, userIdentities: List<UserId>): List<UserView?> =
         GetUsersViewsUsecase(
             DatabaseGetUsersViewsStorage(db),
             DatabaseGetUsersViewsViewUserRepository
-        ).viewUsers(viewerId, userIds)
+        ).viewUsers(viewerId, userIdentities)
 }

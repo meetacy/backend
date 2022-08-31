@@ -8,9 +8,9 @@ import app.meetacy.backend.usecase.types.UserView
 import app.meetacy.backend.usecase.users.GetUsersViewsUsecase
 
 object MockGetUsersViewsRepository : GetUsersViewsRepository {
-    override suspend fun getUsersViewsOrNull(viewerId: UserId, userIds: List<UserId>): List<UserView?> =
+    override suspend fun getUsersViewsOrNull(viewerId: UserId, userIdentities: List<UserId>): List<UserView?> =
         GetUsersViewsUsecase(
             MockGetUsersViewsStorage,
             MockGetUsersViewsViewUserRepository
-        ).viewUsers(viewerId, userIds)
+        ).viewUsers(viewerId, userIdentities)
 }

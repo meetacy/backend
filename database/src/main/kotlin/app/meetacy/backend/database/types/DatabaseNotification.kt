@@ -4,10 +4,11 @@ import app.meetacy.backend.types.Date
 import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.NotificationId
 import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.UserIdentity
 
 data class DatabaseNotification(
     val id: NotificationId,
-    val ownerId: UserId,
+    val ownerId: UserIdentity,
     val type: Type,
     val date: Date,
     val inviterId: UserId? = null,

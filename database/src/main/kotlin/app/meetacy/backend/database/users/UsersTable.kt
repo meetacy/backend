@@ -29,23 +29,24 @@ class UsersTable(private val db: Database) : Table() {
             statement[NICKNAME] = nickname
         }
         return@transaction DatabaseUser(
-            UserId(result[USER_ID]),
-            AccessHash(result[ACCESS_HASH]),
+            UserIdentity(
+                UserId(result[USER_ID]),
+                AccessHash(result[ACCESS_HASH])
+            ),
             result[NICKNAME],
             result[EMAIL],
             result[EMAIL_VERIFIED]
         )
     }
 
-    fun getUser(
-        userId: UserId
-    ): DatabaseUser? = transaction(db) {
-       val result = select { USER_ID eq userId.long }.firstOrNull() ?: return@transaction null
-       return@transaction result.toUser()
-    }
+    fun getUsersOrNull(userIds: List<UserId>): List<DatabaseUser?> = transaction(db) {
+        val rawUserIds = userIds.map { it.long }
 
-    fun getUsers(userIds: List<UserId>): List<DatabaseUser> {
+        val foundUsers = select { USER_ID inList rawUserIds }
+            .map { it.toUser() }
+            .associateBy { user -> user.identity.userId }
 
+        return@transaction userIds.map { foundUsers[it] }
     }
 
     fun isEmailOccupied(
@@ -57,29 +58,26 @@ class UsersTable(private val db: Database) : Table() {
 
     private fun ResultRow.toUser(): DatabaseUser =
         DatabaseUser(
-            UserId(this[USER_ID]),
-            AccessHash(this[ACCESS_HASH]),
+            UserIdentity(
+                UserId(this[USER_ID]),
+                AccessHash(this[ACCESS_HASH])
+            ),
             this[NICKNAME],
             this[EMAIL],
             this[EMAIL_VERIFIED]
         )
 
-    fun updateEmail(
-        userId: UserId,
-        email: String
-    ) {
+    fun updateEmail(userIdentity: UserId, email: String) {
         transaction(db) {
-            update({ USER_ID eq userId.long }) {statement ->
+            update({ USER_ID eq userIdentity.long }) { statement ->
                 statement[EMAIL] = email
             }
         }
     }
 
-    fun verifyEmail(
-        userId: UserId
-    ) {
+    fun verifyEmail(userIdentity: UserId) {
         transaction(db) {
-            update({ USER_ID eq userId.long }) { statement ->
+            update({ USER_ID eq userIdentity.long }) { statement ->
                 statement[EMAIL_VERIFIED] = true
             }
         }

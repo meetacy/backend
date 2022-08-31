@@ -1,7 +1,6 @@
 package app.meetacy.backend.usecase.friends.get
 
 import app.meetacy.backend.types.AccessToken
-import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.*
 
@@ -19,7 +18,7 @@ class GetFriendsUsecase(
             .partition { friendId -> storage.isSubscribed(friendId, userId) }
 
         val usersViewsIterator = getUsersViewsRepository
-            .getUsersViews(userId, userIds = friends + subscriptions)
+            .getUsersViews(userId, userIdentities = friends + subscriptions)
             .iterator()
 
         val friendsViews = friends.map { usersViewsIterator.next() }

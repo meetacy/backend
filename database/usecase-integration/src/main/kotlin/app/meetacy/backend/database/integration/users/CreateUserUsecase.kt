@@ -9,5 +9,5 @@ import org.jetbrains.exposed.sql.Database
 class DatabaseCreateUserStorage(private val db: Database) : CreateUserUsecase.Storage {
     private val usersTable = UsersTable(db)
     override suspend fun addUser(accessHash: AccessHash, nickname: String): UserId =
-        usersTable.addUser(accessHash, nickname).id
+        usersTable.addUser(accessHash, nickname).identity.userId
 }

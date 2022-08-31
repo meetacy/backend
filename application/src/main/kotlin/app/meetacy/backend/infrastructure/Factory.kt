@@ -54,6 +54,7 @@ fun startMockEndpoints(
     db: Database,
     wait: Boolean
 ) {
+    val authRepository = DatabaseAuthRepository(db)
     startEndpoints(
         port = port,
         wait = wait,
@@ -63,7 +64,8 @@ fun startMockEndpoints(
                     usecase = LinkEmailUsecase(
                         storage = DatabaseLinkEmailStorage(db),
                         mailer = MockLinkEmailMailer,
-                        hashGenerator = DefaultHashGenerator
+                        hashGenerator = DefaultHashGenerator,
+                        authRepository = authRepository
                     )
                 ),
                 confirmEmailRepository = UsecaseConfirmEmailRepository(
@@ -88,14 +90,14 @@ fun startMockEndpoints(
         friendsDependencies = FriendsDependencies(
             addFriendRepository = UsecaseAddFriendRepository(
                 usecase = AddFriendUsecase(
-                    authRepository = DatabaseAuthRepository(db),
+                    authRepository = authRepository,
                     getUsersViewsRepository = DatabaseGetUsersViewsRepository(db),
                     storage = DatabaseAddFriendStorage(db)
                 )
             ),
             getFriendsRepository = UsecaseGetFriendsRepository(
                 usecase = GetFriendsUsecase(
-                    authRepository = DatabaseAuthRepository(db),
+                    authRepository = authRepository,
                     getUsersViewsRepository = DatabaseGetUsersViewsRepository(db),
                     storage = DatabaseGetFriendsStorage(db)
                 )
@@ -104,7 +106,7 @@ fun startMockEndpoints(
         meetingsDependencies = MeetingsDependencies(
             meetingsListRepository = UsecaseMeetingsListRepository(
                 usecase = GetMeetingsListUsecase(
-                    authRepository = DatabaseAuthRepository(db),
+                    authRepository = authRepository,
                     storage = DatabaseGetMeetingsListStorage(db),
                     getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
                 )
@@ -113,19 +115,19 @@ fun startMockEndpoints(
                 usecase = CreateMeetingUsecase(
                     hashGenerator = DefaultHashGenerator,
                     storage = DatabaseCreateMeetingStorage(db),
-                    authRepository = DatabaseAuthRepository(db),
+                    authRepository = authRepository,
                     viewMeetingRepository = DatabaseCreateMeetingViewMeetingRepository(db)
                 )
             ),
             getMeetingRepository = UsecaseGetMeetingRepository(
                 usecase = GetMeetingUsecase(
-                    authRepository = DatabaseAuthRepository(db),
+                    authRepository = authRepository,
                     getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
                 )
             ),
             participateMeetingRepository = UsecaseParticipateMeetingRepository(
                 usecase = ParticipateMeetingUsecase(
-                    authRepository = DatabaseAuthRepository(db),
+                    authRepository = authRepository,
                     storage = DatabaseParticipateMeetingStorage(db),
                     getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
                 )
@@ -134,7 +136,7 @@ fun startMockEndpoints(
         notificationsDependencies = NotificationsDependencies(
             getNotificationsRepository = UsecaseGetNotificationsRepository(
                 usecase = GetNotificationsUsecase(
-                    authRepository = DatabaseAuthRepository(db),
+                    authRepository = authRepository,
                     usersRepository = DatabaseGetUsersViewsRepository(db),
                     meetingsRepository = DatabaseGetMeetingsViewsRepository(db),
                     storage = MockGetNotificationStorage
@@ -142,7 +144,7 @@ fun startMockEndpoints(
             ),
             readNotificationsRepository = UsecaseReadNotificationsRepository(
                 usecase = ReadNotificationsUsecase(
-                    authRepository = DatabaseAuthRepository(db),
+                    authRepository = authRepository,
                     storage = MockReadNotificationsStorage
                 )
             )

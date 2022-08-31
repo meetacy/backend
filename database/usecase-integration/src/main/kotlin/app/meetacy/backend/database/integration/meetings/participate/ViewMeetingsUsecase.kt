@@ -6,7 +6,7 @@ import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.meetings.ViewMeetingsUsecase
 import org.jetbrains.exposed.sql.Database
 
-class DatabaseViewMeetingsUsecaseStorage(private val db: Database) : ViewMeetingsUsecase.Storage {
+class DatabaseViewMeetingsUsecaseStorage(db: Database) : ViewMeetingsUsecase.Storage {
     private val participantsTable = ParticipantsTable(db)
 
     override suspend fun getParticipantsCount(meetingIds: List<MeetingId>): List<Int> =

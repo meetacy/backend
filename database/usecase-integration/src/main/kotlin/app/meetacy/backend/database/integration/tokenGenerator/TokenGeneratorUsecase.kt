@@ -9,7 +9,7 @@ import app.meetacy.backend.usecase.types.HashGenerator
 import app.meetacy.backend.usecase.users.CreateUserUsecase
 import org.jetbrains.exposed.sql.Database
 
-class DatabaseGenerateTokenStorage(private val hashGenerator: HashGenerator, private val db: Database) : GenerateTokenUsecase.Storage {
+class DatabaseGenerateTokenStorage(hashGenerator: HashGenerator, db: Database) : GenerateTokenUsecase.Storage {
     private val createUserUsecase = CreateUserUsecase(hashGenerator, DatabaseCreateUserStorage(db))
     private val tokensTable = TokensTable(db)
 

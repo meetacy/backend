@@ -24,6 +24,6 @@ class ConfirmEmailUsecase(private val storage: Storage) {
          */
         suspend fun getConfirmHashOwnerId(email: String, confirmHash: String): UserId?
         suspend fun deleteHashes(email: String)
-        suspend fun verifyEmail(userId: UserId)
+        suspend fun verifyEmail(userIdentity: UserId)
     }
 }

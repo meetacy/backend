@@ -6,6 +6,7 @@ import app.meetacy.backend.database.types.DatabaseToken
 import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.UserIdentity
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 

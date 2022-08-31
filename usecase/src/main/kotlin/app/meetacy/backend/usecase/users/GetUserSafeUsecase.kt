@@ -3,6 +3,7 @@ package app.meetacy.backend.usecase.users
 import app.meetacy.backend.types.AccessHash
 import app.meetacy.backend.types.AccessToken
 import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.UserIdentity
 import app.meetacy.backend.usecase.types.GetUsersViewsRepository
 import app.meetacy.backend.usecase.types.UserView
 import app.meetacy.backend.usecase.types.getUserViewOrNull
@@ -17,13 +18,13 @@ class GetUserSafeUsecase(
 
         val userId = when (params) {
             is Params.Self -> ownerId
-            is Params.User -> params.id
+            is Params.User -> params.identity.userId
         }
 
         val user = usersViewsRepository.getUserViewOrNull(ownerId, userId)
             ?: return Result.UserNotFound
 
-        if (params is Params.User && params.accessHash != user.accessHash)
+        if (params is Params.User && params.identity.accessHash != user.identity.accessHash)
             return Result.UserNotFound
 
         return Result.Success(user)
@@ -36,7 +37,7 @@ class GetUserSafeUsecase(
     sealed interface Params {
         val accessToken: AccessToken
         class Self(override val accessToken: AccessToken) : Params
-        class User(val id: UserId, val accessHash: AccessHash, override val accessToken: AccessToken) : Params
+        class User(val identity: UserIdentity, override val accessToken: AccessToken) : Params
     }
 
     sealed interface Result {

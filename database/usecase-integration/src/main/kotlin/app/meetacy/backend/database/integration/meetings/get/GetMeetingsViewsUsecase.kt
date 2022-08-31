@@ -4,7 +4,6 @@ import app.meetacy.backend.database.integration.meetings.participate.DatabaseVie
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.meetings.MeetingsTable
-import app.meetacy.backend.database.types.DatabaseMeeting
 import app.meetacy.backend.types.*
 import app.meetacy.backend.usecase.meetings.GetMeetingsViewsUsecase
 import app.meetacy.backend.usecase.meetings.ViewMeetingsUsecase

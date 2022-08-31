@@ -5,6 +5,7 @@ package app.meetacy.backend.database.email
 import app.meetacy.backend.types.EMAIL_MAX_LIMIT
 import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.UserIdentity
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Table

@@ -7,5 +7,5 @@ import app.meetacy.backend.usecase.users.CreateUserUsecase
 
 object MockCreateUserStorage : CreateUserUsecase.Storage {
     override suspend fun addUser(accessHash: AccessHash, nickname: String): UserId =
-        UsersStorage.addUser(accessHash, nickname).id
+        UsersStorage.addUser(accessHash, nickname).identity.userId
 }

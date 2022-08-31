@@ -1,8 +1,8 @@
 package app.meetacy.backend.types.serialization
 
 import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.UserIdentity
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Serializer
 
 @Serializable
 @JvmInline

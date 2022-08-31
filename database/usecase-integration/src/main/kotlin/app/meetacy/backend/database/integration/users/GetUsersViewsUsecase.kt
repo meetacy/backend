@@ -12,9 +12,9 @@ import org.jetbrains.exposed.sql.Database
 class DatabaseGetUsersViewsStorage(db: Database) : GetUsersViewsUsecase.Storage {
     private val usersTable = UsersTable(db)
 
-    override suspend fun getUsers(userIds: List<UserId>): List<FullUser?> =
-        usersTable.getUsers(userIds)
-            .map { user -> user.mapToUsecase() }
+    override suspend fun getUsers(userIdentities: List<UserId>): List<FullUser?> =
+        usersTable.getUsersOrNull(userIdentities)
+            .map { user -> user?.mapToUsecase() }
 }
 
 object DatabaseGetUsersViewsViewUserRepository : GetUsersViewsUsecase.ViewUserRepository {
