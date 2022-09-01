@@ -16,13 +16,13 @@ class CreateMeetingUsecase(
     }
 
     suspend fun createMeeting(
-        accessToken: AccessToken,
+        accessIdentity: AccessIdentity,
         title: String?,
         description: String?,
         date: Date,
         location: Location,
     ): Result {
-        val creatorId = authRepository.authorize(accessToken) { return Result.TokenInvalid }
+        val creatorId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
         val accessHash = AccessHash(hashGenerator.generate())
         val fullMeeting = storage.addMeeting(accessHash, creatorId, date, location, title, description)
         val meetingView = viewMeetingRepository.viewMeeting(creatorId, fullMeeting)

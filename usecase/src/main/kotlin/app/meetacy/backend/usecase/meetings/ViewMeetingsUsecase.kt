@@ -33,8 +33,7 @@ class ViewMeetingsUsecase(
         return meetings.map { meeting ->
             return@map with (meeting) {
                 MeetingView(
-                    id = id,
-                    accessHash = accessHash,
+                    identity = identity,
                     creator = creators.next(),
                     date = date,
                     location = location,

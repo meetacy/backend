@@ -17,10 +17,10 @@ include(
     "endpoints",
     "usecase",
     "usecase:endpoints-integration",
-    "mock",
-    "mock:usecase-integration",
     "types",
     "types:serialization-integration",
     "hash-generator",
-    "hash-generator:usecase-integration"
+    "hash-generator:usecase-integration",
+    "database",
+    "database:usecase-integration"
 )

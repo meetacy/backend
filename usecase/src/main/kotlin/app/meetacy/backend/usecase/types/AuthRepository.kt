@@ -1,21 +1,23 @@
 package app.meetacy.backend.usecase.types
 
-import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.UserId
 
 interface AuthRepository {
-    suspend fun authorize(accessToken: AccessToken): Result
-
-    sealed interface Result {
-        object TokenInvalid : Result
-        class Success(val userId: UserId) : Result
-    }
+    suspend fun authorize(accessIdentity: AccessIdentity): Boolean
 }
 
 suspend inline fun AuthRepository.authorize(
-    accessToken: AccessToken,
+    accessIdentity: AccessIdentity,
     fallback: () -> Nothing
-): UserId = when (val result = authorize(accessToken)) {
-    is AuthRepository.Result.Success -> result.userId
-    is AuthRepository.Result.TokenInvalid -> fallback()
+) {
+    if(!authorize(accessIdentity)) fallback()
+}
+
+suspend inline fun AuthRepository.authorizeWithUserId(
+    accessIdentity: AccessIdentity,
+    fallback: () -> Nothing
+): UserId {
+    authorize(accessIdentity, fallback)
+    return accessIdentity.userId
 }

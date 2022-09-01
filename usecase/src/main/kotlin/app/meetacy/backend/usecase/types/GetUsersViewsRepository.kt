@@ -3,15 +3,15 @@ package app.meetacy.backend.usecase.types
 import app.meetacy.backend.types.UserId
 
 interface GetUsersViewsRepository {
-    suspend fun getUsersViewsOrNull(viewerId: UserId, userIds: List<UserId>): List<UserView?>
+    suspend fun getUsersViewsOrNull(viewerId: UserId, userIdentities: List<UserId>): List<UserView?>
 }
 
-suspend fun GetUsersViewsRepository.getUsersViews(viewerId: UserId, userIds: List<UserId>) =
-    getUsersViewsOrNull(viewerId, userIds)
+suspend fun GetUsersViewsRepository.getUsersViews(viewerId: UserId, userIdentities: List<UserId>) =
+    getUsersViewsOrNull(viewerId, userIdentities)
         .filterNotNull()
         .apply {
-            require(size == userIds.size) {
-                "Cannot find every user ($userIds). If it is a normal case, please consider to use getUsersViewsOrNull"
+            require(size == userIdentities.size) {
+                "Cannot find every user ($userIdentities). If it is a normal case, please consider to use getUsersViewsOrNull"
             }
         }
 

@@ -219,11 +219,11 @@ object Deps {
         const val Endpoints = ":endpoints"
         const val Usecase = ":usecase"
         const val UsecaseEndpoints = ":usecase:endpoints-integration"
-        const val Mock = ":mock"
-        const val MockUsecase = ":mock:usecase-integration"
         const val Types = ":types"
         const val TypesSerialization = ":types:serialization-integration"
         const val HashGenerator = ":hash-generator"
         const val HashGeneratorUsecase = ":hash-generator:usecase-integration"
+        const val Database = ":database"
+        const val DatabaseUsecase = ":database:usecase-integration"
     }
 }

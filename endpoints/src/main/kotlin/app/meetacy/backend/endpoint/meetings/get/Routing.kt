@@ -1,26 +1,21 @@
 package app.meetacy.backend.endpoint.meetings.get
 
 import app.meetacy.backend.endpoint.types.Meeting
-import app.meetacy.backend.types.AccessHash
-import app.meetacy.backend.types.AccessToken
-import app.meetacy.backend.types.MeetingId
-import app.meetacy.backend.types.serialization.AccessHashSerializable
-import app.meetacy.backend.types.serialization.AccessTokenSerializable
-import app.meetacy.backend.types.serialization.MeetingIdSerializable
-import app.meetacy.backend.types.serialization.UserIdSerializable
+import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.MeetingIdentity
+import app.meetacy.backend.types.serialization.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.MeetingIdentitySerializable
 
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class GetParam(
-    val accessToken: AccessTokenSerializable,
-    val meetingId: MeetingIdSerializable,
-    val meetingAccessHash: AccessHashSerializable
+data class GetMeetingsParam(
+    val accessToken: AccessIdentitySerializable,
+    val meetingIdentity: MeetingIdentitySerializable
 )
 
 sealed interface GetMeetingResult {
@@ -31,9 +26,8 @@ sealed interface GetMeetingResult {
 
 interface GetMeetingRepository {
     suspend fun getMeeting(
-        accessToken: AccessToken,
-        meetingId: MeetingId,
-        meetingAccessHash: AccessHash
+        accessIdentity: AccessIdentity,
+        meetingIdentity: MeetingIdentity
     ) : GetMeetingResult
 }
 
@@ -45,14 +39,13 @@ data class GetMeetingResponse(
     val errorMessage: String?
 )
 
-fun Route.getMeeting(getMeetingRepository: GetMeetingRepository) = post("/get") {
-    val params = call.receive<GetParam>()
+fun Route.getMeetings(getMeetingRepository: GetMeetingRepository) = post("/get") {
+    val params = call.receive<GetMeetingsParam>()
 
     val result = when(
         val result = getMeetingRepository.getMeeting(
             params.accessToken.type(),
-            params.meetingId.type(),
-            params.meetingAccessHash.type()
+            params.meetingIdentity.type()
         )
     ) {
         is GetMeetingResult.Success -> GetMeetingResponse(
@@ -61,7 +54,7 @@ fun Route.getMeeting(getMeetingRepository: GetMeetingRepository) = post("/get") 
             errorCode = null,
             errorMessage = null
         )
-        is  GetMeetingResult.TokenInvalid -> GetMeetingResponse(
+        is GetMeetingResult.TokenInvalid -> GetMeetingResponse(
             status = false,
             result = null,
             errorCode = 1,

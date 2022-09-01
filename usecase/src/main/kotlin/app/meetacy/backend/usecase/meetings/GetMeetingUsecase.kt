@@ -1,30 +1,28 @@
 package app.meetacy.backend.usecase.meetings
 
-import app.meetacy.backend.types.AccessHash
-import app.meetacy.backend.types.AccessToken
-import app.meetacy.backend.types.MeetingId
+import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.MeetingIdentity
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
 import app.meetacy.backend.usecase.types.MeetingView
-import app.meetacy.backend.usecase.types.authorize
+import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class GetMeetingUsecase(
     private val authRepository: AuthRepository,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository
 ) {
     suspend fun getMeeting(
-        accessToken: AccessToken,
-        meetingId: MeetingId,
-        meetingAccessHash: AccessHash
+        accessIdentity: AccessIdentity,
+        meetingIdentity: MeetingIdentity
     ): Result {
-        val userId = authRepository.authorize(accessToken) { return Result.TokenInvalid }
+        val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
         val meeting = getMeetingsViewsRepository
-            .getMeetingsViewsOrNull(userId, listOf(meetingId))
+            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.meetingId))
             .first()
             ?: return Result.MeetingNotFound
 
-        if (meetingAccessHash != meeting.accessHash)
+        if (meetingIdentity.accessHash != meeting.identity.accessHash)
             return Result.MeetingNotFound
 
         return Result.Success(meeting)

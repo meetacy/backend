@@ -1,10 +1,10 @@
 package app.meetacy.backend.usecase.notification
 
-import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.NotificationId
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.authorize
+import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class ReadNotificationsUsecase(
     private val authRepository: AuthRepository,
@@ -12,10 +12,10 @@ class ReadNotificationsUsecase(
 ) {
 
     suspend fun read(
-        accessToken: AccessToken,
+        accessIdentity: AccessIdentity,
         lastNotificationId: NotificationId
     ): Result {
-        val userId = authRepository.authorize(accessToken) { return Result.TokenInvalid }
+        val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
         if (!storage.notificationExists(lastNotificationId))
             return Result.LastNotificationIdInvalid

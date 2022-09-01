@@ -5,8 +5,7 @@ import app.meetacy.backend.types.serialization.serializable
 import app.meetacy.backend.usecase.types.MeetingView
 
 fun MeetingView.mapToEndpoint() = Meeting(
-    id = id.serializable(),
-    accessHash = accessHash.serializable(),
+    identity = identity.serializable(),
     creator = creator.mapToEndpoint(),
     date = date.serializable(),
     location = location.serializable(),

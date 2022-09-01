@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.integration.notifications.get
 
-import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.endpoint.notifications.get.GetNotificationsRepository
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
@@ -9,12 +9,12 @@ class UsecaseGetNotificationsRepository(
     private val usecase: GetNotificationsUsecase
 ) : GetNotificationsRepository {
     override suspend fun getNotifications(
-        accessToken: AccessToken,
+        accessIdentity: AccessIdentity,
         offset: Long,
         amount: Int
     ): GetNotificationsRepository.Result = when (
         val result = usecase.getNotifications(
-            accessToken = accessToken,
+            accessIdentity = accessIdentity,
             offset = offset,
             count = amount
         )

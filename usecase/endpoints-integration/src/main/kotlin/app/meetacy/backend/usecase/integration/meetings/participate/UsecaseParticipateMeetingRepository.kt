@@ -2,9 +2,8 @@ package app.meetacy.backend.usecase.integration.meetings.participate
 
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepository
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingResult
-import app.meetacy.backend.types.AccessHash
-import app.meetacy.backend.types.AccessToken
-import app.meetacy.backend.types.MeetingId
+import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.MeetingIdentity
 import app.meetacy.backend.usecase.meetings.ParticipateMeetingUsecase
 
 class UsecaseParticipateMeetingRepository(
@@ -12,12 +11,10 @@ class UsecaseParticipateMeetingRepository(
 ) : ParticipateMeetingRepository {
 
     override suspend fun participateMeeting(
-        meetingId: MeetingId,
-        meetingAccessHash: AccessHash,
-        accessToken: AccessToken
+        meetingIdentity: MeetingIdentity,
+        accessIdentity: AccessIdentity
     ): ParticipateMeetingResult =
-
-        when (usecase.participateMeeting(meetingId, meetingAccessHash, accessToken)) {
+        when (usecase.participateMeeting(meetingIdentity, accessIdentity)) {
             is ParticipateMeetingUsecase.Result.Success ->
                 ParticipateMeetingResult.Success
 

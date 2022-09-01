@@ -9,13 +9,15 @@ class UsecaseAddFriendRepository(
     private val usecase: AddFriendUsecase
 ) : AddFriendRepository {
     override suspend fun addFriend(addFriendParams: AddFriendParams): AddFriendResult = with(addFriendParams) {
-        when (usecase.addFriendUsecase(accessToken.type(), friendId.type(), friendAccessHash.type())) {
+        when (usecase.addFriendUsecase(accessToken.type(), friendIdentity.type())) {
             AddFriendUsecase.Result.FriendNotFound ->
                 AddFriendResult.FriendNotFound
             AddFriendUsecase.Result.InvalidToken ->
                 AddFriendResult.InvalidToken
             AddFriendUsecase.Result.Success ->
                 AddFriendResult.Success
+            AddFriendUsecase.Result.FriendAlreadyAdded ->
+                AddFriendResult.FriendAlreadyAdded
         }
     }
 }

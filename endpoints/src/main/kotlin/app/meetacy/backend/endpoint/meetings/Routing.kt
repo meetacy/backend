@@ -3,7 +3,7 @@ package app.meetacy.backend.endpoint.meetings
 import app.meetacy.backend.endpoint.meetings.create.CreateMeetingRepository
 import app.meetacy.backend.endpoint.meetings.create.createMeeting
 import app.meetacy.backend.endpoint.meetings.get.GetMeetingRepository
-import app.meetacy.backend.endpoint.meetings.get.getMeeting
+import app.meetacy.backend.endpoint.meetings.get.getMeetings
 import app.meetacy.backend.endpoint.meetings.list.MeetingsListRepository
 import app.meetacy.backend.endpoint.meetings.list.listMeetings
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepository
@@ -23,6 +23,6 @@ fun Route.meetings(
 ) = route("/meetings") {
     listMeetings(dependencies.meetingsListRepository)
     createMeeting(dependencies.createMeetingRepository)
-    getMeeting(dependencies.getMeetingRepository)
+    getMeetings(dependencies.getMeetingRepository)
     participateMeeting(dependencies.participateMeetingRepository)
 }
