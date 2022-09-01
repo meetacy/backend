@@ -17,8 +17,6 @@ include(
     "endpoints",
     "usecase",
     "usecase:endpoints-integration",
-    "mock",
-    "mock:usecase-integration",
     "types",
     "types:serialization-integration",
     "hash-generator",

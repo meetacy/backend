@@ -1,6 +1,6 @@
-package app.meetacy.backend.mock.email
+package app.meetacy.backend.database.email
 
-object MockEmailText {
+object DatabaseEmailText {
     fun getConfirmationText(email: String, confirmHash: String) = """
     Добро пожаловать в приложение Meetacy! 
     Вы решили привязать свой аккаунт к этой почте, чтобы

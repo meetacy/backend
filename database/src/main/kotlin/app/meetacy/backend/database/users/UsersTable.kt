@@ -49,6 +49,7 @@ class UsersTable(private val db: Database) : Table() {
         return@transaction userIds.map { foundUsers[it] }
     }
 
+
     fun isEmailOccupied(
         email: String
     ): Boolean = transaction(db) {

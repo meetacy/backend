@@ -1,6 +1,7 @@
 package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
+import app.meetacy.backend.database.integration.email.DatabaseLinkEmailMailer
 import app.meetacy.backend.database.integration.friends.DatabaseAddFriendStorage
 import app.meetacy.backend.database.integration.friends.DatabaseGetFriendsStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
@@ -20,8 +21,7 @@ import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
-import app.meetacy.backend.mock.integration.email.DatabaseLinkEmailStorage
-import app.meetacy.backend.mock.integration.email.MockLinkEmailMailer
+import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
@@ -63,7 +63,7 @@ fun startMockEndpoints(
                 linkEmailRepository = UsecaseLinkEmailRepository(
                     usecase = LinkEmailUsecase(
                         storage = DatabaseLinkEmailStorage(db),
-                        mailer = MockLinkEmailMailer,
+                        mailer = DatabaseLinkEmailMailer,
                         hashGenerator = DefaultHashGenerator,
                         authRepository = authRepository
                     )

@@ -1,26 +1,29 @@
-package app.meetacy.backend.mock.integration.email
+package app.meetacy.backend.database.integration.email
 
 import app.meetacy.backend.database.email.ConfirmationTable
-import app.meetacy.backend.mock.email.MockEmailSender
+import app.meetacy.backend.database.email.DatabaseEmailSender
+import app.meetacy.backend.database.email.DatabaseEmailText
+import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.UserId
-import app.meetacy.backend.mock.email.MockEmailText
-import app.meetacy.backend.mock.storage.TokensStorage
-import app.meetacy.backend.mock.storage.UsersStorage
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import org.jetbrains.exposed.sql.Database
 
-class DatabaseLinkEmailStorage(private val db: Database) : LinkEmailUsecase.Storage {
+class DatabaseLinkEmailStorage(db: Database) : LinkEmailUsecase.Storage {
     private val confirmationTable = ConfirmationTable(db)
+    private val usersTable = UsersTable(db)
 
     override suspend fun isEmailOccupied(email: String): Boolean =
-        UsersStorage.isEmailOccupied(email)
+        usersTable.isEmailOccupied(email)
 
     override suspend fun getUserId(token: AccessIdentity): UserId? =
-        TokensStorage.getToken(token)?.ownerId
+        usersTable.getUsersOrNull(listOf(UserId(token.userId.long)))
+            .first()
+            ?.identity
+            ?.userId
 
     override suspend fun updateEmail(userId: UserId, email: String) {
-        UsersStorage.updateEmail(userId, email)
+        usersTable.updateEmail(userId, email)
     }
 
     override suspend fun addConfirmationHash(userId: UserId, email: String, confirmationHash: String) {
@@ -28,10 +31,10 @@ class DatabaseLinkEmailStorage(private val db: Database) : LinkEmailUsecase.Stor
     }
 }
 
-object MockLinkEmailMailer : LinkEmailUsecase.Mailer {
+object DatabaseLinkEmailMailer : LinkEmailUsecase.Mailer {
     override fun sendEmailOccupiedMessage(email: String) =
-        MockEmailSender.sendEmail(email, MockEmailText.getOccupiedText())
+        DatabaseEmailSender.sendEmail(email, DatabaseEmailText.getOccupiedText())
 
     override fun sendConfirmationMessage(email: String, confirmationHash: String) =
-        MockEmailSender.sendEmail(email, MockEmailText.getConfirmationText(email, confirmationHash))
+        DatabaseEmailSender.sendEmail(email, DatabaseEmailText.getConfirmationText(email, confirmationHash))
 }

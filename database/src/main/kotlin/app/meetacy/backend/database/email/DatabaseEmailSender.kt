@@ -1,6 +1,6 @@
-package app.meetacy.backend.mock.email
+package app.meetacy.backend.database.email
 
-object MockEmailSender {
+object DatabaseEmailSender {
     fun sendEmail(
         email: String,
         text: String,
