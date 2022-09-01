@@ -4,6 +4,8 @@ package app.meetacy.backend.database.auth
 
 import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.AccessToken
+import app.meetacy.backend.types.UserId
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -17,11 +19,11 @@ class TokensTable(private val db: Database) : Table() {
         }
     }
 
-    fun addToken(identity: AccessIdentity) {
+    fun addToken(userId: UserId, accessToken: AccessToken) {
        transaction(db) {
            insert { statement ->
-               statement[OWNER_ID] = identity.userId.long
-               statement[ACCESS_TOKEN] = identity.accessToken.string
+               statement[OWNER_ID] = userId.long
+               statement[ACCESS_TOKEN] = accessToken.string
            }
        }
     }

@@ -16,6 +16,8 @@ class UsecaseAddFriendRepository(
                 AddFriendResult.InvalidToken
             AddFriendUsecase.Result.Success ->
                 AddFriendResult.Success
+            AddFriendUsecase.Result.FriendAlreadyAdded ->
+                AddFriendResult.FriendAlreadyAdded
         }
     }
 }

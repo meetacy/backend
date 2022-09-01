@@ -30,6 +30,7 @@ sealed interface AddFriendResult {
     object Success : AddFriendResult
     object InvalidToken : AddFriendResult
     object FriendNotFound : AddFriendResult
+    object FriendAlreadyAdded : AddFriendResult
 }
 
 fun Route.addFriend(provider: AddFriendRepository) = post("/add") {
@@ -47,6 +48,11 @@ fun Route.addFriend(provider: AddFriendRepository) = post("/add") {
         )
         AddFriendResult.Success -> AddFriendResponse(
             status = true
+        )
+        AddFriendResult.FriendAlreadyAdded -> AddFriendResponse(
+            status = false,
+            errorCode = 3,
+            errorMessage = "Friend already added"
         )
     }
     call.respond(result)

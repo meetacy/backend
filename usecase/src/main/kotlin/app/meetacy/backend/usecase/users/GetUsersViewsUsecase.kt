@@ -12,7 +12,7 @@ class GetUsersViewsUsecase(
         storage.getUsers(userIdentities)
             .map { user ->
                 user ?: return@map null
-                // fixme: create batch request instead of conveerting
+                // fixme: create batch request instead of converting
                 //  one by one
                 viewUserRepository.viewUser(viewerId, user)
             }

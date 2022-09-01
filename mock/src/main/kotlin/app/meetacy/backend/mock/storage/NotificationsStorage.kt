@@ -10,10 +10,12 @@ object NotificationsStorage {
         data += notification
     }
 
-    fun getNotifications(userId: UserId, offset: Int, amount: Int) = data
-        .filter { it.ownerId == userId }
-        .drop(offset)
-        .take(amount)
+    fun getNotifications(userId: UserId, offset: Int, amount: Int): List<MockNotification> {
+        return data
+            .filter { it.ownerId == userId }
+            .drop(offset)
+            .take(amount)
+    }
 
     fun isNotificationExists(notificationId: NotificationId): Boolean =
         data.any { it.id == notificationId }
