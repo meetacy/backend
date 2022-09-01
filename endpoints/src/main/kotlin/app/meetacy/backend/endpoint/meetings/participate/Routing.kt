@@ -65,7 +65,7 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
         ParticipateMeetingResult.MeetingAlreadyParticipate -> ParticipateMeetResponse(
             status = false,
             errorCode = 3,
-            errorMessage = "you are already participating in this meeting"
+            errorMessage = "You are already participating in this meeting"
         )
     }
 
