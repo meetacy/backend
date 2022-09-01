@@ -21,6 +21,7 @@ sealed interface ParticipateMeetingResult {
     object Success : ParticipateMeetingResult
     object TokenInvalid : ParticipateMeetingResult
     object MeetingNotFound : ParticipateMeetingResult
+    object MeetingAlreadyParticipate : ParticipateMeetingResult
 }
 
 interface ParticipateMeetingRepository {
@@ -58,8 +59,13 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
         )
         is ParticipateMeetingResult.MeetingNotFound -> ParticipateMeetResponse(
             status = false,
-            errorCode = 3,
+            errorCode = 2,
             errorMessage = "Please provide a valid id"
+        )
+        ParticipateMeetingResult.MeetingAlreadyParticipate -> ParticipateMeetResponse(
+            status = false,
+            errorCode = 3,
+            errorMessage = "you are already participating in this meeting"
         )
     }
 

@@ -29,7 +29,7 @@ class ParticipateMeetingUsecase(
             return Result.MeetingNotFound
 
         if(!storage.isParticipating(meetingIdentity.meetingId, userId))
-            storage.addParticipant(meetingIdentity.meetingId, userId)
+            storage.addParticipant(meetingIdentity.meetingId, userId) else return Result.MeetingAlreadyParticipate
 
         return Result.Success
     }
@@ -38,6 +38,7 @@ class ParticipateMeetingUsecase(
         object Success : Result
         object TokenInvalid : Result
         object MeetingNotFound : Result
+        object MeetingAlreadyParticipate : Result
     }
 
     interface Storage {
