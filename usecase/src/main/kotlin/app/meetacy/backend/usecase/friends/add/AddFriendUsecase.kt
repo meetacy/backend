@@ -23,11 +23,8 @@ class AddFriendUsecase(
             .first()
             ?: return Result.FriendNotFound
 
-        if (friend.identity.accessHash.string != friendIdentity.accessHash.string) {
-            println(friend.identity.accessHash.string)
-            println(friendIdentity.accessHash.string)
-            return Result.FriendNotFound
-        }
+        if (friend.identity.accessHash.string != friendIdentity.accessHash.string) return Result.FriendNotFound
+
 
 
         if (!storage.isSubscribed(userId, friendIdentity.userId)) storage.addFriend(userId, friendIdentity.userId)
