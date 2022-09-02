@@ -46,10 +46,10 @@ class NotificationsTable(private val db: Database) : Table() {
 
     }
 
-    fun getNotifications(ownerId: UserId, offset: Int, amount: Int): List<DatabaseNotification> =
+    fun getNotifications(ownerId: UserId, offset: Long, amount: Int): List<DatabaseNotification> =
         transaction(db) {
             select { (OWNER_ID eq ownerId.long) }
-                .limit(amount, offset.toLong())
+                .limit(amount, offset)
                 .map { it ->
                     DatabaseNotification(
                         NotificationId(it[NOTIFICATION_ID]),

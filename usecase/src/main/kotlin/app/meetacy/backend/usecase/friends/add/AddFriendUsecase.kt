@@ -24,8 +24,6 @@ class AddFriendUsecase(
             ?: return Result.FriendNotFound
 
         if (friend.identity.accessHash.string != friendIdentity.accessHash.string) {
-            println(friend.identity.accessHash.string)
-            println(friendIdentity.accessHash.string)
             return Result.FriendNotFound
         }
 
