@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetFriendsToken(
-    val accessToken: AccessIdentitySerializable
+    val accessIdentity: AccessIdentitySerializable
 )
 
 @Serializable

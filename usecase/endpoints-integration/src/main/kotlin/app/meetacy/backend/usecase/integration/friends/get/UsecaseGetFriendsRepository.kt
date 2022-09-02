@@ -10,7 +10,7 @@ class UsecaseGetFriendsRepository(
     private val usecase: GetFriendsUsecase
 ): GetFriendsRepository {
     override suspend fun getFriends(token: GetFriendsToken): GetFriendsResult =
-        when (val result = usecase.getFriendsUsecase(token.accessToken.type())) {
+        when (val result = usecase.getFriendsUsecase(token.accessIdentity.type())) {
             GetFriendsUsecase.Result.InvalidToken ->
                 GetFriendsResult.InvalidToken
             is GetFriendsUsecase.Result.Success ->

@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 private data class RequestBody(
-    val accessToken: AccessIdentitySerializable,
+    val accessIdentity: AccessIdentitySerializable,
     val offset: Long,
     val amount: Int
 )
@@ -43,7 +43,7 @@ fun Route.get(repository: GetNotificationsRepository) = post("/get") {
 
     val result = when (
         val result = repository.getNotifications(
-            accessIdentity = requestBody.accessToken.type(),
+            accessIdentity = requestBody.accessIdentity.type(),
             offset = requestBody.offset,
             amount = requestBody.amount
         )

@@ -27,7 +27,7 @@ sealed interface GetUserResult {
 @Serializable
 data class GetUserParams(
     val identity: UserIdentitySerializable? = null,
-    val accessToken: AccessIdentitySerializable
+    val accessIdentity: AccessIdentitySerializable
 )
 
 @Serializable
@@ -44,7 +44,7 @@ fun Route.getUser(provider: UserRepository) = post("/users/get") {
     val result = when (
         val result = provider.getUser(
             identity = params.identity?.type(),
-            accessIdentity = params.accessToken.type()
+            accessIdentity = params.accessIdentity.type()
         )
     ) {
         is GetUserResult.Success -> GetUserResponse(

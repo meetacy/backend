@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ParticipateParam(
     val meetingIdentity: MeetingIdentitySerializable,
-    val accessToken: AccessIdentitySerializable
+    val accessIdentity: AccessIdentitySerializable
 )
 
 sealed interface ParticipateMeetingResult {
@@ -44,7 +44,7 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
     val result = when(
         participateMeetingRepository.participateMeeting(
             params.meetingIdentity.type(),
-            params.accessToken.type()
+            params.accessIdentity.type()
         )
     ) {
         is ParticipateMeetingResult.Success -> ParticipateMeetResponse(
