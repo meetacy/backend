@@ -22,7 +22,7 @@ class DatabaseGetNotificationStorage(db: Database) : GetNotificationsUsecase.Sto
         count: Int
     ): List<GetNotificationsUsecase.NotificationFromStorage> =
         notificationsTable
-            .getNotifications(userId, offset.toInt(), count)
+            .getNotifications(userId, offset, count)
             .map(DatabaseNotification::mapToUsecase)
 
 }

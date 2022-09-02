@@ -76,7 +76,8 @@ fun startMockEndpoints(
             ),
             tokenGenerateRepository = UsecaseTokenGenerateRepository(
                 usecase = GenerateTokenUsecase(
-                    storage = DatabaseGenerateTokenStorage(DefaultHashGenerator, db)
+                    storage = DatabaseGenerateTokenStorage(DefaultHashGenerator, db),
+                    tokenGenerator = DefaultHashGenerator
                 )
             )
         ),
