@@ -14,13 +14,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ParticipateParam(
     val meetingIdentity: MeetingIdentitySerializable,
-    val accessToken: AccessIdentitySerializable
+    val accessIdentity: AccessIdentitySerializable
 )
 
 sealed interface ParticipateMeetingResult {
     object Success : ParticipateMeetingResult
     object TokenInvalid : ParticipateMeetingResult
     object MeetingNotFound : ParticipateMeetingResult
+    object MeetingAlreadyParticipate : ParticipateMeetingResult
 }
 
 interface ParticipateMeetingRepository {
@@ -43,7 +44,7 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
     val result = when(
         participateMeetingRepository.participateMeeting(
             params.meetingIdentity.type(),
-            params.accessToken.type()
+            params.accessIdentity.type()
         )
     ) {
         is ParticipateMeetingResult.Success -> ParticipateMeetResponse(
@@ -58,8 +59,13 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
         )
         is ParticipateMeetingResult.MeetingNotFound -> ParticipateMeetResponse(
             status = false,
-            errorCode = 3,
+            errorCode = 2,
             errorMessage = "Please provide a valid id"
+        )
+        ParticipateMeetingResult.MeetingAlreadyParticipate -> ParticipateMeetResponse(
+            status = false,
+            errorCode = 3,
+            errorMessage = "You are already participating in this meeting"
         )
     }
 

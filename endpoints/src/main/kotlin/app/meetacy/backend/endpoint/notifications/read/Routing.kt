@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 private data class RequestBody(
-    val accessToken: AccessIdentitySerializable,
+    val accessIdentity: AccessIdentitySerializable,
     val lastNotificationId: NotificationIdSerializable
 )
 
@@ -36,7 +36,7 @@ interface ReadNotificationsRepository {
 
 fun Route.read(repository: ReadNotificationsRepository) = post("/read") {
     val requestBody = call.receive<RequestBody>()
-    val result = when (repository.read(requestBody.accessToken.type(), requestBody.lastNotificationId.type())) {
+    val result = when (repository.read(requestBody.accessIdentity.type(), requestBody.lastNotificationId.type())) {
         ReadNotificationsRepository.Result.Success -> ResponseBody(
             status = true
         )

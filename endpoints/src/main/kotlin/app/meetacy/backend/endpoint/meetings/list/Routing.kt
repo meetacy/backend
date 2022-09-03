@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ListParam(
-    val accessToken: AccessIdentitySerializable
+    val accessIdentity: AccessIdentitySerializable
 )
 
 sealed interface ListMeetingsResult {
@@ -34,7 +34,7 @@ data class MeetingListResponse(
 
 fun Route.listMeetings(meetingsListRepository: MeetingsListRepository) = post("/list") {
     val params = call.receive<ListParam>()
-    when(val result = meetingsListRepository.getList(params.accessToken.type())) {
+    when(val result = meetingsListRepository.getList(params.accessIdentity.type())) {
         is ListMeetingsResult.Success -> call.respond(
             MeetingListResponse(
                 status = true,
