@@ -5,6 +5,7 @@ package app.meetacy.backend.database.notifications
 import app.meetacy.backend.database.types.DatabaseNotification
 import app.meetacy.backend.types.*
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class NotificationsTable(private val db: Database) : Table() {
@@ -22,8 +23,8 @@ class NotificationsTable(private val db: Database) : Table() {
         }
     }
 
-    fun addNotification(notification: DatabaseNotification) =
-        transaction(db) {
+    suspend fun addNotification(notification: DatabaseNotification) =
+        newSuspendedTransaction(db = db) {
             with(notification) {
                 insert { statement ->
                     statement[NOTIFICATION_ID] = id.long
@@ -37,8 +38,8 @@ class NotificationsTable(private val db: Database) : Table() {
             }
         }
 
-    fun isNotificationExists(notificationId: NotificationId): Boolean {
-        val result = transaction(db) {
+    suspend fun isNotificationExists(notificationId: NotificationId): Boolean {
+        val result = newSuspendedTransaction(db = db) {
             select{ (NOTIFICATION_ID eq notificationId.long) }
                 .firstOrNull()
         }
@@ -46,8 +47,8 @@ class NotificationsTable(private val db: Database) : Table() {
 
     }
 
-    fun getNotifications(ownerId: UserId, offset: Long, amount: Int): List<DatabaseNotification> =
-        transaction(db) {
+    suspend fun getNotifications(ownerId: UserId, offset: Long, amount: Int): List<DatabaseNotification> =
+        newSuspendedTransaction(db = db) {
             select { (OWNER_ID eq ownerId.long) }
                 .limit(amount, offset)
                 .map { it ->

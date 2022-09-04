@@ -5,6 +5,7 @@ package app.meetacy.backend.database.meetings
 import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.UserId
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class ParticipantsTable(private val db: Database) : Table() {
@@ -17,30 +18,30 @@ class ParticipantsTable(private val db: Database) : Table() {
         }
     }
 
-    fun addParticipant(meetingId: MeetingId, userId: UserId) =
-        transaction(db) {
+    suspend fun addParticipant(meetingId: MeetingId, userId: UserId) =
+        newSuspendedTransaction(db = db) {
             insert { statement ->
                 statement[MEETING_ID] = meetingId.long
                 statement[USER_ID] = userId.long
             }
         }
 
-    fun participantsCount(meetingId: MeetingId): Int =
-        transaction(db) {
+    suspend fun participantsCount(meetingId: MeetingId): Int =
+        newSuspendedTransaction(db = db) {
             select { (MEETING_ID eq meetingId.long) }
                 .count()
                 .toInt()
         }
 
 
-    fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =
-        transaction(db) {
+    suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =
+        newSuspendedTransaction(db = db) {
             select { (MEETING_ID eq meetingId.long) and (USER_ID eq userId.long) }
                 .any()
         }
 
-    fun getMeetingIds(userId: UserId): List<MeetingId> =
-        transaction(db) {
+    suspend fun getMeetingIds(userId: UserId): List<MeetingId> =
+        newSuspendedTransaction(db = db) {
              select { (USER_ID eq userId.long) }
                  .map { it[MEETING_ID] }
                  .map { MeetingId(it) }

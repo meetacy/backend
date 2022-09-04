@@ -5,6 +5,7 @@ package app.meetacy.backend.database.auth
 import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.AccessIdentity
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class TokensTable(private val db: Database) : Table() {
@@ -17,8 +18,8 @@ class TokensTable(private val db: Database) : Table() {
         }
     }
 
-    fun addToken(accessIdentity: AccessIdentity) {
-       transaction(db) {
+    suspend fun addToken(accessIdentity: AccessIdentity) {
+        newSuspendedTransaction(db = db) {
            with(accessIdentity) {
                insert { statement ->
                    statement[OWNER_ID] = userId.long
@@ -28,7 +29,7 @@ class TokensTable(private val db: Database) : Table() {
        }
     }
 
-    fun checkToken(identity: AccessIdentity): Boolean = transaction (db) {
+    suspend fun checkToken(identity: AccessIdentity): Boolean = newSuspendedTransaction(db = db) {
         select {
             (ACCESS_TOKEN eq identity.accessToken.string) and
                     (OWNER_ID eq identity.userId.long)
