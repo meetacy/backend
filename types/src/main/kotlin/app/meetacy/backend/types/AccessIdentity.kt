@@ -2,7 +2,7 @@ package app.meetacy.backend.types
 
 // a combination of user id and access token
 @JvmInline
-value class AccessIdentity private constructor(val string: String) {
+value class AccessIdentity(val string: String) {
     constructor(userIdentity: UserId, accessToken: AccessToken) : this("${userIdentity.long}:${accessToken.string}")
 
     val userId get() = string

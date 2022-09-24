@@ -22,6 +22,9 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage
+import app.meetacy.backend.endpoint.files.FilesDependencies
+//import app.meetacy.backend.endpoint.files.FilesDependencies
+//import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
@@ -148,6 +151,9 @@ fun startMockEndpoints(
                     storage = DatabaseReadNotificationsStorage(db)
                 )
             )
+        ),
+        filesDependencies = FilesDependencies(
+            saveFileRepository =  TODO()
         )
     )
 }
