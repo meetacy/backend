@@ -4,7 +4,6 @@ package app.meetacy.backend.database.meetings
 
 import app.meetacy.backend.database.types.DatabaseMeeting
 import app.meetacy.backend.types.*
-import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -35,7 +34,7 @@ class MeetingsTable(private val db: Database) : Table() {
         title: String?,
         description: String?
     ): MeetingId =
-        newSuspendedTransaction(Dispatchers.IO, db = db) {
+        newSuspendedTransaction(db = db) {
             val meetingId = insert { statement ->
                 statement[ACCESS_HASH] = accessHash.string
                 statement[CREATOR_ID] = creatorId.long
@@ -49,14 +48,14 @@ class MeetingsTable(private val db: Database) : Table() {
         }
 
     suspend fun getMeetingOrNull(id: MeetingId): DatabaseMeeting? =
-        newSuspendedTransaction(Dispatchers.IO, db) {
+        newSuspendedTransaction(db = db) {
             val result = select { (MEETING_ID eq id.long) }
                 .map { statement -> statement.toDatabaseMeeting() }
             return@newSuspendedTransaction result.filter { it.id == id }
         }.firstOrNull()
 
     suspend fun getMeetingsOrNull(meetingIds: List<MeetingId>): List<DatabaseMeeting?> =
-        newSuspendedTransaction(Dispatchers.IO, db) {
+        newSuspendedTransaction(db = db) {
             val rawMeetingIds = meetingIds.map { it.long }
 
             val foundMeetings = select { MEETING_ID inList rawMeetingIds }
@@ -67,7 +66,7 @@ class MeetingsTable(private val db: Database) : Table() {
         }
 
     suspend fun getMeetingCreator(creatorId: UserId): List<MeetingId> =
-        newSuspendedTransaction(Dispatchers.IO, db) {
+        newSuspendedTransaction(db = db) {
             val result = select { (CREATOR_ID eq creatorId.long) }
                 .map { statement -> statement.toDatabaseMeeting() }
             return@newSuspendedTransaction result.filter { it.creatorId == creatorId }.map { it.id }
