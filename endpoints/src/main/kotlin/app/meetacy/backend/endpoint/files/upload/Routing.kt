@@ -25,7 +25,7 @@ class UploadFileResponse(
 )
 
 interface SaveFileRepository {
-    suspend fun saveFile(accessIdentity: AccessIdentity, inputProvider: () -> InputStream): UploadFileResult
+    suspend fun saveFile(accessIdentity: AccessIdentity, fileName: String, inputProvider: () -> InputStream): UploadFileResult
 }
 
 fun Route.upload(provider: SaveFileRepository) = post("/upload") {
@@ -33,7 +33,7 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
 
     var accessIdentity: AccessIdentity? = null
     var inputProvider: (() -> InputStream)? = null
-
+    var fileName = "unnamed"
 
     multipartData.forEachPart { part ->
         when(part) {
@@ -42,6 +42,7 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
             }
             is PartData.FileItem -> {
                 inputProvider = part.streamProvider
+                fileName = part.originalFileName ?: fileName
             }
             else -> {}
         }
@@ -51,7 +52,7 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
         error("Please provide accessIdentity and inputProvider")
     }
 
-    when(val result = provider.saveFile(accessIdentity!!, inputProvider!!)) {
+    when(val result = provider.saveFile(accessIdentity!!, fileName, inputProvider!!)) {
         is UploadFileResult.Success -> call.respond(
             UploadFileResponse(
                 status = true,

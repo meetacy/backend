@@ -18,7 +18,8 @@ class DatabaseGetFileRepository(
             else -> {
                 if (description.fileIdentity.accessHash == fileIdentity.accessHash) {
                     GetFileResult.Success(
-                        File(basePath, "${fileIdentity.fileId}")
+                        File(basePath, "${fileIdentity.fileId.long}"),
+                        fileName = description.fileName
                     )
                 } else {
                     GetFileResult.InvalidIdentity

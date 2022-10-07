@@ -9,6 +9,6 @@ import org.jetbrains.exposed.sql.Database
 
 class DatabaseUploadFileStorage(db: Database) : UploadFileUsecase.Storage {
     private val filesTable = FilesTable(db)
-    override suspend fun saveFileDescription(userId: UserId, accessHash: AccessHash): FileIdentity =
-        filesTable.saveFileDescription(userId, accessHash)
+    override suspend fun saveFileDescription(userId: UserId, accessHash: AccessHash, fileName: String): FileIdentity =
+        filesTable.saveFileDescription(userId, accessHash, fileName)
 }

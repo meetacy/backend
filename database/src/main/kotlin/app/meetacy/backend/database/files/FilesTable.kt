@@ -13,6 +13,7 @@ class FilesTable(private val db: Database) : Table() {
     private val FILE_ID = long("FILE_ID").autoIncrement()
     private val ACCESS_HASH = varchar("ACCESS_HASH", 256)
     private val FILE_SIZE = long("FILE_SIZE").nullable()
+    private val ORIGINAL_FILE_NAME = varchar("ORIGINAL_FILE_NAME", 1024)
 
     init {
         transaction(db) {
@@ -20,11 +21,12 @@ class FilesTable(private val db: Database) : Table() {
         }
     }
 
-    suspend fun saveFileDescription(userId: UserId, accessHash: AccessHash): FileIdentity =
+    suspend fun saveFileDescription(userId: UserId, accessHash: AccessHash, fileName: String): FileIdentity =
         newSuspendedTransaction(db = db) {
             val result = insert { statement ->
                 statement[USER_ID] = userId.long
                 statement[ACCESS_HASH] = accessHash.string
+                statement[ORIGINAL_FILE_NAME] = fileName
             }
             return@newSuspendedTransaction FileIdentity(
                 FileId(result[FILE_ID]),
@@ -44,13 +46,12 @@ class FilesTable(private val db: Database) : Table() {
             val result = select { (FILE_ID eq fileId.long) }
                 .firstOrNull() ?: return@newSuspendedTransaction null
             val userId = result[USER_ID]
+            val fileName = result[ORIGINAL_FILE_NAME]
             val fileSize = result[FILE_SIZE]?.let { fileSize -> FileSize(fileSize) }
             val fileIdentity = FileIdentity(
                 FileId(result[FILE_ID]),
                 AccessHash(result[ACCESS_HASH])
             )
-            return@newSuspendedTransaction DatabaseFileDescription(UserId(userId), fileSize, fileIdentity)
-
+            return@newSuspendedTransaction DatabaseFileDescription(UserId(userId), fileSize, fileIdentity, fileName)
         }
-    
 }

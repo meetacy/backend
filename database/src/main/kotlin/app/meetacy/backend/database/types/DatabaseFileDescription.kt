@@ -7,5 +7,6 @@ import app.meetacy.backend.types.UserId
 class DatabaseFileDescription(
     val userId: UserId,
     val fileSize: FileSize?,
-    val fileIdentity: FileIdentity
+    val fileIdentity: FileIdentity,
+    val fileName: String
 )

@@ -10,9 +10,9 @@ class UsecaseUploadFileRepository(
     private val basePath: String,
     private val usecase: UploadFileUsecase
 ) : SaveFileRepository {
-    override suspend fun saveFile(accessIdentity: AccessIdentity, inputProvider: () -> InputStream): UploadFileResult {
+    override suspend fun saveFile(accessIdentity: AccessIdentity, fileName: String, inputProvider: () -> InputStream): UploadFileResult {
         val uploader = UsecaseFileUploader(inputProvider(), basePath)
-        return when(val result = usecase.saveFile(accessIdentity, uploader)) {
+        return when(val result = usecase.saveFile(accessIdentity, uploader, fileName)) {
             is UploadFileUsecase.Result.Success -> UploadFileResult.Success(result.fileIdentity)
             UploadFileUsecase.Result.InvalidIdentity -> UploadFileResult.InvalidIdentity
         }

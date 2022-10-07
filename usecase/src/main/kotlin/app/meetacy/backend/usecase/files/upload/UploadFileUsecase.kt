@@ -17,17 +17,18 @@ class UploadFileUsecase(
 
     suspend fun saveFile(
         accessIdentity: AccessIdentity,
-        fileUploader: FileUploader
+        fileUploader: FileUploader,
+        fileName: String
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
         val accessHash = AccessHash(hashGenerator.generate())
-        val fileIdentity = storage.saveFileDescription(userId, accessHash)
+        val fileIdentity = storage.saveFileDescription(userId, accessHash, fileName)
         fileUploader.uploadFile(fileIdentity.fileId)
         return Result.Success(fileIdentity)
     }
 
     interface Storage {
-        suspend fun saveFileDescription(userId: UserId, accessHash: AccessHash): FileIdentity
+        suspend fun saveFileDescription(userId: UserId, accessHash: AccessHash, fileName: String): FileIdentity
     }
 
     interface FileUploader {
