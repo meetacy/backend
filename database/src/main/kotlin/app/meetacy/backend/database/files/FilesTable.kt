@@ -3,9 +3,7 @@
 package app.meetacy.backend.database.files
 
 import app.meetacy.backend.database.types.DatabaseFileDescription
-import app.meetacy.backend.types.FileId
-import app.meetacy.backend.types.FileSize
-import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -13,6 +11,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class FilesTable(private val db: Database) : Table() {
     private val USER_ID = long("USER_ID")
     private val FILE_ID = long("FILE_ID").autoIncrement()
+    private val ACCESS_HASH = varchar("ACCESS_HASH", 256)
     private val FILE_SIZE = long("FILE_SIZE").nullable()
 
     init {
@@ -21,11 +20,16 @@ class FilesTable(private val db: Database) : Table() {
         }
     }
 
-    suspend fun saveFileDescription(userId: UserId) =
+    suspend fun saveFileDescription(userId: UserId, accessHash: AccessHash): FileIdentity =
         newSuspendedTransaction(db = db) {
-            insert { statement ->
+            val result = insert { statement ->
                 statement[USER_ID] = userId.long
+                statement[ACCESS_HASH] = accessHash.string
             }
+            return@newSuspendedTransaction FileIdentity(
+                FileId(result[FILE_ID]),
+                accessHash
+            )
         }
 
     suspend fun updateFileSize(userId: UserId, fileSize: FileSize) =
@@ -40,10 +44,13 @@ class FilesTable(private val db: Database) : Table() {
             val result = select { (FILE_ID eq fileId.long) }
                 .firstOrNull() ?: return@newSuspendedTransaction null
             val userId = result[USER_ID]
-            val fileSize = result[FILE_SIZE]
-            return@newSuspendedTransaction if (fileSize != null) {
-                DatabaseFileDescription(UserId(userId), FileSize(fileSize))
-            } else DatabaseFileDescription(UserId(userId), null)
+            val fileSize = result[FILE_SIZE]?.let { fileSize -> FileSize(fileSize) }
+            val fileIdentity = FileIdentity(
+                FileId(result[FILE_ID]),
+                AccessHash(result[ACCESS_HASH])
+            )
+            return@newSuspendedTransaction DatabaseFileDescription(UserId(userId), fileSize, fileIdentity)
+
         }
     
 }

@@ -2,11 +2,13 @@ package app.meetacy.backend.usecase.files.upload
 
 import app.meetacy.backend.types.*
 import app.meetacy.backend.usecase.types.AuthRepository
+import app.meetacy.backend.usecase.types.HashGenerator
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class UploadFileUsecase(
     private val authRepository: AuthRepository,
-    private val storage: Storage
+    private val storage: Storage,
+    private val hashGenerator: HashGenerator
 ) {
     sealed interface Result {
         class Success(val fileIdentity: FileIdentity) : Result
@@ -18,14 +20,14 @@ class UploadFileUsecase(
         fileUploader: FileUploader
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
-        val fileIdentity = storage.saveFileDescription(userId)
+        val accessHash = AccessHash(hashGenerator.generate())
+        val fileIdentity = storage.saveFileDescription(userId, accessHash)
         fileUploader.uploadFile(fileIdentity.fileId)
         return Result.Success(fileIdentity)
     }
 
     interface Storage {
-
-        suspend fun saveFileDescription(userId: UserId): FileIdentity
+        suspend fun saveFileDescription(userId: UserId, accessHash: AccessHash): FileIdentity
     }
 
     interface FileUploader {

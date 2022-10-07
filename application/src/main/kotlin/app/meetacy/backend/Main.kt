@@ -8,6 +8,7 @@ fun main() {
     val databaseUrl = System.getenv("DATABASE_URL") ?: error("Please provide a database url")
     val databaseUser = System.getenv("DATABASE_USER") ?: ""
     val databasePassword = System.getenv("DATABASE_PASSWORD") ?: ""
+    val filesBasePath = System.getenv("FILES_BASE_PATH") ?: "files"
 
     val database = Database.connect(
         databaseUrl,
@@ -15,5 +16,5 @@ fun main() {
         password = databasePassword
     )
 
-    startMockEndpoints(port, database, wait = true)
+    startMockEndpoints(filesBasePath, port, database, wait = true)
 }

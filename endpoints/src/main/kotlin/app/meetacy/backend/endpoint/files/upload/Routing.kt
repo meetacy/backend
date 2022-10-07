@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.files.upload
 
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.FileIdentity
 import app.meetacy.backend.types.serialization.FileIdentitySerializable
 import app.meetacy.backend.types.serialization.serializable
@@ -9,6 +10,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import java.io.InputStream
 
 sealed interface UploadFileResult {
     class Success(val fileIdentity: FileIdentity) : UploadFileResult
@@ -23,13 +25,33 @@ class UploadFileResponse(
 )
 
 interface SaveFileRepository {
-    suspend fun saveFile(multiPartData: MultiPartData): UploadFileResult
+    suspend fun saveFile(accessIdentity: AccessIdentity, inputProvider: () -> InputStream): UploadFileResult
 }
 
 fun Route.upload(provider: SaveFileRepository) = post("/upload") {
     val multipartData = call.receiveMultipart()
 
-    when(val result = provider.saveFile(multipartData)) {
+    var accessIdentity: AccessIdentity? = null
+    var inputProvider: (() -> InputStream)? = null
+
+
+    multipartData.forEachPart { part ->
+        when(part) {
+            is PartData.FormItem -> {
+                if (part.name == "accessIdentity") accessIdentity = AccessIdentity.parse(part.value)
+            }
+            is PartData.FileItem -> {
+                inputProvider = part.streamProvider
+            }
+            else -> {}
+        }
+    }
+
+    if (accessIdentity == null || inputProvider == null) {
+        error("Please provide accessIdentity and inputProvider")
+    }
+
+    when(val result = provider.saveFile(accessIdentity!!, inputProvider!!)) {
         is UploadFileResult.Success -> call.respond(
             UploadFileResponse(
                 status = true,
@@ -47,5 +69,4 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
             )
         )
     }
-
 }

@@ -22,17 +22,20 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage
+import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
 import app.meetacy.backend.endpoint.files.FilesDependencies
 //import app.meetacy.backend.endpoint.files.FilesDependencies
 //import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
+import app.meetacy.backend.usecase.files.upload.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.get.GetFriendsUsecase
 import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
 import app.meetacy.backend.usecase.integration.email.confirm.UsecaseConfirmEmailRepository
 import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
+import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseGetFriendsRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
@@ -52,9 +55,10 @@ import app.meetacy.backend.usecase.users.GetUserSafeUsecase
 import org.jetbrains.exposed.sql.Database
 
 fun startMockEndpoints(
+    filesBasePath: String,
     port: Int,
     db: Database,
-    wait: Boolean
+    wait: Boolean,
 ) {
     val authRepository = DatabaseAuthRepository(db)
 
@@ -153,7 +157,14 @@ fun startMockEndpoints(
             )
         ),
         filesDependencies = FilesDependencies(
-            saveFileRepository =  TODO()
+            saveFileRepository =  UsecaseUploadFileRepository(
+                usecase = UploadFileUsecase(
+                    authRepository = authRepository,
+                    storage = DatabaseUploadFileStorage(db),
+                    hashGenerator = DefaultHashGenerator
+                ),
+                basePath = filesBasePath
+            )
         )
     )
 }

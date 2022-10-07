@@ -2,7 +2,7 @@ package app.meetacy.backend.types
 
 @JvmInline
 value class FileIdentity private constructor(val string: String) {
-    constructor(fileId: FileId, accessToken: AccessToken) : this("${fileId.long}:${accessToken.string}")
+    constructor(fileId: FileId, accessHash: AccessHash) : this("${fileId.long}:${accessHash.string}")
 
     val fileId get() = string
         .split(":")
@@ -10,10 +10,10 @@ value class FileIdentity private constructor(val string: String) {
         .toLong()
         .let(::FileId)
 
-    val accessToken get() = string
+    val accessHash get() = string
         .split(":", limit = 2)
         .last()
-        .let(::AccessToken)
+        .let(::AccessHash)
 
     companion object {
         val REGEX = Regex("\\d+:.{256}")

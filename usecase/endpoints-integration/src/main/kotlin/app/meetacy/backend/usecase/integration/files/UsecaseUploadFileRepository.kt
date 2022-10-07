@@ -2,13 +2,19 @@ package app.meetacy.backend.usecase.integration.files
 
 import app.meetacy.backend.endpoint.files.upload.SaveFileRepository
 import app.meetacy.backend.endpoint.files.upload.UploadFileResult
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.usecase.files.upload.UploadFileUsecase
-import io.ktor.http.content.*
+import java.io.InputStream
 
 class UsecaseUploadFileRepository(
+    private val basePath: String,
     private val usecase: UploadFileUsecase
 ) : SaveFileRepository {
-    override suspend fun saveFile(multiPartData: MultiPartData): UploadFileResult {
-        TODO("Not yet implemented")
+    override suspend fun saveFile(accessIdentity: AccessIdentity, inputProvider: () -> InputStream): UploadFileResult {
+        val uploader = UsecaseFileUploader(inputProvider(), basePath)
+        return when(val result = usecase.saveFile(accessIdentity, uploader)) {
+            is UploadFileUsecase.Result.Success -> UploadFileResult.Success(result.fileIdentity)
+            UploadFileUsecase.Result.InvalidIdentity -> UploadFileResult.InvalidIdentity
+        }
     }
 }
