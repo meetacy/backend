@@ -231,5 +231,6 @@ object Deps {
         const val HashGeneratorUsecase = ":hash-generator:usecase-integration"
         const val Database = ":database"
         const val DatabaseUsecase = ":database:usecase-integration"
+        const val DatabaseEndpoints = ":database:endpoints-integration"
     }
 }
