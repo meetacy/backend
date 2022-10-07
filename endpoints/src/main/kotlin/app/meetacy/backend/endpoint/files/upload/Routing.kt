@@ -10,10 +10,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
-class UploadParam(
-    val multiPartData: MultiPartData
-)
-
 sealed interface UploadFileResult {
     class Success(val fileIdentity: FileIdentity) : UploadFileResult
     object InvalidIdentity : UploadFileResult
@@ -27,13 +23,13 @@ class UploadFileResponse(
 )
 
 interface SaveFileRepository {
-    suspend fun saveFile(uploadParam: UploadParam): UploadFileResult
+    suspend fun saveFile(multiPartData: MultiPartData): UploadFileResult
 }
 
 fun Route.upload(provider: SaveFileRepository) = post("/upload") {
     val multipartData = call.receiveMultipart()
 
-    when(val result = provider.saveFile(UploadParam(multipartData))) {
+    when(val result = provider.saveFile(multipartData)) {
         is UploadFileResult.Success -> call.respond(
             UploadFileResponse(
                 status = true,

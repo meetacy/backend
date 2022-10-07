@@ -2,6 +2,7 @@
 
 package app.meetacy.backend.database.files
 
+import app.meetacy.backend.database.types.DatabaseFileDescription
 import app.meetacy.backend.types.FileId
 import app.meetacy.backend.types.FileSize
 import app.meetacy.backend.types.UserId
@@ -27,27 +28,22 @@ class FilesTable(private val db: Database) : Table() {
             }
         }
 
-    suspend fun getFileOwner(fileId: FileId): UserId =
-        newSuspendedTransaction(db = db) {
-            val result = select { (FILE_ID eq fileId.long) }
-                .firstOrNull()
-            return@newSuspendedTransaction if (result!= null) UserId(result[USER_ID]) else UserId(-1)
-        }
-
-    suspend fun updateFileSize(userId: UserId, fileSize: FileSize) {
+    suspend fun updateFileSize(userId: UserId, fileSize: FileSize) =
         newSuspendedTransaction(db = db) {
             update({ USER_ID eq userId.long }) { statement ->
                 statement[FILE_SIZE] = fileSize.long
             }
         }
-    }
 
-    suspend fun getFileSize(fileId: FileId): FileSize? =
+    suspend fun getFileDescription(fileId: FileId): DatabaseFileDescription? =
         newSuspendedTransaction(db = db) {
             val result = select { (FILE_ID eq fileId.long) }
                 .firstOrNull() ?: return@newSuspendedTransaction null
-            val size = result[FILE_SIZE]
-            return@newSuspendedTransaction if (size != null) FileSize(size) else FileSize(-1)
+            val userId = result[USER_ID]
+            val fileSize = result[FILE_SIZE]
+            return@newSuspendedTransaction if (fileSize != null) {
+                DatabaseFileDescription(UserId(userId), FileSize(fileSize))
+            } else DatabaseFileDescription(UserId(userId), null)
         }
-
+    
 }
