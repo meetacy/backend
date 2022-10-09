@@ -23,15 +23,21 @@ class UploadFileUsecase(
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
         val accessHash = AccessHash(hashGenerator.generate())
         val fileIdentity = storage.saveFileDescription(userId, accessHash, fileName)
-        fileUploader.uploadFile(fileIdentity.fileId)
+        val fileSize = fileUploader.uploadFile(fileIdentity.fileId)
+        storage.uploadFileSize(fileIdentity.fileId, fileSize)
         return Result.Success(fileIdentity)
     }
 
     interface Storage {
-        suspend fun saveFileDescription(userId: UserId, accessHash: AccessHash, fileName: String): FileIdentity
+        suspend fun saveFileDescription(
+            userId: UserId,
+            accessHash: AccessHash,
+            fileName: String
+        ): FileIdentity
+        suspend fun uploadFileSize(fileId: FileId, fileSize: FileSize)
     }
 
     interface FileUploader {
-        suspend fun uploadFile(fileId: FileId)
+        suspend fun uploadFile(fileId: FileId): FileSize
     }
 }

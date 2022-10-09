@@ -1,33 +1,35 @@
 package app.meetacy.backend.endpoint.files.download
 
-
 import app.meetacy.backend.types.FileIdentity
+import app.meetacy.backend.types.FileSize
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
 import java.io.File
 
 sealed interface GetFileResult {
-    class Success(val file: File, val fileName: String) : GetFileResult
+    class Success(val file: File, val fileName: String, val fileSize: FileSize?) : GetFileResult
     object InvalidIdentity : GetFileResult
 }
-
+@Serializable
 class DownloadFileResponse(
     val status: Boolean,
     val errorCode: Int?,
     val errorMessage: String?,
 )
 interface GetFileRepository {
-    suspend fun getFile (fileIdentity: FileIdentity): GetFileResult
+    suspend fun getFile(fileIdentity: FileIdentity): GetFileResult
 }
 
 fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
     val fileIdentity = FileIdentity.parse(
         call.parameters["fileIdentity"]!!
     )!!
-    when(val result = getFileRepository.getFile(fileIdentity)) {
+    when (val result = getFileRepository.getFile(fileIdentity)) {
         GetFileResult.InvalidIdentity -> call.respond(
+            HttpStatusCode.BadRequest,
             DownloadFileResponse(
                 status = false,
                 errorCode = 1,
@@ -38,7 +40,7 @@ fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
             call.response.header(
                 HttpHeaders.ContentDisposition,
                 ContentDisposition.Attachment.withParameter(
-                    ContentDisposition.Parameters.Size, "${result.file.length()}"
+                    ContentDisposition.Parameters.Size, "${result.fileSize ?: 0}"
                 ).withParameter(
                     ContentDisposition.Parameters.FileName, result.fileName
                 ).toString()
