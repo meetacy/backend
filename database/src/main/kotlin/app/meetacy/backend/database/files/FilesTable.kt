@@ -41,9 +41,9 @@ class FilesTable(private val db: Database) : Table() {
             }
         }
 
-    suspend fun getUsersFullSize(userId: UserId): List<Long?> =
+    suspend fun getUsersFullSize(userId: UserId): Long =
         newSuspendedTransaction(db = db) {
-            select{ (USER_ID eq userId.long) }.map { it[FILE_SIZE] }
+            return@newSuspendedTransaction select { (USER_ID eq userId.long) }.sumOf { it[FILE_SIZE] ?: 0 }
         }
 
     suspend fun getFileDescription(fileId: FileId): DatabaseFileDescription? =

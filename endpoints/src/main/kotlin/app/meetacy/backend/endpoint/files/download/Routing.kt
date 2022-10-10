@@ -6,8 +6,11 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import java.io.File
+import java.io.FileInputStream
 
 sealed interface GetFileResult {
     class Success(val file: File, val fileName: String, val fileSize: FileSize?) : GetFileResult
@@ -45,7 +48,15 @@ fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
                     ContentDisposition.Parameters.FileName, result.fileName
                 ).toString()
             )
-            call.respondFile(result.file)
+            call.respondFile(result.file, contentType = ContentType.defaultForFilePath(result.fileName))
+        }
+    }
+}
+
+suspend fun ApplicationCall.respondFile(file: File, contentType: ContentType = ContentType.defaultForFile(file)) {
+    respondOutputStream(contentType = contentType, contentLength = file.length()) {
+        withContext(Dispatchers.IO) {
+            FileInputStream(file).transferTo(this@respondOutputStream)
         }
     }
 }
