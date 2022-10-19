@@ -11,7 +11,7 @@ class UsecaseFileUploader(
     private val inputStream: InputStream,
     private val basePath: String
 ): UploadFileUsecase.FileUploader {
-    override suspend fun uploadFile(fileId: FileId): FileSize =
-        JvmFileUploader.upload(inputStream, File(basePath, "${fileId.long}"))
+    override suspend fun uploadFile(fileId: FileId, userFilesFreeLimit: FileSize): FileSize? =
+        JvmFileUploader.upload(inputStream, File(basePath, "${fileId.long}"), userFilesFreeLimit)
 
 }

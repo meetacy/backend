@@ -9,4 +9,4 @@ value class FileSizeSerializable(private val long: Long) {
     fun type() = FileSize(long)
 }
 
-fun FileSize.serializable() = FileSizeSerializable(long)
+fun FileSize.serializable() = FileSizeSerializable(bytesSize)

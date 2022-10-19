@@ -37,13 +37,13 @@ class FilesTable(private val db: Database) : Table() {
     suspend fun updateFileSize(fileId: FileId, fileSize: FileSize) =
         newSuspendedTransaction(db = db) {
             update({ FILE_ID eq fileId.long }) { statement ->
-                statement[FILE_SIZE] = fileSize.long
+                statement[FILE_SIZE] = fileSize.bytesSize
             }
         }
 
-    suspend fun getUsersFullSize(userId: UserId): Long =
+    suspend fun getUserFullSize(userId: UserId): FileSize =
         newSuspendedTransaction(db = db) {
-            return@newSuspendedTransaction select { (USER_ID eq userId.long) }.sumOf { it[FILE_SIZE] ?: 0 }
+            return@newSuspendedTransaction FileSize(select { (USER_ID eq userId.long) }.sumOf { it[FILE_SIZE] ?: 0 })
         }
 
     suspend fun getFileDescription(fileId: FileId): DatabaseFileDescription? =

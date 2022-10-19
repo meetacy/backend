@@ -13,19 +13,28 @@ class UploadFileUsecase(
     sealed interface Result {
         class Success(val fileIdentity: FileIdentity) : Result
         object InvalidIdentity : Result
+        class LimitSize(val filesSize: FileSize) :Result
     }
 
     suspend fun saveFile(
         accessIdentity: AccessIdentity,
         fileUploader: FileUploader,
-        fileName: String
+        fileName: String,
+        filesLimit: Long
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
         val accessHash = AccessHash(hashGenerator.generate())
         val fileIdentity = storage.saveFileDescription(userId, accessHash, fileName)
-        val fileSize = fileUploader.uploadFile(fileIdentity.fileId)
-        storage.uploadFileSize(fileIdentity.fileId, fileSize)
-        return Result.Success(fileIdentity)
+        val wastedSize = storage.getUserFullSize(userId)
+        val userFilesLimit = FileSize(filesLimit - wastedSize.bytesSize)
+
+        return when (val fileSize = fileUploader.uploadFile(fileIdentity.fileId, userFilesLimit)) {
+            null -> Result.LimitSize(wastedSize)
+            else -> {
+                storage.uploadFileSize(userId, fileIdentity.fileId, fileSize)
+                Result.Success(fileIdentity)
+            }
+        }
     }
 
     interface Storage {
@@ -34,10 +43,14 @@ class UploadFileUsecase(
             accessHash: AccessHash,
             fileName: String
         ): FileIdentity
-        suspend fun uploadFileSize(fileId: FileId, fileSize: FileSize)
+        suspend fun uploadFileSize(userId: UserId, fileId: FileId, fileSize: FileSize)
+        suspend fun getUserFullSize(userId: UserId): FileSize
     }
 
     interface FileUploader {
-        suspend fun uploadFile(fileId: FileId): FileSize
+        suspend fun uploadFile(
+            fileId: FileId,
+            userFilesFreeLimit: FileSize
+        ): FileSize?
     }
 }

@@ -6,15 +6,18 @@ import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.usecase.files.upload.UploadFileUsecase
 import java.io.InputStream
 
+// fixme: Пидор, убери filesLimit и добавь его в usecase
 class UsecaseUploadFileRepository(
     private val basePath: String,
-    private val usecase: UploadFileUsecase
+    private val usecase: UploadFileUsecase,
+    private val filesLimit: Long
 ) : SaveFileRepository {
     override suspend fun saveFile(accessIdentity: AccessIdentity, fileName: String, inputProvider: () -> InputStream): UploadFileResult {
         val uploader = UsecaseFileUploader(inputProvider(), basePath)
-        return when(val result = usecase.saveFile(accessIdentity, uploader, fileName)) {
+        return when(val result = usecase.saveFile(accessIdentity, uploader, fileName, filesLimit)) {
             is UploadFileUsecase.Result.Success -> UploadFileResult.Success(result.fileIdentity)
             UploadFileUsecase.Result.InvalidIdentity -> UploadFileResult.InvalidIdentity
+            is UploadFileUsecase.Result.LimitSize -> UploadFileResult.LimitSize(result.filesSize, filesLimit)
         }
     }
 }

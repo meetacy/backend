@@ -15,6 +15,7 @@ class UsersTable(private val db: Database) : Table() {
     private val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT).nullable()
     private val EMAIL_VERIFIED = bool("EMAIL_VERIFIED").default(false)
 
+
     init {
         transaction(db) {
             SchemaUtils.create(this@UsersTable)

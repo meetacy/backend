@@ -10,7 +10,11 @@ class DatabaseUploadFileStorage(db: Database) : UploadFileUsecase.Storage {
     override suspend fun saveFileDescription(userId: UserId, accessHash: AccessHash, fileName: String): FileIdentity =
         filesTable.saveFileDescription(userId, accessHash, fileName)
 
-    override suspend fun uploadFileSize(fileId: FileId, fileSize: FileSize) {
+    override suspend fun uploadFileSize(userId: UserId, fileId: FileId, fileSize: FileSize) {
         filesTable.updateFileSize(fileId, fileSize)
     }
+
+    override suspend fun getUserFullSize(userId: UserId): FileSize =
+        filesTable.getUserFullSize(userId)
+
 }

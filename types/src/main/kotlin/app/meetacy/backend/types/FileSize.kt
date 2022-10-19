@@ -1,4 +1,4 @@
 package app.meetacy.backend.types
 
 @JvmInline
-value class FileSize(val long: Long)
+value class FileSize(val bytesSize: Long)

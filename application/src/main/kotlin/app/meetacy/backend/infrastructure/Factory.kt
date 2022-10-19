@@ -57,6 +57,7 @@ import org.jetbrains.exposed.sql.Database
 
 fun startMockEndpoints(
     filesBasePath: String,
+    filesLimit: Long,
     port: Int,
     db: Database,
     wait: Boolean,
@@ -164,7 +165,8 @@ fun startMockEndpoints(
                     storage = DatabaseUploadFileStorage(db),
                     hashGenerator = DefaultHashGenerator
                 ),
-                basePath = filesBasePath
+                basePath = filesBasePath,
+                filesLimit = filesLimit
             ),
             getFileRepository = DatabaseGetFileRepository(
                 database = db,
