@@ -3,7 +3,7 @@ package app.meetacy.backend.usecase.integration.files
 import app.meetacy.backend.endpoint.files.upload.SaveFileRepository
 import app.meetacy.backend.endpoint.files.upload.UploadFileResult
 import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.usecase.files.upload.UploadFileUsecase
+import app.meetacy.backend.usecase.files.UploadFileUsecase
 import java.io.InputStream
 
 // fixme: Пидор, убери filesLimit и добавь его в usecase

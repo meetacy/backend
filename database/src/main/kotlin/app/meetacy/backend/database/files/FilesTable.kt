@@ -59,4 +59,11 @@ class FilesTable(private val db: Database) : Table() {
             )
             return@newSuspendedTransaction DatabaseFileDescription(UserId(userId), fileSize, fileIdentity, fileName)
         }
+
+    suspend fun checkFileIdentity(fileIdentity: FileIdentity): Boolean =
+        newSuspendedTransaction(db = db) {
+            select {
+                (FILE_ID eq fileIdentity.fileId.long) and (ACCESS_HASH eq fileIdentity.accessHash.string)
+            }.firstOrNull() != null
+    }
 }

@@ -2,7 +2,7 @@ package app.meetacy.backend.database.integration.files
 
 import app.meetacy.backend.database.files.FilesTable
 import app.meetacy.backend.types.*
-import app.meetacy.backend.usecase.files.upload.UploadFileUsecase
+import app.meetacy.backend.usecase.files.UploadFileUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseUploadFileStorage(db: Database) : UploadFileUsecase.Storage {

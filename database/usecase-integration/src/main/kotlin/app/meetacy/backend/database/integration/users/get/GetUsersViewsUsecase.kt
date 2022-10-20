@@ -1,11 +1,11 @@
-package app.meetacy.backend.database.integration.users
+package app.meetacy.backend.database.integration.users.get
 
 import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.FullUser
 import app.meetacy.backend.usecase.types.UserView
-import app.meetacy.backend.usecase.users.GetUsersViewsUsecase
+import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
 import app.meetacy.backend.usecase.users.ViewUserUsecase
 import org.jetbrains.exposed.sql.Database
 

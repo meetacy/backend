@@ -1,4 +1,4 @@
-package app.meetacy.backend.usecase.files.upload
+package app.meetacy.backend.usecase.files
 
 import app.meetacy.backend.types.*
 import app.meetacy.backend.usecase.types.AuthRepository
@@ -13,7 +13,7 @@ class UploadFileUsecase(
     sealed interface Result {
         class Success(val fileIdentity: FileIdentity) : Result
         object InvalidIdentity : Result
-        class LimitSize(val filesSize: FileSize) :Result
+        class LimitSize(val filesSize: FileSize) : Result
     }
 
     suspend fun saveFile(

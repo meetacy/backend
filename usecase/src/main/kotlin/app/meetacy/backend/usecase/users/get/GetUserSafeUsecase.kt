@@ -1,13 +1,8 @@
-package app.meetacy.backend.usecase.users
+package app.meetacy.backend.usecase.users.get
 
 import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.UserId
 import app.meetacy.backend.types.UserIdentity
-import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.GetUsersViewsRepository
-import app.meetacy.backend.usecase.types.UserView
-import app.meetacy.backend.usecase.types.authorizeWithUserId
-import app.meetacy.backend.usecase.types.getUserViewOrNull
+import app.meetacy.backend.usecase.types.*
 
 class GetUserSafeUsecase(
     private val authRepository: AuthRepository,

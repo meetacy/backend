@@ -3,7 +3,6 @@ package app.meetacy.backend.endpoint
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.auth
 import app.meetacy.backend.endpoint.files.FilesDependencies
-//import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.files.files
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.friends
@@ -11,8 +10,8 @@ import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.meetings
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.notifications.notifications
-import app.meetacy.backend.endpoint.users.UserRepository
-import app.meetacy.backend.endpoint.users.getUser
+import app.meetacy.backend.endpoint.users.UsersDependencies
+import app.meetacy.backend.endpoint.users.users
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.cio.*
@@ -29,11 +28,11 @@ fun startEndpoints(
     port: Int,
     wait: Boolean,
     authDependencies: AuthDependencies,
-    userRepository: UserRepository,
     friendsDependencies: FriendsDependencies,
     meetingsDependencies: MeetingsDependencies,
     notificationsDependencies: NotificationsDependencies,
-    filesDependencies: FilesDependencies
+    filesDependencies: FilesDependencies,
+    usersDependencies: UsersDependencies
 ) = embeddedServer(CIO, port) {
     install(ContentNegotiation) {
         json(
@@ -51,7 +50,7 @@ fun startEndpoints(
 
     routing {
         auth(authDependencies)
-        getUser(userRepository)
+        users(usersDependencies)
         meetings(meetingsDependencies)
         friends(friendsDependencies)
         notifications(notificationsDependencies)

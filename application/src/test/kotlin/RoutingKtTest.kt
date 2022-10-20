@@ -1,6 +1,8 @@
 //import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
 //import app.meetacy.backend.database.integration.email.DatabaseLinkEmailMailer
 //import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage
+//import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository
+//import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
 //import app.meetacy.backend.database.integration.friends.DatabaseAddFriendStorage
 //import app.meetacy.backend.database.integration.friends.DatabaseGetFriendsStorage
 //import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
@@ -15,6 +17,7 @@
 //import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 //import app.meetacy.backend.endpoint.auth.AuthDependencies
 //import app.meetacy.backend.endpoint.auth.email.EmailDependencies
+//import app.meetacy.backend.endpoint.files.FilesDependencies
 //import app.meetacy.backend.endpoint.friends.FriendsDependencies
 //import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 //import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
@@ -23,11 +26,13 @@
 //import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 //import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 //import app.meetacy.backend.usecase.email.LinkEmailUsecase
+//import app.meetacy.backend.usecase.files.upload.UploadFileUsecase
 //import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 //import app.meetacy.backend.usecase.friends.get.GetFriendsUsecase
 //import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
 //import app.meetacy.backend.usecase.integration.email.confirm.UsecaseConfirmEmailRepository
 //import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
+//import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 //import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 //import app.meetacy.backend.usecase.integration.friends.get.UsecaseGetFriendsRepository
 //import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
@@ -62,6 +67,7 @@
 //    val databaseUrl = System.getenv("DATABASE_URL") ?: error("Please provide a database url")
 //    val databaseUser = System.getenv("DATABASE_USER") ?: ""
 //    val databasePassword = System.getenv("DATABASE_PASSWORD") ?: ""
+//    val filesBasePath = System.getenv("FILES_BASE_PATH") ?: "files"
 //
 //    val database = Database.connect(
 //        databaseUrl,
@@ -169,6 +175,20 @@
 //                        storage = DatabaseReadNotificationsStorage(db)
 //                    )
 //                )
+//            ),
+//            filesDependencies = FilesDependencies(
+//                saveFileRepository = UsecaseUploadFileRepository(
+//                    usecase = UploadFileUsecase(
+//                        authRepository = authRepository,
+//                        storage = DatabaseUploadFileStorage(db),
+//                        hashGenerator = DefaultHashGenerator
+//                    ),
+//                    basePath = filesBasePath
+//                ),
+//                getFileRepository = DatabaseGetFileRepository(
+//                    database = db,
+//                    basePath = filesBasePath
+//                )
 //            )
 //        )
 //
@@ -177,11 +197,11 @@
 //            setBody(
 //                MultiPartFormDataContent(
 //                    formData {
-//                        append("identity", "12:hjfksdfoi487iusdf9y8wefuihcsiuyhfew978dsfh")
+//                        append("accessIdentity", "1:v2T6BWW5x4fhrZv9uyvRHtqTZwKgGl1fPvadjxDh5tHWtTPOdC2Yh2L8W2vTF6CucRdsAhYJf0C0mu3Gldkth5p0HCsKxs6N4PyChEk9FxQSP5rj3Xn6ONdFQDleSnp3S8jY3HG8Cp8b09DAwDYiOtIv5MSlbap1tNTKfamWFzkmr7H3bkFgnuMwuEqLQ8qidjt2M7iWb9hazk901UgYnaiEZk3E1zQyP7baql6cQFCv5uDj1bn85CDKjmqnDa8K")
 //                        append(
 //                            "image", File("D:/y9Kap/Downloads/Pictures/Володя.png").readBytes(), Headers.build {
 //                                append(HttpHeaders.ContentType, "image/png")
-//                                append(HttpHeaders.ContentDisposition, "filename=\"Во233.png\"")
+//                                append(HttpHeaders.ContentDisposition, "filename=\"qpp.png\"")
 //                            }
 //                        )
 //                    },
@@ -194,5 +214,4 @@
 //        }.bodyAsText()
 //        )
 //    }
-//
 //}

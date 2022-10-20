@@ -1,4 +1,4 @@
-package app.meetacy.backend.usecase.users
+package app.meetacy.backend.usecase.users.get
 
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.FullUser

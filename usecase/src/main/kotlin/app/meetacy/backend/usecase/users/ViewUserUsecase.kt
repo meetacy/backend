@@ -1,7 +1,6 @@
 package app.meetacy.backend.usecase.users
 
 import app.meetacy.backend.types.UserId
-import app.meetacy.backend.types.UserIdentity
 import app.meetacy.backend.usecase.types.FullUser
 import app.meetacy.backend.usecase.types.UserView
 
@@ -11,7 +10,8 @@ class ViewUserUsecase {
             UserView(
                 identity, nickname,
                 email = if (viewerId == user.identity.userId) email else null,
-                emailVerified = if (viewerId == user.identity.userId) emailVerified else null
+                emailVerified = if (viewerId == user.identity.userId) emailVerified else null,
+                avatarIdentity
             )
         }
     }
