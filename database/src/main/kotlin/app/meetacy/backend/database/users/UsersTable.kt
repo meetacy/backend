@@ -86,21 +86,19 @@ class UsersTable(private val db: Database) : Table() {
         )
     }
 
-    suspend fun updateEmail(userIdentity: UserId, email: String) {
+    suspend fun updateEmail(userIdentity: UserId, email: String) =
         newSuspendedTransaction(db = db) {
             update({ USER_ID eq userIdentity.long }) { statement ->
                 statement[EMAIL] = email
             }
         }
-    }
 
-    suspend fun verifyEmail(userIdentity: UserId) {
+    suspend fun verifyEmail(userIdentity: UserId) =
         newSuspendedTransaction(db = db) {
             update({ USER_ID eq userIdentity.long }) { statement ->
                 statement[EMAIL_VERIFIED] = true
             }
         }
-    }
 
     suspend fun addAvatar(accessIdentity: AccessIdentity, avatarIdentity: FileIdentity) =
         newSuspendedTransaction(db = db) {
@@ -109,9 +107,4 @@ class UsersTable(private val db: Database) : Table() {
                 statement[AVATAR_HASH] = avatarIdentity.accessHash.string
             }
         }
-
-    // fixme: Миша, сделай, пожалуйста, обновление аватарки.
-//    suspend fun deleteAvatar(accessIdentity: AccessIdentity, avatarIdentity: FileIdentity) {
-//
-//    }
 }

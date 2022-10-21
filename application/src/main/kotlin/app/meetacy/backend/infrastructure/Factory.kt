@@ -1,7 +1,5 @@
 package app.meetacy.backend.infrastructure
 
-//import app.meetacy.backend.endpoint.files.FilesDependencies
-//import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailMailer
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage

@@ -13,7 +13,7 @@ class UploadFileUsecase(
     sealed interface Result {
         class Success(val fileIdentity: FileIdentity) : Result
         object InvalidIdentity : Result
-        class LimitSize(val filesSize: FileSize) : Result
+        class LimitSize(val filesSize: FileSize, val limitSize: Long) : Result
     }
 
     suspend fun saveFile(
@@ -29,7 +29,7 @@ class UploadFileUsecase(
         val userFilesLimit = FileSize(filesLimit - wastedSize.bytesSize)
 
         return when (val fileSize = fileUploader.uploadFile(fileIdentity.fileId, userFilesLimit)) {
-            null -> Result.LimitSize(wastedSize)
+            null -> Result.LimitSize(wastedSize, filesLimit)
             else -> {
                 storage.uploadFileSize(userId, fileIdentity.fileId, fileSize)
                 Result.Success(fileIdentity)
