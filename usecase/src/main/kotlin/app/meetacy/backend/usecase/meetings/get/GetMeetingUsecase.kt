@@ -1,22 +1,19 @@
-package app.meetacy.backend.usecase.meetings
+package app.meetacy.backend.usecase.meetings.get
 
 import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.MeetingIdentity
-import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
+import app.meetacy.backend.usecase.types.MeetingView
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
-class ParticipateMeetingUsecase(
+class GetMeetingUsecase(
     private val authRepository: AuthRepository,
-    private val storage: Storage,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository
 ) {
-
-    suspend fun participateMeeting(
-        meetingIdentity: MeetingIdentity,
-        accessIdentity: AccessIdentity
+    suspend fun getMeeting(
+        accessIdentity: AccessIdentity,
+        meetingIdentity: MeetingIdentity
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
@@ -28,28 +25,12 @@ class ParticipateMeetingUsecase(
         if (meetingIdentity.accessHash != meeting.identity.accessHash)
             return Result.MeetingNotFound
 
-        if(!storage.isParticipating(meetingIdentity.meetingId, userId))
-            storage.addParticipant(meetingIdentity.meetingId, userId) else return Result.MeetingAlreadyParticipate
-
-        return Result.Success
+        return Result.Success(meeting)
     }
 
     sealed interface Result {
-        object Success : Result
+        class Success(val meeting: MeetingView) : Result
         object TokenInvalid : Result
         object MeetingNotFound : Result
-        object MeetingAlreadyParticipate : Result
     }
-
-    interface Storage {
-        suspend fun addParticipant(
-            meetingId: MeetingId,
-            userId: UserId
-        )
-
-        suspend fun isParticipating(
-            meetingId: MeetingId, userId: UserId
-        ): Boolean
-    }
-
 }

@@ -10,5 +10,5 @@ data class User(
     val nickname: String,
     val email: String?,
     val emailVerified: Boolean?,
-    val avatarId: FileIdentitySerializable?
+    val avatarIdentity: FileIdentitySerializable?
 )

@@ -17,6 +17,8 @@ class MeetingsTable(private val db: Database) : Table() {
     private val LONGITUDE = double("LONGITUDE")
     private val TITLE = varchar("TITLE", length = TITLE_MAX_LIMIT).nullable()
     private val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT).nullable()
+    private val AVATAR_ID = long("AVATAR_ID").nullable()
+    private val AVATAR_HASH = varchar("AVATAR_HASH", length = HASH_LENGTH).nullable()
 
     override val primaryKey = PrimaryKey(MEETING_ID)
 
@@ -72,15 +74,31 @@ class MeetingsTable(private val db: Database) : Table() {
             return@newSuspendedTransaction result.filter { it.creatorId == creatorId }.map { it.id }
         }
 
-    private fun ResultRow.toDatabaseMeeting() = DatabaseMeeting(
-        identity = MeetingIdentity(
-            meetingId = MeetingId(this[MEETING_ID]),
-            accessHash = AccessHash(this[ACCESS_HASH])
-        ),
-        creatorId = UserId(this[CREATOR_ID]),
-        date = Date(this[DATE]),
-        location = Location(this[LATITUDE], this[LONGITUDE]),
-        description = this[DESCRIPTION],
-        title = this[TITLE]
-    )
+    private fun ResultRow.toDatabaseMeeting(): DatabaseMeeting {
+        val avatarId = this[AVATAR_ID]
+        val avatarHash = this[AVATAR_HASH]
+        val avatarIdentity = if (avatarId != null && avatarHash != null) {
+            FileIdentity(FileId(avatarId), AccessHash(avatarHash))
+        } else null
+        return DatabaseMeeting(
+            identity = MeetingIdentity(
+                meetingId = MeetingId(this[MEETING_ID]),
+                accessHash = AccessHash(this[ACCESS_HASH])
+            ),
+            creatorId = UserId(this[CREATOR_ID]),
+            date = Date(this[DATE]),
+            location = Location(this[LATITUDE], this[LONGITUDE]),
+            description = this[DESCRIPTION],
+            title = this[TITLE],
+            avatarIdentity = avatarIdentity
+        )
+    }
+
+    suspend fun addAvatar(meetingId: MeetingId, avatarIdentity: FileIdentity) =
+        newSuspendedTransaction(db = db) {
+            update({ MEETING_ID eq meetingId.long }) {statement ->
+                statement[AVATAR_ID] = avatarIdentity.fileId.long
+                statement[AVATAR_HASH] = avatarIdentity.accessHash.string
+            }
+        }
 }

@@ -1,8 +1,11 @@
-package app.meetacy.backend.usecase.meetings
+package app.meetacy.backend.usecase.meetings.get
 
 import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.UserId
-import app.meetacy.backend.usecase.types.*
+import app.meetacy.backend.usecase.types.FullMeeting
+import app.meetacy.backend.usecase.types.GetUsersViewsRepository
+import app.meetacy.backend.usecase.types.MeetingView
+import app.meetacy.backend.usecase.types.getUsersViews
 
 class ViewMeetingsUsecase(
     private val getUsersViewsRepository: GetUsersViewsRepository,
@@ -40,7 +43,8 @@ class ViewMeetingsUsecase(
                     title = title,
                     description = description,
                     participantsCount = participants.next(),
-                    isParticipating = participation.next()
+                    isParticipating = participation.next(),
+                    avatarIdentity = avatarIdentity
                 )
             }
         }

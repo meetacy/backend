@@ -1,19 +1,22 @@
-package app.meetacy.backend.usecase.meetings
+package app.meetacy.backend.usecase.meetings.participate
 
 import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.MeetingIdentity
+import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
-import app.meetacy.backend.usecase.types.MeetingView
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
-class GetMeetingUsecase(
+class ParticipateMeetingUsecase(
     private val authRepository: AuthRepository,
+    private val storage: Storage,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository
 ) {
-    suspend fun getMeeting(
-        accessIdentity: AccessIdentity,
-        meetingIdentity: MeetingIdentity
+
+    suspend fun participateMeeting(
+        meetingIdentity: MeetingIdentity,
+        accessIdentity: AccessIdentity
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
@@ -25,12 +28,28 @@ class GetMeetingUsecase(
         if (meetingIdentity.accessHash != meeting.identity.accessHash)
             return Result.MeetingNotFound
 
-        return Result.Success(meeting)
+        if(!storage.isParticipating(meetingIdentity.meetingId, userId))
+            storage.addParticipant(meetingIdentity.meetingId, userId) else return Result.MeetingAlreadyParticipate
+
+        return Result.Success
     }
 
     sealed interface Result {
-        class Success(val meeting: MeetingView) : Result
+        object Success : Result
         object TokenInvalid : Result
         object MeetingNotFound : Result
+        object MeetingAlreadyParticipate : Result
     }
+
+    interface Storage {
+        suspend fun addParticipant(
+            meetingId: MeetingId,
+            userId: UserId
+        )
+
+        suspend fun isParticipating(
+            meetingId: MeetingId, userId: UserId
+        ): Boolean
+    }
+
 }

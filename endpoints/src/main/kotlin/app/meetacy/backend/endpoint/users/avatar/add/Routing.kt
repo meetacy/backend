@@ -8,49 +8,49 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
-sealed interface AddAvatarResult {
-    object Success : AddAvatarResult
-    object InvalidIdentity : AddAvatarResult
-    object InvalidAvatarIdentity : AddAvatarResult
+sealed interface AddUserAvatarResult {
+    object Success : AddUserAvatarResult
+    object InvalidIdentity : AddUserAvatarResult
+    object InvalidUserAvatarIdentity : AddUserAvatarResult
 }
 
 @Serializable
-data class AddAvatarParams(
+data class AddUserAvatarParams(
     val accessIdentity: AccessIdentitySerializable,
     val avatarIdentity: FileIdentitySerializable
 )
 
 @Serializable
-data class AddAvatarResponse(
+data class AddUserAvatarResponse(
     val status: Boolean = false,
     val errorCode: Int? = null,
     val errorMessage: String? = null
 )
 
-interface AddAvatarRepository {
-    suspend fun addAvatar(addAvatarParams: AddAvatarParams): AddAvatarResult
+interface AddUserAvatarRepository {
+    suspend fun addAvatar(addUserAvatarParams: AddUserAvatarParams): AddUserAvatarResult
 }
 
-fun Route.addAvatar(provider: AddAvatarRepository) = post("/add") {
-    val params = call.receive<AddAvatarParams>()
+fun Route.addUserAvatar(provider: AddUserAvatarRepository) = post("/add") {
+    val params = call.receive<AddUserAvatarParams>()
 
-    when(with(params) { provider.addAvatar(AddAvatarParams(accessIdentity, avatarIdentity)) }) {
-        is AddAvatarResult.Success -> call.respond(
-            AddAvatarResponse(
+    when(with(params) { provider.addAvatar(AddUserAvatarParams(accessIdentity, avatarIdentity)) }) {
+        is AddUserAvatarResult.Success -> call.respond(
+            AddUserAvatarResponse(
                 status = true,
                 errorCode = null,
                 errorMessage = null
             )
         )
-        AddAvatarResult.InvalidIdentity -> call.respond(
-            AddAvatarResponse(
+        AddUserAvatarResult.InvalidIdentity -> call.respond(
+            AddUserAvatarResponse(
                 status = false,
                 errorCode = 1,
                 errorMessage = "Please provide a valid identity"
             )
         )
-        AddAvatarResult.InvalidAvatarIdentity -> call.respond(
-            AddAvatarResponse(
+        AddUserAvatarResult.InvalidUserAvatarIdentity -> call.respond(
+            AddUserAvatarResponse(
                 status = false,
                 errorCode = 2,
                 errorMessage = "Please provide a valid fileIdentity"

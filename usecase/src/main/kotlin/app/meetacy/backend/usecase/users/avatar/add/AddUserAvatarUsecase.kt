@@ -1,4 +1,4 @@
-package app.meetacy.backend.usecase.users.add
+package app.meetacy.backend.usecase.users.avatar.add
 
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.FileIdentity
@@ -7,7 +7,7 @@ import app.meetacy.backend.usecase.types.FilesRepository
 import app.meetacy.backend.usecase.types.authorizeWithFileId
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
-class AddAvatarUsecase(
+class AddUserAvatarUsecase(
     private val authRepository: AuthRepository,
     private val filesRepository: FilesRepository,
     private val storage: Storage

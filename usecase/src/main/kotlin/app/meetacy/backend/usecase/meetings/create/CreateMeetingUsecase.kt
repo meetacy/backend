@@ -1,4 +1,4 @@
-package app.meetacy.backend.usecase.meetings
+package app.meetacy.backend.usecase.meetings.create
 
 import app.meetacy.backend.types.*
 import app.meetacy.backend.usecase.types.*

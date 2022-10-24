@@ -1,15 +1,15 @@
 package app.meetacy.backend.endpoint.users.avatar
 
-import app.meetacy.backend.endpoint.users.avatar.add.AddAvatarRepository
-import app.meetacy.backend.endpoint.users.avatar.add.addAvatar
+import app.meetacy.backend.endpoint.users.avatar.add.AddUserAvatarRepository
+import app.meetacy.backend.endpoint.users.avatar.add.addUserAvatar
 import io.ktor.server.routing.*
 
-class AvatarDependencies(
-    val addAvatarRepository: AddAvatarRepository,
+class UserAvatarDependencies(
+    val addUserAvatarRepository: AddUserAvatarRepository,
     //val deleteAvatarRepository: DeleteAvatarRepository
 )
 
-fun Route.avatar(dependencies: AvatarDependencies) = route("/avatar") {
-    addAvatar(dependencies.addAvatarRepository)
+fun Route.avatar(dependencies: UserAvatarDependencies) = route("/avatar") {
+    addUserAvatar(dependencies.addUserAvatarRepository)
     //deleteAvatar(dependencies.deleteAvatarRepository)
 }
