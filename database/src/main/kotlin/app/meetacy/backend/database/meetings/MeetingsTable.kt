@@ -101,4 +101,12 @@ class MeetingsTable(private val db: Database) : Table() {
                 statement[AVATAR_HASH] = avatarIdentity.accessHash.string
             }
         }
+
+    suspend fun deleteAvatar(meetingId: MeetingId, avatarIdentity: FileIdentity) =
+        newSuspendedTransaction(db = db) {
+            update({ MEETING_ID eq meetingId.long }) {statement ->
+                statement[AVATAR_ID] = null
+                statement[AVATAR_HASH] = null
+            }
+        }
 }

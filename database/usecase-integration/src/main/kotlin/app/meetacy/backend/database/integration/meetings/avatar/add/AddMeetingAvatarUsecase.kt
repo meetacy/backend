@@ -1,4 +1,4 @@
-package app.meetacy.backend.database.integration.meetings.avatar
+package app.meetacy.backend.database.integration.meetings.avatar.add
 
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.types.FileIdentity
