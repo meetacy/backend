@@ -38,7 +38,7 @@ interface AddMeetingAvatarRepository {
 fun Route.addAvatar(provider: AddMeetingAvatarRepository) = post("/add") {
     val params = call.receive<AddMeetingAvatarParams>()
 
-    when(with(params) { provider.addAvatar(AddMeetingAvatarParams(meetingIdentity, accessIdentity, avatarIdentity)) }) {
+    when(provider.addAvatar(params)) {
         is AddMeetingAvatarResult.Success -> call.respond(
             AddAvatarResponse(
                 status = true,

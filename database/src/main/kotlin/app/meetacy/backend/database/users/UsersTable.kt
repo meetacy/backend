@@ -107,4 +107,12 @@ class UsersTable(private val db: Database) : Table() {
                 statement[AVATAR_HASH] = avatarIdentity.accessHash.string
             }
         }
+
+    suspend fun deleteAvatar(userId: UserId) =
+        newSuspendedTransaction(db = db) {
+            update({ USER_ID eq userId.long }) {statement ->
+                statement[AVATAR_ID] = null
+                statement[AVATAR_HASH] = null
+            }
+        }
 }

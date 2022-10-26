@@ -21,6 +21,7 @@ import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetMeetingsViewsRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.database.integration.users.add.DatabaseAddUserAvatarStorage
+import app.meetacy.backend.database.integration.users.delete.DatabaseDeleteUserAvatarStorage
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
@@ -53,6 +54,7 @@ import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParti
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.users.avatar.add.UsecaseAddUserAvatarRepository
+import app.meetacy.backend.usecase.integration.users.avatar.delete.UsecaseDeleteUserAvatarRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
 import app.meetacy.backend.usecase.meetings.avatar.add.AddMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUsecase
@@ -63,6 +65,7 @@ import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecas
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
+import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import org.jetbrains.exposed.sql.Database
 
@@ -116,6 +119,12 @@ fun startMockEndpoints(
                         authRepository = authRepository,
                         filesRepository = DatabaseFilesRepository(db),
                         storage = DatabaseAddUserAvatarStorage(db)
+                    )
+                ),
+                deleteUserAvatarRepository = UsecaseDeleteUserAvatarRepository(
+                    usecase = DeleteUserAvatarUsecase(
+                        authRepository = authRepository,
+                        storage = DatabaseDeleteUserAvatarStorage(db)
                     )
                 )
             )

@@ -1,6 +1,5 @@
 package app.meetacy.backend.endpoint.meetings.avatar.delete
 
-import app.meetacy.backend.endpoint.users.avatar.add.AddUserAvatarResponse
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.FileIdentitySerializable
 import app.meetacy.backend.types.serialization.MeetingIdentitySerializable
@@ -38,7 +37,7 @@ interface DeleteMeetingAvatarRepository {
 fun Route.deleteAvatar(provider: DeleteMeetingAvatarRepository) = post("/delete") {
     val params = call.receive<DeleteMeetingAvatarParams>()
 
-    when(with(params) { provider.deleteAvatar(DeleteMeetingAvatarParams(meetingIdentity, accessIdentity, avatarIdentity)) }) {
+    when(provider.deleteAvatar(params)) {
         is DeleteMeetingAvatarResult.Success -> call.respond(
             DeleteMeetingAvatarResponse(
                 status = true,
@@ -61,7 +60,7 @@ fun Route.deleteAvatar(provider: DeleteMeetingAvatarRepository) = post("/delete"
             )
         )
         DeleteMeetingAvatarResult.InvalidAccessIdentity -> call.respond(
-            AddUserAvatarResponse(
+            DeleteMeetingAvatarResponse(
                 status = false,
                 errorCode = 1,
                 errorMessage = "Please provide a valid identity"
