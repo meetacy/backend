@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class FriendsTable(private val db: Database) : Table()  {
@@ -21,8 +22,8 @@ class FriendsTable(private val db: Database) : Table()  {
         }
     }
 
-    fun addFriend(userId: UserId, friendId: UserId) {
-        transaction(db) {
+    suspend fun addFriend(userId: UserId, friendId: UserId) {
+        newSuspendedTransaction(db = db) {
             insert { statement ->
                 statement[USER_ID] = userId.long
                 statement[FRIEND_ID] = friendId.long
@@ -30,13 +31,13 @@ class FriendsTable(private val db: Database) : Table()  {
         }
     }
 
-    fun isSubscribed(userId: UserId, friendId: UserId): Boolean = transaction(db) {
+    suspend fun isSubscribed(userId: UserId, friendId: UserId): Boolean = newSuspendedTransaction(db = db) {
         select {
             (USER_ID eq userId.long) and (FRIEND_ID eq friendId.long)
         }.any()
     }
 
-    fun getSubscriptions(userId: UserId): List<UserId> = transaction(db) {
+    suspend fun getSubscriptions(userId: UserId): List<UserId> = newSuspendedTransaction(db = db) {
         select { (USER_ID eq userId.long) }
             .map { result -> UserId(result[FRIEND_ID]) }
     }

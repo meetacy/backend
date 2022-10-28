@@ -5,14 +5,8 @@ package app.meetacy.backend.database.email
 import app.meetacy.backend.types.EMAIL_MAX_LIMIT
 import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.UserId
-import app.meetacy.backend.types.UserIdentity
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class ConfirmationTable(private val db: Database) : Table() {
@@ -26,8 +20,8 @@ class ConfirmationTable(private val db: Database) : Table() {
         }
     }
 
-    fun addHash(ownerId: UserId, email: String, confirmHash: String) {
-        transaction(db) {
+    suspend fun addHash(ownerId: UserId, email: String, confirmHash: String) {
+        newSuspendedTransaction(db = db) {
             insert { statement ->
                 statement[OWNER_ID] = ownerId.long
                 statement[EMAIL] = email
@@ -36,14 +30,14 @@ class ConfirmationTable(private val db: Database) : Table() {
         }
     }
 
-    fun getConfirmHashOwnerId(email: String, confirmHash: String): UserId? = transaction(db) {
+    suspend fun getConfirmHashOwnerId(email: String, confirmHash: String): UserId? = newSuspendedTransaction(db = db) {
         val result = select { (EMAIL eq email) and (CONFIRM_HASH eq confirmHash) }
-            .firstOrNull() ?: return@transaction null
-        return@transaction UserId(result[OWNER_ID])
+            .firstOrNull() ?: return@newSuspendedTransaction null
+        return@newSuspendedTransaction UserId(result[OWNER_ID])
     }
 
-    fun deleteHashes(email: String) {
-        transaction(db) {
+    suspend fun deleteHashes(email: String) {
+        newSuspendedTransaction(db = db) {
             deleteWhere { EMAIL eq email }
         }
     }

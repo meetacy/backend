@@ -5,6 +5,7 @@ package app.meetacy.backend.database.notifications
 import app.meetacy.backend.types.NotificationId
 import app.meetacy.backend.types.UserId
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class LastReadNotificationsTable(private val db: Database) : Table() {
@@ -17,16 +18,16 @@ class LastReadNotificationsTable(private val db: Database) : Table() {
         }
     }
 
-    fun setLastReadNotificationId(userId: UserId, notificationId: NotificationId) =
-        transaction(db) {
+    suspend fun setLastReadNotificationId(userId: UserId, notificationId: NotificationId) =
+        newSuspendedTransaction(db = db) {
             insert { statement ->
                 statement[USER_ID] = userId.long
                 statement[NOTIFICATION_ID] = notificationId.long
             }
         }
 
-    fun getLastReadNotificationId(userId: UserId): NotificationId {
-        val result = transaction(db) {
+    suspend fun getLastReadNotificationId(userId: UserId): NotificationId {
+        val result = newSuspendedTransaction(db = db) {
             select { (USER_ID eq userId.long) }
                 .firstOrNull()
         }
