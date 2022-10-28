@@ -9,5 +9,6 @@ fun DatabaseMeeting.mapToUsecase() = FullMeeting(
     date = date,
     location = location,
     title = title,
-    description = description
+    description = description,
+    avatarIdentity = avatarIdentity
 )

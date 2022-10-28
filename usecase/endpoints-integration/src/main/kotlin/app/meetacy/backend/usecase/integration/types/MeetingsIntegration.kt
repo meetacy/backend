@@ -12,5 +12,6 @@ fun MeetingView.mapToEndpoint() = Meeting(
     title = title,
     description = description,
     participantsCount = participantsCount,
-    isParticipating = isParticipating
+    isParticipating = isParticipating,
+    avatarIdentity = avatarIdentity?.serializable()
 )

@@ -4,7 +4,7 @@ import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetings
 import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
 import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.UserId
-import app.meetacy.backend.usecase.meetings.GetMeetingsViewsUsecase
+import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
 import app.meetacy.backend.usecase.types.MeetingView
 import org.jetbrains.exposed.sql.Database

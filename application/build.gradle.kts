@@ -9,6 +9,7 @@ dependencies {
     implementation(project(Deps.Projects.Endpoints))
     implementation(project(Deps.Projects.UsecaseEndpoints))
     implementation(project(Deps.Projects.DatabaseUsecase))
+    implementation(project(Deps.Projects.DatabaseEndpoints))
     implementation(project(Deps.Projects.HashGeneratorUsecase))
 }
 

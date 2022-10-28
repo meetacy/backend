@@ -3,13 +3,9 @@ package app.meetacy.backend.database.integration.meetings.create
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseViewMeetingsUsecaseStorage
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.database.meetings.MeetingsTable
-import app.meetacy.backend.types.AccessHash
-import app.meetacy.backend.types.Date
-import app.meetacy.backend.types.Location
-import app.meetacy.backend.types.MeetingIdentity
-import app.meetacy.backend.types.UserId
-import app.meetacy.backend.usecase.meetings.CreateMeetingUsecase
-import app.meetacy.backend.usecase.meetings.ViewMeetingsUsecase
+import app.meetacy.backend.types.*
+import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
+import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
 import app.meetacy.backend.usecase.types.FullMeeting
 import app.meetacy.backend.usecase.types.MeetingView
 import org.jetbrains.exposed.sql.Database
@@ -32,7 +28,8 @@ class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsec
             date = date,
             location = location,
             title = title,
-            description = description
+            description = description,
+            avatarIdentity = null
         )
     }
 }

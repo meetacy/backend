@@ -1,0 +1,23 @@
+package app.meetacy.backend.database.integration.users.get
+
+import app.meetacy.backend.database.integration.types.mapToUsecase
+import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.types.UserId
+import app.meetacy.backend.usecase.types.FullUser
+import app.meetacy.backend.usecase.types.UserView
+import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
+import app.meetacy.backend.usecase.users.ViewUserUsecase
+import org.jetbrains.exposed.sql.Database
+
+class DatabaseGetUsersViewsStorage(db: Database) : GetUsersViewsUsecase.Storage {
+    private val usersTable = UsersTable(db)
+
+    override suspend fun getUsers(userIdentities: List<UserId>): List<FullUser?> =
+        usersTable.getUsersOrNull(userIdentities)
+            .map { user -> user?.mapToUsecase() }
+}
+
+object DatabaseGetUsersViewsViewUserRepository : GetUsersViewsUsecase.ViewUserRepository {
+    override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
+        ViewUserUsecase().viewUser(viewerId, user)
+}

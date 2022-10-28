@@ -4,7 +4,7 @@ import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.endpoint.meetings.list.ListMeetingsResult
 import app.meetacy.backend.endpoint.meetings.list.MeetingsListRepository
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
-import app.meetacy.backend.usecase.meetings.GetMeetingsListUsecase
+import app.meetacy.backend.usecase.meetings.list.GetMeetingsListUsecase
 
 class UsecaseMeetingsListRepository(
     private val usecase: GetMeetingsListUsecase

@@ -2,8 +2,13 @@ package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailMailer
+import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage
+import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository
+import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
 import app.meetacy.backend.database.integration.friends.DatabaseAddFriendStorage
 import app.meetacy.backend.database.integration.friends.DatabaseGetFriendsStorage
+import app.meetacy.backend.database.integration.meetings.avatar.add.DatabaseAddMeetingAvatarStorage
+import app.meetacy.backend.database.integration.meetings.avatar.delete.DatabaseDeleteMeetingAvatarStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
 import app.meetacy.backend.database.integration.meetings.list.DatabaseGetMeetingsListStorage
@@ -12,48 +17,68 @@ import app.meetacy.backend.database.integration.notifications.DatabaseGetNotific
 import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
 import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateTokenStorage
 import app.meetacy.backend.database.integration.types.DatabaseAuthRepository
+import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetMeetingsViewsRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
+import app.meetacy.backend.database.integration.users.add.DatabaseAddUserAvatarStorage
+import app.meetacy.backend.database.integration.users.delete.DatabaseDeleteUserAvatarStorage
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
+import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
+import app.meetacy.backend.endpoint.meetings.avatar.MeetingAvatarDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
+import app.meetacy.backend.endpoint.users.UsersDependencies
+import app.meetacy.backend.endpoint.users.avatar.UserAvatarDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
-import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
+import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.get.GetFriendsUsecase
 import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
 import app.meetacy.backend.usecase.integration.email.confirm.UsecaseConfirmEmailRepository
 import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
+import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseGetFriendsRepository
+import app.meetacy.backend.usecase.integration.meetings.avatar.add.UsecaseAddMeetingAvatarRepository
+import app.meetacy.backend.usecase.integration.meetings.avatar.delete.UsecaseDeleteMeetingAvatarRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.list.UsecaseMeetingsListRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
-import app.meetacy.backend.usecase.integration.users.UsecaseUserRepository
-import app.meetacy.backend.usecase.meetings.CreateMeetingUsecase
-import app.meetacy.backend.usecase.meetings.GetMeetingUsecase
-import app.meetacy.backend.usecase.meetings.GetMeetingsListUsecase
-import app.meetacy.backend.usecase.meetings.ParticipateMeetingUsecase
+import app.meetacy.backend.usecase.integration.users.avatar.add.UsecaseAddUserAvatarRepository
+import app.meetacy.backend.usecase.integration.users.avatar.delete.UsecaseDeleteUserAvatarRepository
+import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
+import app.meetacy.backend.usecase.meetings.avatar.add.AddMeetingAvatarUsecase
+import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUsecase
+import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
+import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
+import app.meetacy.backend.usecase.meetings.list.GetMeetingsListUsecase
+import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
-import app.meetacy.backend.usecase.users.GetUserSafeUsecase
+import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
+import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
+import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import org.jetbrains.exposed.sql.Database
 
 fun startMockEndpoints(
+    filesBasePath: String,
+    filesLimit: Long,
     port: Int,
     db: Database,
-    wait: Boolean
+    wait: Boolean,
 ) {
     val authRepository = DatabaseAuthRepository(db)
+
+
 
     startEndpoints(
         port = port,
@@ -81,10 +106,27 @@ fun startMockEndpoints(
                 )
             )
         ),
-        userRepository = UsecaseUserRepository(
-            usecase = GetUserSafeUsecase(
-                authRepository = authRepository,
-                usersViewsRepository = DatabaseGetUsersViewsRepository(db)
+        usersDependencies = UsersDependencies(
+            getUserRepository = UsecaseUserRepository(
+                usecase = GetUserSafeUsecase(
+                    authRepository = authRepository,
+                    usersViewsRepository = DatabaseGetUsersViewsRepository(db)
+                )
+            ),
+            addUserAvatarDependencies = UserAvatarDependencies(
+                addUserAvatarRepository = UsecaseAddUserAvatarRepository(
+                    usecase = AddUserAvatarUsecase(
+                        authRepository = authRepository,
+                        filesRepository = DatabaseFilesRepository(db),
+                        storage = DatabaseAddUserAvatarStorage(db)
+                    )
+                ),
+                deleteUserAvatarRepository = UsecaseDeleteUserAvatarRepository(
+                    usecase = DeleteUserAvatarUsecase(
+                        authRepository = authRepository,
+                        storage = DatabaseDeleteUserAvatarStorage(db)
+                    )
+                )
             )
         ),
         friendsDependencies = FriendsDependencies(
@@ -132,6 +174,24 @@ fun startMockEndpoints(
                     getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
                 )
             ),
+            addMeetingAvatarDependencies = MeetingAvatarDependencies(
+                addMeetingAvatarRepository = UsecaseAddMeetingAvatarRepository(
+                    usecase = AddMeetingAvatarUsecase(
+                        authRepository = authRepository,
+                        filesRepository = DatabaseFilesRepository(db),
+                        storage = DatabaseAddMeetingAvatarStorage(db),
+                        getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
+                    )
+                ),
+                deleteMeetingAvatarRepository = UsecaseDeleteMeetingAvatarRepository(
+                    usecase = DeleteMeetingAvatarUsecase(
+                        authRepository = authRepository,
+                        filesRepository = DatabaseFilesRepository(db),
+                        storage = DatabaseDeleteMeetingAvatarStorage(db),
+                        getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
+                    )
+                )
+            )
         ),
         notificationsDependencies = NotificationsDependencies(
             getNotificationsRepository = UsecaseGetNotificationsRepository(
@@ -147,6 +207,21 @@ fun startMockEndpoints(
                     authRepository = authRepository,
                     storage = DatabaseReadNotificationsStorage(db)
                 )
+            )
+        ),
+        filesDependencies = FilesDependencies(
+            saveFileRepository = UsecaseUploadFileRepository(
+                usecase = UploadFileUsecase(
+                    authRepository = authRepository,
+                    storage = DatabaseUploadFileStorage(db),
+                    hashGenerator = DefaultHashGenerator
+                ),
+                basePath = filesBasePath,
+                filesLimit = filesLimit
+            ),
+            getFileRepository = DatabaseGetFileRepository(
+                database = db,
+                basePath = filesBasePath
             )
         )
     )

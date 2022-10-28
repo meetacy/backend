@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepos
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingResult
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.MeetingIdentity
-import app.meetacy.backend.usecase.meetings.ParticipateMeetingUsecase
+import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 
 class UsecaseParticipateMeetingRepository(
     private val usecase: ParticipateMeetingUsecase

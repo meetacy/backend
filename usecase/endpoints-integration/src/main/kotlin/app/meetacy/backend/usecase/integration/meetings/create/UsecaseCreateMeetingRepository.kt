@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.meetings.create.CreateMeetingRepository
 import app.meetacy.backend.endpoint.meetings.create.CreateMeetingResult
 import app.meetacy.backend.endpoint.meetings.create.CreateParam
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
-import app.meetacy.backend.usecase.meetings.CreateMeetingUsecase
+import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 
 class UsecaseCreateMeetingRepository(
     private val usecase: CreateMeetingUsecase

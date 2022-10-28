@@ -4,7 +4,6 @@ import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.HashGenerator
-import app.meetacy.backend.usecase.types.authorize
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class LinkEmailUsecase(

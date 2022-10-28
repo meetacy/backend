@@ -22,5 +22,6 @@ include(
     "hash-generator",
     "hash-generator:usecase-integration",
     "database",
-    "database:usecase-integration"
+    "database:usecase-integration",
+    "database:endpoints-integration"
 )

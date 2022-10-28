@@ -8,7 +8,8 @@ data class FullMeeting(
     val date: Date,
     val location: Location,
     val title: String?,
-    val description: String?
+    val description: String?,
+    val avatarIdentity: FileIdentity? = null
 ) {
     val id: MeetingId = identity.meetingId
 }
@@ -21,7 +22,8 @@ data class MeetingView(
     val title: String?,
     val description: String?,
     val participantsCount: Int,
-    val isParticipating: Boolean
+    val isParticipating: Boolean,
+    val avatarIdentity: FileIdentity? = null
 ) {
     val id: MeetingId = identity.meetingId
 }

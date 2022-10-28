@@ -51,7 +51,7 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
             CreateMeetResponse(
                 status = false,
                 errorCode = 1,
-                errorMessage = "Please provide a valid token" /* There is also an option
+                errorMessage = "Please provide a valid identity" /* There is also an option
                   to make just one generic "Meeting not create" response to
                   all three errors as a protection against brute force. */,
                 result = null

@@ -5,8 +5,8 @@ import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepos
 import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.types.*
-import app.meetacy.backend.usecase.meetings.GetMeetingsViewsUsecase
-import app.meetacy.backend.usecase.meetings.ViewMeetingsUsecase
+import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
+import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
 import app.meetacy.backend.usecase.types.FullMeeting
 import app.meetacy.backend.usecase.types.MeetingView
 import org.jetbrains.exposed.sql.Database
