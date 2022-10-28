@@ -11,9 +11,7 @@ class UsecaseDeleteMeetingAvatarRepository(
     override suspend fun deleteAvatar(
         deleteMeetingAvatarParams: DeleteMeetingAvatarParams
     ): DeleteMeetingAvatarResult = with(deleteMeetingAvatarParams) {
-        when (usecase.deleteAvatar(accessIdentity.type(), meetingIdentity.type(),  avatarIdentity.type())) {
-            DeleteMeetingAvatarUsecase.Result.InvalidAvatarIdentity ->
-                DeleteMeetingAvatarResult.InvalidMeetingAvatarIdentity
+        when (usecase.deleteAvatar(accessIdentity.type(), meetingIdentity.type())) {
             DeleteMeetingAvatarUsecase.Result.InvalidIdentity ->
                 DeleteMeetingAvatarResult.InvalidAccessIdentity
             DeleteMeetingAvatarUsecase.Result.MeetingNotFound ->

@@ -186,7 +186,6 @@ fun startMockEndpoints(
                 deleteMeetingAvatarRepository = UsecaseDeleteMeetingAvatarRepository(
                     usecase = DeleteMeetingAvatarUsecase(
                         authRepository = authRepository,
-                        filesRepository = DatabaseFilesRepository(db),
                         storage = DatabaseDeleteMeetingAvatarStorage(db),
                         getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
                     )

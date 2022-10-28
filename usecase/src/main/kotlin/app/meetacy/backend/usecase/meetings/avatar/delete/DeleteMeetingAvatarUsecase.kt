@@ -1,13 +1,13 @@
 package app.meetacy.backend.usecase.meetings.avatar.delete
 
 import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.FileIdentity
 import app.meetacy.backend.types.MeetingIdentity
-import app.meetacy.backend.usecase.types.*
+import app.meetacy.backend.usecase.types.AuthRepository
+import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
+import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class DeleteMeetingAvatarUsecase(
     private val authRepository: AuthRepository,
-    private val filesRepository: FilesRepository,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository,
     private val storage: Storage
 ) {
@@ -15,16 +15,13 @@ class DeleteMeetingAvatarUsecase(
         object Success : Result
         object MeetingNotFound : Result
         object InvalidIdentity : Result
-        object InvalidAvatarIdentity : Result
     }
 
     suspend fun deleteAvatar(
         accessIdentity: AccessIdentity,
-        meetingIdentity: MeetingIdentity,
-        avatarIdentity: FileIdentity
+        meetingIdentity: MeetingIdentity
     ): Result {
         authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
-        filesRepository.authorizeWithFileId(avatarIdentity) { return Result.InvalidAvatarIdentity }
 
         val meeting = getMeetingsViewsRepository
             .getMeetingsViewsOrNull(accessIdentity.userId, listOf(meetingIdentity.meetingId))
@@ -33,12 +30,12 @@ class DeleteMeetingAvatarUsecase(
 
         if (meeting.creator.identity.userId != accessIdentity.userId) return Result.InvalidIdentity
         if (meetingIdentity.accessHash != meeting.identity.accessHash) return Result.MeetingNotFound
-        storage.deleteAvatar(meetingIdentity, avatarIdentity)
+        storage.deleteAvatar(meetingIdentity)
 
         return Result.Success
     }
 
     interface Storage {
-        suspend fun deleteAvatar (meetingIdentity: MeetingIdentity, avatarIdentity: FileIdentity)
+        suspend fun deleteAvatar (meetingIdentity: MeetingIdentity)
     }
 }

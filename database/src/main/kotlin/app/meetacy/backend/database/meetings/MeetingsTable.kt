@@ -102,7 +102,7 @@ class MeetingsTable(private val db: Database) : Table() {
             }
         }
 
-    suspend fun deleteAvatar(meetingId: MeetingId, avatarIdentity: FileIdentity) =
+    suspend fun deleteAvatar(meetingId: MeetingId) =
         newSuspendedTransaction(db = db) {
             update({ MEETING_ID eq meetingId.long }) {statement ->
                 statement[AVATAR_ID] = null
