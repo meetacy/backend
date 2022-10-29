@@ -6,6 +6,7 @@ import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage
 import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository
 import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
 import app.meetacy.backend.database.integration.friends.DatabaseAddFriendStorage
+import app.meetacy.backend.database.integration.friends.DatabaseDeleteFriendStorage
 import app.meetacy.backend.database.integration.friends.DatabaseGetFriendsStorage
 import app.meetacy.backend.database.integration.meetings.avatar.add.DatabaseAddMeetingAvatarStorage
 import app.meetacy.backend.database.integration.meetings.avatar.delete.DatabaseDeleteMeetingAvatarStorage
@@ -38,12 +39,14 @@ import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
+import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.get.GetFriendsUsecase
 import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
 import app.meetacy.backend.usecase.integration.email.confirm.UsecaseConfirmEmailRepository
 import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
 import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
+import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseGetFriendsRepository
 import app.meetacy.backend.usecase.integration.meetings.avatar.add.UsecaseAddMeetingAvatarRepository
 import app.meetacy.backend.usecase.integration.meetings.avatar.delete.UsecaseDeleteMeetingAvatarRepository
@@ -142,6 +145,13 @@ fun startMockEndpoints(
                     authRepository = authRepository,
                     getUsersViewsRepository = DatabaseGetUsersViewsRepository(db),
                     storage = DatabaseGetFriendsStorage(db)
+                )
+            ),
+            deleteFriendRepository = UsecaseDeleteFriendRepository(
+                usecase = DeleteFriendUsecase(
+                    authRepository = authRepository,
+                    getUsersViewsRepository = DatabaseGetUsersViewsRepository(db),
+                    storage = DatabaseDeleteFriendStorage(db)
                 )
             )
         ),
