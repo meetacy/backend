@@ -16,7 +16,6 @@ class UsecaseDeleteFriendRepository(
                 DeleteFriendResult.InvalidToken
             DeleteFriendUsecase.Result.Success ->
                 DeleteFriendResult.Success
-
         }
     }
 }

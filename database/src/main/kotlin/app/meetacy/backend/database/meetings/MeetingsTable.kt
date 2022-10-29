@@ -109,4 +109,10 @@ class MeetingsTable(private val db: Database) : Table() {
                 statement[AVATAR_HASH] = null
             }
         }
+
+    suspend fun deleteMeeting(meetingId: MeetingId) =
+        newSuspendedTransaction(db = db) {
+            deleteWhere { ((MEETING_ID eq meetingId.long)) }
+        }
+
 }

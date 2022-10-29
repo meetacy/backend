@@ -3,8 +3,8 @@
 //import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage
 //import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository
 //import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
-//import app.meetacy.backend.database.integration.friends.DatabaseAddFriendStorage
-//import app.meetacy.backend.database.integration.friends.DatabaseGetFriendsStorage
+//import app.meetacy.backend.database.integration.friends.add.DatabaseAddFriendStorage
+//import app.meetacy.backend.database.integration.friends.get.DatabaseGetFriendsStorage
 //import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
 //import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
 //import app.meetacy.backend.database.integration.meetings.list.DatabaseGetMeetingsListStorage

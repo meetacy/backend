@@ -1,4 +1,4 @@
-package app.meetacy.backend.database.integration.friends
+package app.meetacy.backend.database.integration.friends.delete
 
 import app.meetacy.backend.database.friends.FriendsTable
 import app.meetacy.backend.types.UserId

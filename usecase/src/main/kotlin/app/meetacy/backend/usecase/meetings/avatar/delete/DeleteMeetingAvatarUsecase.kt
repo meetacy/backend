@@ -1,6 +1,7 @@
 package app.meetacy.backend.usecase.meetings.avatar.delete
 
 import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.MeetingIdentity
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
@@ -21,21 +22,21 @@ class DeleteMeetingAvatarUsecase(
         accessIdentity: AccessIdentity,
         meetingIdentity: MeetingIdentity
     ): Result {
-        authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
+        val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
 
         val meeting = getMeetingsViewsRepository
             .getMeetingsViewsOrNull(accessIdentity.userId, listOf(meetingIdentity.meetingId))
             .first()
             ?: return Result.MeetingNotFound
 
-        if (meeting.creator.identity.userId != accessIdentity.userId) return Result.InvalidIdentity
+        if (meeting.creator.identity.userId != userId) return Result.InvalidIdentity
         if (meetingIdentity.accessHash != meeting.identity.accessHash) return Result.MeetingNotFound
-        storage.deleteAvatar(meetingIdentity)
+        storage.deleteAvatar(meetingIdentity.meetingId)
 
         return Result.Success
     }
 
     interface Storage {
-        suspend fun deleteAvatar (meetingIdentity: MeetingIdentity)
+        suspend fun deleteAvatar (meetingId: MeetingId)
     }
 }
