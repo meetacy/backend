@@ -17,36 +17,15 @@ data class GenerateParam(
 @Serializable
 data class GenerateTokenResponse(
     val status: Boolean,
-    val errorCode: Int? = null,
-    val errorMessage: String? = null,
-    val result: AccessIdentitySerializable?
+    val result: AccessIdentitySerializable
 )
 
 interface TokenGenerateRepository {
-    suspend fun generateToken(nickname: String): TokenGenerateResult
-}
-
-sealed interface TokenGenerateResult {
-    class Success(val accessIdentity: AccessIdentity) : TokenGenerateResult
-    object InvalidUtf8String : TokenGenerateResult
+    suspend fun generateToken(nickname: String): AccessIdentity
 }
 
 fun Route.generateToken(tokenGenerateRepository: TokenGenerateRepository) = post ("/generate") {
     val generateParam = call.receive<GenerateParam>()
-    when(val result = tokenGenerateRepository.generateToken(generateParam.nickname)) {
-        is TokenGenerateResult.Success -> call.respond(
-            GenerateTokenResponse(
-                status = true,
-                result = result.accessIdentity.serializable()
-            )
-        )
-        TokenGenerateResult.InvalidUtf8String -> call.respond(
-            GenerateTokenResponse(
-                status = false,
-                errorCode = 1,
-                errorMessage = "Please provide a valid nickname",
-                result = null
-            )
-        )
-    }
+    val token = tokenGenerateRepository.generateToken(generateParam.nickname)
+    call.respond(GenerateTokenResponse(status = true, result = token.serializable()))
 }

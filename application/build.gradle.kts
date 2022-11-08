@@ -11,7 +11,6 @@ dependencies {
     implementation(project(Deps.Projects.DatabaseUsecase))
     implementation(project(Deps.Projects.DatabaseEndpoints))
     implementation(project(Deps.Projects.HashGeneratorUsecase))
-    implementation(project(Deps.Projects.Utf8CheckerUsecase))
 }
 
 val propertiesFile = rootProject.file("deploy.properties")
