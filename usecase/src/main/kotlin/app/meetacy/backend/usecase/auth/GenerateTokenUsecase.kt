@@ -14,7 +14,6 @@ class GenerateTokenUsecase(
 ) {
 
     suspend fun generateToken(nickname: String): Result {
-
         if (!utf8Checker.checkString(nickname)) return Result.InvalidUtf8String
         val newUserId = storage.createUser(nickname)
         val token = AccessIdentity(
