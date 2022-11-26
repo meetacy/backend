@@ -1,7 +1,10 @@
 package app.meetacy.backend.endpoint.meetings.create
 
+import app.meetacy.backend.endpoint.auth.generate.GenerateTokenResponse
 import app.meetacy.backend.endpoint.types.Meeting
-import app.meetacy.backend.types.serialization.*
+import app.meetacy.backend.types.serialization.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.DateSerializable
+import app.meetacy.backend.types.serialization.LocationSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -20,6 +23,7 @@ data class CreateParam(
 sealed interface CreateMeetingResult {
     class Success(val meeting: Meeting) : CreateMeetingResult
     object TokenInvalid : CreateMeetingResult
+    object InvalidUtf8String : CreateMeetingResult
 }
 
 interface CreateMeetingRepository {
@@ -47,13 +51,21 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
                 result = result.meeting
             )
         )
-        is CreateMeetingResult.TokenInvalid -> call.respond(
+        CreateMeetingResult.TokenInvalid -> call.respond(
             CreateMeetResponse(
                 status = false,
                 errorCode = 1,
                 errorMessage = "Please provide a valid identity" /* There is also an option
                   to make just one generic "Meeting not create" response to
                   all three errors as a protection against brute force. */,
+                result = null
+            )
+        )
+        CreateMeetingResult.InvalidUtf8String -> call.respond(
+            GenerateTokenResponse(
+                status = false,
+                errorCode = 2,
+                errorMessage = "Please provide a valid title or description",
                 result = null
             )
         )
