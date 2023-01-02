@@ -1,11 +1,12 @@
 package app.meetacy.backend.endpoint.meetings.get
 
 import app.meetacy.backend.endpoint.types.Meeting
+import app.meetacy.backend.endpoint.types.ServerFailure
+import app.meetacy.backend.endpoint.types.ServerResponse
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.MeetingIdentity
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.MeetingIdentitySerializable
-
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -42,31 +43,20 @@ data class GetMeetingResponse(
 fun Route.getMeetings(getMeetingRepository: GetMeetingRepository) = post("/get") {
     val params = call.receive<GetMeetingsParam>()
 
-    val result = when(
+    when(
         val result = getMeetingRepository.getMeeting(
             params.accessIdentity.type(),
             params.meetingIdentity.type()
         )
     ) {
-        is GetMeetingResult.Success -> GetMeetingResponse(
-            status = true,
-            result = result.meeting,
-            errorCode = null,
-            errorMessage = null
+        is GetMeetingResult.Success -> call.respond(
+            ServerResponse(result.meeting)
         )
-        is GetMeetingResult.TokenInvalid -> GetMeetingResponse(
-            status = false,
-            result = null,
-            errorCode = 1,
-            errorMessage = "Please provide a valid token"
+        is GetMeetingResult.TokenInvalid -> call.respond(
+            ServerFailure(1, "Please provide a valid token")
         )
-        is GetMeetingResult.MeetingNotFound -> GetMeetingResponse(
-            status = false,
-            result = null,
-            errorCode = 2,
-            errorMessage = "Please provide a valid meetingIdentity"
+        is GetMeetingResult.MeetingNotFound -> call.respond(
+            ServerFailure(2, "Please provide a valid meetingIdentity")
         )
     }
-
-    call.respond(result)
 }

@@ -1,5 +1,7 @@
 package app.meetacy.backend.endpoint.auth.generate
 
+import app.meetacy.backend.endpoint.types.ServerFailure
+import app.meetacy.backend.endpoint.types.ServerResponse
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.serializable
@@ -34,19 +36,15 @@ sealed interface TokenGenerateResult {
 fun Route.generateToken(tokenGenerateRepository: TokenGenerateRepository) = post ("/generate") {
     val generateParam = call.receive<GenerateParam>()
     when(val result = tokenGenerateRepository.generateToken(generateParam.nickname)) {
-        is TokenGenerateResult.Success -> call.respond(
-            GenerateTokenResponse(
-                status = true,
-                result = result.accessIdentity.serializable()
+        is TokenGenerateResult.Success -> {
+            call.respond(
+                ServerResponse(result.accessIdentity.serializable())
             )
-        )
-        TokenGenerateResult.InvalidUtf8String -> call.respond(
-            GenerateTokenResponse(
-                status = false,
-                errorCode = 1,
-                errorMessage = "Please provide a valid nickname",
-                result = null
+        }
+        TokenGenerateResult.InvalidUtf8String -> {
+            call.respond(
+                ServerFailure(1, "Please provide a valid nickname")
             )
-        )
+        }
     }
 }
