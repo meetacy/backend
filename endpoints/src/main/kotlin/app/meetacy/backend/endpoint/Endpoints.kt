@@ -23,6 +23,7 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
+@Suppress("ExtractKtorModule")
 @OptIn(ExperimentalSerializationApi::class)
 fun startEndpoints(
     port: Int,

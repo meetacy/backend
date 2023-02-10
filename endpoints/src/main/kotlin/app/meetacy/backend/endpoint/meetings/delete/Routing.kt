@@ -1,9 +1,11 @@
 package app.meetacy.backend.endpoint.meetings.delete
 
-import app.meetacy.backend.types.serialization.*
+import app.meetacy.backend.endpoint.ktor.respondEmptySuccess
+import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.types.serialization.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.MeetingIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
@@ -23,38 +25,16 @@ interface DeleteMeetingRepository {
     suspend fun deleteMeeting(deleteMeetingParams: DeleteMeetingParams): DeleteMeetingResult
 }
 
-@Serializable
-data class DeleteMeetResponse(
-    val status: Boolean,
-    val errorCode: Int?,
-    val errorMessage: String?
-
-)
-
 fun Route.deleteMeeting(deleteMeetingRepository: DeleteMeetingRepository) = post("/delete") {
     val params = call.receive<DeleteMeetingParams>()
 
     when(deleteMeetingRepository.deleteMeeting(params)) {
-        is DeleteMeetingResult.Success -> call.respond(
-            DeleteMeetResponse(
-                status = true,
-                errorCode = null,
-                errorMessage = null
-            )
+        is DeleteMeetingResult.Success -> call.respondEmptySuccess()
+        is DeleteMeetingResult.InvalidIdentity -> call.respondFailure(
+            1, "Please provide a valid identity"
         )
-        is DeleteMeetingResult.InvalidIdentity -> call.respond(
-            DeleteMeetResponse(
-                status = false,
-                errorCode = 1,
-                errorMessage = "Please provide a valid identity"
-            )
-        )
-        is DeleteMeetingResult.MeetingNotFound -> call.respond(
-            DeleteMeetResponse(
-                status = false,
-                errorCode = 2,
-                errorMessage = "Please provide a valid meetingIdentity"
-            )
+        is DeleteMeetingResult.MeetingNotFound -> call.respondFailure(
+            2, "Please provide a valid meetingIdentity"
         )
     }
 }

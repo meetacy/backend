@@ -1,12 +1,12 @@
 package app.meetacy.backend.endpoint.friends.add
 
+import app.meetacy.backend.endpoint.ktor.respondEmptySuccess
+import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.UserIdentitySerializable
-import io.ktor.server.application.call
-import io.ktor.server.request.receive
-import io.ktor.server.response.respond
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.post
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 interface AddFriendRepository {
@@ -19,13 +19,6 @@ data class AddFriendParams(
     val friendIdentity: UserIdentitySerializable
 )
 
-@Serializable
-data class AddFriendResponse(
-    val status: Boolean = false,
-    val errorCode: Int? = null,
-    val errorMessage: String? = null
-)
-
 sealed interface AddFriendResult {
     object Success : AddFriendResult
     object InvalidToken : AddFriendResult
@@ -35,25 +28,10 @@ sealed interface AddFriendResult {
 
 fun Route.addFriend(provider: AddFriendRepository) = post("/add") {
     val params = call.receive<AddFriendParams>()
-    val result = when(provider.addFriend(params)) {
-        AddFriendResult.FriendNotFound -> AddFriendResponse(
-            status = false,
-            errorCode = 2,
-            errorMessage = "Friend was not found"
-        )
-        AddFriendResult.InvalidToken -> AddFriendResponse(
-            status = false,
-            errorCode = 1,
-            errorMessage = "Please provide a valid token"
-        )
-        AddFriendResult.Success -> AddFriendResponse(
-            status = true
-        )
-        AddFriendResult.FriendAlreadyAdded -> AddFriendResponse(
-            status = false,
-            errorCode = 3,
-            errorMessage = "Friend already added"
-        )
+    when(provider.addFriend(params)) {
+        AddFriendResult.Success -> call.respondEmptySuccess()
+        AddFriendResult.InvalidToken -> call.respondFailure(1, "Please provide a valid token")
+        AddFriendResult.FriendNotFound -> call.respondFailure(2, "Friend was not found")
+        AddFriendResult.FriendAlreadyAdded -> call.respondFailure(3, "Friend already added")
     }
-    call.respond(result)
 }
