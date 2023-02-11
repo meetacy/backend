@@ -73,6 +73,7 @@ import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
 import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
+import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import org.jetbrains.exposed.sql.Database
 
 fun startMockEndpoints(
@@ -83,6 +84,7 @@ fun startMockEndpoints(
     wait: Boolean,
 ) {
     val authRepository = DatabaseAuthRepository(db)
+    val filesRepository = DatabaseFilesRepository(db)
 
 
 
@@ -108,7 +110,8 @@ fun startMockEndpoints(
             tokenGenerateRepository = UsecaseTokenGenerateRepository(
                 usecase = GenerateTokenUsecase(
                     storage = DatabaseGenerateTokenStorage(DefaultHashGenerator, db),
-                    tokenGenerator = DefaultHashGenerator
+                    tokenGenerator = DefaultHashGenerator,
+                    utf8Checker = DefaultUtf8Checker
                 )
             )
         ),
@@ -123,7 +126,7 @@ fun startMockEndpoints(
                 addUserAvatarRepository = UsecaseAddUserAvatarRepository(
                     usecase = AddUserAvatarUsecase(
                         authRepository = authRepository,
-                        filesRepository = DatabaseFilesRepository(db),
+                        filesRepository = filesRepository,
                         storage = DatabaseAddUserAvatarStorage(db)
                     )
                 ),
@@ -191,7 +194,7 @@ fun startMockEndpoints(
                 addMeetingAvatarRepository = UsecaseAddMeetingAvatarRepository(
                     usecase = AddMeetingAvatarUsecase(
                         authRepository = authRepository,
-                        filesRepository = DatabaseFilesRepository(db),
+                        filesRepository = filesRepository,
                         storage = DatabaseAddMeetingAvatarStorage(db),
                         getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
                     )

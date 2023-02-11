@@ -23,5 +23,7 @@ include(
     "hash-generator:usecase-integration",
     "database",
     "database:usecase-integration",
-    "database:endpoints-integration"
+    "database:endpoints-integration",
+    "utf8-checker",
+    "utf8-checker:usecase-integration"
 )

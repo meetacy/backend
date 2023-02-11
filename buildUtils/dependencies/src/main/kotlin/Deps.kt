@@ -232,5 +232,7 @@ object Deps {
         const val Database = ":database"
         const val DatabaseUsecase = ":database:usecase-integration"
         const val DatabaseEndpoints = ":database:endpoints-integration"
+        const val Utf8Checker = ":utf8-checker"
+        const val Utf8CheckerUsecase = ":utf8-checker:usecase-integration"
     }
 }
