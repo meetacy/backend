@@ -1,10 +1,11 @@
 package app.meetacy.backend.endpoint.auth.email.link
 
+import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
@@ -12,13 +13,6 @@ import kotlinx.serialization.Serializable
 data class LinkParameters(
     val email: String,
     val accessIdentity: AccessIdentitySerializable
-)
-
-@Serializable
-data class LinkResponse(
-    val status: Boolean,
-    val errorCode: Int? = null,
-    val errorMessage: String? = null
 )
 
 sealed interface ConfirmHashResult {
@@ -37,14 +31,8 @@ fun Route.linkEmail(repository: LinkEmailRepository) = post("/link") {
     val parameters = call.receive<LinkParameters>()
 
     when (repository.linkEmail(parameters.accessIdentity.type(), parameters.email)) {
-        is ConfirmHashResult.Success -> call.respond(LinkResponse(status = true))
+        is ConfirmHashResult.Success -> call.respondSuccess()
         is ConfirmHashResult.TokenInvalid ->
-            call.respond(
-                LinkResponse(
-                    status = false,
-                    errorCode = 1,
-                    errorMessage = "The token you've provided is invalid"
-                )
-            )
+            call.respondFailure(1, "The token you've provided is invalid")
     }
 }

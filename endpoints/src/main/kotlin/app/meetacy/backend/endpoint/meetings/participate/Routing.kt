@@ -1,13 +1,14 @@
 package app.meetacy.backend.endpoint.meetings.participate
 
 
+import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.MeetingIdentity
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.MeetingIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
@@ -31,43 +32,24 @@ interface ParticipateMeetingRepository {
     ) : ParticipateMeetingResult
 }
 
-@Serializable
-data class ParticipateMeetResponse(
-    val status: Boolean,
-    val errorCode: Int?,
-    val errorMessage: String?
-)
-
 fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRepository) = post("/participate") {
     val params = call.receive<ParticipateParam>()
 
-    val result = when(
+    when(
         participateMeetingRepository.participateMeeting(
             params.meetingIdentity.type(),
             params.accessIdentity.type()
         )
     ) {
-        is ParticipateMeetingResult.Success -> ParticipateMeetResponse(
-            status = true,
-            errorCode = null,
-            errorMessage = null
+        is ParticipateMeetingResult.Success -> call.respondSuccess()
+        is ParticipateMeetingResult.TokenInvalid -> call.respondFailure(
+            1,"Please provide a valid token"
         )
-        is ParticipateMeetingResult.TokenInvalid -> ParticipateMeetResponse(
-            status = false,
-            errorCode = 1,
-            errorMessage = "Please provide a valid token"
+        is ParticipateMeetingResult.MeetingNotFound -> call.respondFailure(
+            2, "Please provide a valid id"
         )
-        is ParticipateMeetingResult.MeetingNotFound -> ParticipateMeetResponse(
-            status = false,
-            errorCode = 2,
-            errorMessage = "Please provide a valid id"
-        )
-        ParticipateMeetingResult.MeetingAlreadyParticipate -> ParticipateMeetResponse(
-            status = false,
-            errorCode = 3,
-            errorMessage = "You are already participating in this meeting"
+        ParticipateMeetingResult.MeetingAlreadyParticipate -> call.respondFailure(
+            3, "You are already participating in this meeting"
         )
     }
-
-    call.respond(result)
 }

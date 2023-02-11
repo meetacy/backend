@@ -1,23 +1,16 @@
 package app.meetacy.backend.endpoint.auth.email.confirm
 
-import io.ktor.server.application.call
-import io.ktor.server.request.receive
-import io.ktor.server.response.respond
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.post
+import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfirmParams(
     val email: String,
     val confirmHash: String
-)
-
-@Serializable
-private data class ConfirmResponse(
-    val status: Boolean,
-    val errorCode: Int? = null,
-    val errorMessage: String? = null
 )
 
 sealed interface ConfirmHashResult {
@@ -34,24 +27,16 @@ interface ConfirmEmailRepository {
 fun Route.confirmEmail(storage: ConfirmEmailRepository) = post("/confirm") {
     val parameters = call.receive<ConfirmParams>()
 
-    val response = when (storage.checkConfirmHash(parameters.email, parameters.confirmHash)) {
-        ConfirmHashResult.LinkExpired -> ConfirmResponse(
-            status = false,
-            errorCode = 1,
-            errorMessage = "This link was expired. Please consider to create a new one."
+    when (storage.checkConfirmHash(parameters.email, parameters.confirmHash)) {
+        ConfirmHashResult.LinkExpired -> call.respondFailure(
+            1, "This link was expired. Please consider to create a new one."
         )
-        ConfirmHashResult.LinkInvalid -> ConfirmResponse(
-            status = false,
-            errorCode = 2,
-            errorMessage = "This link is invalid. Please consider to create a new one."
+        ConfirmHashResult.LinkInvalid -> call.respondFailure(
+            2, "This link is invalid. Please consider to create a new one."
         )
-        ConfirmHashResult.LinkMaxAttemptsReached -> ConfirmResponse(
-            status = false,
-            errorCode = 3,
-            errorMessage = "You have reached max attempts for today. Please try again later."
+        ConfirmHashResult.LinkMaxAttemptsReached -> call.respondFailure(
+            3, "You have reached max attempts for today. Please try again later."
         )
-        ConfirmHashResult.Success -> ConfirmResponse(status = true)
+        ConfirmHashResult.Success -> call.respondSuccess()
     }
-
-    call.respond(response)
 }

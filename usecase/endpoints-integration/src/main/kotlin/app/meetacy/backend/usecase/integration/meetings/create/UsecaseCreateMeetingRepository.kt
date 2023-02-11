@@ -17,6 +17,8 @@ class UsecaseCreateMeetingRepository(
                 CreateMeetingResult.TokenInvalid
             is CreateMeetingUsecase.Result.Success ->
                 CreateMeetingResult.Success(result.meeting.mapToEndpoint())
+            CreateMeetingUsecase.Result.InvalidUtf8String ->
+                CreateMeetingResult.InvalidUtf8String
         }
     }
 }

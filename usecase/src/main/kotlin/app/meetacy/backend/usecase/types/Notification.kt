@@ -6,7 +6,6 @@ import app.meetacy.backend.types.NotificationId
 sealed interface Notification {
     val id: NotificationId
     val isNew: Boolean
-
     class Subscription(
         override val id: NotificationId,
         override val isNew: Boolean,

@@ -1,25 +1,17 @@
 package app.meetacy.backend.endpoint.auth.generate
 
+import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.serializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class GenerateParam(
     val nickname: String
-)
-
-@Serializable
-data class GenerateTokenResponse(
-    val status: Boolean,
-    val errorCode: Int? = null,
-    val errorMessage: String? = null,
-    val result: AccessIdentitySerializable?
 )
 
 interface TokenGenerateRepository {
@@ -34,19 +26,11 @@ sealed interface TokenGenerateResult {
 fun Route.generateToken(tokenGenerateRepository: TokenGenerateRepository) = post ("/generate") {
     val generateParam = call.receive<GenerateParam>()
     when(val result = tokenGenerateRepository.generateToken(generateParam.nickname)) {
-        is TokenGenerateResult.Success -> call.respond(
-            GenerateTokenResponse(
-                status = true,
-                result = result.accessIdentity.serializable()
-            )
+        is TokenGenerateResult.Success -> call.respondSuccess(
+            result.accessIdentity.serializable()
         )
-        TokenGenerateResult.InvalidUtf8String -> call.respond(
-            GenerateTokenResponse(
-                status = false,
-                errorCode = 1,
-                errorMessage = "Please provide a valid nickname",
-                result = null
-            )
-        )
+        TokenGenerateResult.InvalidUtf8String -> {
+            call.respondFailure(1, "Please provide a valid nickname")
+        }
     }
 }
