@@ -1,7 +1,6 @@
 package app.meetacy.backend.endpoint.meetings.avatar.delete
 
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.FileIdentitySerializable
 import app.meetacy.backend.types.serialization.MeetingIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -12,15 +11,13 @@ import kotlinx.serialization.Serializable
 sealed interface DeleteMeetingAvatarResult {
     object Success : DeleteMeetingAvatarResult
     object MeetingNotFound : DeleteMeetingAvatarResult
-    object InvalidMeetingAvatarIdentity : DeleteMeetingAvatarResult
     object InvalidAccessIdentity : DeleteMeetingAvatarResult
 }
 
 @Serializable
 data class DeleteMeetingAvatarParams(
     val meetingIdentity: MeetingIdentitySerializable,
-    val accessIdentity: AccessIdentitySerializable,
-    val avatarIdentity: FileIdentitySerializable
+    val accessIdentity: AccessIdentitySerializable
 )
 
 @Serializable
@@ -50,13 +47,6 @@ fun Route.deleteAvatar(provider: DeleteMeetingAvatarRepository) = post("/delete"
                 status = false,
                 errorCode = 1,
                 errorMessage = "Please provide a valid meetingIdentity"
-            )
-        )
-        DeleteMeetingAvatarResult.InvalidMeetingAvatarIdentity -> call.respond(
-            DeleteMeetingAvatarResponse(
-                status = false,
-                errorCode = 2,
-                errorMessage = "Please provide a valid fileIdentity"
             )
         )
         DeleteMeetingAvatarResult.InvalidAccessIdentity -> call.respond(
