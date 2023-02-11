@@ -3,12 +3,7 @@
 package app.meetacy.backend.database.friends
 
 import app.meetacy.backend.types.UserId
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -41,4 +36,9 @@ class FriendsTable(private val db: Database) : Table()  {
         select { (USER_ID eq userId.long) }
             .map { result -> UserId(result[FRIEND_ID]) }
     }
+
+    suspend fun deleteFriend(userId: UserId, friendId: UserId) =
+        newSuspendedTransaction(db = db) {
+            deleteWhere { ((USER_ID eq userId.long) and (FRIEND_ID eq friendId.long)) }
+        }
 }

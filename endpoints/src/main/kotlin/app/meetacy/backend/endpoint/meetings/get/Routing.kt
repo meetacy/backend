@@ -64,7 +64,7 @@ fun Route.getMeetings(getMeetingRepository: GetMeetingRepository) = post("/get")
             status = false,
             result = null,
             errorCode = 2,
-            errorMessage = "Please provide a valid id"
+            errorMessage = "Please provide a valid meetingIdentity"
         )
     }
 
