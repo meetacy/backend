@@ -1,7 +1,7 @@
 package app.meetacy.backend.endpoint.friends.add
 
-import app.meetacy.backend.endpoint.ktor.respondEmptySuccess
 import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.UserIdentitySerializable
 import io.ktor.server.application.*
@@ -29,7 +29,7 @@ sealed interface AddFriendResult {
 fun Route.addFriend(provider: AddFriendRepository) = post("/add") {
     val params = call.receive<AddFriendParams>()
     when(provider.addFriend(params)) {
-        AddFriendResult.Success -> call.respondEmptySuccess()
+        AddFriendResult.Success -> call.respondSuccess()
         AddFriendResult.InvalidToken -> call.respondFailure(1, "Please provide a valid token")
         AddFriendResult.FriendNotFound -> call.respondFailure(2, "Friend was not found")
         AddFriendResult.FriendAlreadyAdded -> call.respondFailure(3, "Friend already added")

@@ -1,7 +1,7 @@
 package app.meetacy.backend.endpoint.auth.email.link
 
-import app.meetacy.backend.endpoint.ktor.respondEmptySuccess
 import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import io.ktor.server.application.*
@@ -31,7 +31,7 @@ fun Route.linkEmail(repository: LinkEmailRepository) = post("/link") {
     val parameters = call.receive<LinkParameters>()
 
     when (repository.linkEmail(parameters.accessIdentity.type(), parameters.email)) {
-        is ConfirmHashResult.Success -> call.respondEmptySuccess()
+        is ConfirmHashResult.Success -> call.respondSuccess()
         is ConfirmHashResult.TokenInvalid ->
             call.respondFailure(1, "The token you've provided is invalid")
     }

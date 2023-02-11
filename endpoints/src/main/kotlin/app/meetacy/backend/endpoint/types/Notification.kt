@@ -6,9 +6,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface Notification {
-    val id: NotificationIdSerializable
-    val isNew: Boolean
+sealed class Notification {
+    abstract val id: NotificationIdSerializable
+    abstract val isNew: Boolean
 
     @SerialName("subscription")
     @Serializable
@@ -17,7 +17,7 @@ sealed interface Notification {
         override val id: NotificationIdSerializable,
         val subscriber: User,
         val date: DateSerializable
-    ) : Notification
+    ) : Notification()
 
     @SerialName("meeting_invitation")
     @Serializable
@@ -27,5 +27,5 @@ sealed interface Notification {
         val meeting: Meeting,
         val inviter: User,
         val date: DateSerializable
-    ) : Notification
+    ) : Notification()
 }

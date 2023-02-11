@@ -1,7 +1,7 @@
 package app.meetacy.backend.endpoint.friends.delete
 
-import app.meetacy.backend.endpoint.ktor.respondEmptySuccess
 import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.UserIdentitySerializable
 import io.ktor.server.application.*
@@ -34,6 +34,6 @@ fun Route.deleteFriend(provider: DeleteFriendRepository) = post("/delete") {
         DeleteFriendResult.InvalidToken -> call.respondFailure(
             1, "Please provide a valid token"
         )
-        DeleteFriendResult.Success -> call.respondEmptySuccess()
+        DeleteFriendResult.Success -> call.respondSuccess()
     }
 }

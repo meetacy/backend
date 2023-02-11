@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.users.avatar.add
 
-import app.meetacy.backend.endpoint.ktor.respondEmptySuccess
+import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.FileIdentitySerializable
@@ -29,7 +29,7 @@ fun Route.addUserAvatar(provider: AddUserAvatarRepository) = post("/add") {
     val params = call.receive<AddUserAvatarParams>()
 
     when(provider.addAvatar(params)) {
-        is AddUserAvatarResult.Success -> call.respondEmptySuccess()
+        is AddUserAvatarResult.Success -> call.respondSuccess()
         AddUserAvatarResult.InvalidIdentity -> call.respondFailure(
             1, "Please provide a valid identity"
         )

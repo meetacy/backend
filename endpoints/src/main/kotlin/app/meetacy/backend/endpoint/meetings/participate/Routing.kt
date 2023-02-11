@@ -1,8 +1,8 @@
 package app.meetacy.backend.endpoint.meetings.participate
 
 
-import app.meetacy.backend.endpoint.ktor.respondEmptySuccess
 import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.MeetingIdentity
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
@@ -41,7 +41,7 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
             params.accessIdentity.type()
         )
     ) {
-        is ParticipateMeetingResult.Success -> call.respondEmptySuccess()
+        is ParticipateMeetingResult.Success -> call.respondSuccess()
         is ParticipateMeetingResult.TokenInvalid -> call.respondFailure(
             1,"Please provide a valid token"
         )

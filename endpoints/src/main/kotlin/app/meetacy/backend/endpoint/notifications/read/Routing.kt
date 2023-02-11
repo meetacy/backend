@@ -1,7 +1,7 @@
 package app.meetacy.backend.endpoint.notifications.read
 
-import app.meetacy.backend.endpoint.ktor.respondEmptySuccess
 import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.NotificationId
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
@@ -30,7 +30,7 @@ interface ReadNotificationsRepository {
 fun Route.read(repository: ReadNotificationsRepository) = post("/read") {
     val requestBody = call.receive<RequestBody>()
     when (repository.read(requestBody.accessIdentity.type(), requestBody.lastNotificationId.type())) {
-        ReadNotificationsRepository.Result.Success -> call.respondEmptySuccess()
+        ReadNotificationsRepository.Result.Success -> call.respondSuccess()
         ReadNotificationsRepository.Result.LastNotificationIdInvalid -> call.respondFailure(
             1, "Please provide a valid notification id"
         )
