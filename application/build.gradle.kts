@@ -17,7 +17,9 @@ dependencies {
 val propertiesFile = rootProject.file("deploy.properties")
 
 deploy {
-    if (propertiesFile.exists()) {
+    val isRunner = System.getenv("IS_RUNNER")?.toBoolean() == true
+
+    if (propertiesFile.exists() || isRunner) {
         val properties = loadProperties(propertiesFile)
 
         default {
