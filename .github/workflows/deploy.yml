@@ -16,4 +16,4 @@ jobs:
           distribution: 'corretto'
           java-version: '11'
           cache: 'gradle'
-      - run: ./gradlew application:tasks --no-daemon
+      - run: ./gradlew application:productionDeploy --no-daemon
