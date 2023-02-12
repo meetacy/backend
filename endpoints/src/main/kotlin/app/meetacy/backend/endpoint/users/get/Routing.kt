@@ -39,6 +39,7 @@ fun Route.getUser(provider: UserRepository) = post("/get") {
         GetUserResult.UserNotFound -> call.respondFailure(
             2, "FullUser not found"
         )
+
         GetUserResult.InvalidToken -> call.respondFailure(
             1, "Please provide a valid token"
         )

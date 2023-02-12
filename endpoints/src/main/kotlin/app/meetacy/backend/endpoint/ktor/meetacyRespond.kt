@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.ktor
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 
@@ -11,8 +12,12 @@ suspend fun ApplicationCall.respondSuccess() {
     respond(EmptySuccess(true))
 }
 
-suspend fun ApplicationCall.respondFailure(errorCode: Int, errorMessage: String) {
-    respond(Failure(false, errorCode, errorMessage))
+suspend fun ApplicationCall.respondFailure(
+    errorCode: Int,
+    errorMessage: String,
+    httpCode: HttpStatusCode = HttpStatusCode.OK
+) {
+    respond(httpCode, Failure(false, errorCode, errorMessage))
 }
 
 

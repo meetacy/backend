@@ -28,11 +28,12 @@ interface AddUserAvatarRepository {
 fun Route.addUserAvatar(provider: AddUserAvatarRepository) = post("/add") {
     val params = call.receive<AddUserAvatarParams>()
 
-    when(provider.addAvatar(params)) {
+    when (provider.addAvatar(params)) {
         is AddUserAvatarResult.Success -> call.respondSuccess()
         AddUserAvatarResult.InvalidIdentity -> call.respondFailure(
             1, "Please provide a valid identity"
         )
+
         AddUserAvatarResult.InvalidUserAvatarIdentity -> call.respondFailure(
             2, "Please provide a valid fileIdentity"
         )

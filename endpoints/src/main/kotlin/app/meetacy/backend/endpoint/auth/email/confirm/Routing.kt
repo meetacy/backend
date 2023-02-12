@@ -31,12 +31,15 @@ fun Route.confirmEmail(storage: ConfirmEmailRepository) = post("/confirm") {
         ConfirmHashResult.LinkExpired -> call.respondFailure(
             1, "This link was expired. Please consider to create a new one."
         )
+
         ConfirmHashResult.LinkInvalid -> call.respondFailure(
             2, "This link is invalid. Please consider to create a new one."
         )
+
         ConfirmHashResult.LinkMaxAttemptsReached -> call.respondFailure(
             3, "You have reached max attempts for today. Please try again later."
         )
+
         ConfirmHashResult.Success -> call.respondSuccess()
     }
 }

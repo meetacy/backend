@@ -8,7 +8,7 @@ object Deps {
     private const val coroutinesVersion = "1.6.0"
     private const val serializationVersion = "1.3.2"
     private const val nodejsExternalsVersion = "0.0.7"
-    private const val ktorVersion = "2.1.1"
+    private const val ktorVersion = "2.2.3"
     private const val ktorOpenapiVersion = "0.2-beta.20"
     private const val exposedVersion = "0.35.1"
     private const val datetimeVersion = "0.3.0"
@@ -103,13 +103,13 @@ object Deps {
                 const val Cio = "io.ktor:ktor-server-cio:$ktorVersion"
                 const val SerializationJson = "io.ktor:ktor-serialization-kotlinx-json:$ktorVersion"
                 const val ContentNegotiation = "io.ktor:ktor-server-content-negotiation:$ktorVersion"
-                const val Openapi = "com.github.papsign:Ktor-OpenAPI-Generator:$ktorOpenapiVersion"
                 const val Testing = "io.ktor:ktor-server-test-host:$ktorVersion"
-
+                const val Netty = "io.ktor:ktor-server-netty:$ktorVersion"
+                const val PartialContent = "io.ktor:ktor-server-partial-content:$ktorVersion"
+                const val AutoHead = "io.ktor:ktor-server-auto-head-response:$ktorVersion"
+                const val Cors = "io.ktor:ktor-server-cors:2.2.3"
+                const val Swagger = "io.ktor:ktor-server-swagger:2.2.3"
             }
-            const val Netty = "io.ktor:ktor-server-netty:$ktorVersion"
-            const val PartialContent = "io.ktor:ktor-server-partial-content:$ktorVersion"
-            const val Ahr = "io.ktor:ktor-server-auto-head-response:$ktorVersion"
         }
         object Exposed {
             const val Core = "org.jetbrains.exposed:exposed-core:$exposedVersion"

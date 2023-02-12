@@ -20,16 +20,18 @@ interface GetFriendsRepository {
 
 sealed interface GetFriendsResult {
     object InvalidToken : GetFriendsResult
+
     @Serializable
     class Success(val friends: List<User>, val subscriptions: List<User>) : GetFriendsResult
 }
 
 fun Route.getFriend(getProvider: GetFriendsRepository) = post("/get") {
     val friendToken = call.receive<GetFriendsToken>()
-    when(val result = getProvider.getFriends(friendToken)) {
+    when (val result = getProvider.getFriends(friendToken)) {
         is GetFriendsResult.Success -> call.respondSuccess(
             (GetFriendsResult.Success(result.friends, result.subscriptions))
         )
+
         is GetFriendsResult.InvalidToken -> call.respondFailure(
             1, "Please provide a valid token"
         )

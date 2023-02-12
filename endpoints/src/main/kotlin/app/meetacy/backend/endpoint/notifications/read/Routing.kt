@@ -34,6 +34,7 @@ fun Route.read(repository: ReadNotificationsRepository) = post("/read") {
         ReadNotificationsRepository.Result.LastNotificationIdInvalid -> call.respondFailure(
             1, "Please provide a valid notification id"
         )
+
         ReadNotificationsRepository.Result.TokenInvalid -> call.respondFailure(
             1, "Please provide a valid token"
         )

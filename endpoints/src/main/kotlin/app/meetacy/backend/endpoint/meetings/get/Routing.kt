@@ -28,13 +28,13 @@ interface GetMeetingRepository {
     suspend fun getMeeting(
         accessIdentity: AccessIdentity,
         meetingIdentity: MeetingIdentity
-    ) : GetMeetingResult
+    ): GetMeetingResult
 }
 
 fun Route.getMeetings(getMeetingRepository: GetMeetingRepository) = post("/get") {
     val params = call.receive<GetMeetingsParam>()
 
-    when(
+    when (
         val result = getMeetingRepository.getMeeting(
             params.accessIdentity.type(),
             params.meetingIdentity.type()
@@ -43,9 +43,11 @@ fun Route.getMeetings(getMeetingRepository: GetMeetingRepository) = post("/get")
         is GetMeetingResult.Success -> call.respondSuccess(
             result.meeting
         )
+
         is GetMeetingResult.TokenInvalid -> call.respondFailure(
             1, "Please provide a valid token"
         )
+
         is GetMeetingResult.MeetingNotFound -> call.respondFailure(
             2, "Please provide a valid meetingIdentity"
         )
