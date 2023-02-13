@@ -29,13 +29,13 @@ interface ParticipateMeetingRepository {
     suspend fun participateMeeting(
         meetingIdentity: MeetingIdentity,
         accessIdentity: AccessIdentity
-    ) : ParticipateMeetingResult
+    ): ParticipateMeetingResult
 }
 
 fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRepository) = post("/participate") {
     val params = call.receive<ParticipateParam>()
 
-    when(
+    when (
         participateMeetingRepository.participateMeeting(
             params.meetingIdentity.type(),
             params.accessIdentity.type()
@@ -43,11 +43,13 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
     ) {
         is ParticipateMeetingResult.Success -> call.respondSuccess()
         is ParticipateMeetingResult.TokenInvalid -> call.respondFailure(
-            1,"Please provide a valid token"
+            1, "Please provide a valid token"
         )
+
         is ParticipateMeetingResult.MeetingNotFound -> call.respondFailure(
             2, "Please provide a valid id"
         )
+
         ParticipateMeetingResult.MeetingAlreadyParticipate -> call.respondFailure(
             3, "You are already participating in this meeting"
         )

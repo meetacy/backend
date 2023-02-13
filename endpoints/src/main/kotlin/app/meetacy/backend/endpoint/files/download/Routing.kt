@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.files.download
 
+import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.types.FileIdentity
 import app.meetacy.backend.types.FileSize
 import io.ktor.http.*
@@ -8,7 +9,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.Serializable
 import java.io.File
 import java.io.FileInputStream
 
@@ -16,12 +16,7 @@ sealed interface GetFileResult {
     class Success(val file: File, val fileName: String, val fileSize: FileSize?) : GetFileResult
     object InvalidIdentity : GetFileResult
 }
-@Serializable
-class DownloadFileResponse(
-    val status: Boolean,
-    val errorCode: Int?,
-    val errorMessage: String?,
-)
+
 interface GetFileRepository {
     suspend fun getFile(fileIdentity: FileIdentity): GetFileResult
 }
@@ -31,14 +26,12 @@ fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
         call.parameters["fileIdentity"]!!
     )!!
     when (val result = getFileRepository.getFile(fileIdentity)) {
-        GetFileResult.InvalidIdentity -> call.respond(
-            HttpStatusCode.BadRequest,
-            DownloadFileResponse(
-                status = false,
-                errorCode = 1,
-                errorMessage = "Please provide a valid identity"
-            )
+        GetFileResult.InvalidIdentity -> call.respondFailure(
+            errorCode = 1,
+            errorMessage = "Please provide a valid identity",
+            httpCode = HttpStatusCode.BadRequest
         )
+
         is GetFileResult.Success -> {
             call.response.header(
                 HttpHeaders.ContentDisposition,

@@ -25,7 +25,7 @@ interface DeleteUserAvatarRepository {
 fun Route.deleteAvatar(provider: DeleteUserAvatarRepository) = post("/delete") {
     val params = call.receive<DeleteUserAvatarParams>()
 
-    when(provider.deleteAvatar(params)) {
+    when (provider.deleteAvatar(params)) {
         is DeleteUserAvatarResult.Success -> call.respondSuccess()
         DeleteUserAvatarResult.InvalidAccessIdentity -> call.respondFailure(
             1, "Please provide a valid identity"

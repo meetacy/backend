@@ -26,7 +26,7 @@ interface MeetingsListRepository {
 
 fun Route.listMeetings(meetingsListRepository: MeetingsListRepository) = post("/list") {
     val params = call.receive<ListParam>()
-    when(val result = meetingsListRepository.getList(params.accessIdentity.type())) {
+    when (val result = meetingsListRepository.getList(params.accessIdentity.type())) {
         is ListMeetingsResult.Success -> call.respondSuccess(result.meetings)
         is ListMeetingsResult.TokenInvalid -> call.respondFailure(
             1, "Please provide a valid token"

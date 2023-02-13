@@ -27,19 +27,21 @@ sealed interface CreateMeetingResult {
 }
 
 interface CreateMeetingRepository {
-    suspend fun createMeeting(createParam: CreateParam) : CreateMeetingResult
+    suspend fun createMeeting(createParam: CreateParam): CreateMeetingResult
 }
 
 fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post("/create") {
     val params = call.receive<CreateParam>()
 
-    when(val result = createMeetingRepository.createMeeting(params)) {
+    when (val result = createMeetingRepository.createMeeting(params)) {
         is CreateMeetingResult.Success -> call.respondSuccess(
             result.meeting
         )
+
         CreateMeetingResult.TokenInvalid -> call.respondFailure(
             1, "Please provide a valid identity"
         )
+
         CreateMeetingResult.InvalidUtf8String -> call.respondFailure(
             2, "Please provide a valid title or description"
         )

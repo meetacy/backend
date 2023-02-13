@@ -28,11 +28,12 @@ interface DeleteMeetingRepository {
 fun Route.deleteMeeting(deleteMeetingRepository: DeleteMeetingRepository) = post("/delete") {
     val params = call.receive<DeleteMeetingParams>()
 
-    when(deleteMeetingRepository.deleteMeeting(params)) {
+    when (deleteMeetingRepository.deleteMeeting(params)) {
         is DeleteMeetingResult.Success -> call.respondSuccess()
         is DeleteMeetingResult.InvalidIdentity -> call.respondFailure(
             1, "Please provide a valid identity"
         )
+
         is DeleteMeetingResult.MeetingNotFound -> call.respondFailure(
             2, "Please provide a valid meetingIdentity"
         )

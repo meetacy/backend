@@ -31,14 +31,16 @@ interface AddMeetingAvatarRepository {
 fun Route.addAvatar(provider: AddMeetingAvatarRepository) = post("/add") {
     val params = call.receive<AddMeetingAvatarParams>()
 
-    when(provider.addAvatar(params)) {
+    when (provider.addAvatar(params)) {
         is AddMeetingAvatarResult.Success -> call.respondSuccess()
         AddMeetingAvatarResult.MeetingNotFound -> call.respondFailure(
             1, "Please provide a valid meetingIdentity"
         )
+
         AddMeetingAvatarResult.InvalidMeetingAvatarIdentity -> call.respondFailure(
             2, "Please provide a valid fileIdentity"
         )
+
         AddMeetingAvatarResult.InvalidAccessIdentity -> call.respondFailure(
             1, "Please provide a valid identity"
         )

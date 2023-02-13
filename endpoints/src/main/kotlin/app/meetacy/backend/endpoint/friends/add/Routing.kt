@@ -28,7 +28,7 @@ sealed interface AddFriendResult {
 
 fun Route.addFriend(provider: AddFriendRepository) = post("/add") {
     val params = call.receive<AddFriendParams>()
-    when(provider.addFriend(params)) {
+    when (provider.addFriend(params)) {
         AddFriendResult.Success -> call.respondSuccess()
         AddFriendResult.InvalidToken -> call.respondFailure(1, "Please provide a valid token")
         AddFriendResult.FriendNotFound -> call.respondFailure(2, "Friend was not found")

@@ -19,7 +19,11 @@ sealed interface UploadFileResult {
 }
 
 interface SaveFileRepository {
-    suspend fun saveFile(accessIdentity: AccessIdentity, fileName: String, inputProvider: () -> InputStream): UploadFileResult
+    suspend fun saveFile(
+        accessIdentity: AccessIdentity,
+        fileName: String,
+        inputProvider: () -> InputStream
+    ): UploadFileResult
 }
 
 fun Route.upload(provider: SaveFileRepository) = post("/upload") {
@@ -34,10 +38,12 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
             is PartData.FormItem -> {
                 if (part.name == "accessIdentity") accessIdentity = AccessIdentity.parse(part.value)
             }
+
             is PartData.FileItem -> {
                 inputProvider = part.streamProvider
                 fileName = part.originalFileName ?: fileName
             }
+
             else -> {}
         }
     }
@@ -49,9 +55,11 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
         is UploadFileResult.Success -> call.respondSuccess(
             result.fileIdentity.serializable()
         )
+
         is UploadFileResult.InvalidIdentity -> call.respondFailure(
             1, "Please provide a valid identity"
         )
+
         is UploadFileResult.LimitSize -> {
             val filesSizeLimit = result.filesSizeLimit
             val filesSize = result.filesSize.bytesSize

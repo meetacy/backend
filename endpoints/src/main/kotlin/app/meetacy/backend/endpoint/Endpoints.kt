@@ -12,13 +12,17 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.notifications.notifications
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.endpoint.users.users
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
+import io.ktor.server.http.content.*
 import io.ktor.server.plugins.autohead.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.partialcontent.*
+import io.ktor.server.plugins.swagger.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -34,13 +38,17 @@ fun startEndpoints(
     notificationsDependencies: NotificationsDependencies,
     filesDependencies: FilesDependencies,
     usersDependencies: UsersDependencies
-) = embeddedServer(CIO, port) {
+) = embeddedServer(CIO, host = "localhost", port = port) {
     install(ContentNegotiation) {
         json(
             Json {
                 explicitNulls = false
             }
         )
+    }
+    install(CORS) {
+        anyHost()
+        allowHeader(HttpHeaders.ContentType)
     }
     install(AutoHeadResponse)
     install(PartialContent) {
@@ -50,6 +58,10 @@ fun startEndpoints(
     }
 
     routing {
+        static("/") {
+            resources()
+        }
+        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
         auth(authDependencies)
         users(usersDependencies)
         meetings(meetingsDependencies)

@@ -28,11 +28,12 @@ interface DeleteMeetingAvatarRepository {
 fun Route.deleteAvatar(provider: DeleteMeetingAvatarRepository) = post("/delete") {
     val params = call.receive<DeleteMeetingAvatarParams>()
 
-    when(provider.deleteAvatar(params)) {
+    when (provider.deleteAvatar(params)) {
         is DeleteMeetingAvatarResult.Success -> call.respondSuccess()
         DeleteMeetingAvatarResult.MeetingNotFound -> call.respondFailure(
             1, "Please provide a valid meetingIdentity"
         )
+
         DeleteMeetingAvatarResult.InvalidAccessIdentity -> call.respondFailure(
             1, "Please provide a valid identity"
         )

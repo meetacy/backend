@@ -27,13 +27,15 @@ sealed interface DeleteFriendResult {
 
 fun Route.deleteFriend(provider: DeleteFriendRepository) = post("/delete") {
     val params = call.receive<DeleteFriendParams>()
-    when(provider.deleteFriend(params)) {
+    when (provider.deleteFriend(params)) {
         DeleteFriendResult.FriendNotFound -> call.respondFailure(
             2, "Friend was not found"
         )
+
         DeleteFriendResult.InvalidToken -> call.respondFailure(
             1, "Please provide a valid token"
         )
+
         DeleteFriendResult.Success -> call.respondSuccess()
     }
 }
