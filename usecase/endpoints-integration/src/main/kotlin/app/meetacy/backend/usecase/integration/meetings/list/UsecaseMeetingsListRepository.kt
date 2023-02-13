@@ -1,8 +1,8 @@
 package app.meetacy.backend.usecase.integration.meetings.list
 
-import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.endpoint.meetings.list.ListMeetingsResult
 import app.meetacy.backend.endpoint.meetings.list.MeetingsListRepository
+import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.meetings.list.GetMeetingsListUsecase
 
@@ -18,6 +18,6 @@ class UsecaseMeetingsListRepository(
                     }
                 )
             GetMeetingsListUsecase.Result.TokenInvalid ->
-                ListMeetingsResult.TokenInvalid
+                ListMeetingsResult.InvalidIdentity
         }
 }

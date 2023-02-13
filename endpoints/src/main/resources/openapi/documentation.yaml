@@ -6,10 +6,27 @@ info:
 servers:
 - url: "https://api.meetacy.app"
 - url: "http://localhost:8080"
+tags:
+  - name: auth
+    description: Authorization and confirmation of mail
+  - name: files
+    description: Operations about files
+  - name: friends
+    description: Operations about friends
+  - name: meetings
+    description: Operations about meetings
+  - name: notifications
+    description: THIS PART IS NOT CONFIGURED YET
+  - name: user
+    description: Operations about user
+
 paths:
   /auth/email/confirm:
     post:
-      description: ""
+      tags:
+        - auth
+      summary: Email confirmation
+      description: "Email confirmation [via gmail, not implemented yet]"
       responses:
         "200":
           description: "OK"
@@ -19,7 +36,10 @@ paths:
                 type: "object"
   /auth/email/link:
     post:
-      description: ""
+      tags:
+        - auth
+      summary: Email linking
+      description: "Linking email to account"
       responses:
         "200":
           description: "OK"
@@ -29,24 +49,29 @@ paths:
                 type: "object"
   /auth/generate:
     post:
-      summary: Create user
-      description: This can only be done by the logged in user.
+      tags:
+        - auth
+      summary: Access Identity creation
+      description: Created access identity for user
       requestBody:
-        description: Created user object
+        description: Creation access identity based on nickname
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GeneratedSchemaName2'
+              $ref: '#/components/schemas/GenerateIdentityRequest'
       responses:
         default:
-          description: successful operation
+          description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GeneratedSchemaName1'
+                $ref: '#/components/schemas/GenerateIdentityResponse'
   /files/download:
     get:
-      description: ""
+      summary: Download file from server
+      tags:
+        - files
+      description: "Getting streaming data from the server by File Identity"
       parameters:
       - name: "fileIdentity"
         in: "query"
@@ -69,7 +94,10 @@ paths:
                 format: "binary"
   /files/upload:
     post:
-      description: ""
+      summary: Uploading a file to the server
+      tags:
+        - files
+      description: "Uploading streaming data to the server. Load Type--MultiPart Data"
       responses:
         "200":
           description: "OK"
@@ -79,7 +107,10 @@ paths:
                 type: "object"
   /friends/add:
     post:
-      description: ""
+      tags:
+        - friends
+      summary: "Add friend"
+      description: "User subscription. With a mutual subscription, he becomes a friend"
       responses:
         "200":
           description: "OK"
@@ -89,7 +120,10 @@ paths:
                 type: "object"
   /friends/delete:
     post:
-      description: ""
+      summary: Delete friend
+      tags:
+        - friends
+      description: "Unsubscribing from a user, as a result of which he ceases to be your friend"
       responses:
         "200":
           description: "OK"
@@ -99,7 +133,10 @@ paths:
                 type: "object"
   /friends/get:
     post:
-      description: ""
+      summary: Get list friends
+      tags:
+        - friends
+      description: "Getting a list of friends and those you follow"
       responses:
         "200":
           description: "OK"
@@ -109,7 +146,10 @@ paths:
                 type: "object"
   /meetings/avatar/add:
     post:
-      description: ""
+      summary: Adding meetings avatar
+      tags:
+        - meetings
+      description: "Adding a meeting avatar via an File Identity and Meeting Identity"
       responses:
         "200":
           description: "OK"
@@ -119,7 +159,10 @@ paths:
                 type: "object"
   /meetings/avatar/delete:
     post:
-      description: ""
+      summary: Removal meetings avatar
+      tags:
+        - meetings
+      description: "Removal a meeting avatar via an File Identity and Meeting Identity"
       responses:
         "200":
           description: "OK"
@@ -129,7 +172,10 @@ paths:
                 type: "object"
   /meetings/create:
     post:
-      description: ""
+      summary: Creating a meeting
+      tags:
+        - meetings
+      description: "Creating a meeting with an identity, name, description, date and location"
       responses:
         "200":
           description: "OK"
@@ -139,7 +185,10 @@ paths:
                 type: "object"
   /meetings/delete:
     post:
-      description: ""
+      summary: Deleting a meeting
+      tags:
+        - meetings
+      description: "Removing a meeting from the database"
       responses:
         "200":
           description: "OK"
@@ -149,7 +198,10 @@ paths:
                 type: "object"
   /meetings/get:
     post:
-      description: ""
+      summary: Getting meeting information
+      tags:
+        - meetings
+      description: "Getting information about a meeting object"
       responses:
         "200":
           description: "OK"
@@ -159,7 +211,10 @@ paths:
                 type: "object"
   /meetings/list:
     post:
-      description: ""
+      summary: Getting a list of meetings
+      tags:
+        - meetings
+      description: "Getting a list of meetings by accessIdentity"
       responses:
         "200":
           description: "OK"
@@ -169,7 +224,10 @@ paths:
                 type: "object"
   /meetings/participate:
     post:
-      description: ""
+      summary: Participate meeting
+      tags:
+        - meetings
+      description: "Taking part in a meeting"
       responses:
         "200":
           description: "OK"
@@ -177,8 +235,10 @@ paths:
             '*/*':
               schema:
                 type: "object"
-  /notifications:
-    get:
+  /notifications/get:
+    post:
+      tags:
+        - notifications
       description: ""
       responses:
         "200":
@@ -189,6 +249,8 @@ paths:
                 type: "object"
   /notifications/read:
     post:
+      tags:
+        - notifications
       description: ""
       responses:
         "200":
@@ -199,7 +261,10 @@ paths:
                 type: "object"
   /users/avatar/add:
     post:
-      description: ""
+      summary: Adding user avatar
+      tags:
+        - user
+      description: "Adding a user avatar via an File Identity and Access Identity"
       responses:
         "200":
           description: "OK"
@@ -209,7 +274,10 @@ paths:
                 type: "object"
   /users/avatar/delete:
     post:
-      description: ""
+      summary: Deleting user avatar
+      tags:
+        - user
+      description: "Deleting a user avatar via an File Identity and Access Identity"
       responses:
         "200":
           description: "OK"
@@ -219,7 +287,10 @@ paths:
                 type: "object"
   /users/get:
     post:
-      description: ""
+      summary: Getting user object
+      tags:
+        - user
+      description: "Getting user data. Nickname, Identity [not to be confused with accessIdentity] and email verification status"
       responses:
         "200":
           description: "OK"
@@ -239,23 +310,27 @@ components:
           format: "int32"
         errorMessage:
           type: "string"
-    GeneratedSchemaName2:
+    GenerateIdentityRequest:
       type: "object"
       properties:
         nickname:
           type: "string"
           enum:
-            - kotlin
+            - David Johnson
       required:
         - "nickname"
       additionalProperties: false
-    GeneratedSchemaName1:
+    GenerateIdentityResponse:
       type: "object"
       properties:
         status:
           type: "boolean"
+          enum:
+            - true
         result:
           type: "string"
+          enum:
+            - "114:sfh4wb9HcVfepczRAznfgcnDfru21IRChLP6OvA5CIOMP7xPX3hQfVg8XzfOASykajyZidQxdouQOENDQIsDaK9M7DH2G0AEh6f6Wgw6brZdv1kNPrtANltUEECuzV8U2GlUH3TQppP9w8yh62ldg0t3fOCnyOELR0FZ9kj3UuE1uNPVLO8jTnjKj5BYZioc5xLWOZPNxmcmK1HsnKXQMj3gCxNTbHCg65z3TpA1C6espTsGAYY5SojAr8pUYzrg"
       required:
       - "status"
       - "result"

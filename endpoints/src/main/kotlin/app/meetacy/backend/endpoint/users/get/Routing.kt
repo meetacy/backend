@@ -26,7 +26,7 @@ data class GetUserParams(
 )
 
 sealed interface GetUserResult {
-    object InvalidToken : GetUserResult
+    object InvalidIdentity : GetUserResult
     object UserNotFound : GetUserResult
     class Success(val user: User) : GetUserResult
 }
@@ -40,8 +40,8 @@ fun Route.getUser(provider: UserRepository) = post("/get") {
             2, "FullUser not found"
         )
 
-        GetUserResult.InvalidToken -> call.respondFailure(
-            1, "Please provide a valid token"
+        GetUserResult.InvalidIdentity -> call.respondFailure(
+            1, "Please provide a valid accessIdentity"
         )
     }
 }

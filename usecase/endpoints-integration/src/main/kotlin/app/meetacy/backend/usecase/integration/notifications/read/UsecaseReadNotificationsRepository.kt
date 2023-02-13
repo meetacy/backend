@@ -1,8 +1,8 @@
 package app.meetacy.backend.usecase.integration.notifications.read
 
+import app.meetacy.backend.endpoint.notifications.read.ReadNotificationsRepository
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.NotificationId
-import app.meetacy.backend.endpoint.notifications.read.ReadNotificationsRepository
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
 
 class UsecaseReadNotificationsRepository(
@@ -18,6 +18,6 @@ class UsecaseReadNotificationsRepository(
             ReadNotificationsUsecase.Result.Success ->
                 ReadNotificationsRepository.Result.Success
             ReadNotificationsUsecase.Result.TokenInvalid ->
-                ReadNotificationsRepository.Result.TokenInvalid
+                ReadNotificationsRepository.Result.InvalidIdentity
         }
 }

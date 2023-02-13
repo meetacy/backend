@@ -13,7 +13,7 @@ class UsecaseDeleteFriendRepository(
             DeleteFriendUsecase.Result.FriendNotFound ->
                 DeleteFriendResult.FriendNotFound
             DeleteFriendUsecase.Result.InvalidToken ->
-                DeleteFriendResult.InvalidToken
+                DeleteFriendResult.InvalidIdentity
             DeleteFriendUsecase.Result.Success ->
                 DeleteFriendResult.Success
         }

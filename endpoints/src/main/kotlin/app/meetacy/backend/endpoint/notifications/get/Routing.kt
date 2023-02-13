@@ -25,7 +25,7 @@ interface GetNotificationsRepository {
     ): Result
 
     sealed interface Result {
-        object TokenInvalid : Result
+        object InvalidIdentity : Result
         class Success(val notifications: List<Notification>) : Result
     }
 }
@@ -43,8 +43,8 @@ fun Route.get(repository: GetNotificationsRepository) = post("/get") {
     ) {
 
         is GetNotificationsRepository.Result.Success -> call.respondSuccess(result.notifications)
-        is GetNotificationsRepository.Result.TokenInvalid -> call.respondFailure(
-            1, "Please provide a valid token"
+        is GetNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(
+            1, "Please provide a valid accessIdentity"
         )
     }
 }

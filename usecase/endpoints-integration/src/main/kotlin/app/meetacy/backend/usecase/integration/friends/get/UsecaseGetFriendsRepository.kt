@@ -12,7 +12,7 @@ class UsecaseGetFriendsRepository(
     override suspend fun getFriends(token: GetFriendsToken): GetFriendsResult =
         when (val result = usecase.getFriendsUsecase(token.accessIdentity.type())) {
             GetFriendsUsecase.Result.InvalidToken ->
-                GetFriendsResult.InvalidToken
+                GetFriendsResult.InvalidIdentity
             is GetFriendsUsecase.Result.Success ->
                 GetFriendsResult.Success(
                     result.friends.map { it.mapToEndpoint() },

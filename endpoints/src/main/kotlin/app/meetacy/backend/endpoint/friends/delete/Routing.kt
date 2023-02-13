@@ -21,7 +21,7 @@ data class DeleteFriendParams(
 
 sealed interface DeleteFriendResult {
     object Success : DeleteFriendResult
-    object InvalidToken : DeleteFriendResult
+    object InvalidIdentity : DeleteFriendResult
     object FriendNotFound : DeleteFriendResult
 }
 
@@ -32,8 +32,8 @@ fun Route.deleteFriend(provider: DeleteFriendRepository) = post("/delete") {
             2, "Friend was not found"
         )
 
-        DeleteFriendResult.InvalidToken -> call.respondFailure(
-            1, "Please provide a valid token"
+        DeleteFriendResult.InvalidIdentity -> call.respondFailure(
+            1, "Please provide a valid accessIdentity"
         )
 
         DeleteFriendResult.Success -> call.respondSuccess()
