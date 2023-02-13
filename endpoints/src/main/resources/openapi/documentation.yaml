@@ -4,6 +4,7 @@ info:
   description: "Meetacy_Backend_Application API"
   version: "1.0.0"
 servers:
+- url: "https://api.meetacy.app"
 - url: "http://localhost:8080"
 paths:
   /auth/email/confirm:
