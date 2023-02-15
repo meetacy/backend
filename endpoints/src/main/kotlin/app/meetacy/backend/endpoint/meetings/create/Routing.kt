@@ -39,7 +39,7 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
         )
 
         CreateMeetingResult.TokenInvalid -> call.respondFailure(
-            1, "Please provide a valid identity"
+            1, "Please provide a valid accessIdentity"
         )
 
         CreateMeetingResult.InvalidUtf8String -> call.respondFailure(

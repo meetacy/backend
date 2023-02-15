@@ -15,7 +15,7 @@ class AddMeetingAvatarUsecase(
         object Success : Result
         object MeetingNotFound : Result
         object InvalidIdentity : Result
-        object InvalidAvatarIdentity : Result
+        object InvalidFileIdentity : Result
     }
 
     suspend fun addAvatar(
@@ -24,7 +24,7 @@ class AddMeetingAvatarUsecase(
         avatarIdentity: FileIdentity
     ): Result {
         authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
-        filesRepository.authorizeWithFileId(avatarIdentity) { return Result.InvalidAvatarIdentity }
+        filesRepository.authorizeWithFileId(avatarIdentity) { return Result.InvalidFileIdentity }
 
         val meeting = getMeetingsViewsRepository
             .getMeetingsViewsOrNull(accessIdentity.userId, listOf(meetingIdentity.meetingId))

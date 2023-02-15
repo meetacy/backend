@@ -9,7 +9,7 @@ class UsecaseAddUserAvatarRepository(
     private val usecase: AddUserAvatarUsecase
 ) : AddUserAvatarRepository {
     override suspend fun addAvatar(addUserAvatarParams: AddUserAvatarParams): AddUserAvatarResult = with(addUserAvatarParams) {
-        when (usecase.addAvatar(accessIdentity.type(), avatarIdentity.type())) {
+        when (usecase.addAvatar(accessIdentity.type(), fileIdentity.type())) {
             AddUserAvatarUsecase.Result.InvalidAvatarIdentity ->
                 AddUserAvatarResult.InvalidUserAvatarIdentity
             AddUserAvatarUsecase.Result.InvalidIdentity ->

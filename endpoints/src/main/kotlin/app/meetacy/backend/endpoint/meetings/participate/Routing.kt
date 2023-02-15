@@ -47,7 +47,7 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
         )
 
         is ParticipateMeetingResult.MeetingNotFound -> call.respondFailure(
-            2, "Please provide a valid id"
+            2, "Please provide a valid meetingIdentity"
         )
 
         ParticipateMeetingResult.MeetingAlreadyParticipate -> call.respondFailure(

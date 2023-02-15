@@ -35,7 +35,7 @@ fun Route.deleteAvatar(provider: DeleteMeetingAvatarRepository) = post("/delete"
         )
 
         DeleteMeetingAvatarResult.InvalidAccessIdentity -> call.respondFailure(
-            1, "Please provide a valid identity"
+            1, "Please provide a valid accessIdentity"
         )
     }
 }
