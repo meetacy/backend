@@ -121,8 +121,6 @@ paths:
               properties: # Request parts
                 accessIdentity:
                   type: string
-                  enum:
-                    - "150:Xn6MvLl69jBH1MxphAie4sz6iitjzmxARVhTch4xhPo6IYD9Ac5FztacQMWOrQ5lubshKxTY1ealVqjYhQWhbNgAgFcVSWi0HlRPKl38td0K8ZhamLxLqEyM2daFWQbjqCucqbQuhWzgJEHttzgXObnTSFCi3p5Punph3t276HJaAS6WXlW3U5i2alEGeqb84CPAxue1BZkBvSTwm69YRTALjRG3sJ04OVC4PXRDwkY3u2xOqXWIRhQ4VZorJhmJ"
                 profileImage:
                   type: string
                   format: binary
