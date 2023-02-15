@@ -28,7 +28,7 @@ fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
     when (val result = getFileRepository.getFile(fileIdentity)) {
         GetFileResult.InvalidIdentity -> call.respondFailure(
             errorCode = 1,
-            errorMessage = "Please provide a valid identity",
+            errorMessage = "Please provide a valid accessIdentity",
             httpCode = HttpStatusCode.BadRequest
         )
 

@@ -20,7 +20,7 @@ data class ParticipateParam(
 
 sealed interface ParticipateMeetingResult {
     object Success : ParticipateMeetingResult
-    object TokenInvalid : ParticipateMeetingResult
+    object InvalidIdentity : ParticipateMeetingResult
     object MeetingNotFound : ParticipateMeetingResult
     object MeetingAlreadyParticipate : ParticipateMeetingResult
 }
@@ -42,12 +42,12 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
         )
     ) {
         is ParticipateMeetingResult.Success -> call.respondSuccess()
-        is ParticipateMeetingResult.TokenInvalid -> call.respondFailure(
-            1, "Please provide a valid token"
+        is ParticipateMeetingResult.InvalidIdentity -> call.respondFailure(
+            1, "Please provide a valid accessIdentity"
         )
 
         is ParticipateMeetingResult.MeetingNotFound -> call.respondFailure(
-            2, "Please provide a valid id"
+            2, "Please provide a valid meetingIdentity"
         )
 
         ParticipateMeetingResult.MeetingAlreadyParticipate -> call.respondFailure(

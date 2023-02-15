@@ -9,6 +9,6 @@ class UsecaseLinkEmailRepository(private val usecase: LinkEmailUsecase) : LinkEm
     override suspend fun linkEmail(token: AccessIdentity, email: String): ConfirmHashResult =
         when (usecase.linkEmail(email, token)) {
             LinkEmailUsecase.LinkResult.Success -> ConfirmHashResult.Success
-            LinkEmailUsecase.LinkResult.TokenInvalid -> ConfirmHashResult.TokenInvalid
+            LinkEmailUsecase.LinkResult.TokenInvalid -> ConfirmHashResult.InvalidIdentity
         }
 }

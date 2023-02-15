@@ -13,7 +13,7 @@ class UsecaseAddFriendRepository(
             AddFriendUsecase.Result.FriendNotFound ->
                 AddFriendResult.FriendNotFound
             AddFriendUsecase.Result.InvalidToken ->
-                AddFriendResult.InvalidToken
+                AddFriendResult.InvalidIdentity
             AddFriendUsecase.Result.Success ->
                 AddFriendResult.Success
             AddFriendUsecase.Result.FriendAlreadyAdded ->

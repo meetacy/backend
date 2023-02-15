@@ -19,7 +19,7 @@ class UsecaseUserRepository(private val usecase: GetUserSafeUsecase) : UserRepos
 
         return when (val result = usecase.getUser(params)) {
             is GetUserSafeUsecase.Result.Success -> GetUserResult.Success(result.user.mapToEndpoint())
-            is GetUserSafeUsecase.Result.InvalidToken -> GetUserResult.InvalidToken
+            is GetUserSafeUsecase.Result.InvalidToken -> GetUserResult.InvalidIdentity
             is GetUserSafeUsecase.Result.UserNotFound -> GetUserResult.UserNotFound
         }
     }

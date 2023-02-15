@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 sealed interface AddMeetingAvatarResult {
     object Success : AddMeetingAvatarResult
     object MeetingNotFound : AddMeetingAvatarResult
-    object InvalidMeetingAvatarIdentity : AddMeetingAvatarResult
+    object InvalidMeetingFileIdentity : AddMeetingAvatarResult
     object InvalidAccessIdentity : AddMeetingAvatarResult
 }
 
@@ -21,7 +21,7 @@ sealed interface AddMeetingAvatarResult {
 data class AddMeetingAvatarParams(
     val meetingIdentity: MeetingIdentitySerializable,
     val accessIdentity: AccessIdentitySerializable,
-    val avatarIdentity: FileIdentitySerializable
+    val fileIdentity: FileIdentitySerializable
 )
 
 interface AddMeetingAvatarRepository {
@@ -37,12 +37,12 @@ fun Route.addAvatar(provider: AddMeetingAvatarRepository) = post("/add") {
             1, "Please provide a valid meetingIdentity"
         )
 
-        AddMeetingAvatarResult.InvalidMeetingAvatarIdentity -> call.respondFailure(
+        AddMeetingAvatarResult.InvalidMeetingFileIdentity -> call.respondFailure(
             2, "Please provide a valid fileIdentity"
         )
 
         AddMeetingAvatarResult.InvalidAccessIdentity -> call.respondFailure(
-            1, "Please provide a valid identity"
+            1, "Please provide a valid accessIdentity"
         )
     }
 }

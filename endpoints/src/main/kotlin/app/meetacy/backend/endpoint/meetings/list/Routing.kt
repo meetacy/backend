@@ -17,7 +17,7 @@ data class ListParam(
 
 sealed interface ListMeetingsResult {
     class Success(val meetings: List<Meeting>) : ListMeetingsResult
-    object TokenInvalid : ListMeetingsResult
+    object InvalidIdentity : ListMeetingsResult
 }
 
 interface MeetingsListRepository {
@@ -28,8 +28,8 @@ fun Route.listMeetings(meetingsListRepository: MeetingsListRepository) = post("/
     val params = call.receive<ListParam>()
     when (val result = meetingsListRepository.getList(params.accessIdentity.type())) {
         is ListMeetingsResult.Success -> call.respondSuccess(result.meetings)
-        is ListMeetingsResult.TokenInvalid -> call.respondFailure(
-            1, "Please provide a valid token"
+        is ListMeetingsResult.InvalidIdentity -> call.respondFailure(
+            1, "Please provide a valid accessIdentity"
         )
     }
 }

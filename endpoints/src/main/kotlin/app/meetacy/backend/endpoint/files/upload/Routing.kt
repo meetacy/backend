@@ -57,7 +57,7 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
         )
 
         is UploadFileResult.InvalidIdentity -> call.respondFailure(
-            1, "Please provide a valid identity"
+            1, "Please provide a valid accessIdentity"
         )
 
         is UploadFileResult.LimitSize -> {

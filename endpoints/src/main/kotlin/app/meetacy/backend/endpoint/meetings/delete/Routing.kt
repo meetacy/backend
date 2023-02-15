@@ -31,7 +31,7 @@ fun Route.deleteMeeting(deleteMeetingRepository: DeleteMeetingRepository) = post
     when (deleteMeetingRepository.deleteMeeting(params)) {
         is DeleteMeetingResult.Success -> call.respondSuccess()
         is DeleteMeetingResult.InvalidIdentity -> call.respondFailure(
-            1, "Please provide a valid identity"
+            1, "Please provide a valid accessIdentity"
         )
 
         is DeleteMeetingResult.MeetingNotFound -> call.respondFailure(

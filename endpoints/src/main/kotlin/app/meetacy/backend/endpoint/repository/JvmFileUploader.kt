@@ -12,15 +12,20 @@ object JvmFileUploader {
         file: File,
         limit: FileSize
     ): FileSize? = withContext(Dispatchers.IO) {
-        file.createNewFile()
-        val stream = FileOutputStream(file)
-        val bytesSize = inputStream.transferTo(stream, limit)
-        stream.close()
-        if (bytesSize == null) {
-            file.delete()
-            return@withContext null
+        try {
+            file.createNewFile()
+            val stream = FileOutputStream(file)
+            val bytesSize = inputStream.transferTo(stream, limit)
+            stream.close()
+            if (bytesSize == null) {
+                file.delete()
+                return@withContext null
+            }
+            return@withContext FileSize(bytesSize)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            null
         }
-        return@withContext FileSize(bytesSize)
     }
 }
 

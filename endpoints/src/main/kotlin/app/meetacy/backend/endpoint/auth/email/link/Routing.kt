@@ -16,7 +16,7 @@ data class LinkParameters(
 )
 
 sealed interface ConfirmHashResult {
-    object TokenInvalid : ConfirmHashResult
+    object InvalidIdentity : ConfirmHashResult
     object Success : ConfirmHashResult
 }
 
@@ -32,7 +32,7 @@ fun Route.linkEmail(repository: LinkEmailRepository) = post("/link") {
 
     when (repository.linkEmail(parameters.accessIdentity.type(), parameters.email)) {
         is ConfirmHashResult.Success -> call.respondSuccess()
-        is ConfirmHashResult.TokenInvalid ->
-            call.respondFailure(1, "The token you've provided is invalid")
+        is ConfirmHashResult.InvalidIdentity ->
+            call.respondFailure(1, "Please provide a valid accessIdentity")
     }
 }

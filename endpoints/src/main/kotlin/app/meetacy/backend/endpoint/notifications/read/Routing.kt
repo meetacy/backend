@@ -21,7 +21,7 @@ interface ReadNotificationsRepository {
     suspend fun read(accessIdentity: AccessIdentity, lastNotificationId: NotificationId): Result
 
     sealed interface Result {
-        object TokenInvalid : Result
+        object InvalidIdentity : Result
         object LastNotificationIdInvalid : Result
         object Success : Result
     }
@@ -35,8 +35,8 @@ fun Route.read(repository: ReadNotificationsRepository) = post("/read") {
             1, "Please provide a valid notification id"
         )
 
-        ReadNotificationsRepository.Result.TokenInvalid -> call.respondFailure(
-            1, "Please provide a valid token"
+        ReadNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(
+            1, "Please provide a valid accessIdentity"
         )
     }
 }
