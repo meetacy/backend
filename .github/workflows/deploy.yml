@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  production-deploy:
     runs-on: ubuntu-latest
     env:
       IS_RUNNER: "true"
