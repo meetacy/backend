@@ -1,8 +1,8 @@
 openapi: "3.0.3"
 info:
-  title: "Meetacy_Backend_Application API"
-  description: "Meetacy_Backend_Application API"
-  version: "1.0.0"
+  title: "Meetacy Backend API"
+  description: "_Version 1.0.1 of the `Meetacy` API documentation_. It is recommended to fill in the request body on your own according to the sample provided below. The `Notifications` section is under development. "
+  version: "1.0.1"
 servers:
 - url: "https://api.meetacy.app"
 - url: "http://localhost:8080"
@@ -27,26 +27,44 @@ paths:
         - auth
       summary: Email confirmation
       description: "Email confirmation [via gmail, not implemented yet]"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailConfirmRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/GenerateIdentityResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
+
   /auth/email/link:
     post:
       tags:
         - auth
       summary: Email linking
       description: "Linking email to account"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailConfirmRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/StatusTrueResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
+
   /auth/generate:
     post:
       tags:
@@ -63,9 +81,11 @@ paths:
         default:
           description: An example of a successful generated response with an Access Identity
           content:
-            application/json:
+            '*/*':
               schema:
-                $ref: '#/components/schemas/GenerateIdentityResponse'
+                oneOf:
+                  - $ref: '#/components/schemas/InvalidResponse'
+                  - $ref: '#/components/schemas/GenerateIdentityResponse'
   /files/download:
     get:
       summary: Download file from server
@@ -73,168 +93,261 @@ paths:
         - files
       description: "Getting streaming data from the server by File Identity"
       parameters:
-      - name: "fileIdentity"
-        in: "query"
-        required: false
-        schema:
-          type: "string"
+        - name: "fileIdentity"
+          in: "query"
+          required: true
+          schema:
+            type: string
       responses:
-        "400":
-          description: "Bad Request"
+        "200":
+          description: If the fileIdentity is correct, the image is loaded
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/DownloadFileResponse"
-        "200":
-          description: "OK <br> A file response"
-          content:
-            application/*:
-              schema:
-                type: "object"
-                format: "binary"
+                oneOf:
+                  - $ref: "#/components/schemas/DownloadFileSuccessfulResponse"
+                  - $ref: "#/components/schemas/InvalidResponse"
   /files/upload:
     post:
       summary: Uploading a file to the server
       tags:
         - files
       description: "Uploading streaming data to the server. Load Type--MultiPart Data"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: # Request parts
+                accessIdentity:
+                  type: string
+                  enum:
+                    - "150:Xn6MvLl69jBH1MxphAie4sz6iitjzmxARVhTch4xhPo6IYD9Ac5FztacQMWOrQ5lubshKxTY1ealVqjYhQWhbNgAgFcVSWi0HlRPKl38td0K8ZhamLxLqEyM2daFWQbjqCucqbQuhWzgJEHttzgXObnTSFCi3p5Punph3t276HJaAS6WXlW3U5i2alEGeqb84CPAxue1BZkBvSTwm69YRTALjRG3sJ04OVC4PXRDwkY3u2xOqXWIRhQ4VZorJhmJ"
+                profileImage:
+                  type: string
+                  format: binary
+            encoding: # The same level as schema
+              profileImage: # Property name (see above)
+                contentType: image/png, image/jpeg
       responses:
         "200":
-          description: "OK"
+          description: "If the file is successfully uploaded to the server, the response will be the fileIdentity"
           content:
             '*/*':
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/GenerateIdentityResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /friends/add:
     post:
       tags:
         - friends
       summary: "Add friend"
       description: "User subscription. With a mutual subscription, he becomes a friend"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessFriendRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/StatusTrueResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /friends/delete:
     post:
       summary: Delete friend
       tags:
         - friends
       description: "Unsubscribing from a user, as a result of which he ceases to be your friend"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessFriendRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/StatusTrueResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /friends/get:
     post:
       summary: Get list friends
       tags:
         - friends
       description: "Getting a list of friends and those you follow"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessIdentityRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/GetFriendsRequest'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /meetings/avatar/add:
     post:
       summary: Adding meetings avatar
       tags:
         - meetings
       description: "Adding a meeting avatar via an File Identity and Meeting Identity"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeetingAvatarAddRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/StatusTrueResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /meetings/avatar/delete:
     post:
       summary: Removal meetings avatar
       tags:
         - meetings
       description: "Removal a meeting avatar via an File Identity and Meeting Identity"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessMeetingIdentityRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/StatusTrueResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /meetings/create:
     post:
       summary: Creating a meeting
       tags:
         - meetings
       description: "Creating a meeting with an identity, name, description, date and location"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMeetingRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/CreateMeetingResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /meetings/delete:
     post:
       summary: Deleting a meeting
       tags:
         - meetings
       description: "Removing a meeting from the database"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessMeetingIdentityRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/StatusTrueResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /meetings/get:
     post:
       summary: Getting meeting information
       tags:
         - meetings
       description: "Getting information about a meeting object"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessMeetingIdentityRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/CreateMeetingResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /meetings/list:
     post:
       summary: Getting a list of meetings
       tags:
         - meetings
       description: "Getting a list of meetings by accessIdentity"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessIdentityRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/ListMeetingsResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /meetings/participate:
     post:
       summary: Participate meeting
       tags:
         - meetings
       description: "Taking part in a meeting"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessMeetingIdentityRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/StatusTrueResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /notifications/get:
     post:
       tags:
@@ -265,51 +378,65 @@ paths:
       tags:
         - user
       description: "Adding a user avatar via an File Identity and Access Identity"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessAvatarRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/StatusTrueResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /users/avatar/delete:
     post:
       summary: Deleting user avatar
       tags:
         - user
       description: "Deleting a user avatar via an File Identity and Access Identity"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessIdentityRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/StatusTrueResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
   /users/get:
     post:
       summary: Getting user object
       tags:
         - user
       description: "Getting user data. Nickname, Identity [not to be confused with accessIdentity] and email verification status"
+      requestBody:
+        description: Creation access identity based on nickname
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessIdentityRequest'
       responses:
-        "200":
-          description: "OK"
+        default:
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                type: "object"
+                oneOf:
+                  - $ref: '#/components/schemas/GetUserResponse'
+                  - $ref: '#/components/schemas/InvalidResponse'
 components:
   schemas:
-    DownloadFileResponse:
-      type: "object"
-      properties:
-        status:
-          type: "boolean"
-        errorCode:
-          type: "integer"
-          format: "int32"
-        errorMessage:
-          type: "string"
     GenerateIdentityRequest:
       type: "object"
       properties:
@@ -329,9 +456,313 @@ components:
             - true
         result:
           type: "string"
-          enum:
-            - "114:sfh4wb9HcVfepczRAznfgcnDfru21IRChLP6OvA5CIOMP7xPX3hQfVg8XzfOASykajyZidQxdouQOENDQIsDaK9M7DH2G0AEh6f6Wgw6brZdv1kNPrtANltUEECuzV8U2GlUH3TQppP9w8yh62ldg0t3fOCnyOELR0FZ9kj3UuE1uNPVLO8jTnjKj5BYZioc5xLWOZPNxmcmK1HsnKXQMj3gCxNTbHCg65z3TpA1C6espTsGAYY5SojAr8pUYzrg"
       required:
-      - "status"
-      - "result"
+        - "status"
+        - "result"
       additionalProperties: false
+    AccessMeetingIdentityRequest:
+      type: "object"
+      properties:
+        accessIdentity:
+          type: string
+          enum:
+            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+        meetingIdentity:
+          type: string
+          enum:
+            - "8:wtzbOPJqX8SVCDQj4UMavNoKJId5UylyL4GRZAkacc2PcGnyu8TCqZCLYvFnG4kb75HOVz6TIeRxXbarsdQZBdrB1rDbHSGD7yCW0EOTbRhxs5qRGncOjG5DmTrAULbWlWMiUkt2RiDRNTkoGJunQgtP63FEZ1MrYJPPdyX1Qn3xpIW6joZZ5p2XahuGGAE13UceQYz6bWO5ZWSJiWjwrA0xOvqf6ad0FHuEXcQaWbJBbBfEA9oGm4KsDHfnkvCT"
+      required:
+        - "accessIdentity"
+        - "meetingIdentity"
+      additionalProperties: false
+    AccessIdentityRequest:
+      type: "object"
+      properties:
+        accessIdentity:
+          type: string
+          enum:
+            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+      required:
+        - "accessIdentity"
+      additionalProperties: false
+    AccessFriendRequest:
+      type: "object"
+      properties:
+        accessIdentity:
+          type: string
+          enum:
+            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+        friendIdentity:
+          type: string
+          enum:
+            - "11:JvZGvnzVC7ADSXTWnIV0EJj0xXSScezuhnhcM2SakjmggyADSOwOZlVpzyI39ttZdW68x1MupQCx44gonpIxdiY9s2sWboEYohYKk3Ngq4gBQzZ0x5WnTIU7md4PvlWVmvrQOrM4hFey0ZVRpGLt8hmEcg2UBZ88mhT1RGNZJDhFUBz0FmxvwOxPnjmyqLA1Y77VNZQBVKPa8MJBQTnCS1D1ooB5H9PizrLpS2HqabwcvgPRHzshoFT7N9RmvnrM"
+      required:
+        - "accessIdentity"
+        - "friendIdentity"
+      additionalProperties: false
+    EmailConfirmRequest:
+      type: "object"
+      properties:
+        email:
+          type: string
+          enum:
+            - "gerald123@gmail.com"
+        confirmHash:
+          type: string
+          enum:
+            - "gh1hILZy0eoAOdN4Xw1l0LAjca1IVaH8DMznJxZ30KZwTiQPw9ZrC7kJLZMbPrUe1FClHcJl9CAGehbwPvtWJfwYOwNE2r08OZ1GKmgFE4uEGUr722SNsjoWn3aNBsZbfa4DBOLoN8KQr7h7Djr6iSJHOIVxCAD16V905GqyLxuwLOJL9wsqCc49ey8kB61NMbGCZtaqiHNw1J0N8DiDEOanCOguNsSmElNNTbFSS2ddA0DtTdIrD8hCTEo2ZYgY"
+      required:
+        - "email"
+        - "confirmHash"
+      additionalProperties: false
+    EmailLinkRequest:
+      type: "object"
+      properties:
+        email:
+          type: string
+          enum:
+            - "gerald123@gmail.com"
+        accessIdentity:
+          type: string
+          enum:
+            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+      required:
+        - "email"
+        - "accessIdentity"
+      additionalProperties: false
+    AccessAvatarRequest:
+      type: "object"
+      properties:
+        accessIdentity:
+          type: string
+          enum:
+            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+        fileIdentity:
+          type: string
+          enum:
+            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+      required:
+        - "accessIdentity"
+        - "fileIdentityIdentity"
+      additionalProperties: false
+    CreateMeetingRequest:
+      type: "object"
+      properties:
+        "accessIdentity":
+          type: string
+          enum:
+            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+        "title":
+          type: string
+          enum:
+            - "Meet on the Elbe"
+        "description":
+          type: string
+          enum:
+            - "Thematic meeting of like-minded people on the Elbe"
+        "date":
+          type: string
+          enum:
+            - 20232402T100000+0300
+        "location":
+          type: object
+          properties:
+            latitude:
+              type: string
+              enum:
+                - 46.87365231658636
+            longitude:
+              type: string
+              enum:
+                - 8.256473253864916
+      required:
+        - "accessIdentity"
+        - "title"
+        - "description"
+        - "date"
+        - "location"
+      additionalProperties: false
+    MeetingAvatarAddRequest:
+      type: "object"
+      properties:
+        accessIdentity:
+          type: string
+          enum:
+            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+        meetingIdentity:
+          type: string
+          enum:
+            - "8:wtzbOPJqX8SVCDQj4UMavNoKJId5UylyL4GRZAkacc2PcGnyu8TCqZCLYvFnG4kb75HOVz6TIeRxXbarsdQZBdrB1rDbHSGD7yCW0EOTbRhxs5qRGncOjG5DmTrAULbWlWMiUkt2RiDRNTkoGJunQgtP63FEZ1MrYJPPdyX1Qn3xpIW6joZZ5p2XahuGGAE13UceQYz6bWO5ZWSJiWjwrA0xOvqf6ad0FHuEXcQaWbJBbBfEA9oGm4KsDHfnkvCT"
+        fileIdentity:
+          type: string
+          enum:
+            - "6:27nUexdZbK0BEn9M48Db9SFP6XTd2O6sjQeX5wsfECftnkVDZ0pP0jYGev23GBGHlQu7RsNk9t8SrO3jOZaiQXbVN22IU5o3TeChCZ2qjgZlOT9owypOBbusAJu16TN0YzIsMtzlgspjOyd5lZzV4LL47QLwcc6b7Z6Uuw0Pkz8IMaCCNdlBBvDaRwsQLqQBLkomRjFOye5owLalAguUHxnjJVSquzDjsljqLwprTPfFGSCGQuqh4JUtWtjUsaWi"
+      required:
+        - "accessIdentity"
+        - "fileIdentity"
+      additionalProperties: false
+    InvalidResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          enum:
+            - false
+        errorCode:
+          type: integer
+          enum:
+            - 1
+        errorMessage:
+          type: string
+          enum:
+            - Please provide a valid accessIdentity
+      required:
+        - "status"
+        - "errorCode"
+        - "errorMessage"
+      additionalProperties: false
+    StatusTrueResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          enum:
+            - true
+      required:
+        - "status"
+      additionalProperties: false
+    DownloadFileSuccessfulResponse:
+      type: string
+      enum:
+        - "*image_file*"
+    GetFriendsRequest:
+      type: object
+      properties:
+        status:
+          type: boolean
+          enum:
+            - true
+        result:
+          $ref: '#/components/schemas/FriendsAndSubsResponse'
+      required:
+        - "status"
+        - "result"
+      additionalProperties: true
+    IdentityAndNicknameResponse:
+      type: object
+      properties:
+        identity:
+          type: string
+          example: "17:QRVeKsoYrthOzhoH6fdxprA2piWHJ5El74fDYqXMhdjl7osivDEbhDa2y6PCM1sIUyG4I7YvDSoNuidA93wLnPYHzjU3J7cGm2qqWsOnKGjetcH3ADT8JKUKpcLIGyu93EHCZC6qvHEa66t8RkKWtL63ZQXOLUMBY2fDwRWKkE9I0wmRWqGNjobqK3yLGA7cW4xb3gCtpIlnSK6OxnSEEnPZ3dH2oiXoflyAlD2kJEztehXkuzqbncxZpBxbbDxE"
+        nickname:
+          type: string
+          example: David Johnson
+    IdentityAndNicknameResponse2:
+      type: object
+      properties:
+        identity:
+          type: string
+          example: "6:ATHK7K8Uppgcrc3jqghkwB9xUVI0M1KeyfmgGdLJvrk0xMmYcpI5x60fIN1SzgPeJAgTUvfoV30YoI0hAl75CbU0retgcFb7RPOovB8LBa3v8wFgYal7RYKg3afZinNru6pLxdiz2BX817D7pTFuiIGS2TlXzZYZCKpQaWGLxImphh6K43BxLrYUluD6zrvEI6DEbcWSBJ7CApWJJdT5GdG7GCxiLQQpeuq3vSMRv1t3aLEAyfXzCCGU8nf53z6K"
+        nickname:
+          type: string
+          example: Kirillov Vadim
+    FriendsAndSubsResponse:
+      type: object
+      properties:
+        friends:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityAndNicknameResponse'
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityAndNicknameResponse2'
+    CreatorMeetingResponse:
+      type: object
+      properties:
+        identity:
+          type: string
+          example: "12:eKAouJLbWqDmtwQOWuAhi9MYiBYHxKw4LTZBD39nAhtMDiV73QBPDVjE3HRNYm4xwtRJta3FdNdua90evNSgvuvqfyUjdwhXlSlDiEpPE1DJGTzuuAdm5WDowDNJOTdHDpYAGzztJMaKwXiFlguVwO88AZhoByf4SaP9HLXftFs5XVIwNWf4mntyJ48GLaWchngpjvgJW5vABjwwRJiCkCYvMiFpCvwSrzdjwzuvDxM3egDzg15U63yTBSJv0dSo"
+        nickname:
+          type: string
+          example: David Lepaski
+        email:
+          type: string
+          example: "*depending on the privacy settings of the meeting creator, his mail will be displayed*"
+        emailVerified:
+          type: boolean
+          example: false
+    LocationMeetingResponse:
+      type: object
+      properties:
+        latitude:
+          type: number
+          example: 46.87365231658636
+        longitude:
+          type: number
+          example: 8.256473253864916
+    ResultMeetingResponse:
+      type: object
+      properties:
+        identity:
+          type: string
+          example: "6:EBnp2woyRmY4snRvZaiEtuOIfk4eEXgWdzy8psVPL60Mz92Ts8qIdaoAHVTpvl9hTygMpfUYjNHJpjwpK0txBKRWl7EqCgmnZjm57pIWnlRIo2WoH856AibK8xmCdgOlENPUsmBGLPa7EVOtd43rnGVdeC3wUfHSNV9PT3S0Q3mXCpHF0tOfssQTnKKbBSy9V19Euo7VzpjS4WXI82ILzPVfLqTaRGEUabXw9issiVZhK97zZhBXrV3CFO26pAZa"
+        creator:
+          $ref: '#/components/schemas/CreatorMeetingResponse'
+        date:
+          type: string
+          example: "20230705T100000+0300"
+        location:
+          $ref: '#/components/schemas/LocationMeetingResponse'
+        title:
+          type: string
+          example: Meet on the Elbe
+        description:
+          type: string
+          example: Thematic meeting of like-minded people on the Elbe
+        participantsCount:
+          type: integer
+          example: 13
+        isParticipating:
+          type: boolean
+          example: true
+    CreateMeetingResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          enum:
+            - true
+        result:
+          $ref: '#/components/schemas/ResultMeetingResponse'
+    ListMeetingsResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResultMeetingResponse'
+    GetUserResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        result:
+          type: object
+          properties:
+            identity:
+              type: string
+              example: "15:fzK6CgXqQihDqeXpVYqVpOIgH0s5HvBAaR2BN2PkCxsLe63fAwMrV4uDInfYgoKFXY5C18Rnu9I2x5d46qmGNPLTM9uDepdKPKo7ss1tPsMk5AbslGwQCjlBrscOJmxUFSt7iwsmbZdLdjgYecKoXrJBVGwkZC3HYBUCLtgkexYsOk1mmDRxk482k3fCuo2Nxnjy82INdkOTjVsnew6vGhtOOrOWdpR1Ci6v1d06SQ6aFqs5QasWiTEPXNyCjGGd"
+            nickname:
+              type: string
+              example: Dmytro Koriukivka
+            email:
+              type: string
+              example: "*depending on the privacy settings of the meeting creator, his mail will be displayed*"
+            emailVerified:
+              type: boolean
+              example: true
