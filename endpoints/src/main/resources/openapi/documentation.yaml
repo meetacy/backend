@@ -40,8 +40,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/GenerateIdentityResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/GenerateIdentityResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
 
   /auth/email/link:
     post:
@@ -62,8 +62,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/StatusTrueResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
 
   /auth/generate:
     post:
@@ -84,8 +84,8 @@ paths:
             '*/*':
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/InvalidResponse'
-                  - $ref: '#/components/schemas/GenerateIdentityResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/GenerateIdentityResponse'
   /files/download:
     get:
       summary: Download file from server
@@ -105,8 +105,8 @@ paths:
             '*/*':
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/DownloadFileSuccessfulResponse"
-                  - $ref: "#/components/schemas/InvalidResponse"
+                  - "$ref": "#/components/schemas/DownloadFileSuccessfulResponse"
+                  - "$ref": "#/components/schemas/InvalidResponse"
   /files/upload:
     post:
       summary: Uploading a file to the server
@@ -134,8 +134,8 @@ paths:
             '*/*':
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/GenerateIdentityResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/GenerateIdentityResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /friends/add:
     post:
       tags:
@@ -155,8 +155,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/StatusTrueResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /friends/delete:
     post:
       summary: Delete friend
@@ -176,8 +176,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/StatusTrueResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /friends/get:
     post:
       summary: Get list friends
@@ -197,8 +197,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/GetFriendsRequest'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/GetFriendsRequest'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /meetings/avatar/add:
     post:
       summary: Adding meetings avatar
@@ -218,8 +218,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/StatusTrueResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /meetings/avatar/delete:
     post:
       summary: Removal meetings avatar
@@ -239,8 +239,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/StatusTrueResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /meetings/create:
     post:
       summary: Creating a meeting
@@ -260,8 +260,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/CreateMeetingResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/CreateMeetingResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /meetings/delete:
     post:
       summary: Deleting a meeting
@@ -281,8 +281,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/StatusTrueResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /meetings/get:
     post:
       summary: Getting meeting information
@@ -302,8 +302,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/CreateMeetingResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/CreateMeetingResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /meetings/list:
     post:
       summary: Getting a list of meetings
@@ -323,8 +323,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/ListMeetingsResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/ListMeetingsResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /meetings/participate:
     post:
       summary: Participate meeting
@@ -344,8 +344,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/StatusTrueResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /notifications/get:
     post:
       tags:
@@ -389,8 +389,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/StatusTrueResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /users/avatar/delete:
     post:
       summary: Deleting user avatar
@@ -410,8 +410,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/StatusTrueResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
   /users/get:
     post:
       summary: Getting user object
@@ -431,8 +431,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/GetUserResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                  - "$ref": '#/components/schemas/GetUserResponse'
+                  - "$ref": '#/components/schemas/InvalidResponse'
 components:
   schemas:
     GenerateIdentityRequest:
