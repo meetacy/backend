@@ -20,7 +20,7 @@ data class GetMeetingsParam(
 
 sealed interface GetMeetingResult {
     class Success(val meeting: Meeting) : GetMeetingResult
-    object TokenInvalid : GetMeetingResult
+    object InvalidAccessIdentity : GetMeetingResult
     object MeetingNotFound : GetMeetingResult
 }
 
@@ -44,7 +44,7 @@ fun Route.getMeetings(getMeetingRepository: GetMeetingRepository) = post("/get")
             result.meeting
         )
 
-        is GetMeetingResult.TokenInvalid -> call.respondFailure(
+        is GetMeetingResult.InvalidAccessIdentity -> call.respondFailure(
             1, "Please provide a valid accessIdentity"
         )
 

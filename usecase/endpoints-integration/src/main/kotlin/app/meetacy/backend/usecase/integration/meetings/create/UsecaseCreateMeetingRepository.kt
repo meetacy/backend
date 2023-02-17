@@ -14,7 +14,7 @@ class UsecaseCreateMeetingRepository(
     ): CreateMeetingResult = with(createParam) {
         when (val result = usecase.createMeeting(accessIdentity.type(), title, description, date.type(), location.type())) {
             CreateMeetingUsecase.Result.TokenInvalid ->
-                CreateMeetingResult.TokenInvalid
+                CreateMeetingResult.InvalidAccessIdentity
             is CreateMeetingUsecase.Result.Success ->
                 CreateMeetingResult.Success(result.meeting.mapToEndpoint())
             CreateMeetingUsecase.Result.InvalidUtf8String ->

@@ -14,7 +14,7 @@ import java.io.FileInputStream
 
 sealed interface GetFileResult {
     class Success(val file: File, val fileName: String, val fileSize: FileSize?) : GetFileResult
-    object InvalidIdentity : GetFileResult
+    object InvalidFileIdentity : GetFileResult
 }
 
 interface GetFileRepository {
@@ -26,10 +26,9 @@ fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
         call.parameters["fileIdentity"]!!
     )!!
     when (val result = getFileRepository.getFile(fileIdentity)) {
-        GetFileResult.InvalidIdentity -> call.respondFailure(
+        GetFileResult.InvalidFileIdentity -> call.respondFailure(
             errorCode = 1,
-            errorMessage = "Please provide a valid accessIdentity",
-            httpCode = HttpStatusCode.BadRequest
+            errorMessage = "Please provide a valid fileIdentity"
         )
 
         is GetFileResult.Success -> {

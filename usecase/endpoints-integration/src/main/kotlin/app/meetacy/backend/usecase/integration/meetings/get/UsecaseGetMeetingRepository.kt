@@ -26,7 +26,7 @@ class UsecaseGetMeetingRepository(
                 GetMeetingResult.MeetingNotFound
 
             GetMeetingUsecase.Result.TokenInvalid ->
-                GetMeetingResult.TokenInvalid
+                GetMeetingResult.InvalidAccessIdentity
         }
 
 }

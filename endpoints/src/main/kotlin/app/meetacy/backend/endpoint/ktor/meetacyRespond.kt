@@ -14,11 +14,7 @@ suspend fun ApplicationCall.respondSuccess() {
 
 suspend fun ApplicationCall.respondFailure(
     errorCode: Int,
-    errorMessage: String,
-    httpCode: HttpStatusCode = HttpStatusCode.OK
+    errorMessage: String
 ) {
-    respond(httpCode, Failure(false, errorCode, errorMessage))
+    respond(HttpStatusCode.BadRequest, Failure(false, errorCode, errorMessage))
 }
-
-
-
