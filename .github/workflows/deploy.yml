@@ -1,4 +1,4 @@
-name: deploy
+name: Production Deploy
 
 on:
   push:
@@ -6,9 +6,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  production-deploy:
     runs-on: ubuntu-latest
-
+    env:
+      IS_RUNNER: "true"
+      DEPLOY_DESTINATION: ${{ secrets.DEPLOY_DESTINATION }}
+      DEPLOY_SERVICE_NAME: ${{ secrets.DEPLOY_SERVICE_NAME }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      SSH_USER: ${{ secrets.SSH_USER }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
@@ -16,4 +23,4 @@ jobs:
           distribution: 'corretto'
           java-version: '11'
           cache: 'gradle'
-      - run: ./gradlew publish
+      - run: ./gradlew application:productionDeploy --no-daemon

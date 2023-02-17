@@ -17,23 +17,24 @@ dependencies {
 val propertiesFile = rootProject.file("deploy.properties")
 
 deploy {
-    if (propertiesFile.exists()) {
-        val properties = loadProperties(propertiesFile)
+    val isRunner = System.getenv("IS_RUNNER")?.toBoolean() == true
+    val properties = if (propertiesFile.exists()) loadProperties(propertiesFile) else null
 
-        default {
-            host = properties.getProperty("host") ?: System.getenv("SSH_HOST")
-            user = properties.getProperty("user") ?: System.getenv("SSH_USER")
-            password = properties.getProperty("password") ?: System.getenv("SSH_PASSWORD")
-            knownHostsFile = properties.getProperty("knownHosts") ?: System.getenv("SSH_KNOWN_HOST_FILE")
-            archiveName = "app.jar"
+    if (!isRunner && properties == null) return@deploy
 
-            mainClass = "app.meetacy.backend.MainKt"
-        }
+    default {
+        host = properties?.getProperty("host") ?: System.getenv("SSH_HOST")
+        user = properties?.getProperty("user") ?: System.getenv("SSH_USER")
+        password = properties?.getProperty("password") ?: System.getenv("SSH_PASSWORD")
+        knownHostsFile = properties?.getProperty("knownHosts") ?: System.getenv("SSH_KNOWN_HOST_FILE")
+        archiveName = "app.jar"
 
-        target("production") {
-            destination = properties.getProperty("prod.destination") ?: System.getenv("DEPLOY_DESTINATION")
-            serviceName = properties.getProperty("prod.serviceName") ?: System.getenv("DEPLOY_SERVICE_NAME")
-        }
+        mainClass = "app.meetacy.backend.MainKt"
+    }
+
+    target("production") {
+        destination = properties?.getProperty("prod.destination") ?: System.getenv("DEPLOY_DESTINATION")
+        serviceName = properties?.getProperty("prod.serviceName") ?: System.getenv("DEPLOY_SERVICE_NAME")
     }
 }
 
