@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.users.get
 
+import app.meetacy.backend.endpoint.ktor.ResponseCode
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.User
@@ -36,12 +37,8 @@ fun Route.getUser(provider: UserRepository) = post("/get") {
 
     when (val result = with(params) { provider.getUser(identity?.type(), accessIdentity.type()) }) {
         is GetUserResult.Success -> call.respondSuccess(result.user)
-        GetUserResult.UserNotFound -> call.respondFailure(
-            2, "FullUser not found"
-        )
 
-        GetUserResult.InvalidIdentity -> call.respondFailure(
-            1, "Please provide a valid accessIdentity"
-        )
+        GetUserResult.UserNotFound -> call.respondFailure(ResponseCode.UserNotFound)
+        GetUserResult.InvalidIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
     }
 }

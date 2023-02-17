@@ -13,8 +13,7 @@ suspend fun ApplicationCall.respondSuccess() {
 }
 
 suspend fun ApplicationCall.respondFailure(
-    errorCode: Int,
-    errorMessage: String
+    failureCode: Failure
 ) {
-    respond(HttpStatusCode.BadRequest, Failure(false, errorCode, errorMessage))
+    respond(HttpStatusCode.BadRequest, failureCode)
 }

@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.auth.email.link
 
+import app.meetacy.backend.endpoint.ktor.ResponseCode
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.AccessIdentity
@@ -32,7 +33,6 @@ fun Route.linkEmail(repository: LinkEmailRepository) = post("/link") {
 
     when (repository.linkEmail(parameters.accessIdentity.type(), parameters.email)) {
         is ConfirmHashResult.Success -> call.respondSuccess()
-        is ConfirmHashResult.InvalidIdentity ->
-            call.respondFailure(1, "Please provide a valid accessIdentity")
+        is ConfirmHashResult.InvalidIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
     }
 }

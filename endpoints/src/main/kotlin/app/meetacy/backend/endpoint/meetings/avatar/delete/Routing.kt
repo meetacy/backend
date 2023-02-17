@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.meetings.avatar.delete
 
+import app.meetacy.backend.endpoint.ktor.ResponseCode
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
@@ -29,13 +30,10 @@ fun Route.deleteAvatar(provider: DeleteMeetingAvatarRepository) = post("/delete"
     val params = call.receive<DeleteMeetingAvatarParams>()
 
     when (provider.deleteAvatar(params)) {
-        is DeleteMeetingAvatarResult.Success -> call.respondSuccess()
-        DeleteMeetingAvatarResult.MeetingNotFound -> call.respondFailure(
-            1, "Please provide a valid meetingIdentity"
-        )
 
-        DeleteMeetingAvatarResult.InvalidAccessIdentity -> call.respondFailure(
-            1, "Please provide a valid accessIdentity"
-        )
+        is DeleteMeetingAvatarResult.Success -> call.respondSuccess()
+
+        DeleteMeetingAvatarResult.MeetingNotFound -> call.respondFailure(ResponseCode.InvalidMeetingIdentity)
+        DeleteMeetingAvatarResult.InvalidAccessIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
     }
 }

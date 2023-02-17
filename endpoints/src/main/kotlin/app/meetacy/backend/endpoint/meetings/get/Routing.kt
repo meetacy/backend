@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.meetings.get
 
+import app.meetacy.backend.endpoint.ktor.ResponseCode
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.Meeting
@@ -44,12 +45,8 @@ fun Route.getMeetings(getMeetingRepository: GetMeetingRepository) = post("/get")
             result.meeting
         )
 
-        is GetMeetingResult.InvalidAccessIdentity -> call.respondFailure(
-            1, "Please provide a valid accessIdentity"
-        )
+        is GetMeetingResult.InvalidAccessIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
 
-        is GetMeetingResult.MeetingNotFound -> call.respondFailure(
-            2, "Please provide a valid meetingIdentity"
-        )
+        is GetMeetingResult.MeetingNotFound -> call.respondFailure(ResponseCode.InvalidMeetingIdentity)
     }
 }
