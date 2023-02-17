@@ -610,17 +610,17 @@ components:
     ExpiredLink:
       value:
         status: false
-        errorCode: 1
+        errorCode: 12
         errorMessage: "This link was expired. Please consider to create a new one"
     InvalidLink:
       value:
         status: false
-        errorCode: 2
+        errorCode: 4
         errorMessage: "This link is invalid. Please consider to create a new one"
     LinkMaxAttemptsReached:
       value:
         status: false
-        errorCode: 3
+        errorCode: 13
         errorMessage: "You have reached max attempts for today. Please try again later"
     InvalidAccessIdentity:
       value:
@@ -630,32 +630,32 @@ components:
     InvalidNickname:
       value:
         status: false
-        errorCode: 1
+        errorCode: 6
         errorMessage: "Please provide a valid nickname"
     InvalidTitleOrDescription:
       value:
         status: false
-        errorCode: 1
+        errorCode: 7
         errorMessage: "Please provide a valid title or description"
     InvalidFileIdentity:
       value:
         status: false
-        errorCode: 1
+        errorCode: 3
         errorMessage: "Please provide a valid fileIdentity"
     FileSizeLimit:
       value:
         status: false
-        errorCode: 2
+        errorCode: 14
         errorMessage: "You have exceed your storage limit (max: 1857660, now: 117857600)"
     FriendNotFound:
       value:
         status: false
-        errorCode: 2
+        errorCode: 8
         errorMessage: "Friend was not found"
     FriendAlreadyAdded:
       value:
         status: false
-        errorCode: 3
+        errorCode: 11
         errorMessage: "Friend already added"
     InvalidMeetingIdentity:
       value:
@@ -665,17 +665,17 @@ components:
     MeetingAlreadyParticipate:
       value:
         status: false
-        errorCode: 3
+        errorCode: 10
         errorMessage: "You are already participating in this meeting"
     LastNotificationIdInvalid:
       value:
         status: false
-        errorCode: 1
+        errorCode: 5
         errorMessage: "Please provide a valid notification id"
     UserNotFound:
       value:
         status: false
-        errorCode: 2
+        errorCode: 9
         errorMessage: "FullUser not found"
   schemas:
     GenerateIdentityRequest:
