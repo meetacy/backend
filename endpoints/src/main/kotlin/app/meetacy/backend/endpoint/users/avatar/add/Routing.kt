@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.users.avatar.add
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
@@ -33,7 +33,7 @@ fun Route.addUserAvatar(provider: AddUserAvatarRepository) = post("/add") {
 
         is AddUserAvatarResult.Success -> call.respondSuccess()
 
-        AddUserAvatarResult.InvalidIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
-        AddUserAvatarResult.InvalidUserAvatarIdentity -> call.respondFailure(ResponseCode.InvalidFileIdentity)
+        AddUserAvatarResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        AddUserAvatarResult.InvalidUserAvatarIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
     }
 }

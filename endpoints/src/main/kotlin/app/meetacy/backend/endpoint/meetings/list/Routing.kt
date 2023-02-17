@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.meetings.list
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.Meeting
@@ -29,6 +29,6 @@ fun Route.listMeetings(meetingsListRepository: MeetingsListRepository) = post("/
     val params = call.receive<ListParam>()
     when (val result = meetingsListRepository.getList(params.accessIdentity.type())) {
         is ListMeetingsResult.Success -> call.respondSuccess(result.meetings)
-        is ListMeetingsResult.InvalidIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
+        is ListMeetingsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
     }
 }

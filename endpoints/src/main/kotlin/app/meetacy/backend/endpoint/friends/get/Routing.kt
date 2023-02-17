@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.friends.get
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.User
@@ -33,6 +33,6 @@ fun Route.getFriend(getProvider: GetFriendsRepository) = post("/get") {
             (GetFriendsResult.Success(result.friends, result.subscriptions))
         )
 
-        is GetFriendsResult.InvalidIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
+        is GetFriendsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
     }
 }

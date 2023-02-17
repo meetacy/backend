@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.meetings.create
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.Meeting
@@ -39,7 +39,7 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
             result.meeting
         )
 
-        CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
-        CreateMeetingResult.InvalidUtf8String -> call.respondFailure(ResponseCode.InvalidTitleOrDescription)
+        CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        CreateMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidTitleOrDescription)
     }
 }

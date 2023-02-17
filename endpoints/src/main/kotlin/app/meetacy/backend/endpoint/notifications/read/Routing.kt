@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.notifications.read
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.AccessIdentity
@@ -34,7 +34,7 @@ fun Route.read(repository: ReadNotificationsRepository) = post("/read") {
 
         ReadNotificationsRepository.Result.Success -> call.respondSuccess()
 
-        ReadNotificationsRepository.Result.LastNotificationIdInvalid -> call.respondFailure(ResponseCode.LastNotificationIdInvalid)
-        ReadNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
+        ReadNotificationsRepository.Result.LastNotificationIdInvalid -> call.respondFailure(Failure.LastNotificationIdInvalid)
+        ReadNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
     }
 }

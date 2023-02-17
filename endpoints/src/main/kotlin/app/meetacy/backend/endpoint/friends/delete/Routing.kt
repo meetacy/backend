@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.friends.delete
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
@@ -30,8 +30,8 @@ fun Route.deleteFriend(provider: DeleteFriendRepository) = post("/delete") {
     val params = call.receive<DeleteFriendParams>()
     when (provider.deleteFriend(params)) {
 
-        DeleteFriendResult.FriendNotFound -> call.respondFailure(ResponseCode.FriendNotFound)
-        DeleteFriendResult.InvalidIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
+        DeleteFriendResult.FriendNotFound -> call.respondFailure(Failure.FriendNotFound)
+        DeleteFriendResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
         DeleteFriendResult.Success -> call.respondSuccess()
     }
 }

@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.auth.email.confirm
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import io.ktor.server.application.*
@@ -30,9 +30,9 @@ fun Route.confirmEmail(storage: ConfirmEmailRepository) = post("/confirm") {
 
     when (storage.checkConfirmHash(parameters.email, parameters.confirmHash)) {
 
-        ConfirmHashResult.LinkExpired -> call.respondFailure(ResponseCode.ExpiredLink)
-        ConfirmHashResult.LinkInvalid -> call.respondFailure(ResponseCode.InvalidLink)
-        ConfirmHashResult.LinkMaxAttemptsReached -> call.respondFailure(ResponseCode.LinkMaxAttemptsReached)
+        ConfirmHashResult.LinkExpired -> call.respondFailure(Failure.ExpiredLink)
+        ConfirmHashResult.LinkInvalid -> call.respondFailure(Failure.InvalidLink)
+        ConfirmHashResult.LinkMaxAttemptsReached -> call.respondFailure(Failure.LinkMaxAttemptsReached)
         ConfirmHashResult.Success -> call.respondSuccess()
     }
 }

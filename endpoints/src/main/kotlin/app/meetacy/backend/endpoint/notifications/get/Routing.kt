@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.notifications.get
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.Notification
@@ -45,6 +45,6 @@ fun Route.get(repository: GetNotificationsRepository) = post("/get") {
 
         is GetNotificationsRepository.Result.Success -> call.respondSuccess(result.notifications)
 
-        is GetNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
+        is GetNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
     }
 }

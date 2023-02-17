@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.meetings.delete
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
@@ -33,8 +33,8 @@ fun Route.deleteMeeting(deleteMeetingRepository: DeleteMeetingRepository) = post
 
         is DeleteMeetingResult.Success -> call.respondSuccess()
 
-        is DeleteMeetingResult.InvalidIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
+        is DeleteMeetingResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
 
-        is DeleteMeetingResult.MeetingNotFound -> call.respondFailure(ResponseCode.InvalidMeetingIdentity)
+        is DeleteMeetingResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
     }
 }

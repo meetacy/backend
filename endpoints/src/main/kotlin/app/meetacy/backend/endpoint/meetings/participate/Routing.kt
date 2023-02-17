@@ -1,7 +1,7 @@
 package app.meetacy.backend.endpoint.meetings.participate
 
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.AccessIdentity
@@ -45,8 +45,8 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
 
         ParticipateMeetingResult.Success -> call.respondSuccess()
 
-        ParticipateMeetingResult.InvalidIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
-        ParticipateMeetingResult.MeetingNotFound -> call.respondFailure(ResponseCode.InvalidMeetingIdentity)
-        ParticipateMeetingResult.MeetingAlreadyParticipate -> call.respondFailure(ResponseCode.MeetingAlreadyParticipate)
+        ParticipateMeetingResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        ParticipateMeetingResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
+        ParticipateMeetingResult.MeetingAlreadyParticipate -> call.respondFailure(Failure.MeetingAlreadyParticipate)
     }
 }

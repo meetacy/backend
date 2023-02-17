@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.meetings.avatar.delete
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
@@ -33,7 +33,7 @@ fun Route.deleteAvatar(provider: DeleteMeetingAvatarRepository) = post("/delete"
 
         is DeleteMeetingAvatarResult.Success -> call.respondSuccess()
 
-        DeleteMeetingAvatarResult.MeetingNotFound -> call.respondFailure(ResponseCode.InvalidMeetingIdentity)
-        DeleteMeetingAvatarResult.InvalidAccessIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
+        DeleteMeetingAvatarResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
+        DeleteMeetingAvatarResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
     }
 }

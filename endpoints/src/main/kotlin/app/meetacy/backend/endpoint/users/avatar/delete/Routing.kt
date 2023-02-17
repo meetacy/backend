@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.users.avatar.delete
 
-import app.meetacy.backend.endpoint.ktor.ResponseCode
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
@@ -28,6 +28,6 @@ fun Route.deleteAvatar(provider: DeleteUserAvatarRepository) = post("/delete") {
 
     when (provider.deleteAvatar(params)) {
         is DeleteUserAvatarResult.Success -> call.respondSuccess()
-        DeleteUserAvatarResult.InvalidAccessIdentity -> call.respondFailure(ResponseCode.InvalidAccessIdentity)
+        DeleteUserAvatarResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
     }
 }
