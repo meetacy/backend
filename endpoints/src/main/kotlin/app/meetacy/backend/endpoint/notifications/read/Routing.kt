@@ -32,7 +32,7 @@ fun Route.read(repository: ReadNotificationsRepository) = post("/read") {
     when (repository.read(requestBody.accessIdentity.type(), requestBody.lastNotificationId.type())) {
         ReadNotificationsRepository.Result.Success -> call.respondSuccess()
         ReadNotificationsRepository.Result.LastNotificationIdInvalid -> call.respondFailure(
-            1, "Please provide a valid notification id"
+            2, "Please provide a valid notification id"
         )
 
         ReadNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(

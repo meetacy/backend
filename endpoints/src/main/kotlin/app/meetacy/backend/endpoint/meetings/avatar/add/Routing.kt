@@ -42,7 +42,7 @@ fun Route.addAvatar(provider: AddMeetingAvatarRepository) = post("/add") {
         )
 
         AddMeetingAvatarResult.InvalidAccessIdentity -> call.respondFailure(
-            1, "Please provide a valid accessIdentity"
+            3, "Please provide a valid accessIdentity"
         )
     }
 }

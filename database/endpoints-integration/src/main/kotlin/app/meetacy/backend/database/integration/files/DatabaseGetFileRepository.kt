@@ -14,7 +14,7 @@ class DatabaseGetFileRepository(
     private val filesTable = FilesTable(database)
     override suspend fun getFile(fileIdentity: FileIdentity): GetFileResult =
         when(val description = filesTable.getFileDescription(fileIdentity.fileId)) {
-            null -> GetFileResult.InvalidIdentity
+            null -> GetFileResult.InvalidFileIdentity
             else -> {
                 if (description.fileIdentity.accessHash == fileIdentity.accessHash) {
                     GetFileResult.Success(
@@ -23,7 +23,7 @@ class DatabaseGetFileRepository(
                         fileSize = if (description.fileSize != null) description.fileSize else null
                     )
                 } else {
-                    GetFileResult.InvalidIdentity
+                    GetFileResult.InvalidFileIdentity
                 }
             }
         }

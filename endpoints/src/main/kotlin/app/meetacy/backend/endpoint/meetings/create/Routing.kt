@@ -22,7 +22,7 @@ data class CreateParam(
 
 sealed interface CreateMeetingResult {
     class Success(val meeting: Meeting) : CreateMeetingResult
-    object TokenInvalid : CreateMeetingResult
+    object InvalidAccessIdentity : CreateMeetingResult
     object InvalidUtf8String : CreateMeetingResult
 }
 
@@ -38,7 +38,7 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
             result.meeting
         )
 
-        CreateMeetingResult.TokenInvalid -> call.respondFailure(
+        CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(
             1, "Please provide a valid accessIdentity"
         )
 

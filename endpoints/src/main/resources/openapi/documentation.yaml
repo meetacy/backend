@@ -34,15 +34,25 @@ paths:
             schema:
               $ref: '#/components/schemas/EmailConfirmRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenerateIdentityResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
-
+                $ref: '#/components/schemas/GenerateIdentityResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                ExpiredLink:
+                  $ref: '#/components/examples/ExpiredLink'
+                InvalidLink:
+                  $ref: '#/components/examples/InvalidLink'
+                LinkMaxAttemptsReached:
+                  $ref: '#/components/examples/LinkMaxAttemptsReached'
   /auth/email/link:
     post:
       tags:
@@ -56,15 +66,18 @@ paths:
             schema:
               $ref: '#/components/schemas/EmailConfirmRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
-
+                $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
   /auth/generate:
     post:
       tags:
@@ -78,14 +91,22 @@ paths:
             schema:
               $ref: '#/components/schemas/GenerateIdentityRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/InvalidResponse'
-                  - $ref: '#/components/schemas/GenerateIdentityResponse'
+                $ref: '#/components/schemas/GenerateIdentityResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              example:
+                status: false
+                errorCode: 1
+                errorMessage: "Please provide a valid nickname"
   /files/download:
     get:
       summary: Download file from server
@@ -100,13 +121,21 @@ paths:
             type: string
       responses:
         "200":
-          description: If the fileIdentity is correct, the image is loaded
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                oneOf:
-                  - $ref: "#/components/schemas/DownloadFileSuccessfulResponse"
-                  - $ref: "#/components/schemas/InvalidResponse"
+                $ref: '#/components/schemas/DownloadFileSuccessfulResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              example:
+                status: false
+                errorCode: 1
+                errorMessage: "Please provide a valid fileIdentity"
   /files/upload:
     post:
       summary: Uploading a file to the server
@@ -129,13 +158,22 @@ paths:
                 contentType: image/png, image/jpeg
       responses:
         "200":
-          description: "If the file is successfully uploaded to the server, the response will be the fileIdentity"
+          description: An example of a successful generated response with an Access Identity
           content:
-            '*/*':
+            application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GenerateIdentityResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/GenerateIdentityResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                LimitSize:
+                  $ref: '#/components/examples/FileSizeLimit'
   /friends/add:
     post:
       tags:
@@ -149,14 +187,25 @@ paths:
             schema:
               $ref: '#/components/schemas/AccessFriendRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                FriendNotFound:
+                  $ref: '#/components/examples/FriendNotFound'
+                FriendAlreadyAdded:
+                  $ref: '#/components/examples/FriendAlreadyAdded'
   /friends/delete:
     post:
       summary: Delete friend
@@ -170,14 +219,23 @@ paths:
             schema:
               $ref: '#/components/schemas/AccessFriendRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                FriendNotFound:
+                  $ref: '#/components/examples/FriendNotFound'
   /friends/get:
     post:
       summary: Get list friends
@@ -191,14 +249,21 @@ paths:
             schema:
               $ref: '#/components/schemas/AccessIdentityRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GetFriendsRequest'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/GetFriendsRequest'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
   /meetings/avatar/add:
     post:
       summary: Adding meetings avatar
@@ -212,14 +277,25 @@ paths:
             schema:
               $ref: '#/components/schemas/MeetingAvatarAddRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                MeetingNotFound:
+                  $ref: '#/components/examples/MeetingNotFound'
+                InvalidMeetingFileIdentity:
+                  $ref: '#/components/examples/InvalidMeetingFileIdentity'
   /meetings/avatar/delete:
     post:
       summary: Removal meetings avatar
@@ -233,14 +309,23 @@ paths:
             schema:
               $ref: '#/components/schemas/AccessMeetingIdentityRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                MeetingNotFound:
+                  $ref: '#/components/examples/MeetingNotFound'
   /meetings/create:
     post:
       summary: Creating a meeting
@@ -254,14 +339,23 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateMeetingRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/CreateMeetingResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/CreateMeetingResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                InvalidUtf8String:
+                  $ref: '#/components/examples/InvalidUtf8String'
   /meetings/delete:
     post:
       summary: Deleting a meeting
@@ -275,14 +369,23 @@ paths:
             schema:
               $ref: '#/components/schemas/AccessMeetingIdentityRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                MeetingNotFound:
+                  $ref: '#/components/examples/MeetingNotFound'
   /meetings/get:
     post:
       summary: Getting meeting information
@@ -296,14 +399,23 @@ paths:
             schema:
               $ref: '#/components/schemas/AccessMeetingIdentityRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/CreateMeetingResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/CreateMeetingResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                MeetingNotFound:
+                  $ref: '#/components/examples/MeetingNotFound'
   /meetings/list:
     post:
       summary: Getting a list of meetings
@@ -317,14 +429,21 @@ paths:
             schema:
               $ref: '#/components/schemas/AccessIdentityRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/ListMeetingsResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/ListMeetingsResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
   /meetings/participate:
     post:
       summary: Participate meeting
@@ -338,14 +457,25 @@ paths:
             schema:
               $ref: '#/components/schemas/AccessMeetingIdentityRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                MeetingNotFound:
+                  $ref: '#/components/examples/MeetingNotFound'
+                MeetingAlreadyParticipate:
+                  $ref: '#/components/examples/MeetingAlreadyParticipate'
   /notifications/get:
     post:
       tags:
@@ -358,6 +488,15 @@ paths:
             '*/*':
               schema:
                 type: "object"
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
   /notifications/read:
     post:
       tags:
@@ -370,6 +509,17 @@ paths:
             '*/*':
               schema:
                 type: "object"
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                LastNotificationIdInvalid:
+                  $ref: '#/components/examples/LastNotificationIdInvalid'
   /users/avatar/add:
     post:
       summary: Adding user avatar
@@ -383,14 +533,23 @@ paths:
             schema:
               $ref: '#/components/schemas/AccessAvatarRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                InvalidUserAvatarIdentity:
+                  $ref: '#/components/examples/InvalidUserAvatarIdentity'
   /users/avatar/delete:
     post:
       summary: Deleting user avatar
@@ -404,14 +563,21 @@ paths:
             schema:
               $ref: '#/components/schemas/AccessIdentityRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/StatusTrueResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
   /users/get:
     post:
       summary: Getting user object
@@ -425,15 +591,100 @@ paths:
             schema:
               $ref: '#/components/schemas/AccessIdentityRequest'
       responses:
-        default:
+        "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/GetUserResponse'
-                  - $ref: '#/components/schemas/InvalidResponse'
+                $ref: '#/components/schemas/GetUserResponse'
+        "400":
+          description: An example of a successful generated response with an Access Identity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
+                UserNotFound:
+                  $ref: '#/components/examples/UserNotFound'
 components:
+  examples:
+    ExpiredLink:
+      value:
+        status: false
+        errorCode: 1
+        errorMessage: "This link was expired. Please consider to create a new one."
+    InvalidLink:
+      value:
+        status: false
+        errorCode: 2
+        errorMessage: "This link is invalid. Please consider to create a new one."
+    LinkMaxAttemptsReached:
+      value:
+        status: false
+        errorCode: 3
+        errorMessage: "You have reached max attempts for today. Please try again later."
+    InvalidAccessIdentity:
+      value:
+        status: false
+        errorCode: 1
+        errorMessage: "Please provide a valid accessIdentity"
+    InvalidUtf8String:
+      value:
+        status: false
+        errorCode: 1
+        errorMessage: "Please provide a valid nickname"
+    InvalidFileIdentity:
+      value:
+        status: false
+        errorCode: 1
+        errorMessage: "Please provide a valid fileIdentity"
+    FileSizeLimit:
+      value:
+        status: false
+        errorCode: 2
+        errorMessage: "You have exceed your storage limit (max: 1857660, now: 117857600)"
+    FriendNotFound:
+      value:
+        status: false
+        errorCode: 2
+        errorMessage: "Friend was not found"
+    FriendAlreadyAdded:
+      value:
+        status: false
+        errorCode: 3
+        errorMessage: "Friend already added"
+    MeetingNotFound:
+      value:
+        status: false
+        errorCode: 1
+        errorMessage: "Please provide a valid meetingIdentity"
+    InvalidMeetingFileIdentity:
+      value:
+        status: false
+        errorCode: 2
+        errorMessage: "Please provide a valid fileIdentity"
+    MeetingAlreadyParticipate:
+      value:
+        status: false
+        errorCode: 3
+        errorMessage: "You are already participating in this meeting"
+    LastNotificationIdInvalid:
+      value:
+        status: false
+        errorCode: 1
+        errorMessage: "Please provide a valid notification id"
+    InvalidUserAvatarIdentity:
+      value:
+        status: false
+        errorCode: 2
+        errorMessage: "Please provide a valid fileIdentity"
+    UserNotFound:
+      value:
+        status: false
+        errorCode: 2
+        errorMessage: "FullUserNotFound"
   schemas:
     GenerateIdentityRequest:
       type: "object"
