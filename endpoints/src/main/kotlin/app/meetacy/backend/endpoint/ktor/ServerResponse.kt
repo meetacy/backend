@@ -14,11 +14,17 @@ data class EmptySuccess(
 )
 
 @Serializable
-class Failure(
-    val status: Boolean,
-    val errorCode: Int,
-    val errorMessage: String
-) {
+class Failure {
+    private val status: Boolean
+    private val errorCode: Int
+    private val errorMessage: String
+
+    constructor(status: Boolean, errorCode: Int, errorMessage: String) {
+        this.status = status
+        this.errorCode = errorCode
+        this.errorMessage = errorMessage
+    }
+
     companion object {
         val InvalidAccessIdentity = Failure(false, 1, "Please provide a valid accessIdentity")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingIdentity")
@@ -36,6 +42,7 @@ class Failure(
         val FriendAlreadyAdded = Failure(false, 11, "Friend already added")
 
         val ExpiredLink = Failure(false, 12, "This link was expired. Please consider to create a new one")
-        val LinkMaxAttemptsReached = Failure(false, 13, "You have reached max attempts for today. Please try again later.")
+        val LinkMaxAttemptsReached = Failure(false, 13, "You have reached max attempts for today. Please try again later")
+        val FinishedMeeting = Failure(false, 14, "The meeting has already ended, you cannot participate")
     }
 }

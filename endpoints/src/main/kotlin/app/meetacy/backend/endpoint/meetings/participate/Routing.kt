@@ -24,6 +24,7 @@ sealed interface ParticipateMeetingResult {
     object InvalidIdentity : ParticipateMeetingResult
     object MeetingNotFound : ParticipateMeetingResult
     object MeetingAlreadyParticipate : ParticipateMeetingResult
+    object FinishedMeeting : ParticipateMeetingResult
 }
 
 interface ParticipateMeetingRepository {
@@ -48,5 +49,6 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
         ParticipateMeetingResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
         ParticipateMeetingResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
         ParticipateMeetingResult.MeetingAlreadyParticipate -> call.respondFailure(Failure.MeetingAlreadyParticipate)
+        ParticipateMeetingResult.FinishedMeeting -> call.respondFailure(Failure.FinishedMeeting)
     }
 }
