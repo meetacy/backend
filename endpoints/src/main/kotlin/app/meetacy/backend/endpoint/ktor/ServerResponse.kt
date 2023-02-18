@@ -9,6 +9,11 @@ data class Success<out T>(
 )
 
 @Serializable
+data class EmptySuccess(
+    val status: Boolean
+)
+
+@Serializable
 class Failure(
     val status: Boolean,
     val errorCode: Int,
@@ -34,8 +39,3 @@ class Failure(
         val LinkMaxAttemptsReached = Failure(false, 13, "You have reached max attempts for today. Please try again later.")
     }
 }
-
-@Serializable
-data class EmptySuccess(
-    val status: Boolean
-)
