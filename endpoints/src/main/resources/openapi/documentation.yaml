@@ -261,9 +261,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
-              examples:
-                InvalidIdentity:
-                  $ref: '#/components/examples/InvalidAccessIdentity'
   /meetings/avatar/add:
     post:
       summary: Adding meetings avatar
@@ -293,9 +290,9 @@ paths:
                 InvalidIdentity:
                   $ref: '#/components/examples/InvalidAccessIdentity'
                 MeetingNotFound:
-                  $ref: '#/components/examples/MeetingNotFound'
+                  $ref: '#/components/examples/InvalidMeetingIdentity'
                 InvalidMeetingFileIdentity:
-                  $ref: '#/components/examples/InvalidMeetingFileIdentity'
+                  $ref: '#/components/examples/InvalidFileIdentity'
   /meetings/avatar/delete:
     post:
       summary: Removal meetings avatar
@@ -325,7 +322,7 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidAccessIdentity'
                 MeetingNotFound:
-                  $ref: '#/components/examples/MeetingNotFound'
+                  $ref: '#/components/examples/InvalidMeetingIdentity'
   /meetings/create:
     post:
       summary: Creating a meeting
@@ -355,7 +352,7 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidAccessIdentity'
                 InvalidUtf8String:
-                  $ref: '#/components/examples/InvalidUtf8String'
+                  $ref: '#/components/examples/InvalidNickname'
   /meetings/delete:
     post:
       summary: Deleting a meeting
@@ -385,7 +382,7 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidAccessIdentity'
                 MeetingNotFound:
-                  $ref: '#/components/examples/MeetingNotFound'
+                  $ref: '#/components/examples/InvalidMeetingIdentity'
   /meetings/get:
     post:
       summary: Getting meeting information
@@ -415,7 +412,7 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidAccessIdentity'
                 MeetingNotFound:
-                  $ref: '#/components/examples/MeetingNotFound'
+                  $ref: '#/components/examples/InvalidMeetingIdentity'
   /meetings/list:
     post:
       summary: Getting a list of meetings
@@ -473,7 +470,7 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidAccessIdentity'
                 MeetingNotFound:
-                  $ref: '#/components/examples/MeetingNotFound'
+                  $ref: '#/components/examples/InvalidMeetingIdentity'
                 MeetingAlreadyParticipate:
                   $ref: '#/components/examples/MeetingAlreadyParticipate'
   /notifications/get:
@@ -549,7 +546,7 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidAccessIdentity'
                 InvalidUserAvatarIdentity:
-                  $ref: '#/components/examples/InvalidUserAvatarIdentity'
+                  $ref: '#/components/examples/InvalidFileIdentity'
   /users/avatar/delete:
     post:
       summary: Deleting user avatar
@@ -613,78 +610,73 @@ components:
     ExpiredLink:
       value:
         status: false
-        errorCode: 1
-        errorMessage: "This link was expired. Please consider to create a new one."
+        errorCode: 12
+        errorMessage: "This link was expired. Please consider to create a new one"
     InvalidLink:
       value:
         status: false
-        errorCode: 2
-        errorMessage: "This link is invalid. Please consider to create a new one."
+        errorCode: 4
+        errorMessage: "This link is invalid. Please consider to create a new one"
     LinkMaxAttemptsReached:
       value:
         status: false
-        errorCode: 3
-        errorMessage: "You have reached max attempts for today. Please try again later."
+        errorCode: 13
+        errorMessage: "You have reached max attempts for today. Please try again later"
     InvalidAccessIdentity:
       value:
         status: false
         errorCode: 1
         errorMessage: "Please provide a valid accessIdentity"
-    InvalidUtf8String:
+    InvalidNickname:
       value:
         status: false
-        errorCode: 1
+        errorCode: 6
         errorMessage: "Please provide a valid nickname"
+    InvalidTitleOrDescription:
+      value:
+        status: false
+        errorCode: 7
+        errorMessage: "Please provide a valid title or description"
     InvalidFileIdentity:
       value:
         status: false
-        errorCode: 1
+        errorCode: 3
         errorMessage: "Please provide a valid fileIdentity"
     FileSizeLimit:
       value:
         status: false
-        errorCode: 2
+        errorCode: 14
         errorMessage: "You have exceed your storage limit (max: 1857660, now: 117857600)"
     FriendNotFound:
       value:
         status: false
-        errorCode: 2
+        errorCode: 8
         errorMessage: "Friend was not found"
     FriendAlreadyAdded:
       value:
         status: false
-        errorCode: 3
+        errorCode: 11
         errorMessage: "Friend already added"
-    MeetingNotFound:
-      value:
-        status: false
-        errorCode: 1
-        errorMessage: "Please provide a valid meetingIdentity"
-    InvalidMeetingFileIdentity:
+    InvalidMeetingIdentity:
       value:
         status: false
         errorCode: 2
-        errorMessage: "Please provide a valid fileIdentity"
+        errorMessage: "Please provide a valid meetingIdentity"
     MeetingAlreadyParticipate:
       value:
         status: false
-        errorCode: 3
+        errorCode: 10
         errorMessage: "You are already participating in this meeting"
     LastNotificationIdInvalid:
       value:
         status: false
-        errorCode: 1
+        errorCode: 5
         errorMessage: "Please provide a valid notification id"
-    InvalidUserAvatarIdentity:
-      value:
-        status: false
-        errorCode: 2
-        errorMessage: "Please provide a valid fileIdentity"
     UserNotFound:
       value:
         status: false
-        errorCode: 2
-        errorMessage: "FullUserNotFound"
+        errorCode: 9
+        errorMessage: "FullUser not found"
   schemas:
     GenerateIdentityRequest:
       type: "object"

@@ -9,11 +9,31 @@ data class Success<out T>(
 )
 
 @Serializable
-data class Failure(
+class Failure(
     val status: Boolean,
     val errorCode: Int,
     val errorMessage: String
-)
+) {
+    companion object {
+        val InvalidAccessIdentity = Failure(false, 1, "Please provide a valid accessIdentity")
+        val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingIdentity")
+        val InvalidFileIdentity = Failure(false, 3, "Please provide a valid fileIdentity")
+        val InvalidLink = Failure(false, 4, "This link is invalid. Please consider to create a new one")
+        val LastNotificationIdInvalid = Failure(false, 5, "Please provide a valid notification id")
+
+        val InvalidNickname = Failure(false, 6, "Please provide a valid nickname")
+        val InvalidTitleOrDescription = Failure(false, 7, "Please provide a valid title or description")
+
+        val FriendNotFound = Failure(false, 8, "Friend was not found")
+        val UserNotFound = Failure(false, 9, "FullUser not found")
+
+        val MeetingAlreadyParticipate = Failure(false, 10, "You are already participating in this meeting")
+        val FriendAlreadyAdded = Failure(false, 11, "Friend already added")
+
+        val ExpiredLink = Failure(false, 12, "This link was expired. Please consider to create a new one")
+        val LinkMaxAttemptsReached = Failure(false, 13, "You have reached max attempts for today. Please try again later.")
+    }
+}
 
 @Serializable
 data class EmptySuccess(

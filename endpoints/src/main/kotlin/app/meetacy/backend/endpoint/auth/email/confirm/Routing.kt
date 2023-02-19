@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.auth.email.confirm
 
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import io.ktor.server.application.*
@@ -28,18 +29,10 @@ fun Route.confirmEmail(storage: ConfirmEmailRepository) = post("/confirm") {
     val parameters = call.receive<ConfirmParams>()
 
     when (storage.checkConfirmHash(parameters.email, parameters.confirmHash)) {
-        ConfirmHashResult.LinkExpired -> call.respondFailure(
-            1, "This link was expired. Please consider to create a new one."
-        )
 
-        ConfirmHashResult.LinkInvalid -> call.respondFailure(
-            2, "This link is invalid. Please consider to create a new one."
-        )
-
-        ConfirmHashResult.LinkMaxAttemptsReached -> call.respondFailure(
-            3, "You have reached max attempts for today. Please try again later."
-        )
-
+        ConfirmHashResult.LinkExpired -> call.respondFailure(Failure.ExpiredLink)
+        ConfirmHashResult.LinkInvalid -> call.respondFailure(Failure.InvalidLink)
+        ConfirmHashResult.LinkMaxAttemptsReached -> call.respondFailure(Failure.LinkMaxAttemptsReached)
         ConfirmHashResult.Success -> call.respondSuccess()
     }
 }

@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.files.upload
 
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.AccessIdentity
@@ -56,17 +57,13 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
             result.fileIdentity.serializable()
         )
 
-        is UploadFileResult.InvalidIdentity -> call.respondFailure(
-            1, "Please provide a valid accessIdentity"
-        )
+        is UploadFileResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
 
         is UploadFileResult.LimitSize -> {
             val filesSizeLimit = result.filesSizeLimit
             val filesSize = result.filesSize.bytesSize
 
-            call.respondFailure(
-                2, "You have exceed your storage limit (max: $filesSizeLimit, now: $filesSize)"
-            )
+            call.respondFailure(14, "You have exceed your storage limit (max: $filesSizeLimit, now: $filesSize)")
         }
     }
 }

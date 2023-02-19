@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.auth.generate
 
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.AccessIdentity
@@ -30,8 +31,6 @@ fun Route.generateToken(tokenGenerateRepository: TokenGenerateRepository) = post
             result.accessIdentity.serializable()
         )
 
-        TokenGenerateResult.InvalidUtf8String -> {
-            call.respondFailure(1, "Please provide a valid nickname")
-        }
+        TokenGenerateResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidNickname)
     }
 }

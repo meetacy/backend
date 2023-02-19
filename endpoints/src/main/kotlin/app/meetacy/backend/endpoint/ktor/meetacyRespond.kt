@@ -13,6 +13,12 @@ suspend fun ApplicationCall.respondSuccess() {
 }
 
 suspend fun ApplicationCall.respondFailure(
+    failure: Failure
+) {
+    respond(HttpStatusCode.BadRequest, failure)
+}
+
+suspend fun ApplicationCall.respondFailure(
     errorCode: Int,
     errorMessage: String
 ) {

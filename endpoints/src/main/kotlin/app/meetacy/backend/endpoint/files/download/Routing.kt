@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.files.download
 
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.types.FileIdentity
 import app.meetacy.backend.types.FileSize
@@ -26,10 +27,7 @@ fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
         call.parameters["fileIdentity"]!!
     )!!
     when (val result = getFileRepository.getFile(fileIdentity)) {
-        GetFileResult.InvalidFileIdentity -> call.respondFailure(
-            errorCode = 1,
-            errorMessage = "Please provide a valid fileIdentity"
-        )
+        GetFileResult.InvalidFileIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
 
         is GetFileResult.Success -> {
             call.response.header(

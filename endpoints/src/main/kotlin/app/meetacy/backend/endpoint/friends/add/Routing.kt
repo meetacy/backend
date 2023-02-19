@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.friends.add
 
+import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.AccessIdentitySerializable
@@ -30,8 +31,8 @@ fun Route.addFriend(provider: AddFriendRepository) = post("/add") {
     val params = call.receive<AddFriendParams>()
     when (provider.addFriend(params)) {
         AddFriendResult.Success -> call.respondSuccess()
-        AddFriendResult.InvalidIdentity -> call.respondFailure(1, "Please provide a valid accessIdentity")
-        AddFriendResult.FriendNotFound -> call.respondFailure(2, "Friend was not found")
-        AddFriendResult.FriendAlreadyAdded -> call.respondFailure(3, "Friend already added")
+        AddFriendResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        AddFriendResult.FriendNotFound -> call.respondFailure(Failure.FriendNotFound)
+        AddFriendResult.FriendAlreadyAdded -> call.respondFailure(Failure.FriendAlreadyAdded)
     }
 }
