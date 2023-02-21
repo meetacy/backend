@@ -19,6 +19,7 @@ class MeetingsTable(private val db: Database) : Table() {
     private val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT).nullable()
     private val AVATAR_ID = long("AVATAR_ID").nullable()
     private val AVATAR_HASH = varchar("AVATAR_HASH", length = HASH_LENGTH).nullable()
+    private val MEETING_STATUS = varchar("MEETING_STATUS", length = MEETING_STATUS_LENGTH)
 
     override val primaryKey = PrimaryKey(MEETING_ID)
 
