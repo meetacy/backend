@@ -239,7 +239,7 @@ paths:
                   $ref: '#/components/examples/InvalidAccessIdentity'
                 FriendNotFound:
                   $ref: '#/components/examples/FriendNotFound'
-  /friends/get:
+  /friends/list:
     post:
       summary: Get list friends
       tags:
