@@ -9,11 +9,17 @@ data class Success<out T>(
 )
 
 @Serializable
-class Failure(
-    val status: Boolean,
-    val errorCode: Int,
-    val errorMessage: String
-) {
+class Failure {
+    private val status: Boolean
+    private val errorCode: Int
+    private val errorMessage: String
+
+    constructor(status: Boolean, errorCode: Int, errorMessage: String) {
+        this.status = status
+        this.errorCode = errorCode
+        this.errorMessage = errorMessage
+    }
+
     companion object {
         val InvalidAccessIdentity = Failure(false, 1, "Please provide a valid accessIdentity")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingIdentity")

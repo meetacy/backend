@@ -150,9 +150,12 @@ paths:
               properties: # Request parts
                 accessIdentity:
                   type: string
-                profileImage:
+                file:
                   type: string
                   format: binary
+              required:
+                - "accessIdentity"
+                - "file"
             encoding: # The same level as schema
               profileImage: # Property name (see above)
                 contentType: image/png, image/jpeg
