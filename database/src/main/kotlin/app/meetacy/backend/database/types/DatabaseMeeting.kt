@@ -9,8 +9,7 @@ class DatabaseMeeting(
     val location: Location,
     val title: String?,
     val description: String?,
-    val avatarIdentity: FileIdentity? = null,
-    val status:
+    val avatarIdentity: FileIdentity?
 ) {
     val id: MeetingId = identity.meetingId
 }

@@ -28,9 +28,6 @@ class ParticipateMeetingUsecase(
         if (meetingIdentity.accessHash != meeting.identity.accessHash)
             return Result.MeetingNotFound
 
-        if (storage.isFinished(meetingIdentity.meetingId))
-            return Result.FinishedMeeting
-
         if(!storage.isParticipating(meetingIdentity.meetingId, userId))
             storage.addParticipant(meetingIdentity.meetingId, userId) else return Result.MeetingAlreadyParticipate
 
@@ -42,7 +39,6 @@ class ParticipateMeetingUsecase(
         object TokenInvalid : Result
         object MeetingNotFound : Result
         object MeetingAlreadyParticipate : Result
-        object FinishedMeeting : Result
     }
 
     interface Storage {
@@ -53,10 +49,6 @@ class ParticipateMeetingUsecase(
 
         suspend fun isParticipating(
             meetingId: MeetingId, userId: UserId
-        ): Boolean
-
-        suspend fun isFinished(
-            meetingId: MeetingId
         ): Boolean
     }
 }

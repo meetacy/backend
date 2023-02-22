@@ -10,7 +10,7 @@ import app.meetacy.backend.usecase.types.FullMeeting
 import app.meetacy.backend.usecase.types.MeetingView
 import org.jetbrains.exposed.sql.Database
 
-class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsecase.Storage {
+class DatabaseCreateMeetingStorage(db: Database) : CreateMeetingUsecase.Storage {
     private val meetingsTable = MeetingsTable(db)
 
     override suspend fun addMeeting(
@@ -19,9 +19,10 @@ class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsec
         date: Date,
         location: Location,
         title: String?,
-        description: String?
+        description: String?,
+        fileIdentity: FileIdentity?
     ): FullMeeting {
-        val meetingId = meetingsTable.addMeeting(accessHash, creatorId, date, location, title, description)
+        val meetingId = meetingsTable.addMeeting(accessHash, creatorId, date, location, title, description, fileIdentity)
         return FullMeeting(
             identity = MeetingIdentity(meetingId, accessHash),
             creatorId = creatorId,
@@ -29,7 +30,7 @@ class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsec
             location = location,
             title = title,
             description = description,
-            avatarIdentity = null
+            avatarIdentity = fileIdentity
         )
     }
 }

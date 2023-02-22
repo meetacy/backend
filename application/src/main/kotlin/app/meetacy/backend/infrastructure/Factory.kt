@@ -175,7 +175,8 @@ fun startMockEndpoints(
                     storage = DatabaseCreateMeetingStorage(db),
                     authRepository = authRepository,
                     viewMeetingRepository = DatabaseCreateMeetingViewMeetingRepository(db),
-                    utf8Checker = DefaultUtf8Checker
+                    utf8Checker = DefaultUtf8Checker,
+                    filesRepository = filesRepository
                 )
             ),
             getMeetingRepository = UsecaseGetMeetingRepository(
