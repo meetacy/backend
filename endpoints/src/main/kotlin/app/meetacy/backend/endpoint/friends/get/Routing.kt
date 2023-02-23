@@ -26,7 +26,7 @@ sealed interface GetFriendsResult {
     class Success(val friends: List<User>, val subscriptions: List<User>) : GetFriendsResult
 }
 
-fun Route.getFriend(getProvider: GetFriendsRepository) = post("/get") {
+fun Route.getFriend(getProvider: GetFriendsRepository) = post("/list") {
     val friendToken = call.receive<GetFriendsToken>()
     when (val result = getProvider.getFriends(friendToken)) {
         is GetFriendsResult.Success -> call.respondSuccess(

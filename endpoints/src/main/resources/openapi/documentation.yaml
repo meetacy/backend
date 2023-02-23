@@ -64,7 +64,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmailConfirmRequest'
+              $ref: '#/components/schemas/EmailLinkRequest'
       responses:
         "200":
           description: An example of a successful generated response with an Access Identity
@@ -239,7 +239,7 @@ paths:
                   $ref: '#/components/examples/InvalidAccessIdentity'
                 FriendNotFound:
                   $ref: '#/components/examples/FriendNotFound'
-  /friends/get:
+  /friends/list:
     post:
       summary: Get list friends
       tags:
