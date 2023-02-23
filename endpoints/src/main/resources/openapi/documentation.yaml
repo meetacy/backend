@@ -64,7 +64,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmailConfirmRequest'
+              $ref: '#/components/schemas/EmailLinkRequest'
       responses:
         "200":
           description: An example of a successful generated response with an Access Identity
