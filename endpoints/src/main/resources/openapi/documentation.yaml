@@ -589,7 +589,29 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AccessIdentityRequest'
+              type: object
+              properties:
+                identity:
+                  type: string
+                  enum:
+                    - "46:QTZepulLdiPsDLNNjinSQ8HJeyidzrdMrYATwD5fmb080VGxzQCUXRubsbxx8DqhojU2y80LiXXBT1N0FQhZZ3rYNTqQZoaDJDYRM31Qd3ugkzBV7QWwtCdAjQ2AxZAAukUCgvwiy2wGmuxSlXhME224gPXRq53WqlFVjMDsAZiIo9HGr0qmclO2EZUPRVlyd5plu83UApbIrOVHeXksq1NbSXxloAhDq6iK9C2Ck8BNoZS8wQWsXdCXBqnPVb85"
+                accessIdentity:
+                  type: string
+                  enum:
+                    - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+              required:
+                - "accessIdentity"
+                - "identity"
+              additionalProperties: false
+            examples:
+              Identity:
+                value:
+                  identity: "46:QTZepulLdiPsDLNNjinSQ8HJeyidzrdMrYATwD5fmb080VGxzQCUXRubsbxx8DqhojU2y80LiXXBT1N0FQhZZ3rYNTqQZoaDJDYRM31Qd3ugkzBV7QWwtCdAjQ2AxZAAukUCgvwiy2wGmuxSlXhME224gPXRq53WqlFVjMDsAZiIo9HGr0qmclO2EZUPRVlyd5plu83UApbIrOVHeXksq1NbSXxloAhDq6iK9C2Ck8BNoZS8wQWsXdCXBqnPVb85"
+                  accessIdentity: "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+              AccessIdentity:
+                value:
+                  identity: null
+                  accessIdentity: "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
       responses:
         "200":
           description: An example of a successful generated response with an Access Identity
@@ -597,6 +619,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetUserResponse'
+              examples:
+                Identity:
+                  value:
+                    identity: "15:fzK6CgXqQihDqeXpVYqVpOIgH0s5HvBAaR2BN2PkCxsLe63fAwMrV4uDInfYgoKFXY5C18Rnu9I2x5d46qmGNPLTM9uDepdKPKo7ss1tPsMk5AbslGwQCjlBrscOJmxUFSt7iwsmbZdLdjgYecKoXrJBVGwkZC3HYBUCLtgkexYsOk1mmDRxk482k3fCuo2Nxnjy82INdkOTjVsnew6vGhtOOrOWdpR1Ci6v1d06SQ6aFqs5QasWiTEPXNyCjGGd"
+                    nickname: Dmytro Koriukivka
+                    email: null
+                    emailVerified: null
+                AccessIdentity:
+                  value:
+                    identity: "15:fzK6CgXqQihDqeXpVYqVpOIgH0s5HvBAaR2BN2PkCxsLe63fAwMrV4uDInfYgoKFXY5C18Rnu9I2x5d46qmGNPLTM9uDepdKPKo7ss1tPsMk5AbslGwQCjlBrscOJmxUFSt7iwsmbZdLdjgYecKoXrJBVGwkZC3HYBUCLtgkexYsOk1mmDRxk482k3fCuo2Nxnjy82INdkOTjVsnew6vGhtOOrOWdpR1Ci6v1d06SQ6aFqs5QasWiTEPXNyCjGGd"
+                    nickname: Dmytro Koriukivka
+                    email: DmytroKoriukivka@meetacy.app
+                    emailVerified: true
         "400":
           description: An example of a successful generated response with an Access Identity
           content:
@@ -728,6 +763,35 @@ components:
             - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
       required:
         - "accessIdentity"
+      additionalProperties: false
+    AccessUserIdentityRequest:
+      type: "object"
+      properties:
+        identity:
+          type: string
+          enum:
+            - null
+        accessIdentity:
+          type: string
+          enum:
+            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+      required:
+        - "accessIdentity"
+      additionalProperties: false
+    IdentityRequest:
+      type: object
+      properties:
+        identity:
+          type: string
+          enum:
+            - "46:QTZepulLdiPsDLNNjinSQ8HJeyidzrdMrYATwD5fmb080VGxzQCUXRubsbxx8DqhojU2y80LiXXBT1N0FQhZZ3rYNTqQZoaDJDYRM31Qd3ugkzBV7QWwtCdAjQ2AxZAAukUCgvwiy2wGmuxSlXhME224gPXRq53WqlFVjMDsAZiIo9HGr0qmclO2EZUPRVlyd5plu83UApbIrOVHeXksq1NbSXxloAhDq6iK9C2Ck8BNoZS8wQWsXdCXBqnPVb85"
+        accessIdentity:
+          type: string
+          enum:
+            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+      required:
+        - "accessIdentity"
+        - "identity"
       additionalProperties: false
     AccessFriendRequest:
       type: "object"
@@ -1006,7 +1070,7 @@ components:
               example: Dmytro Koriukivka
             email:
               type: string
-              example: "*depending on the privacy settings of the meeting creator, his mail will be displayed*"
+              example: "*depending on the privacy settings of the user, his mail will be displayed*"
             emailVerified:
               type: boolean
               example: true
