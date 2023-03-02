@@ -12,6 +12,13 @@ dependencies {
     implementation(project(Deps.Projects.DatabaseEndpoints))
     implementation(project(Deps.Projects.HashGeneratorUsecase))
     implementation(project(Deps.Projects.Utf8CheckerUsecase))
+
+    testImplementation(Deps.Libs.MeetacySdk.ApiKtor)
+    testImplementation(kotlin("test"))
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 val propertiesFile = rootProject.file("deploy.properties")

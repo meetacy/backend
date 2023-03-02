@@ -37,7 +37,6 @@ class LinkEmailUsecase(
 
     interface Storage {
         suspend fun isEmailOccupied(email: String): Boolean
-        suspend fun getUserId(token: AccessIdentity): UserId?
         suspend fun updateEmail(userId: UserId, email: String)
         suspend fun addConfirmationHash(userId: UserId, email: String, confirmationHash: String)
     }

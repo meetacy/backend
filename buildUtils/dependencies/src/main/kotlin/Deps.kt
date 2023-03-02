@@ -31,6 +31,7 @@ object Deps {
     private const val kvisionVersion = "5.1.1"
     private const val shadowVer = "7.0.0"
 
+    private const val meetacySdkVersion = "0.0.1-build4"
     private const val kdsVer = "1.1.0"
     private const val scriptKtVer = "0.0.2"
 
@@ -124,6 +125,10 @@ object Deps {
         }
         object Slf4j {
             const val Simple = "org.slf4j:slf4j-simple:$slf4jJVersion"
+        }
+        object MeetacySdk {
+            const val Api = "app.meetacy.sdk:api:$meetacySdkVersion"
+            const val ApiKtor = "app.meetacy.sdk:api-ktor:$meetacySdkVersion"
         }
         object Androidx {
             const val AppCompat =

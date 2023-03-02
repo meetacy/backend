@@ -2,6 +2,13 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         google()
+        maven {
+            url = uri("https://maven.pkg.github.com/meetacy/sdk")
+            credentials {
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
 
