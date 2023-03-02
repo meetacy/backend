@@ -5,6 +5,7 @@ import app.meetacy.backend.types.serialization.serializable
 import app.meetacy.backend.usecase.types.UserView
 
 fun UserView.mapToEndpoint() = User(
+    isSelf = isSelf,
     identity = identity.serializable(),
     nickname = nickname,
     email = email,

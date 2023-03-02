@@ -41,14 +41,14 @@ import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
-import app.meetacy.backend.usecase.friends.get.GetFriendsUsecase
+import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
 import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
 import app.meetacy.backend.usecase.integration.email.confirm.UsecaseConfirmEmailRepository
 import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
 import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
-import app.meetacy.backend.usecase.integration.friends.get.UsecaseGetFriendsRepository
+import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
 import app.meetacy.backend.usecase.integration.meetings.avatar.add.UsecaseAddMeetingAvatarRepository
 import app.meetacy.backend.usecase.integration.meetings.avatar.delete.UsecaseDeleteMeetingAvatarRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
@@ -146,8 +146,8 @@ fun startMockEndpoints(
                     storage = DatabaseAddFriendStorage(db)
                 )
             ),
-            getFriendsRepository = UsecaseGetFriendsRepository(
-                usecase = GetFriendsUsecase(
+            listFriendsRepository = UsecaseListFriendsRepository(
+                usecase = ListFriendsUsecase(
                     authRepository = authRepository,
                     getUsersViewsRepository = DatabaseGetUsersViewsRepository(db),
                     storage = DatabaseGetFriendsStorage(db)
