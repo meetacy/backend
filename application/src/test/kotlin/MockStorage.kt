@@ -130,7 +130,7 @@ object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Aut
                 with(user) {
                     FullUser(identity, nickname, email, emailVerified, avatarIdentity)
                 }
-            }
+            }.filter { it.identity.userId in userIdentities }
         }
 
     private val viewUserUsecase = ViewUserUsecase()

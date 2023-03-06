@@ -14,6 +14,8 @@ dependencies {
     implementation(project(Deps.Projects.Utf8CheckerUsecase))
 
     testImplementation(Deps.Libs.MeetacySdk.ApiKtor)
+    testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
+    testImplementation(Deps.Libs.Ktor.Client.Logging)
     testImplementation(kotlin("test"))
 }
 
