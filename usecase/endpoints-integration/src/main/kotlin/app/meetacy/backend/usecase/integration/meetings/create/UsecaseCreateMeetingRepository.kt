@@ -19,7 +19,7 @@ class UsecaseCreateMeetingRepository(
                 description,
                 date.type(),
                 location.type(),
-                fileIdentity?.type()
+                avatarIdentity?.type()
         )) {
             CreateMeetingUsecase.Result.TokenInvalid ->
                 CreateMeetingResult.InvalidAccessIdentity

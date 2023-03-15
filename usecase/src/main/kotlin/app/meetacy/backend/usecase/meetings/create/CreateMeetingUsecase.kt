@@ -25,15 +25,14 @@ class CreateMeetingUsecase(
         description: String?,
         date: Date,
         location: Location,
-        fileIdentity: FileIdentity?,
-        status: Status
+        fileIdentity: FileIdentity?
     ): Result {
         if (fileIdentity != null) filesRepository.authorizeWithFileId(fileIdentity) { return Result.InvalidFileIdentity }
         if (title != null) if (!utf8Checker.checkString(title)) return Result.InvalidUtf8String
         if (description != null) if (!utf8Checker.checkString(description)) return Result.InvalidUtf8String
         val creatorId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
         val accessHash = AccessHash(hashGenerator.generate())
-        val fullMeeting = storage.addMeeting(accessHash, creatorId, date, location, title, description, fileIdentity, status)
+        val fullMeeting = storage.addMeeting(accessHash, creatorId, date, location, title, description, fileIdentity)
         val meetingView = viewMeetingRepository.viewMeeting(creatorId, fullMeeting)
         return Result.Success(meetingView)
     }
@@ -46,8 +45,7 @@ class CreateMeetingUsecase(
             location: Location,
             title: String?,
             description: String?,
-            fileIdentity: FileIdentity?,
-            status: Status
+            fileIdentity: FileIdentity?
         ): FullMeeting
     }
     interface ViewMeetingRepository {

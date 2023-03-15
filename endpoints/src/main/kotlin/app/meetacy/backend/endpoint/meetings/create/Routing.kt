@@ -20,8 +20,7 @@ data class CreateParam(
     val description: String?,
     val date: DateSerializable,
     val location: LocationSerializable,
-    val fileIdentity: FileIdentitySerializable?,
-    val status: Meeting.Status
+    val avatarIdentity: FileIdentitySerializable?
 )
 
 sealed interface CreateMeetingResult {

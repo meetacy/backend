@@ -44,7 +44,8 @@ class ViewMeetingsUsecase(
                     description = description,
                     participantsCount = participants.next(),
                     isParticipating = participation.next(),
-                    avatarIdentity = avatarIdentity
+                    avatarIdentity = avatarIdentity,
+                    status = status
                 )
             }
         }

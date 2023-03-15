@@ -8,6 +8,7 @@ import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
 import app.meetacy.backend.usecase.types.FullMeeting
 import app.meetacy.backend.usecase.types.MeetingView
+import app.meetacy.backend.usecase.types.Status
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseCreateMeetingStorage(db: Database) : CreateMeetingUsecase.Storage {
@@ -30,7 +31,8 @@ class DatabaseCreateMeetingStorage(db: Database) : CreateMeetingUsecase.Storage 
             location = location,
             title = title,
             description = description,
-            avatarIdentity = fileIdentity
+            avatarIdentity = fileIdentity,
+            status = Status.Active
         )
     }
 }

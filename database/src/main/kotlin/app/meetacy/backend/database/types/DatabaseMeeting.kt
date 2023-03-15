@@ -9,7 +9,12 @@ class DatabaseMeeting(
     val location: Location,
     val title: String?,
     val description: String?,
-    val avatarIdentity: FileIdentity?
+    val avatarIdentity: FileIdentity?,
+    val status: Status = Status.Active
 ) {
     val id: MeetingId = identity.meetingId
+
+    enum class Status(val typeName: String){
+        Active("Active"), Finished("Finished")
+    }
 }

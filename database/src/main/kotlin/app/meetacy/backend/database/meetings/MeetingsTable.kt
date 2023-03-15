@@ -19,6 +19,7 @@ class MeetingsTable(private val db: Database) : Table() {
     private val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT).nullable()
     private val AVATAR_ID = long("AVATAR_ID").nullable()
     private val AVATAR_HASH = varchar("AVATAR_HASH", length = HASH_LENGTH).nullable()
+    private val STATUS = enumeration("STATUS", DatabaseMeeting.Status::class)
 
     override val primaryKey = PrimaryKey(MEETING_ID)
 
@@ -48,6 +49,7 @@ class MeetingsTable(private val db: Database) : Table() {
                 statement[DESCRIPTION] = description
                 statement[AVATAR_ID] = fileIdentity?.fileId?.long
                 statement[AVATAR_HASH] = fileIdentity?.accessHash?.string
+                statement[STATUS] = DatabaseMeeting.Status.Active
             }[MEETING_ID]
             return@newSuspendedTransaction MeetingId(meetingId)
         }
@@ -93,7 +95,8 @@ class MeetingsTable(private val db: Database) : Table() {
             location = Location(this[LATITUDE], this[LONGITUDE]),
             description = this[DESCRIPTION],
             title = this[TITLE],
-            avatarIdentity = avatarIdentity
+            avatarIdentity = avatarIdentity,
+            status = this[STATUS]
         )
     }
 
