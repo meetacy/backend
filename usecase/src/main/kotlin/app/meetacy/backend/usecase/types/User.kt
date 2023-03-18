@@ -13,6 +13,7 @@ data class FullUser(
 )
 
 data class UserView(
+    val isSelf: Boolean,
     val identity: UserIdentity,
     val nickname: String,
     val email: String?,

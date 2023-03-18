@@ -8,10 +8,12 @@ class ViewUserUsecase {
     fun viewUsers(viewerId: UserId, users: List<FullUser>): List<UserView> = users.map { user ->
         with(user) {
             UserView(
-                identity, nickname,
+                isSelf = viewerId == user.identity.userId,
+                identity = identity,
+                nickname = nickname,
                 email = if (viewerId == user.identity.userId) email else null,
                 emailVerified = if (viewerId == user.identity.userId) emailVerified else null,
-                avatarIdentity
+                avatarIdentity = avatarIdentity
             )
         }
     }

@@ -4,8 +4,8 @@ info:
   description: "_Version 1.0.1 of the `Meetacy` API documentation_. It is recommended to fill in the request body on your own according to the sample provided below. The `Notifications` section is under development. "
   version: "1.0.1"
 servers:
-- url: "https://api.meetacy.app"
-- url: "http://localhost:8080"
+  - url: "https://api.meetacy.app"
+  - url: "http://localhost:8080"
 tags:
   - name: auth
     description: Authorization and confirmation of mail
@@ -241,7 +241,7 @@ paths:
                   $ref: '#/components/examples/FriendNotFound'
   /friends/list:
     post:
-      summary: Get list friends
+      summary: Get list of friends
       tags:
         - friends
       description: "Getting a list of friends and those you follow"
@@ -250,14 +250,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AccessIdentityRequest'
+              $ref: '#/components/schemas/ListFriendsRequest'
       responses:
         "200":
           description: An example of a successful generated response with an Access Identity
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetFriendsRequest'
+                $ref: '#/components/schemas/ListFriendsResponse'
         "400":
           description: An example of a successful generated response with an Access Identity
           content:
@@ -585,33 +585,11 @@ paths:
         - user
       description: "Getting user data. Nickname, Identity [not to be confused with accessIdentity] and email verification status"
       requestBody:
-        description: Creation access identity based on nickname
+        description: Body for get user or me
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                identity:
-                  type: string
-                  enum:
-                    - "46:QTZepulLdiPsDLNNjinSQ8HJeyidzrdMrYATwD5fmb080VGxzQCUXRubsbxx8DqhojU2y80LiXXBT1N0FQhZZ3rYNTqQZoaDJDYRM31Qd3ugkzBV7QWwtCdAjQ2AxZAAukUCgvwiy2wGmuxSlXhME224gPXRq53WqlFVjMDsAZiIo9HGr0qmclO2EZUPRVlyd5plu83UApbIrOVHeXksq1NbSXxloAhDq6iK9C2Ck8BNoZS8wQWsXdCXBqnPVb85"
-                accessIdentity:
-                  type: string
-                  enum:
-                    - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
-              required:
-                - "accessIdentity"
-                - "identity"
-              additionalProperties: false
-            examples:
-              Identity:
-                value:
-                  identity: "46:QTZepulLdiPsDLNNjinSQ8HJeyidzrdMrYATwD5fmb080VGxzQCUXRubsbxx8DqhojU2y80LiXXBT1N0FQhZZ3rYNTqQZoaDJDYRM31Qd3ugkzBV7QWwtCdAjQ2AxZAAukUCgvwiy2wGmuxSlXhME224gPXRq53WqlFVjMDsAZiIo9HGr0qmclO2EZUPRVlyd5plu83UApbIrOVHeXksq1NbSXxloAhDq6iK9C2Ck8BNoZS8wQWsXdCXBqnPVb85"
-                  accessIdentity: "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
-              AccessIdentity:
-                value:
-                  identity: null
-                  accessIdentity: "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+              $ref: '#/components/schemas/GetUserRequest'
       responses:
         "200":
           description: An example of a successful generated response with an Access Identity
@@ -721,8 +699,6 @@ components:
       properties:
         nickname:
           type: "string"
-          enum:
-            - David Johnson
       required:
         - "nickname"
       additionalProperties: false
@@ -731,8 +707,7 @@ components:
       properties:
         status:
           type: "boolean"
-          enum:
-            - true
+          example: true
         result:
           type: "string"
       required:
@@ -759,7 +734,7 @@ components:
       properties:
         accessIdentity:
           type: string
-          enum:
+          example:
             - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
       required:
         - "accessIdentity"
@@ -798,27 +773,32 @@ components:
       properties:
         accessIdentity:
           type: string
-          enum:
-            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         friendIdentity:
           type: string
-          enum:
-            - "11:JvZGvnzVC7ADSXTWnIV0EJj0xXSScezuhnhcM2SakjmggyADSOwOZlVpzyI39ttZdW68x1MupQCx44gonpIxdiY9s2sWboEYohYKk3Ngq4gBQzZ0x5WnTIU7md4PvlWVmvrQOrM4hFey0ZVRpGLt8hmEcg2UBZ88mhT1RGNZJDhFUBz0FmxvwOxPnjmyqLA1Y77VNZQBVKPa8MJBQTnCS1D1ooB5H9PizrLpS2HqabwcvgPRHzshoFT7N9RmvnrM"
       required:
         - "accessIdentity"
         - "friendIdentity"
+      additionalProperties: false
+    ListFriendsRequest:
+      type: "object"
+      properties:
+        accessIdentity:
+          type: string
+        pagingId:
+          type: string
+        amount:
+          type: integer
+      required:
+        - "accessIdentity"
+        - "amount"
       additionalProperties: false
     EmailConfirmRequest:
       type: "object"
       properties:
         email:
           type: string
-          enum:
-            - "gerald123@gmail.com"
         confirmHash:
           type: string
-          enum:
-            - "gh1hILZy0eoAOdN4Xw1l0LAjca1IVaH8DMznJxZ30KZwTiQPw9ZrC7kJLZMbPrUe1FClHcJl9CAGehbwPvtWJfwYOwNE2r08OZ1GKmgFE4uEGUr722SNsjoWn3aNBsZbfa4DBOLoN8KQr7h7Djr6iSJHOIVxCAD16V905GqyLxuwLOJL9wsqCc49ey8kB61NMbGCZtaqiHNw1J0N8DiDEOanCOguNsSmElNNTbFSS2ddA0DtTdIrD8hCTEo2ZYgY"
       required:
         - "email"
         - "confirmHash"
@@ -828,11 +808,11 @@ components:
       properties:
         email:
           type: string
-          enum:
+          example:
             - "gerald123@gmail.com"
         accessIdentity:
           type: string
-          enum:
+          example:
             - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
       required:
         - "email"
@@ -914,8 +894,7 @@ components:
       properties:
         status:
           type: boolean
-          enum:
-            - false
+          example: false
         errorCode:
           type: integer
           enum:
@@ -934,8 +913,7 @@ components:
       properties:
         status:
           type: boolean
-          enum:
-            - true
+          example: true
       required:
         - "status"
       additionalProperties: false
@@ -943,48 +921,42 @@ components:
       type: string
       enum:
         - "*image_file*"
-    GetFriendsRequest:
+    ListFriendsResponse:
       type: object
       properties:
         status:
           type: boolean
-          enum:
+          example:
             - true
         result:
-          $ref: '#/components/schemas/FriendsAndSubsResponse'
+          type: object
+          properties:
+            nextPagingId:
+              type: string
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/RegularUserResponse'
+          required:
+            - "data"
       required:
         - "status"
         - "result"
       additionalProperties: true
-    IdentityAndNicknameResponse:
+    RegularUserResponse:
       type: object
       properties:
-        identity:
-          type: string
-          example: "17:QRVeKsoYrthOzhoH6fdxprA2piWHJ5El74fDYqXMhdjl7osivDEbhDa2y6PCM1sIUyG4I7YvDSoNuidA93wLnPYHzjU3J7cGm2qqWsOnKGjetcH3ADT8JKUKpcLIGyu93EHCZC6qvHEa66t8RkKWtL63ZQXOLUMBY2fDwRWKkE9I0wmRWqGNjobqK3yLGA7cW4xb3gCtpIlnSK6OxnSEEnPZ3dH2oiXoflyAlD2kJEztehXkuzqbncxZpBxbbDxE"
-        nickname:
-          type: string
-          example: David Johnson
-    IdentityAndNicknameResponse2:
-      type: object
-      properties:
+        isSelf:
+          type: boolean
         identity:
           type: string
           example: "6:ATHK7K8Uppgcrc3jqghkwB9xUVI0M1KeyfmgGdLJvrk0xMmYcpI5x60fIN1SzgPeJAgTUvfoV30YoI0hAl75CbU0retgcFb7RPOovB8LBa3v8wFgYal7RYKg3afZinNru6pLxdiz2BX817D7pTFuiIGS2TlXzZYZCKpQaWGLxImphh6K43BxLrYUluD6zrvEI6DEbcWSBJ7CApWJJdT5GdG7GCxiLQQpeuq3vSMRv1t3aLEAyfXzCCGU8nf53z6K"
         nickname:
           type: string
           example: Kirillov Vadim
-    FriendsAndSubsResponse:
-      type: object
-      properties:
-        friends:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityAndNicknameResponse'
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityAndNicknameResponse2'
+      required:
+        - identity
+        - nickname
     CreatorMeetingResponse:
       type: object
       properties:
@@ -1039,8 +1011,7 @@ components:
       properties:
         status:
           type: boolean
-          enum:
-            - true
+          example: true
         result:
           $ref: '#/components/schemas/ResultMeetingResponse'
     ListMeetingsResponse:
@@ -1060,17 +1031,36 @@ components:
           type: boolean
           example: true
         result:
-          type: object
-          properties:
-            identity:
-              type: string
-              example: "15:fzK6CgXqQihDqeXpVYqVpOIgH0s5HvBAaR2BN2PkCxsLe63fAwMrV4uDInfYgoKFXY5C18Rnu9I2x5d46qmGNPLTM9uDepdKPKo7ss1tPsMk5AbslGwQCjlBrscOJmxUFSt7iwsmbZdLdjgYecKoXrJBVGwkZC3HYBUCLtgkexYsOk1mmDRxk482k3fCuo2Nxnjy82INdkOTjVsnew6vGhtOOrOWdpR1Ci6v1d06SQ6aFqs5QasWiTEPXNyCjGGd"
-            nickname:
-              type: string
-              example: Dmytro Koriukivka
-            email:
-              type: string
-              example: "*depending on the privacy settings of the user, his mail will be displayed*"
-            emailVerified:
-              type: boolean
-              example: true
+          $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        isSelf:
+          type: boolean
+        identity:
+          type: string
+          example: "15:fzK6CgXqQihDqeXpVYqVpOIgH0s5HvBAaR2BN2PkCxsLe63fAwMrV4uDInfYgoKFXY5C18Rnu9I2x5d46qmGNPLTM9uDepdKPKo7ss1tPsMk5AbslGwQCjlBrscOJmxUFSt7iwsmbZdLdjgYecKoXrJBVGwkZC3HYBUCLtgkexYsOk1mmDRxk482k3fCuo2Nxnjy82INdkOTjVsnew6vGhtOOrOWdpR1Ci6v1d06SQ6aFqs5QasWiTEPXNyCjGGd"
+        nickname:
+          type: string
+          example: Dmytro Koriukivka
+        email:
+          type: string
+          example: "*depending on the privacy settings of the user, his mail will be displayed*"
+        emailVerified:
+          type: boolean
+          example: true
+      required:
+        - identity
+        - nickname
+        - isSelf
+    GetUserRequest:
+      description: Creation access identity based on nickname
+      type: object
+      properties:
+        identity:
+          type: string
+        accessIdentity:
+          type: string
+      required:
+        - accessIdentity
+      additionalProperties: false

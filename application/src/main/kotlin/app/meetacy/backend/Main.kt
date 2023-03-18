@@ -14,6 +14,7 @@ fun main() {
         /* child = */ "files"
     ).apply { mkdirs() }.absolutePath
     val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (100L * 1024 * 1024)
+
     val database = Database.connect(
         databaseUrl,
         user = databaseUser,
