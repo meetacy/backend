@@ -51,8 +51,8 @@ class FriendsTable(private val db: Database) : Table()  {
                 DatabaseFriend(
                     pagingId = PagingId(result[PAGING_ID]),
                     friendId = UserId(result[FRIEND_ID])
-                ).also(::println)
-            }.filter { (_, friendId) -> isSubscribed(friendId, userId).also(::println) }.take(amount.int)
+                )
+            }.filter { (_, friendId) -> isSubscribed(friendId, userId) }.take(amount.int)
             .toList()
     }
 
