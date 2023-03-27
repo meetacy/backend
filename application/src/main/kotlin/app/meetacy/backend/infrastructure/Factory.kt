@@ -76,7 +76,7 @@ import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import org.jetbrains.exposed.sql.Database
 
-fun startMockEndpoints(
+fun startEndpoints(
     filesBasePath: String,
     filesLimit: Long,
     port: Int,
@@ -85,8 +85,6 @@ fun startMockEndpoints(
 ) {
     val authRepository = DatabaseAuthRepository(db)
     val filesRepository = DatabaseFilesRepository(db)
-
-
 
     startEndpoints(
         port = port,

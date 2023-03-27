@@ -15,7 +15,7 @@ data class GenerateParam(
     val nickname: String
 )
 
-interface TokenGenerateRepository {
+fun interface TokenGenerateRepository {
     suspend fun generateToken(nickname: String): TokenGenerateResult
 }
 

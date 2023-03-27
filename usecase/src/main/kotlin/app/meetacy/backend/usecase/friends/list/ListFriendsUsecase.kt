@@ -41,5 +41,5 @@ class ListFriendsUsecase(
         ): List<FriendId>
     }
 
-    data class FriendId(val pagingId: PagingId, val userId: UserId)
+    data class FriendId(val pagingId: PagingId, val friendId: UserId)
 }
