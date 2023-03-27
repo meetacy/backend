@@ -1,6 +1,6 @@
 package app.meetacy.backend
 
-import app.meetacy.backend.infrastructure.startMockEndpoints
+import app.meetacy.backend.infrastructure.startEndpoints
 import org.jetbrains.exposed.sql.Database
 import java.io.File
 
@@ -13,6 +13,7 @@ fun main() {
         /* parent = */ System.getenv("user.dir"),
         /* child = */ "files"
     ).apply { mkdirs() }.absolutePath
+
     val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (100L * 1024 * 1024)
 
     val database = Database.connect(
@@ -21,5 +22,5 @@ fun main() {
         password = databasePassword
     )
 
-    startMockEndpoints(filesBasePath, filesSizeLimit, port, database, wait = true)
+    startEndpoints(filesBasePath, filesSizeLimit, port, database, wait = true)
 }

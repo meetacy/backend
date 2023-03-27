@@ -16,12 +16,6 @@ class DatabaseLinkEmailStorage(db: Database) : LinkEmailUsecase.Storage {
     override suspend fun isEmailOccupied(email: String): Boolean =
         usersTable.isEmailOccupied(email)
 
-    override suspend fun getUserId(token: AccessIdentity): UserId? =
-        usersTable.getUsersOrNull(listOf(UserId(token.userId.long)))
-            .first()
-            ?.identity
-            ?.userId
-
     override suspend fun updateEmail(userId: UserId, email: String) {
         usersTable.updateEmail(userId, email)
     }

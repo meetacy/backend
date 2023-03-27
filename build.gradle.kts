@@ -8,6 +8,13 @@ version = AppInfo.VERSION
 allprojects {
     repositories {
         mavenCentral()
+        maven {
+            url = uri("https://maven.pkg.github.com/meetacy/sdk")
+            credentials {
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 
     tasks.withType<KotlinCompile<*>> {

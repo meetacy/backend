@@ -31,6 +31,7 @@ object Deps {
     private const val kvisionVersion = "5.1.1"
     private const val shadowVer = "7.0.0"
 
+    private const val meetacySdkVersion = "0.0.2-build1"
     private const val kdsVer = "1.1.0"
     private const val scriptKtVer = "0.0.2"
 
@@ -87,6 +88,7 @@ object Deps {
 
         object Kotlinx {
             const val Coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+            const val CoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
             const val Serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion"
             const val Datetime = "org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion"
             const val Nodejs = "org.jetbrains.kotlinx:kotlinx-nodejs:$nodejsExternalsVersion"
@@ -97,6 +99,7 @@ object Deps {
                 const val Cio = "io.ktor:ktor-client-cio:$ktorVersion"
                 const val ContentNegotiation = "io.ktor:ktor-client-content-negotiation:$ktorVersion"
                 const val SerializationJson = "io.ktor:ktor-serialization-kotlinx-json:$ktorVersion"
+                const val Logging = "io.ktor:ktor-client-logging:$ktorVersion"
             }
             object Server {
                 const val Core = "io.ktor:ktor-server-core:$ktorVersion"
@@ -124,6 +127,10 @@ object Deps {
         }
         object Slf4j {
             const val Simple = "org.slf4j:slf4j-simple:$slf4jJVersion"
+        }
+        object MeetacySdk {
+            const val Api = "app.meetacy.sdk:api:$meetacySdkVersion"
+            const val ApiKtor = "app.meetacy.sdk:api-ktor:$meetacySdkVersion"
         }
         object Androidx {
             const val AppCompat =
