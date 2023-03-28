@@ -15,7 +15,7 @@ class ListFriendsUsecase(
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidToken }
 
-        val friends = storage.getFriends(userId, amount, pagingId)
+        val friends = storage.getFriends(userId, amount, pagingId?.long?.let(::UserId))
 
         val usersViewsIterator = getUsersViewsRepository
             .getUsersViews(userId, friends.map { (_, userId) -> userId })
@@ -37,7 +37,7 @@ class ListFriendsUsecase(
         suspend fun getFriends(
             userId: UserId,
             amount: Amount,
-            pagingId: PagingId?
+            lastUserId: UserId?
         ): List<FriendId>
     }
 

@@ -416,7 +416,7 @@ paths:
                   $ref: '#/components/examples/InvalidAccessIdentity'
                 MeetingNotFound:
                   $ref: '#/components/examples/InvalidMeetingIdentity'
-  /meetings/list:
+  /meetings/history/list:
     post:
       summary: Getting a list of meetings
       tags:
@@ -427,7 +427,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AccessIdentityRequest'
+              $ref: '#/components/schemas/ListMeetingsRequest'
       responses:
         "200":
           description: An example of a successful generated response with an Access Identity
@@ -791,7 +791,18 @@ components:
       required:
         - "accessIdentity"
         - "amount"
-      additionalProperties: false
+    ListMeetingsRequest:
+      type: "object"
+      properties:
+        accessIdentity:
+          type: string
+        pagingId:
+          type: string
+        amount:
+          type: integer
+      required:
+        - "accessIdentity"
+        - "amount"
     EmailConfirmRequest:
       type: "object"
       properties:
@@ -944,19 +955,8 @@ components:
         - "result"
       additionalProperties: true
     RegularUserResponse:
-      type: object
-      properties:
-        isSelf:
-          type: boolean
-        identity:
-          type: string
-          example: "6:ATHK7K8Uppgcrc3jqghkwB9xUVI0M1KeyfmgGdLJvrk0xMmYcpI5x60fIN1SzgPeJAgTUvfoV30YoI0hAl75CbU0retgcFb7RPOovB8LBa3v8wFgYal7RYKg3afZinNru6pLxdiz2BX817D7pTFuiIGS2TlXzZYZCKpQaWGLxImphh6K43BxLrYUluD6zrvEI6DEbcWSBJ7CApWJJdT5GdG7GCxiLQQpeuq3vSMRv1t3aLEAyfXzCCGU8nf53z6K"
-        nickname:
-          type: string
-          example: Kirillov Vadim
-      required:
-        - identity
-        - nickname
+      allOf:
+        - $ref: '#/components/schemas/User'
     CreatorMeetingResponse:
       type: object
       properties:
@@ -981,6 +981,9 @@ components:
         longitude:
           type: number
           example: 8.256473253864916
+      required:
+        - "latitude"
+        - "longitude"
     ResultMeetingResponse:
       type: object
       properties:
@@ -988,7 +991,7 @@ components:
           type: string
           example: "6:EBnp2woyRmY4snRvZaiEtuOIfk4eEXgWdzy8psVPL60Mz92Ts8qIdaoAHVTpvl9hTygMpfUYjNHJpjwpK0txBKRWl7EqCgmnZjm57pIWnlRIo2WoH856AibK8xmCdgOlENPUsmBGLPa7EVOtd43rnGVdeC3wUfHSNV9PT3S0Q3mXCpHF0tOfssQTnKKbBSy9V19Euo7VzpjS4WXI82ILzPVfLqTaRGEUabXw9issiVZhK97zZhBXrV3CFO26pAZa"
         creator:
-          $ref: '#/components/schemas/CreatorMeetingResponse'
+          $ref: '#/components/schemas/User'
         date:
           type: string
           example: "20230705T100000+0300"
@@ -1006,6 +1009,15 @@ components:
         isParticipating:
           type: boolean
           example: true
+        avatarIdentity:
+          type: string
+      required:
+        - "identity"
+        - "creator"
+        - "date"
+        - "location"
+        - "participantsCount"
+        - "isParticipating"
     CreateMeetingResponse:
       type: object
       properties:
@@ -1021,9 +1033,18 @@ components:
           type: boolean
           example: true
         result:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResultMeetingResponse'
+          type: object
+          properties:
+            nextPagingId:
+              type: string
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResultMeetingResponse'
+          required:
+            - "data"
+      required:
+        - "result"
     GetUserResponse:
       type: object
       properties:
@@ -1049,6 +1070,8 @@ components:
         emailVerified:
           type: boolean
           example: true
+        avatarIdentity:
+          type: string
       required:
         - identity
         - nickname

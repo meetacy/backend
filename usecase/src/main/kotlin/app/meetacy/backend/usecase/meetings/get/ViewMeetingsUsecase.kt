@@ -30,7 +30,7 @@ class ViewMeetingsUsecase(
             .iterator()
 
         val participation = storage
-            .getParticipations(viewerId, meetingIds)
+            .getIsParticipates(viewerId, meetingIds)
             .iterator()
 
         return meetings.map { meeting ->
@@ -52,6 +52,6 @@ class ViewMeetingsUsecase(
 
     interface Storage {
         suspend fun getParticipantsCount(meetingIds: List<MeetingId>): List<Int>
-        suspend fun getParticipations(viewerId: UserId, meetingIds: List<MeetingId>): List<Boolean>
+        suspend fun getIsParticipates(viewerId: UserId, meetingIds: List<MeetingId>): List<Boolean>
     }
 }

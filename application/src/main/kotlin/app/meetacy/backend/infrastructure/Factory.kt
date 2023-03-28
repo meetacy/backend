@@ -30,6 +30,7 @@ import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.avatar.MeetingAvatarDependencies
+import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.users.UsersDependencies
@@ -54,7 +55,7 @@ import app.meetacy.backend.usecase.integration.meetings.avatar.delete.UsecaseDel
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.list.UsecaseMeetingsListRepository
+import app.meetacy.backend.usecase.integration.meetings.list.UsecaseListMeetingsHistoryRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
@@ -66,7 +67,7 @@ import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUse
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
-import app.meetacy.backend.usecase.meetings.list.GetMeetingsListUsecase
+import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
@@ -160,11 +161,13 @@ fun startEndpoints(
             )
         ),
         meetingsDependencies = MeetingsDependencies(
-            meetingsListRepository = UsecaseMeetingsListRepository(
-                usecase = GetMeetingsListUsecase(
-                    authRepository = authRepository,
-                    storage = DatabaseGetMeetingsListStorage(db),
-                    getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
+            meetingsHistoryDependencies = MeetingsHistoryDependencies(
+                listMeetingsHistoryRepository = UsecaseListMeetingsHistoryRepository(
+                    usecase = ListMeetingsHistoryUsecase(
+                        authRepository = authRepository,
+                        storage = DatabaseGetMeetingsListStorage(db),
+                        getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
+                    )
                 )
             ),
             createMeetingRepository = UsecaseCreateMeetingRepository(

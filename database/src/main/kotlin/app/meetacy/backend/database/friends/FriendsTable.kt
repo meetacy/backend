@@ -42,9 +42,9 @@ class FriendsTable(private val db: Database) : Table()  {
     suspend fun getFriends(
         userId: UserId,
         amount: Amount,
-        pagingId: PagingId?
+        lastUserId: UserId?
     ): List<DatabaseFriend> = newSuspendedTransaction(db = db) {
-        select { (USER_ID eq userId.long) and (PAGING_ID less (pagingId?.long ?: Long.MAX_VALUE)) }
+        select { (USER_ID eq userId.long) and (PAGING_ID less (lastUserId?.long ?: Long.MAX_VALUE)) }
             .orderBy(PAGING_ID, SortOrder.DESC)
             .asFlow()
             .map { result ->

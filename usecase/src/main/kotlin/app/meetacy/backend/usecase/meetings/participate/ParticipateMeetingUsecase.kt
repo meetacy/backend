@@ -29,7 +29,7 @@ class ParticipateMeetingUsecase(
             return Result.MeetingNotFound
 
         if(!storage.isParticipating(meetingIdentity.meetingId, userId))
-            storage.addParticipant(meetingIdentity.meetingId, userId) else return Result.MeetingAlreadyParticipate
+            storage.addParticipant(userId, meetingIdentity.meetingId) else return Result.MeetingAlreadyParticipate
 
         return Result.Success
     }
@@ -43,8 +43,8 @@ class ParticipateMeetingUsecase(
 
     interface Storage {
         suspend fun addParticipant(
-            meetingId: MeetingId,
-            userId: UserId
+            participantId: UserId,
+            meetingId: MeetingId
         )
 
         suspend fun isParticipating(

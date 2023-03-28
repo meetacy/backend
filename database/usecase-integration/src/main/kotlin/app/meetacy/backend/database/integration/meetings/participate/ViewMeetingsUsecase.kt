@@ -12,6 +12,6 @@ class DatabaseViewMeetingsUsecaseStorage(db: Database) : ViewMeetingsUsecase.Sto
     override suspend fun getParticipantsCount(meetingIds: List<MeetingId>): List<Int> =
         meetingIds.map { meetingId -> participantsTable.participantsCount(meetingId) }
 
-    override suspend fun getParticipations(viewerId: UserId, meetingIds: List<MeetingId>): List<Boolean> =
+    override suspend fun getIsParticipates(viewerId: UserId, meetingIds: List<MeetingId>): List<Boolean> =
         meetingIds.map { meetingId -> participantsTable.isParticipating(meetingId, viewerId) }
 }

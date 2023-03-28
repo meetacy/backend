@@ -1,20 +1,21 @@
 package app.meetacy.backend.database.integration.meetings.list
 
-import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.meetings.ParticipantsTable
+import app.meetacy.backend.types.Amount
 import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.UserId
-import app.meetacy.backend.usecase.meetings.list.GetMeetingsListUsecase
+import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
 import org.jetbrains.exposed.sql.Database
 
-class DatabaseGetMeetingsListStorage(private val db: Database) : GetMeetingsListUsecase.Storage {
-    private val meetingsTable = MeetingsTable(db)
+class DatabaseGetMeetingsListStorage(private val db: Database) : ListMeetingsHistoryUsecase.Storage {
     private val participantsTable = ParticipantsTable(db)
 
-    override suspend fun getSelfMeetings(creatorId: UserId): List<MeetingId> =
-        meetingsTable.getMeetingCreator(creatorId)
-
-
-    override suspend fun getParticipatingMeetings(memberId: UserId): List<MeetingId> =
-        participantsTable.getMeetingIds(memberId)
+    override suspend fun getParticipatingMeetings(
+        memberId: UserId,
+        amount: Amount,
+        lastMeetingId: MeetingId?
+    ): List<MeetingId> = participantsTable.getJoinHistory(
+        userId = memberId,
+        amount, lastMeetingId
+    )
 }

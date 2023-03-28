@@ -1,39 +1,26 @@
-import app.meetacy.api.MeetacyApi
 import app.meetacy.types.amount.amount
-import io.ktor.client.*
-import io.ktor.client.plugins.logging.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class TestFriends {
-    val api = MeetacyApi(baseUrl = "http://localhost:8080",)
 
-    private val friendsAmount = (0..20).random()
-
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `pagination test of friends`() = runTest {
+        val friendsAmount = (0..20).random()
+
         startTestEndpoints()
 
         println("Testing with friendsAmount: $friendsAmount")
 
-        val api = MeetacyApi(
-            baseUrl = "http://localhost:8080",
-            httpClient = HttpClient {
-                Logging {
-                    level = LogLevel.NONE
-                    level = LogLevel.ALL
-                }
-            }
+        val (myApi, me) = generateTestAccount(
+            postfix = "at ${System.currentTimeMillis()}"
         )
 
-        val myApi = api.auth.generateAuthorizedApi(nickname = "Tester Account at ${System.currentTimeMillis()}")
-        val me = myApi.getMe()
-
         val friends = List(friendsAmount) {
-            api.auth.generateAuthorizedApi(nickname = "Tester Friend at ${System.currentTimeMillis()} #$it")
-        }.map { friendApi ->
-            friendApi to friendApi.getMe()
+            generateTestAccount(postfix = "Friend at ${System.currentTimeMillis()} #$it")
         }
 
         for ((friendApi, friend) in friends) {

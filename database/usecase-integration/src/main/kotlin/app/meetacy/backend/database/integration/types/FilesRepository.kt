@@ -7,5 +7,5 @@ import org.jetbrains.exposed.sql.Database
 
 class DatabaseFilesRepository(db: Database) : FilesRepository {
     private val filesTable = FilesTable(db)
-    override suspend fun authorize(fileIdentity: FileIdentity) = filesTable.checkFileIdentity(fileIdentity)
+    override suspend fun checkFile(identity: FileIdentity) = filesTable.checkFileIdentity(identity)
 }

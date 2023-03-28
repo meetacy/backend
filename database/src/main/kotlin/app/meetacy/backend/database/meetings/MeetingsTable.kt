@@ -114,5 +114,4 @@ class MeetingsTable(private val db: Database) : Table() {
         newSuspendedTransaction(db = db) {
             deleteWhere { ((MEETING_ID eq meetingId.long)) }
         }
-
 }

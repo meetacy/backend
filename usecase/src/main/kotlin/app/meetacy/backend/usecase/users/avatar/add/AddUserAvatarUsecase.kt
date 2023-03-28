@@ -2,10 +2,7 @@ package app.meetacy.backend.usecase.users.avatar.add
 
 import app.meetacy.backend.types.AccessIdentity
 import app.meetacy.backend.types.FileIdentity
-import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.FilesRepository
-import app.meetacy.backend.usecase.types.authorizeWithFileId
-import app.meetacy.backend.usecase.types.authorizeWithUserId
+import app.meetacy.backend.usecase.types.*
 
 class AddUserAvatarUsecase(
     private val authRepository: AuthRepository,
@@ -22,8 +19,9 @@ class AddUserAvatarUsecase(
         accessIdentity: AccessIdentity,
         avatarIdentity: FileIdentity
     ): Result {
-        authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
-        filesRepository.authorizeWithFileId(avatarIdentity) { return Result.InvalidAvatarIdentity }
+        authRepository.authorize(accessIdentity) { return Result.InvalidIdentity }
+        if (!filesRepository.checkFile(avatarIdentity)) return Result.InvalidAvatarIdentity
+
         storage.addAvatar(accessIdentity, avatarIdentity)
         return Result.Success
     }

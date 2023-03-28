@@ -2,6 +2,7 @@
 
 package app.meetacy.backend.database.meetings
 
+import app.meetacy.backend.types.Amount
 import app.meetacy.backend.types.MeetingId
 import app.meetacy.backend.types.UserId
 import org.jetbrains.exposed.sql.*
@@ -18,11 +19,11 @@ class ParticipantsTable(private val db: Database) : Table() {
         }
     }
 
-    suspend fun addParticipant(meetingId: MeetingId, userId: UserId) =
+    suspend fun addParticipant(participantId: UserId, meetingId: MeetingId) =
         newSuspendedTransaction(db = db) {
             insert { statement ->
                 statement[MEETING_ID] = meetingId.long
-                statement[USER_ID] = userId.long
+                statement[USER_ID] = participantId.long
             }
         }
 
@@ -40,10 +41,15 @@ class ParticipantsTable(private val db: Database) : Table() {
                 .any()
         }
 
-    suspend fun getMeetingIds(userId: UserId): List<MeetingId> =
+    suspend fun getJoinHistory(
+        userId: UserId,
+        amount: Amount,
+        lastMeetingId: MeetingId?
+    ): List<MeetingId> =
         newSuspendedTransaction(db = db) {
-             select { (USER_ID eq userId.long) }
-                 .map { it[MEETING_ID] }
-                 .map { MeetingId(it) }
+            select { (USER_ID eq userId.long) and (MEETING_ID less (lastMeetingId?.long ?: Long.MAX_VALUE)) }
+                .map { it[MEETING_ID] }
+                .map(::MeetingId)
+                .take(amount.int)
         }
 }

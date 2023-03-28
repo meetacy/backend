@@ -3,6 +3,7 @@ package app.meetacy.backend.database.integration.meetings.create
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseViewMeetingsUsecaseStorage
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.database.meetings.MeetingsTable
+import app.meetacy.backend.database.meetings.ParticipantsTable
 import app.meetacy.backend.types.*
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
@@ -12,6 +13,11 @@ import org.jetbrains.exposed.sql.Database
 
 class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsecase.Storage {
     private val meetingsTable = MeetingsTable(db)
+    private val participantsTable = ParticipantsTable(db)
+
+    override suspend fun addParticipant(participantId: UserId, meetingId: MeetingId) {
+        participantsTable.addParticipant(participantId, meetingId)
+    }
 
     override suspend fun addMeeting(
         accessHash: AccessHash,

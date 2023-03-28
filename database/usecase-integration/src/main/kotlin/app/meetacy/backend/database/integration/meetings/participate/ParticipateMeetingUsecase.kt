@@ -8,8 +8,8 @@ import org.jetbrains.exposed.sql.Database
 
 class DatabaseParticipateMeetingStorage(db: Database) : ParticipateMeetingUsecase.Storage {
     private val participantsTable = ParticipantsTable(db)
-    override suspend fun addParticipant(meetingId: MeetingId, userId: UserId) {
-        participantsTable.addParticipant(meetingId, userId)
+    override suspend fun addParticipant(participantId: UserId, meetingId: MeetingId) {
+        participantsTable.addParticipant(participantId, meetingId)
     }
 
     override suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =

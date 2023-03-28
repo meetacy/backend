@@ -24,7 +24,7 @@ class AddMeetingAvatarUsecase(
         avatarIdentity: FileIdentity
     ): Result {
         authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
-        filesRepository.authorizeWithFileId(avatarIdentity) { return Result.InvalidFileIdentity }
+        if (!filesRepository.checkFile(avatarIdentity)) return Result.InvalidFileIdentity
 
         val meeting = getMeetingsViewsRepository
             .getMeetingsViewsOrNull(accessIdentity.userId, listOf(meetingIdentity.meetingId))
