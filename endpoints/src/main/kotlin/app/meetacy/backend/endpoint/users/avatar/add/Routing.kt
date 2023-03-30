@@ -18,8 +18,8 @@ sealed interface AddUserAvatarResult {
 
 @Serializable
 data class AddUserAvatarParams(
-    val accessIdentity: AccessIdentitySerializable,
-    val fileIdentity: FileIdentitySerializable
+    val token: AccessIdentitySerializable,
+    val fileId: FileIdentitySerializable
 )
 
 interface AddUserAvatarRepository {

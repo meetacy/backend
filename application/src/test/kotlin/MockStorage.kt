@@ -176,7 +176,7 @@ object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Aut
             .toList()
     }
 
-    override suspend fun getFile(fileIdentity: FileIdentity): GetFileResult {
+    override suspend fun getFile(fileId: FileIdentity): GetFileResult {
         TODO("Not yet implemented")
     }
 

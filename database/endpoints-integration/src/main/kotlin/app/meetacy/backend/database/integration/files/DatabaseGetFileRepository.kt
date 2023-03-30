@@ -12,13 +12,13 @@ class DatabaseGetFileRepository(
     private val basePath: String
 ) : GetFileRepository {
     private val filesTable = FilesTable(database)
-    override suspend fun getFile(fileIdentity: FileIdentity): GetFileResult =
-        when(val description = filesTable.getFileDescription(fileIdentity.fileId)) {
+    override suspend fun getFile(fileId: FileIdentity): GetFileResult =
+        when(val description = filesTable.getFileDescription(fileId.fileId)) {
             null -> GetFileResult.InvalidFileIdentity
             else -> {
-                if (description.fileIdentity.accessHash == fileIdentity.accessHash) {
+                if (description.fileIdentity.accessHash == fileId.accessHash) {
                     GetFileResult.Success(
-                        file = File(basePath, "${fileIdentity.fileId.long}"),
+                        file = File(basePath, "${fileId.fileId.long}"),
                         fileName = description.fileName,
                         fileSize = if (description.fileSize != null) description.fileSize else null
                     )

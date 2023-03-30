@@ -16,8 +16,8 @@ interface DeleteFriendRepository {
 
 @Serializable
 data class DeleteFriendParams(
-    val accessIdentity: AccessIdentitySerializable,
-    val friendIdentity: UserIdentitySerializable
+    val token: AccessIdentitySerializable,
+    val friendId: UserIdentitySerializable
 )
 
 sealed interface DeleteFriendResult {

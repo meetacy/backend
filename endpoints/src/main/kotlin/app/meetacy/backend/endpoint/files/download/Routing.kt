@@ -19,12 +19,12 @@ sealed interface GetFileResult {
 }
 
 interface GetFileRepository {
-    suspend fun getFile(fileIdentity: FileIdentity): GetFileResult
+    suspend fun getFile(fileId: FileIdentity): GetFileResult
 }
 
 fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
     val fileIdentity = FileIdentity.parse(
-        call.parameters["fileIdentity"]!!
+        call.parameters["fileId"]!!
     )!!
     when (val result = getFileRepository.getFile(fileIdentity)) {
         GetFileResult.InvalidFileIdentity -> call.respondFailure(Failure.InvalidFileIdentity)

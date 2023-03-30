@@ -15,8 +15,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetMeetingsParam(
-    val accessIdentity: AccessIdentitySerializable,
-    val meetingIdentity: MeetingIdentitySerializable
+    val token: AccessIdentitySerializable,
+    val meetingId: MeetingIdentitySerializable
 )
 
 sealed interface GetMeetingResult {
@@ -37,8 +37,8 @@ fun Route.getMeetings(getMeetingRepository: GetMeetingRepository) = post("/get")
 
     when (
         val result = getMeetingRepository.getMeeting(
-            params.accessIdentity.type(),
-            params.meetingIdentity.type()
+            params.token.type(),
+            params.meetingId.type()
         )
     ) {
         is GetMeetingResult.Success -> call.respondSuccess(

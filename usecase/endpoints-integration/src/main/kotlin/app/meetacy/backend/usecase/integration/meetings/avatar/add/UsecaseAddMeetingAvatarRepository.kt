@@ -11,7 +11,7 @@ class UsecaseAddMeetingAvatarRepository(
     override suspend fun addAvatar(
         addMeetingAvatarParams: AddMeetingAvatarParams
     ): AddMeetingAvatarResult = with(addMeetingAvatarParams) {
-        when (usecase.addAvatar(accessIdentity.type(), meetingIdentity.type(),  fileIdentity.type())) {
+        when (usecase.addAvatar(token.type(), meetingId.type(),  fileId.type())) {
             AddMeetingAvatarUsecase.Result.InvalidFileIdentity ->
                 AddMeetingAvatarResult.InvalidMeetingFileIdentity
             AddMeetingAvatarUsecase.Result.InvalidIdentity ->

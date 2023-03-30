@@ -10,7 +10,7 @@ class UsecaseDeleteUserAvatarRepository(
     private val usecase: DeleteUserAvatarUsecase
 ) : DeleteUserAvatarRepository {
     override suspend fun deleteAvatar(deleteUserAvatarParams: DeleteUserAvatarParams): DeleteUserAvatarResult =
-        when(usecase.deleteAvatar(deleteUserAvatarParams.accessIdentity.type())) {
+        when(usecase.deleteAvatar(deleteUserAvatarParams.token.type())) {
             DeleteUserAvatarUsecase.Result.InvalidIdentity ->
                 DeleteUserAvatarResult.InvalidAccessIdentity
             DeleteUserAvatarUsecase.Result.Success ->

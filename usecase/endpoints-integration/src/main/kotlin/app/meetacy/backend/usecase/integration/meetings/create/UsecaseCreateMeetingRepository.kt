@@ -12,7 +12,7 @@ class UsecaseCreateMeetingRepository(
     override suspend fun createMeeting(
         createParam: CreateParam
     ): CreateMeetingResult = with(createParam) {
-        when (val result = usecase.createMeeting(accessIdentity.type(), title, description, date.type(), location.type())) {
+        when (val result = usecase.createMeeting(token.type(), title, description, date.type(), location.type())) {
             CreateMeetingUsecase.Result.TokenInvalid ->
                 CreateMeetingResult.InvalidAccessIdentity
             is CreateMeetingUsecase.Result.Success ->

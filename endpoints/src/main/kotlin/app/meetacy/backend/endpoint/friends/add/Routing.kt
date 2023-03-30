@@ -16,8 +16,8 @@ interface AddFriendRepository {
 
 @Serializable
 data class AddFriendParams(
-    val accessIdentity: AccessIdentitySerializable,
-    val friendIdentity: UserIdentitySerializable
+    val token: AccessIdentitySerializable,
+    val friendId: UserIdentitySerializable
 )
 
 sealed interface AddFriendResult {

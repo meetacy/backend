@@ -20,9 +20,9 @@ sealed interface AddMeetingAvatarResult {
 
 @Serializable
 data class AddMeetingAvatarParams(
-    val meetingIdentity: MeetingIdentitySerializable,
-    val accessIdentity: AccessIdentitySerializable,
-    val fileIdentity: FileIdentitySerializable
+    val meetingId: MeetingIdentitySerializable,
+    val token: AccessIdentitySerializable,
+    val fileId: FileIdentitySerializable
 )
 
 interface AddMeetingAvatarRepository {
