@@ -37,9 +37,6 @@ class ListMeetingsMapUsecase(
 
         val history = storage
             .getMeetingsHistoryFlow(userId)
-            .onEach {
-                println("Meeting history $it")
-            }
             .chunked(chunkSize.int) { meetingIds ->
                 getMeetingsViewsRepository.getMeetingsViews(userId, meetingIds)
             }
