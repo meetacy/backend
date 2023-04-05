@@ -1,7 +1,7 @@
 package app.meetacy.backend.database.integration.users.delete
 
 import app.meetacy.backend.database.users.UsersTable
-import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
 import org.jetbrains.exposed.sql.Database
 

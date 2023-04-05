@@ -7,6 +7,7 @@ version = AppInfo.VERSION
 
 allprojects {
     repositories {
+        mavenLocal()
         mavenCentral()
         maven {
             url = uri("https://maven.pkg.github.com/meetacy/sdk")

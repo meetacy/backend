@@ -1,7 +1,7 @@
 package app.meetacy.backend.endpoint.types
 
-import app.meetacy.backend.types.serialization.DateSerializable
-import app.meetacy.backend.types.serialization.NotificationIdSerializable
+import app.meetacy.backend.types.serialization.datetime.DateSerializable
+import app.meetacy.backend.types.serialization.notification.NotificationIdSerializable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

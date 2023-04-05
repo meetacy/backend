@@ -1,9 +1,9 @@
 package app.meetacy.backend.database.types
 
-import app.meetacy.backend.types.Date
-import app.meetacy.backend.types.MeetingId
-import app.meetacy.backend.types.NotificationId
-import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.notification.NotificationId
+import app.meetacy.backend.types.user.UserId
 
 data class DatabaseNotification(
     val id: NotificationId,

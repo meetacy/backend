@@ -1,6 +1,10 @@
 package app.meetacy.backend.usecase.friends.list
 
-import app.meetacy.backend.types.*
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.paging.PagingId
+import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 
 class ListFriendsUsecase(
@@ -15,17 +19,13 @@ class ListFriendsUsecase(
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidToken }
 
-        val friends = storage.getFriends(userId, amount, pagingId)
+        val friendIdsPaging = storage.getFriends(userId, amount, pagingId)
 
-        val usersViewsIterator = getUsersViewsRepository
-            .getUsersViews(userId, friends.map { (_, userId) -> userId })
+        val friendsPaging = friendIdsPaging.map { friendIds ->
+            getUsersViewsRepository.getUsersViews(userId, friendIds)
+        }
 
-        val paging = PagingResult(
-            nextPagingId = if (friends.size == amount.int) friends.last().pagingId else null,
-            data = usersViewsIterator
-        )
-
-        return Result.Success(paging)
+        return Result.Success(friendsPaging)
     }
 
     sealed interface Result {
@@ -38,8 +38,6 @@ class ListFriendsUsecase(
             userId: UserId,
             amount: Amount,
             pagingId: PagingId?
-        ): List<FriendId>
+        ): PagingResult<List<UserId>>
     }
-
-    data class FriendId(val pagingId: PagingId, val friendId: UserId)
 }

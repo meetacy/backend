@@ -1,16 +1,15 @@
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
-import app.meetacy.backend.endpoint.auth.generate.TokenGenerateRepository
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
-import app.meetacy.backend.endpoint.friends.add.AddFriendRepository
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.avatar.MeetingAvatarDependencies
+import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
+import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.endpoint.users.avatar.UserAvatarDependencies
-import app.meetacy.backend.hash.HashGenerator
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
@@ -29,7 +28,8 @@ import app.meetacy.backend.usecase.integration.meetings.avatar.delete.UsecaseDel
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.list.UsecaseMeetingsListRepository
+import app.meetacy.backend.usecase.integration.meetings.history.list.UsecaseListMeetingsHistoryRepository
+import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
@@ -41,22 +41,51 @@ import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUse
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
-import app.meetacy.backend.usecase.meetings.list.GetMeetingsListUsecase
+import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
+import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
-import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
 import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
-import app.meetacy.backend.utf8.Utf8Checker
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
+import app.meetacy.sdk.MeetacyApi
+import app.meetacy.sdk.users.AuthorizedSelfUserRepository
+import io.ktor.client.*
+import io.ktor.client.plugins.logging.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
 
-fun startTestEndpoints(
+val testApi = MeetacyApi(
+    baseUrl = "http://localhost:8080",
+    httpClient = HttpClient {
+        Logging {
+//            level = LogLevel.NONE
+            level = LogLevel.ALL
+        }
+    }
+)
+
+suspend fun generateTestAccount(
+    postfix: String? = null
+): AuthorizedSelfUserRepository {
+    val newClient = testApi.auth.generateAuthorizedApi(
+        nickname = listOfNotNull("Test Account", postfix)
+            .joinToString(separator = " ")
+    )
+
+    return newClient.getMe()
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun runTestServer(
     port: Int = 8080,
-    wait: Boolean = false
-) {
-    startEndpoints(
+    wait: Boolean = false,
+    block: suspend TestScope.() -> Unit
+) = runTest {
+    val server = startEndpoints(
         port = port,
         wait = wait,
         authDependencies = AuthDependencies(
@@ -110,11 +139,23 @@ fun startTestEndpoints(
             )
         ),
         meetingsDependencies = MeetingsDependencies(
-            meetingsListRepository = UsecaseMeetingsListRepository(
-                usecase = GetMeetingsListUsecase(
-                    authRepository = MockStorage,
-                    storage = MockStorage,
-                    getMeetingsViewsRepository = MockStorage
+            meetingsHistoryDependencies = MeetingsHistoryDependencies(
+                listMeetingsHistoryRepository = UsecaseListMeetingsHistoryRepository(
+                    usecase = ListMeetingsHistoryUsecase(
+                        authRepository = MockStorage,
+                        storage = MockStorage,
+                        getMeetingsViewsRepository = MockStorage
+                    )
+                )
+            ),
+            meetingsMapDependencies = MeetingsMapDependencies(
+                listMeetingsMapRepository = UsecaseListMeetingsMapRepository(
+                    usecase = ListMeetingsMapUsecase(
+                        authRepository = MockStorage,
+                        storage = MockStorage,
+                        getMeetingsViewsRepository = MockStorage,
+                        viewMeetingsRepository = MockStorage
+                    )
                 )
             ),
             getMeetingRepository = UsecaseGetMeetingRepository(
@@ -208,4 +249,6 @@ fun startTestEndpoints(
             )
         )
     )
+    block()
+    server.stop()
 }

@@ -1,9 +1,10 @@
 package app.meetacy.backend.usecase.meetings.get
 
-import app.meetacy.backend.types.MeetingId
-import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.FullMeeting
 import app.meetacy.backend.usecase.types.MeetingView
+import app.meetacy.backend.usecase.types.ViewMeetingsRepository
 
 class GetMeetingsViewsUsecase(
     private val viewMeetingsRepository: ViewMeetingsRepository,
@@ -26,9 +27,6 @@ class GetMeetingsViewsUsecase(
         }
     }
 
-    interface ViewMeetingsRepository {
-        suspend fun viewMeetings(viewerId: UserId, meetings: List<FullMeeting>): List<MeetingView>
-    }
     interface MeetingsProvider {
         suspend fun getMeetings(meetingIds: List<MeetingId>): List<FullMeeting?>
     }

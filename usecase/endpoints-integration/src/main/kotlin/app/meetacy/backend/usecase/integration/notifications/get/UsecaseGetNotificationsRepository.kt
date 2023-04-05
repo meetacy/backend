@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.integration.notifications.get
 
 import app.meetacy.backend.endpoint.notifications.get.GetNotificationsRepository
-import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 

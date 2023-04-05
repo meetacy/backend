@@ -2,8 +2,8 @@ package app.meetacy.backend.endpoint.files.download
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
-import app.meetacy.backend.types.FileIdentity
-import app.meetacy.backend.types.FileSize
+import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.file.FileSize
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*

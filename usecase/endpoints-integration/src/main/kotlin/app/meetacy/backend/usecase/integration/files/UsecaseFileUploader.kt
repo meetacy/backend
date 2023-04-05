@@ -1,8 +1,8 @@
 package app.meetacy.backend.usecase.integration.files
 
 import app.meetacy.backend.endpoint.repository.JvmFileUploader
-import app.meetacy.backend.types.FileId
-import app.meetacy.backend.types.FileSize
+import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import java.io.File
 import java.io.InputStream
