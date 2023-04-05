@@ -1,17 +1,14 @@
 import app.meetacy.types.amount.amount
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class TestFriends {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `pagination test of friends`() = runTest {
+    fun `pagination test of friends`() = runTestServer {
         val friendsAmount = (0..20).random()
-
-        startTestEndpoints()
 
         println("Testing with friendsAmount: $friendsAmount")
 

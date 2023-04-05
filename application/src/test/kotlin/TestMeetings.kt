@@ -6,7 +6,6 @@ import app.meetacy.types.location.Location
 import app.meetacy.types.meeting.Meeting
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import java.time.Duration
 import java.time.Instant
@@ -15,10 +14,8 @@ import java.time.Instant
 class TestMeetings {
 
     @Test
-    fun `pagination test of meetings`() = runTest {
+    fun `pagination test of meetings`() = runTestServer {
         val meetingsAmount = (0..20).random()
-
-        startTestEndpoints()
 
         println("Testing with meetingsAmount: $meetingsAmount")
 
@@ -75,8 +72,7 @@ class TestMeetings {
     }
 
     @Test
-    fun `test of meetings on map`() = runTest {
-        startTestEndpoints()
+    fun `test of meetings on map`() = runTestServer {
 
         val self = generateTestAccount()
 
@@ -118,8 +114,7 @@ class TestMeetings {
     }
 
     @Test
-    fun `test public meetings`() = runTest {
-        startTestEndpoints()
+    fun `test public meetings`() = runTestServer {
 
         val first = generateTestAccount(postfix = "#1")
         val firstLocation = Location.NorthPole

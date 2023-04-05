@@ -11,7 +11,6 @@ import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.endpoint.users.avatar.UserAvatarDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
-import app.meetacy.backend.main
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
@@ -54,10 +53,10 @@ import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
-import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.logging.*
-import io.ktor.server.cio.*
-import org.jetbrains.exposed.sql.transactions.transaction
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
 
 val testApi = MeetacyApi(
     baseUrl = "http://localhost:8080",
@@ -80,11 +79,13 @@ suspend fun generateTestAccount(
     return newClient.getMe()
 }
 
-fun startTestEndpoints(
+@OptIn(ExperimentalCoroutinesApi::class)
+fun runTestServer(
     port: Int = 8080,
-    wait: Boolean = false
-) {
-    startEndpoints(
+    wait: Boolean = false,
+    block: suspend TestScope.() -> Unit
+) = runTest {
+    val server = startEndpoints(
         port = port,
         wait = wait,
         authDependencies = AuthDependencies(
@@ -248,4 +249,6 @@ fun startTestEndpoints(
             )
         )
     )
+    block()
+    server.stop()
 }
