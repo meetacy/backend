@@ -3,7 +3,7 @@ package app.meetacy.backend.database.integration.files
 import app.meetacy.backend.database.files.FilesTable
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
-import app.meetacy.backend.types.FileIdentity
+import app.meetacy.backend.types.file.FileIdentity
 import org.jetbrains.exposed.sql.Database
 import java.io.File
 

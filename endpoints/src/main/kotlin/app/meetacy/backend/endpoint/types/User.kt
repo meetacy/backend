@@ -1,7 +1,7 @@
 package app.meetacy.backend.endpoint.types
 
-import app.meetacy.backend.types.serialization.FileIdentitySerializable
-import app.meetacy.backend.types.serialization.UserIdentitySerializable
+import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
+import app.meetacy.backend.types.serialization.user.UserIdentitySerializable
 import kotlinx.serialization.Serializable
 
 @Serializable

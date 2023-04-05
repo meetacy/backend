@@ -4,6 +4,15 @@ package app.meetacy.backend.database.meetings
 
 import app.meetacy.backend.database.types.DatabaseMeeting
 import app.meetacy.backend.types.*
+import app.meetacy.backend.types.access.AccessHash
+import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateOrTime
+import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.user.UserId
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -31,7 +40,7 @@ class MeetingsTable(private val db: Database) : Table() {
     suspend fun addMeeting(
         accessHash: AccessHash,
         creatorId: UserId,
-        date: Date,
+        date: DateOrTime,
         location: Location,
         title: String?,
         description: String?
@@ -49,12 +58,11 @@ class MeetingsTable(private val db: Database) : Table() {
             return@newSuspendedTransaction MeetingId(meetingId)
         }
 
+    suspend fun getMeeting(id: MeetingId): DatabaseMeeting =
+        getMeetingOrNull(id) ?: error("Cannot find a meeting with id $id")
+
     suspend fun getMeetingOrNull(id: MeetingId): DatabaseMeeting? =
-        newSuspendedTransaction(db = db) {
-            val result = select { (MEETING_ID eq id.long) }
-                .map { statement -> statement.toDatabaseMeeting() }
-            return@newSuspendedTransaction result.filter { it.id == id }
-        }.firstOrNull()
+        getMeetingsOrNull(listOf(id)).first()
 
     suspend fun getMeetingsOrNull(meetingIds: List<MeetingId>): List<DatabaseMeeting?> =
         newSuspendedTransaction(db = db) {
@@ -86,7 +94,7 @@ class MeetingsTable(private val db: Database) : Table() {
                 accessHash = AccessHash(this[ACCESS_HASH])
             ),
             creatorId = UserId(this[CREATOR_ID]),
-            date = Date(this[DATE]),
+            date = DateOrTime.parse(this[DATE]),
             location = Location(this[LATITUDE], this[LONGITUDE]),
             description = this[DESCRIPTION],
             title = this[TITLE],

@@ -2,21 +2,21 @@
 
 package app.meetacy.backend.database.friends
 
-import app.meetacy.backend.database.types.DatabaseFriend
-import app.meetacy.backend.types.Amount
-import app.meetacy.backend.types.PagingId
-import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.paging.PagingId
+import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.flow.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class FriendsTable(private val db: Database) : Table()  {
-    private val PAGING_ID = long("PAGING_ID").autoIncrement()
+    private val ID = long("PAGING_ID").autoIncrement()
     private val USER_ID = long("USER_ID")
     private val FRIEND_ID = long("FRIEND_ID")
 
-    override val primaryKey = PrimaryKey(PAGING_ID)
+    override val primaryKey = PrimaryKey(ID)
 
     init {
         transaction(db) {
@@ -42,18 +42,23 @@ class FriendsTable(private val db: Database) : Table()  {
     suspend fun getFriends(
         userId: UserId,
         amount: Amount,
-        lastUserId: UserId?
-    ): List<DatabaseFriend> = newSuspendedTransaction(db = db) {
-        select { (USER_ID eq userId.long) and (PAGING_ID less (lastUserId?.long ?: Long.MAX_VALUE)) }
-            .orderBy(PAGING_ID, SortOrder.DESC)
-            .asFlow()
-            .map { result ->
-                DatabaseFriend(
-                    pagingId = PagingId(result[PAGING_ID]),
-                    friendId = UserId(result[FRIEND_ID])
-                )
-            }.filter { (_, friendId) -> isSubscribed(friendId, userId) }.take(amount.int)
-            .toList()
+        pagingId: PagingId?
+    ): PagingResult<List<UserId>> {
+        val results = newSuspendedTransaction(db = db) {
+            select { (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
+                .orderBy(ID, SortOrder.DESC)
+                .asFlow()
+                .filter { row -> isSubscribed(UserId(row[FRIEND_ID]), UserId(row[USER_ID])) }
+                .take(amount.int)
+                .toList()
+        }
+
+        val nextPagingId = if (results.size == amount.int) PagingId(results.last()[ID]) else null
+
+        return PagingResult(
+            data = results.map { result -> UserId(result[FRIEND_ID]) },
+            nextPagingId = nextPagingId
+        )
     }
 
     suspend fun getSubscriptions(userId: UserId): List<UserId> = newSuspendedTransaction(db = db) {

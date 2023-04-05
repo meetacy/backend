@@ -4,7 +4,13 @@ import app.meetacy.backend.database.integration.meetings.participate.DatabaseVie
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.meetings.ParticipantsTable
-import app.meetacy.backend.types.*
+import app.meetacy.backend.types.access.AccessHash
+import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateOrTime
+import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
 import app.meetacy.backend.usecase.types.FullMeeting
@@ -22,7 +28,7 @@ class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsec
     override suspend fun addMeeting(
         accessHash: AccessHash,
         creatorId: UserId,
-        date: Date,
+        date: DateOrTime,
         location: Location,
         title: String?,
         description: String?

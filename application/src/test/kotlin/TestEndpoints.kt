@@ -1,5 +1,7 @@
 import app.meetacy.api.AuthorizedMeetacyApi
 import app.meetacy.api.MeetacyApi
+import app.meetacy.api.users.AuthorizedSelfUserRepository
+import app.meetacy.api.users.SelfUserRepository
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
@@ -7,6 +9,7 @@ import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.avatar.MeetingAvatarDependencies
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
+import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.users.UsersDependencies
@@ -29,7 +32,8 @@ import app.meetacy.backend.usecase.integration.meetings.avatar.delete.UsecaseDel
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.list.UsecaseListMeetingsHistoryRepository
+import app.meetacy.backend.usecase.integration.meetings.history.list.UsecaseListMeetingsHistoryRepository
+import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
@@ -42,6 +46,7 @@ import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
+import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
@@ -58,22 +63,20 @@ val testApi = MeetacyApi(
     httpClient = HttpClient {
         Logging {
             level = LogLevel.NONE
-            level = LogLevel.ALL
+//            level = LogLevel.ALL
         }
     }
 )
 
 suspend fun generateTestAccount(
     postfix: String? = null
-): Pair<AuthorizedMeetacyApi, SelfUser> {
+): AuthorizedSelfUserRepository {
     val newClient = testApi.auth.generateAuthorizedApi(
         nickname = listOfNotNull("Test Account", postfix)
             .joinToString(separator = " ")
     )
 
-    val me = newClient.getMe()
-
-    return newClient to me
+    return newClient.getMe()
 }
 
 fun startTestEndpoints(
@@ -137,6 +140,15 @@ fun startTestEndpoints(
             meetingsHistoryDependencies = MeetingsHistoryDependencies(
                 listMeetingsHistoryRepository = UsecaseListMeetingsHistoryRepository(
                     usecase = ListMeetingsHistoryUsecase(
+                        authRepository = MockStorage,
+                        storage = MockStorage,
+                        getMeetingsViewsRepository = MockStorage
+                    )
+                )
+            ),
+            meetingsMapDependencies = MeetingsMapDependencies(
+                listMeetingsMapRepository = UsecaseListMeetingsMapRepository(
+                    usecase = ListMeetingsMapUsecase(
                         authRepository = MockStorage,
                         storage = MockStorage,
                         getMeetingsViewsRepository = MockStorage

@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.integration.email.link
 
-import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.endpoint.auth.email.link.ConfirmHashResult
 import app.meetacy.backend.endpoint.auth.email.link.LinkEmailRepository
 import app.meetacy.backend.usecase.email.LinkEmailUsecase

@@ -11,7 +11,7 @@ object Deps {
     private const val ktorVersion = "2.2.3"
     private const val ktorOpenapiVersion = "0.2-beta.20"
     private const val exposedVersion = "0.35.1"
-    private const val datetimeVersion = "0.3.0"
+    private const val datetimeVersion = "0.4.0"
 
     private const val postgresqlVersion = "42.2.24"
     private const val slf4jJVersion = "1.7.32"
@@ -241,5 +241,6 @@ object Deps {
         const val DatabaseEndpoints = ":database:endpoints-integration"
         const val Utf8Checker = ":utf8-checker"
         const val Utf8CheckerUsecase = ":utf8-checker:usecase-integration"
+        const val StdlibExtensions = ":stdlib-extensions"
     }
 }

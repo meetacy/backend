@@ -1,6 +1,11 @@
 package app.meetacy.backend.usecase.meetings.history.list
 
-import app.meetacy.backend.types.*
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.paging.PagingId
+import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 
 class ListMeetingsHistoryUsecase(
@@ -14,33 +19,29 @@ class ListMeetingsHistoryUsecase(
         amount: Amount,
         pagingId: PagingId?
     ): Result {
-        val id = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
+        val id = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidAccessIdentity }
 
-        val meetingIds = storage.getParticipatingMeetings(
+        val paging = storage.getParticipatingMeetings(
             memberId = id,
             amount = amount,
-            lastMeetingId = pagingId?.long?.let(::MeetingId)
-        )
-        val meetings = getMeetingsViewsRepository.getMeetingsViews(id, meetingIds)
+            pagingId = pagingId
+        ).map { meetingIds ->
+            getMeetingsViewsRepository.getMeetingsViews(id, meetingIds)
+        }
 
-        return Result.Success(
-            paging = PagingResult(
-                nextPagingId = if (meetings.size == amount.int) PagingId(meetings.last().id.long) else null,
-                data = meetings
-            )
-        )
+        return Result.Success(paging)
     }
 
     sealed interface Result {
         class Success(val paging: PagingResult<List<MeetingView>>) : Result
-        object TokenInvalid : Result
+        object InvalidAccessIdentity : Result
     }
 
     interface Storage {
         suspend fun getParticipatingMeetings(
             memberId: UserId,
             amount: Amount,
-            lastMeetingId: MeetingId?
-        ): List<MeetingId>
+            pagingId: PagingId?
+        ): PagingResult<List<MeetingId>>
     }
 }

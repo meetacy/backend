@@ -2,8 +2,8 @@
 
 package app.meetacy.backend.database.notifications
 
-import app.meetacy.backend.types.NotificationId
-import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.notification.NotificationId
+import app.meetacy.backend.types.user.UserId
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction

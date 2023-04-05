@@ -444,6 +444,33 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidAccessIdentity'
+  /meetings/map/list:
+    post:
+      summary: "Meetings on Map"
+      tags:
+        - meetings
+      description: "Get a list of meetings that should be displayed on the map"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        "200":
+          description: "An example of successful returned meetings for map"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMapMeetingsResponse'
+        "400":
+          description: "An example of failed authorization"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidAccessIdentity'
   /meetings/participate:
     post:
       summary: Participate meeting
@@ -719,16 +746,23 @@ components:
       properties:
         accessIdentity:
           type: string
-          enum:
-            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+          example: "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         meetingIdentity:
           type: string
-          enum:
-            - "8:wtzbOPJqX8SVCDQj4UMavNoKJId5UylyL4GRZAkacc2PcGnyu8TCqZCLYvFnG4kb75HOVz6TIeRxXbarsdQZBdrB1rDbHSGD7yCW0EOTbRhxs5qRGncOjG5DmTrAULbWlWMiUkt2RiDRNTkoGJunQgtP63FEZ1MrYJPPdyX1Qn3xpIW6joZZ5p2XahuGGAE13UceQYz6bWO5ZWSJiWjwrA0xOvqf6ad0FHuEXcQaWbJBbBfEA9oGm4KsDHfnkvCT"
+          example: "8:wtzbOPJqX8SVCDQj4UMavNoKJId5UylyL4GRZAkacc2PcGnyu8TCqZCLYvFnG4kb75HOVz6TIeRxXbarsdQZBdrB1rDbHSGD7yCW0EOTbRhxs5qRGncOjG5DmTrAULbWlWMiUkt2RiDRNTkoGJunQgtP63FEZ1MrYJPPdyX1Qn3xpIW6joZZ5p2XahuGGAE13UceQYz6bWO5ZWSJiWjwrA0xOvqf6ad0FHuEXcQaWbJBbBfEA9oGm4KsDHfnkvCT"
       required:
         - "accessIdentity"
         - "meetingIdentity"
       additionalProperties: false
+    TokenRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          example:
+            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+      required:
+        - "properties"
     AccessIdentityRequest:
       type: "object"
       properties:
@@ -849,35 +883,25 @@ components:
       properties:
         "accessIdentity":
           type: string
-          enum:
+          example:
             - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         "title":
           type: string
-          enum:
+          example:
             - "Meet on the Elbe"
         "description":
           type: string
-          enum:
+          example:
             - "Thematic meeting of like-minded people on the Elbe"
         "date":
           type: string
-          enum:
+          example:
             - 20232402T100000+0300
         "location":
-          type: object
-          properties:
-            latitude:
-              type: string
-              enum:
-                - 46.87365231658636
-            longitude:
-              type: string
-              enum:
-                - 8.256473253864916
+          $ref: '#/components/schemas/Location'
       required:
         - "accessIdentity"
         - "title"
-        - "description"
         - "date"
         - "location"
       additionalProperties: false
@@ -972,7 +996,7 @@ components:
         emailVerified:
           type: boolean
           example: false
-    LocationMeetingResponse:
+    Location:
       type: object
       properties:
         latitude:
@@ -984,7 +1008,7 @@ components:
       required:
         - "latitude"
         - "longitude"
-    ResultMeetingResponse:
+    Meeting:
       type: object
       properties:
         identity:
@@ -996,7 +1020,7 @@ components:
           type: string
           example: "20230705T100000+0300"
         location:
-          $ref: '#/components/schemas/LocationMeetingResponse'
+          $ref: '#/components/schemas/Location'
         title:
           type: string
           example: Meet on the Elbe
@@ -1006,6 +1030,10 @@ components:
         participantsCount:
           type: integer
           example: 13
+        previewParticipants:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
         isParticipating:
           type: boolean
           example: true
@@ -1013,11 +1041,13 @@ components:
           type: string
       required:
         - "identity"
+        - "title"
         - "creator"
         - "date"
         - "location"
         - "participantsCount"
         - "isParticipating"
+        - "previewParticipants"
     CreateMeetingResponse:
       type: object
       properties:
@@ -1025,7 +1055,20 @@ components:
           type: boolean
           example: true
         result:
-          $ref: '#/components/schemas/ResultMeetingResponse'
+          $ref: '#/components/schemas/Meeting'
+      required:
+        - "status"
+        - "result"
+    ListMapMeetingsResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Meeting'
     ListMeetingsResponse:
       type: object
       properties:
@@ -1040,7 +1083,7 @@ components:
             data:
               type: array
               items:
-                $ref: '#/components/schemas/ResultMeetingResponse'
+                $ref: '#/components/schemas/Meeting'
           required:
             - "data"
       required:

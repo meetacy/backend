@@ -5,7 +5,20 @@ import app.meetacy.backend.endpoint.files.upload.UploadFileResult
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
-import app.meetacy.backend.types.*
+import app.meetacy.backend.types.access.AccessHash
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateOrTime
+import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.notification.NotificationId
+import app.meetacy.backend.types.paging.PagingId
+import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
@@ -19,6 +32,7 @@ import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
+import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
@@ -27,6 +41,7 @@ import app.meetacy.backend.usecase.users.ViewUserUsecase
 import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
 import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
 import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
+import kotlinx.coroutines.flow.*
 import java.io.InputStream
 
 object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, AuthRepository,
@@ -38,7 +53,8 @@ object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Aut
     DeleteMeetingAvatarUsecase.Storage, DeleteMeetingUsecase.Storage, GetNotificationsUsecase.Storage,
     ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, AddUserAvatarUsecase.Storage,
     DeleteUserAvatarUsecase.Storage, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
-    GetMeetingsViewsUsecase.ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider {
+    GetMeetingsViewsUsecase.ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
+    ListMeetingsMapUsecase.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -192,7 +208,7 @@ object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Aut
     override suspend fun addMeeting(
         accessHash: AccessHash,
         creatorId: UserId,
-        date: Date,
+        date: DateOrTime,
         location: Location,
         title: String?,
         description: String?
@@ -217,12 +233,24 @@ object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Aut
         viewerId: UserId,
         meetingIds: List<MeetingId>
     ): List<Boolean> = meetingIds.map { meetingId ->
-        (viewerId to meetingId) in participants
+        isParticipating(meetingId, viewerId)
+    }
+
+    override suspend fun getFirstParticipants(
+        limit: Amount,
+        meetingIds: List<MeetingId>
+    ): List<List<UserId>> = meetingIds.map { currentMeetingId ->
+        participants.reversed()
+            .filter { (_, _, meetingId) ->
+                meetingId == currentMeetingId
+            }
+            .map { (_, userId, _) -> userId }
+            .take(limit.int)
     }
 
     override suspend fun getParticipantsCount(meetingIds: List<MeetingId>): List<Int> =
         meetingIds.map { meetingId ->
-            participants.count { (_, currentMeetingId) -> meetingId == currentMeetingId }
+            participants.count { (_, _, currentMeetingId) -> meetingId == currentMeetingId }
         }
 
     override suspend fun viewMeeting(viewer: UserId, meeting: FullMeeting): MeetingView {
@@ -288,52 +316,65 @@ object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Aut
     override suspend fun getFriends(
         userId: UserId,
         amount: Amount,
-        lastUserId: UserId?
-    ): List<ListFriendsUsecase.FriendId> = synchronized(this) {
-        friendRelations
+        pagingId: PagingId?
+    ): PagingResult<List<UserId>> = synchronized(this) {
+        val result = friendRelations
             .reversed().asSequence()
             .filter { (paging, user, friend) ->
                 user == userId && friendRelations.any { (_, userId, friendId) ->
                     userId == user && friendId == friend
-                } && paging.long < (lastUserId?.long ?: Long.MAX_VALUE)
+                } && paging.long < (pagingId?.long ?: Long.MAX_VALUE)
             }
             .take(amount.int)
-            .map { (paging, _, friendId) ->
-                ListFriendsUsecase.FriendId(paging, friendId)
-            }
+            .map { (pagingId, _, friendId) -> pagingId to friendId }
             .toList()
+
+        val nextPagingId = if (result.size == amount.int) result.last().first else null
+
+        PagingResult(
+            data = result.map { (_, userId) -> userId },
+            nextPagingId = nextPagingId
+        )
     }
 
-    private val participants: MutableList<Pair<UserId, MeetingId>> = mutableListOf()
+    private val participants: MutableList<Triple<PagingId, UserId, MeetingId>> = mutableListOf()
 
     override suspend fun getParticipatingMeetings(
         memberId: UserId,
         amount: Amount,
-        lastMeetingId: MeetingId?
-    ): List<MeetingId> = synchronized(this) {
-        participants
+        pagingId: PagingId?
+    ): PagingResult<List<MeetingId>> = synchronized(this) {
+        val result = participants
             .reversed().asSequence()
-            .filter { (userId, meetingId) ->
-                (userId == memberId) &&
-                        (meetingId.long < (lastMeetingId?.long ?: Long.MAX_VALUE))
+            .filter { (id, userId) ->
+                (userId == memberId) && (id.long < (pagingId?.long ?: Long.MAX_VALUE))
             }
             .take(amount.int)
-            .map { it.second }
+            .map { (pagingId, _, meetingId) -> pagingId to meetingId }
             .toList()
+
+        val nextPagingId = if (result.size == amount.int) result.last().first else null
+
+        PagingResult(
+            data = result.map { (_, meetingId) -> meetingId },
+            nextPagingId = nextPagingId
+        )
     }
 
     override suspend fun addParticipant(
         participantId: UserId,
         meetingId: MeetingId
     ) = synchronized(this) {
-        participants += participantId to meetingId
+        participants += Triple(PagingId(participants.size.toLong()), participantId, meetingId)
     }
 
     override suspend fun isParticipating(
         meetingId: MeetingId,
         userId: UserId
     ): Boolean = synchronized(this) {
-        (userId to meetingId) in participants
+        participants.any { (_, participantUserId, participantMeetingId) ->
+            participantUserId == userId && participantMeetingId == meetingId
+        }
     }
 
     override suspend fun getList(
@@ -343,4 +384,9 @@ object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Aut
     ): ListMeetingsResult {
         TODO("Not yet implemented")
     }
+
+    override suspend fun getMeetingsHistoryFlow(userId: UserId): Flow<MeetingId> =
+        participants.asFlow()
+            .filter { (_, memberId) -> memberId == userId }
+            .map { (_, _, meetingId) -> meetingId }
 }

@@ -4,9 +4,10 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.Meeting
-import app.meetacy.backend.types.serialization.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.DateSerializable
-import app.meetacy.backend.types.serialization.LocationSerializable
+import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.datetime.DateOrTimeSerializable
+import app.meetacy.backend.types.serialization.datetime.DateSerializable
+import app.meetacy.backend.types.serialization.location.LocationSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -17,7 +18,7 @@ data class CreateParam(
     val accessIdentity: AccessIdentitySerializable,
     val title: String?,
     val description: String?,
-    val date: DateSerializable,
+    val date: DateOrTimeSerializable,
     val location: LocationSerializable
 )
 

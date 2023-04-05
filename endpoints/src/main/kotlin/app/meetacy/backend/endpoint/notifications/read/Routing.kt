@@ -3,10 +3,10 @@ package app.meetacy.backend.endpoint.notifications.read
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.NotificationId
-import app.meetacy.backend.types.serialization.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.NotificationIdSerializable
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.notification.NotificationId
+import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.notification.NotificationIdSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*

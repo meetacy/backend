@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.users.avatar.add
 
-import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.FileIdentity
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.usecase.types.*
 
 class AddUserAvatarUsecase(

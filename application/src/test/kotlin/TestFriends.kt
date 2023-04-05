@@ -15,7 +15,7 @@ class TestFriends {
 
         println("Testing with friendsAmount: $friendsAmount")
 
-        val (myApi, me) = generateTestAccount(
+        val self = generateTestAccount(
             postfix = "at ${System.currentTimeMillis()}"
         )
 
@@ -23,12 +23,12 @@ class TestFriends {
             generateTestAccount(postfix = "Friend at ${System.currentTimeMillis()} #$it")
         }
 
-        for ((friendApi, friend) in friends) {
-            myApi.friends.add(friend.id)
-            friendApi.friends.add(me.id)
+        for (friend in friends) {
+            self.friends.add(friend.id)
+            friend.friends.add(self.id)
         }
 
-        val actualFriends = myApi.friends.flow(chunkSize = 2.amount).toList().flatten()
+        val actualFriends = self.friends.flow(chunkSize = 2.amount).toList().flatten()
 
         assert(actualFriends.size == friendsAmount)
     }
