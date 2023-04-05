@@ -59,7 +59,11 @@ class ViewMeetingsUsecase(
                     participantsCount = participantsCount.next(),
                     previewParticipants = randomParticipants.next(),
                     isParticipating = participation.next(),
-                    avatarIdentity = avatarIdentity
+                    avatarIdentity = avatarIdentity,
+                    visibility = when (visibility) {
+                        FullMeeting.Visibility.Public -> MeetingView.Visibility.Public
+                        FullMeeting.Visibility.Private -> MeetingView.Visibility.Private
+                    }
                 )
             }
         }

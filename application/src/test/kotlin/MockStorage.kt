@@ -53,7 +53,7 @@ object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Aut
     DeleteMeetingAvatarUsecase.Storage, DeleteMeetingUsecase.Storage, GetNotificationsUsecase.Storage,
     ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, AddUserAvatarUsecase.Storage,
     DeleteUserAvatarUsecase.Storage, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
-    GetMeetingsViewsUsecase.ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
+    ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
     ListMeetingsMapUsecase.Storage {
 
     private val users = mutableListOf<User>()
@@ -211,14 +211,15 @@ object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Aut
         date: DateOrTime,
         location: Location,
         title: String?,
-        description: String?
+        description: String?,
+        visibility: FullMeeting.Visibility
     ): FullMeeting = synchronized(this) {
         val meeting = FullMeeting(
             identity = MeetingIdentity(
                 meetingId = MeetingId(meetings.size.toLong()),
                 accessHash = accessHash
             ),
-            creatorId, date, location, title, description
+            creatorId, date, location, title, description, avatarIdentity = null, visibility
         )
         meetings += meeting
         return@synchronized meeting
@@ -389,4 +390,8 @@ object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Aut
         participants.asFlow()
             .filter { (_, memberId) -> memberId == userId }
             .map { (_, _, meetingId) -> meetingId }
+
+    override suspend fun getPublicMeetingsFlow(): Flow<FullMeeting> = meetings
+        .filter { it.visibility == FullMeeting.Visibility.Public }
+        .asFlow()
 }

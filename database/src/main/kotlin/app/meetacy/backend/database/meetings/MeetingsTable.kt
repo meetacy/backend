@@ -13,6 +13,8 @@ import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.user.UserId
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -28,6 +30,7 @@ class MeetingsTable(private val db: Database) : Table() {
     private val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT).nullable()
     private val AVATAR_ID = long("AVATAR_ID").nullable()
     private val AVATAR_HASH = varchar("AVATAR_HASH", length = HASH_LENGTH).nullable()
+    private val VISIBILITY = enumeration("VISIBILITY", klass = DatabaseMeeting.Visibility::class)
 
     override val primaryKey = PrimaryKey(MEETING_ID)
 
@@ -43,7 +46,8 @@ class MeetingsTable(private val db: Database) : Table() {
         date: DateOrTime,
         location: Location,
         title: String?,
-        description: String?
+        description: String?,
+        visibility: DatabaseMeeting.Visibility
     ): MeetingId =
         newSuspendedTransaction(db = db) {
             val meetingId = insert { statement ->
@@ -54,6 +58,7 @@ class MeetingsTable(private val db: Database) : Table() {
                 statement[LONGITUDE] = location.longitude
                 statement[TITLE] = title
                 statement[DESCRIPTION] = description
+                statement[VISIBILITY] = visibility
             }[MEETING_ID]
             return@newSuspendedTransaction MeetingId(meetingId)
         }
@@ -82,26 +87,6 @@ class MeetingsTable(private val db: Database) : Table() {
             return@newSuspendedTransaction result.filter { it.creatorId == creatorId }.map { it.id }
         }
 
-    private fun ResultRow.toDatabaseMeeting(): DatabaseMeeting {
-        val avatarId = this[AVATAR_ID]
-        val avatarHash = this[AVATAR_HASH]
-        val avatarIdentity = if (avatarId != null && avatarHash != null) {
-            FileIdentity(FileId(avatarId), AccessHash(avatarHash))
-        } else null
-        return DatabaseMeeting(
-            identity = MeetingIdentity(
-                meetingId = MeetingId(this[MEETING_ID]),
-                accessHash = AccessHash(this[ACCESS_HASH])
-            ),
-            creatorId = UserId(this[CREATOR_ID]),
-            date = DateOrTime.parse(this[DATE]),
-            location = Location(this[LATITUDE], this[LONGITUDE]),
-            description = this[DESCRIPTION],
-            title = this[TITLE],
-            avatarIdentity = avatarIdentity
-        )
-    }
-
     suspend fun addAvatar(meetingId: MeetingId, avatarIdentity: FileIdentity) =
         newSuspendedTransaction(db = db) {
             update({ MEETING_ID eq meetingId.long }) {statement ->
@@ -122,4 +107,36 @@ class MeetingsTable(private val db: Database) : Table() {
         newSuspendedTransaction(db = db) {
             deleteWhere { ((MEETING_ID eq meetingId.long)) }
         }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getPublicMeetingsFlow(): Flow<DatabaseMeeting> = channelFlow {
+        newSuspendedTransaction(db = db) {
+            select { VISIBILITY eq DatabaseMeeting.Visibility.Public }
+                .asFlow()
+                .map { it.toDatabaseMeeting() }
+                .collect(::send)
+        }
+    }
+
+    private fun ResultRow.toDatabaseMeeting(): DatabaseMeeting {
+        val avatarId = this[AVATAR_ID]
+        val avatarHash = this[AVATAR_HASH]
+        val avatarIdentity = if (avatarId != null && avatarHash != null) {
+            FileIdentity(FileId(avatarId), AccessHash(avatarHash))
+        } else null
+
+        return DatabaseMeeting(
+            identity = MeetingIdentity(
+                meetingId = MeetingId(this[MEETING_ID]),
+                accessHash = AccessHash(this[ACCESS_HASH])
+            ),
+            creatorId = UserId(this[CREATOR_ID]),
+            date = DateOrTime.parse(this[DATE]),
+            location = Location(this[LATITUDE], this[LONGITUDE]),
+            description = this[DESCRIPTION],
+            title = this[TITLE],
+            avatarIdentity = avatarIdentity,
+            visibility = this[VISIBILITY]
+        )
+    }
 }

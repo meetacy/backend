@@ -19,7 +19,8 @@ data class CreateParam(
     val title: String?,
     val description: String?,
     val date: DateOrTimeSerializable,
-    val location: LocationSerializable
+    val location: LocationSerializable,
+    val visibility: Meeting.Visibility
 )
 
 sealed interface CreateMeetingResult {
@@ -36,10 +37,7 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
     val params = call.receive<CreateParam>()
 
     when (val result = createMeetingRepository.createMeeting(params)) {
-        is CreateMeetingResult.Success -> call.respondSuccess(
-            result.meeting
-        )
-
+        is CreateMeetingResult.Success -> call.respondSuccess(result.meeting)
         CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
         CreateMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidTitleOrDescription)
     }

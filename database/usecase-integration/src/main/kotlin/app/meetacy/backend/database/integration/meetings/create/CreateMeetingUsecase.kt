@@ -2,6 +2,7 @@ package app.meetacy.backend.database.integration.meetings.create
 
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseViewMeetingsUsecaseStorage
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
+import app.meetacy.backend.database.integration.types.mapToDatabase
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.meetings.ParticipantsTable
 import app.meetacy.backend.types.access.AccessHash
@@ -31,9 +32,18 @@ class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsec
         date: DateOrTime,
         location: Location,
         title: String?,
-        description: String?
+        description: String?,
+        visibility: FullMeeting.Visibility
     ): FullMeeting {
-        val meetingId = meetingsTable.addMeeting(accessHash, creatorId, date, location, title, description)
+        val meetingId = meetingsTable.addMeeting(
+            accessHash = accessHash,
+            creatorId = creatorId,
+            date = date,
+            location = location,
+            title = title,
+            description = description,
+            visibility = visibility.mapToDatabase()
+        )
         return FullMeeting(
             identity = MeetingIdentity(meetingId, accessHash),
             creatorId = creatorId,
@@ -41,7 +51,8 @@ class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsec
             location = location,
             title = title,
             description = description,
-            avatarIdentity = null
+            avatarIdentity = null,
+            visibility = visibility
         )
     }
 }

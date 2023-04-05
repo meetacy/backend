@@ -3,6 +3,7 @@ package app.meetacy.backend.types.datetime
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.ZoneOffset
 import java.util.*
 import java.time.Instant as JavaInstant
 import java.time.LocalDate as JavaLocalDate
@@ -36,3 +37,6 @@ value class Date @UnsafeConstructor constructor(val iso8601: String) {
 val JavaDate.meetacyDate: Date get() = Date(iso8601DateFormat.format(this))
 
 val JavaInstant.meetacyDate: Date get() = JavaDate(toEpochMilli()).meetacyDate
+
+@OptIn(UnsafeConstructor::class)
+val JavaLocalDate.meetacyDate: Date get() = Date("$this")

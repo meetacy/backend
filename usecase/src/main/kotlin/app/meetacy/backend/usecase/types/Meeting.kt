@@ -15,9 +15,14 @@ data class FullMeeting(
     val location: Location,
     val title: String?,
     val description: String?,
-    val avatarIdentity: FileIdentity? = null
+    val avatarIdentity: FileIdentity? = null,
+    val visibility: Visibility
 ) {
     val id: MeetingId = identity.meetingId
+
+    enum class Visibility {
+        Public, Private
+    }
 }
 
 data class MeetingView(
@@ -31,6 +36,11 @@ data class MeetingView(
     val previewParticipants: List<UserView>,
     val isParticipating: Boolean,
     val avatarIdentity: FileIdentity? = null,
+    val visibility: Visibility
 ) {
     val id: MeetingId = identity.meetingId
+
+    enum class Visibility {
+        Public, Private
+    }
 }

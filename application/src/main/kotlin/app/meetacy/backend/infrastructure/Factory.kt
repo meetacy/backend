@@ -13,6 +13,7 @@ import app.meetacy.backend.database.integration.meetings.avatar.delete.DatabaseD
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
 import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMeetingStorage
+import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
 import app.meetacy.backend.database.integration.meetings.history.list.DatabaseListMeetingsHistoryListStorage
 import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
@@ -92,6 +93,7 @@ fun startEndpoints(
     val filesRepository = DatabaseFilesRepository(db)
 
     val getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
+    val viewMeetingsRepository = DatabaseGetMeetingsViewsViewMeetingsRepository(db)
 
     startEndpoints(
         port = port,
@@ -181,7 +183,8 @@ fun startEndpoints(
                     usecase = ListMeetingsMapUsecase(
                         authRepository = authRepository,
                         storage = DatabaseListMeetingsMapListStorage(db),
-                        getMeetingsViewsRepository = getMeetingsViewsRepository
+                        getMeetingsViewsRepository = getMeetingsViewsRepository,
+                        viewMeetingsRepository = viewMeetingsRepository
                     )
                 )
             ),

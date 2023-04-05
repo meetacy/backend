@@ -29,6 +29,7 @@ class CreateMeetingUsecase(
         description: String?,
         date: DateOrTime,
         location: Location,
+        visibility: FullMeeting.Visibility
     ): Result {
         if (title != null) if (!utf8Checker.checkString(title)) return Result.InvalidUtf8String
         if (description != null) if (!utf8Checker.checkString(description)) return Result.InvalidUtf8String
@@ -37,7 +38,7 @@ class CreateMeetingUsecase(
 
         val accessHash = AccessHash(hashGenerator.generate())
 
-        val fullMeeting = storage.addMeeting(accessHash, creatorId, date, location, title, description)
+        val fullMeeting = storage.addMeeting(accessHash, creatorId, date, location, title, description, visibility)
         storage.addParticipant(creatorId, fullMeeting.id)
         val meetingView = viewMeetingRepository.viewMeeting(creatorId, fullMeeting)
 
@@ -51,7 +52,8 @@ class CreateMeetingUsecase(
             date: DateOrTime,
             location: Location,
             title: String?,
-            description: String?
+            description: String?,
+            visibility: FullMeeting.Visibility
         ): FullMeeting
 
         suspend fun addParticipant(participantId: UserId, meetingId: MeetingId)

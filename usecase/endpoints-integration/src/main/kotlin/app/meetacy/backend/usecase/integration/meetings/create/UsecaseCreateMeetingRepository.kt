@@ -5,6 +5,7 @@ import app.meetacy.backend.endpoint.meetings.create.CreateMeetingResult
 import app.meetacy.backend.endpoint.meetings.create.CreateParam
 import app.meetacy.backend.types.datetime.DateOrTime
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.usecase.integration.types.mapToFullMeeting
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 
 class UsecaseCreateMeetingRepository(
@@ -19,7 +20,8 @@ class UsecaseCreateMeetingRepository(
                 title = title,
                 description = description,
                 date = date.type(),
-                location = location.type()
+                location = location.type(),
+                visibility = visibility.mapToFullMeeting()
             )
         ) {
             CreateMeetingUsecase.Result.TokenInvalid ->

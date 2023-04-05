@@ -11,6 +11,7 @@ import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.endpoint.users.avatar.UserAvatarDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
+import app.meetacy.backend.main
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
@@ -53,14 +54,17 @@ import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
+import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.logging.*
+import io.ktor.server.cio.*
+import org.jetbrains.exposed.sql.transactions.transaction
 
 val testApi = MeetacyApi(
     baseUrl = "http://localhost:8080",
     httpClient = HttpClient {
         Logging {
-            level = LogLevel.NONE
-//            level = LogLevel.ALL
+//            level = LogLevel.NONE
+            level = LogLevel.ALL
         }
     }
 )
@@ -148,7 +152,8 @@ fun startTestEndpoints(
                     usecase = ListMeetingsMapUsecase(
                         authRepository = MockStorage,
                         storage = MockStorage,
-                        getMeetingsViewsRepository = MockStorage
+                        getMeetingsViewsRepository = MockStorage,
+                        viewMeetingsRepository = MockStorage
                     )
                 )
             ),

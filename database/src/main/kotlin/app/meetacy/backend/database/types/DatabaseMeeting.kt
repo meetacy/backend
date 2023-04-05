@@ -14,7 +14,12 @@ class DatabaseMeeting(
     val location: Location,
     val title: String?,
     val description: String?,
-    val avatarIdentity: FileIdentity? = null
+    val avatarIdentity: FileIdentity?,
+    val visibility: Visibility
 ) {
     val id: MeetingId = identity.meetingId
+
+    enum class Visibility {
+        Public, Private
+    }
 }

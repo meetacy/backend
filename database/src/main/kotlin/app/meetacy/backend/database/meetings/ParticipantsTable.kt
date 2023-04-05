@@ -7,6 +7,7 @@ import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -79,22 +80,21 @@ class ParticipantsTable(private val db: Database) : Table() {
         )
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun getJoinHistoryFlow(
         userId: UserId,
         pagingId: PagingId?,
-    ): Flow<PagingResult<MeetingId>> = flow {
+    ): Flow<PagingResult<MeetingId>> = channelFlow {
         newSuspendedTransaction(db = db) {
-            val iterator = select { (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
+            select { (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
                 .orderBy(ID, SortOrder.DESC)
                 .asFlow()
                 .map { row ->
                     PagingResult(
-                        data = MeetingId(row[ID]),
+                        data = MeetingId(row[MEETING_ID]),
                         nextPagingId = PagingId(row[ID])
                     )
-                }
-
-            emitAll(iterator)
+                }.collect(::send)
         }
     }
 }
