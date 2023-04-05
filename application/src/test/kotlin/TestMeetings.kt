@@ -137,20 +137,17 @@ class TestMeetings {
         require(second.meetings.map.list(secondLocation).isEmpty())
         require(third.meetings.map.list(thirdLocation).isEmpty())
 
-        val secondMeeting = second.meetings.create(
+        second.meetings.create(
             title = "Тусовка на системе типов Java",
             date = Date.today(),
-            location = secondLocation
+            location = secondLocation,
+            visibility = Meeting.Visibility.Public
         )
 
         require(second.meetings.map.list(secondLocation).size == 1)
-        require(third.meetings.map.list(thirdLocation).isEmpty())
+        require(third.meetings.map.list(thirdLocation).size == 1)
 
-        secondMeeting.base.participate(third.token)
-
-        require(second.meetings.map.list(secondLocation).size == 1)
-        require(third.meetings.map.list(secondLocation).size == 1)
-
+        // Check that nothing happened to the first
         require(first.meetings.map.list(firstLocation).size == 1)
     }
 }
