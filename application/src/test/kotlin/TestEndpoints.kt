@@ -1,7 +1,3 @@
-import app.meetacy.api.AuthorizedMeetacyApi
-import app.meetacy.api.MeetacyApi
-import app.meetacy.api.users.AuthorizedSelfUserRepository
-import app.meetacy.api.users.SelfUserRepository
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
@@ -54,7 +50,8 @@ import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
 import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
-import app.meetacy.types.user.SelfUser
+import app.meetacy.sdk.MeetacyApi
+import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
 
