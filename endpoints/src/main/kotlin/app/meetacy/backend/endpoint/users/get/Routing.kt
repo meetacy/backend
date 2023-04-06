@@ -4,10 +4,10 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.User
-import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.UserIdentity
-import app.meetacy.backend.types.serialization.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.UserIdentitySerializable
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.user.UserIdentity
+import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.user.UserIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*

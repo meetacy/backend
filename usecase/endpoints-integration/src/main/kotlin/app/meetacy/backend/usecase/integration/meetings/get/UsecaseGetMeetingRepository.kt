@@ -2,8 +2,8 @@ package app.meetacy.backend.usecase.integration.meetings.get
 
 import app.meetacy.backend.endpoint.meetings.get.GetMeetingRepository
 import app.meetacy.backend.endpoint.meetings.get.GetMeetingResult
-import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.MeetingIdentity
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
 

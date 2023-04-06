@@ -1,11 +1,10 @@
 package app.meetacy.backend.usecase.meetings.get
 
-import app.meetacy.backend.types.MeetingId
-import app.meetacy.backend.types.UserId
-import app.meetacy.backend.usecase.types.FullMeeting
-import app.meetacy.backend.usecase.types.GetUsersViewsRepository
-import app.meetacy.backend.usecase.types.MeetingView
-import app.meetacy.backend.usecase.types.getUsersViews
+import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.amount.amount
+import app.meetacy.backend.usecase.types.*
 
 class ViewMeetingsUsecase(
     private val getUsersViewsRepository: GetUsersViewsRepository,
@@ -13,7 +12,8 @@ class ViewMeetingsUsecase(
 ) {
     suspend fun viewMeetings(
         viewerId: UserId,
-        meetings: List<FullMeeting>
+        meetings: List<FullMeeting>,
+        randomParticipantsAmount: Amount = 5.amount
     ): List<MeetingView> {
         val creatorIds: List<UserId> = meetings
             .map { meeting -> meeting.creatorId }
@@ -25,13 +25,27 @@ class ViewMeetingsUsecase(
         val meetingIds = meetings
             .map { meeting -> meeting.id }
 
-        val participants = storage
+        val participantsCount = storage
             .getParticipantsCount(meetingIds)
             .iterator()
 
         val participation = storage
-            .getParticipations(viewerId, meetingIds)
+            .getIsParticipates(viewerId, meetingIds)
             .iterator()
+
+        val firstParticipants = storage
+            .getFirstParticipants(
+                limit = randomParticipantsAmount,
+                meetingIds = meetingIds
+            )
+
+        val randomParticipantsFlat = getUsersViewsRepository
+            .getUsersViews(viewerId, firstParticipants.flatten())
+            .iterator()
+
+        val randomParticipants = firstParticipants.map { participantsIds ->
+            participantsIds.map { randomParticipantsFlat.next() }
+        }.iterator()
 
         return meetings.map { meeting ->
             return@map with (meeting) {
@@ -42,9 +56,14 @@ class ViewMeetingsUsecase(
                     location = location,
                     title = title,
                     description = description,
-                    participantsCount = participants.next(),
+                    participantsCount = participantsCount.next(),
+                    previewParticipants = randomParticipants.next(),
                     isParticipating = participation.next(),
-                    avatarIdentity = avatarIdentity
+                    avatarIdentity = avatarIdentity,
+                    visibility = when (visibility) {
+                        FullMeeting.Visibility.Public -> MeetingView.Visibility.Public
+                        FullMeeting.Visibility.Private -> MeetingView.Visibility.Private
+                    }
                 )
             }
         }
@@ -52,6 +71,7 @@ class ViewMeetingsUsecase(
 
     interface Storage {
         suspend fun getParticipantsCount(meetingIds: List<MeetingId>): List<Int>
-        suspend fun getParticipations(viewerId: UserId, meetingIds: List<MeetingId>): List<Boolean>
+        suspend fun getIsParticipates(viewerId: UserId, meetingIds: List<MeetingId>): List<Boolean>
+        suspend fun getFirstParticipants(limit: Amount, meetingIds: List<MeetingId>): List<List<UserId>>
     }
 }

@@ -13,7 +13,9 @@ import app.meetacy.backend.database.integration.meetings.avatar.delete.DatabaseD
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
 import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMeetingStorage
-import app.meetacy.backend.database.integration.meetings.list.DatabaseGetMeetingsListStorage
+import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
+import app.meetacy.backend.database.integration.meetings.history.list.DatabaseListMeetingsHistoryListStorage
+import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
 import app.meetacy.backend.database.integration.notifications.DatabaseGetNotificationStorage
 import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
@@ -30,6 +32,8 @@ import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.avatar.MeetingAvatarDependencies
+import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
+import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.users.UsersDependencies
@@ -54,7 +58,8 @@ import app.meetacy.backend.usecase.integration.meetings.avatar.delete.UsecaseDel
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.list.UsecaseMeetingsListRepository
+import app.meetacy.backend.usecase.integration.meetings.history.list.UsecaseListMeetingsHistoryRepository
+import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
@@ -66,7 +71,8 @@ import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUse
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
-import app.meetacy.backend.usecase.meetings.list.GetMeetingsListUsecase
+import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
+import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
@@ -85,6 +91,9 @@ fun startEndpoints(
 ) {
     val authRepository = DatabaseAuthRepository(db)
     val filesRepository = DatabaseFilesRepository(db)
+
+    val getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
+    val viewMeetingsRepository = DatabaseGetMeetingsViewsViewMeetingsRepository(db)
 
     startEndpoints(
         port = port,
@@ -160,11 +169,23 @@ fun startEndpoints(
             )
         ),
         meetingsDependencies = MeetingsDependencies(
-            meetingsListRepository = UsecaseMeetingsListRepository(
-                usecase = GetMeetingsListUsecase(
-                    authRepository = authRepository,
-                    storage = DatabaseGetMeetingsListStorage(db),
-                    getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
+            meetingsHistoryDependencies = MeetingsHistoryDependencies(
+                listMeetingsHistoryRepository = UsecaseListMeetingsHistoryRepository(
+                    usecase = ListMeetingsHistoryUsecase(
+                        authRepository = authRepository,
+                        storage = DatabaseListMeetingsHistoryListStorage(db),
+                        getMeetingsViewsRepository = getMeetingsViewsRepository
+                    )
+                )
+            ),
+            meetingsMapDependencies = MeetingsMapDependencies(
+                listMeetingsMapRepository = UsecaseListMeetingsMapRepository(
+                    usecase = ListMeetingsMapUsecase(
+                        authRepository = authRepository,
+                        storage = DatabaseListMeetingsMapListStorage(db),
+                        getMeetingsViewsRepository = getMeetingsViewsRepository,
+                        viewMeetingsRepository = viewMeetingsRepository
+                    )
                 )
             ),
             createMeetingRepository = UsecaseCreateMeetingRepository(
@@ -179,14 +200,14 @@ fun startEndpoints(
             getMeetingRepository = UsecaseGetMeetingRepository(
                 usecase = GetMeetingUsecase(
                     authRepository = authRepository,
-                    getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
+                    getMeetingsViewsRepository = getMeetingsViewsRepository
                 )
             ),
             participateMeetingRepository = UsecaseParticipateMeetingRepository(
                 usecase = ParticipateMeetingUsecase(
                     authRepository = authRepository,
                     storage = DatabaseParticipateMeetingStorage(db),
-                    getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
+                    getMeetingsViewsRepository = getMeetingsViewsRepository
                 )
             ),
             addMeetingAvatarDependencies = MeetingAvatarDependencies(
@@ -195,21 +216,21 @@ fun startEndpoints(
                         authRepository = authRepository,
                         filesRepository = filesRepository,
                         storage = DatabaseAddMeetingAvatarStorage(db),
-                        getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
+                        getMeetingsViewsRepository = getMeetingsViewsRepository
                     )
                 ),
                 deleteMeetingAvatarRepository = UsecaseDeleteMeetingAvatarRepository(
                     usecase = DeleteMeetingAvatarUsecase(
                         authRepository = authRepository,
                         storage = DatabaseDeleteMeetingAvatarStorage(db),
-                        getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
+                        getMeetingsViewsRepository = getMeetingsViewsRepository
                     )
                 )
             ),
             deleteMeetingRepository = UsecaseDeleteMeetingRepository(
                 usecase = DeleteMeetingUsecase(
                     authRepository = authRepository,
-                    getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db),
+                    getMeetingsViewsRepository = getMeetingsViewsRepository,
                     storage = DatabaseDeleteMeetingStorage(db)
                 )
             )
@@ -219,7 +240,7 @@ fun startEndpoints(
                 usecase = GetNotificationsUsecase(
                     authRepository = authRepository,
                     usersRepository = DatabaseGetUsersViewsRepository(db),
-                    meetingsRepository = DatabaseGetMeetingsViewsRepository(db),
+                    meetingsRepository = getMeetingsViewsRepository,
                     storage = DatabaseGetNotificationStorage(db)
                 )
             ),

@@ -3,8 +3,8 @@ package app.meetacy.backend.endpoint.auth.email.link
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.serialization.AccessIdentitySerializable
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*

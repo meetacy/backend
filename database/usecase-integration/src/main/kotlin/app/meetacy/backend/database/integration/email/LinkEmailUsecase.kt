@@ -4,8 +4,7 @@ import app.meetacy.backend.database.email.ConfirmationTable
 import app.meetacy.backend.database.email.DatabaseEmailSender
 import app.meetacy.backend.database.email.DatabaseEmailText
 import app.meetacy.backend.database.users.UsersTable
-import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import org.jetbrains.exposed.sql.Database
 

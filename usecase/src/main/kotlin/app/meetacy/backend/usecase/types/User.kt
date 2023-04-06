@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.types
 
-import app.meetacy.backend.types.FileIdentity
-import app.meetacy.backend.types.UserIdentity
+import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.user.UserIdentity
 
 
 data class FullUser(

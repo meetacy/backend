@@ -31,5 +31,6 @@ include(
     "database:usecase-integration",
     "database:endpoints-integration",
     "utf8-checker",
-    "utf8-checker:usecase-integration"
+    "utf8-checker:usecase-integration",
+    "stdlib-extensions"
 )

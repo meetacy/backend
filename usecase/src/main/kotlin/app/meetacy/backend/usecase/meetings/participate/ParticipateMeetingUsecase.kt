@@ -1,9 +1,9 @@
 package app.meetacy.backend.usecase.meetings.participate
 
-import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.MeetingId
-import app.meetacy.backend.types.MeetingIdentity
-import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
 import app.meetacy.backend.usecase.types.authorizeWithUserId
@@ -29,7 +29,7 @@ class ParticipateMeetingUsecase(
             return Result.MeetingNotFound
 
         if(!storage.isParticipating(meetingIdentity.meetingId, userId))
-            storage.addParticipant(meetingIdentity.meetingId, userId) else return Result.MeetingAlreadyParticipate
+            storage.addParticipant(userId, meetingIdentity.meetingId) else return Result.MeetingAlreadyParticipate
 
         return Result.Success
     }
@@ -43,8 +43,8 @@ class ParticipateMeetingUsecase(
 
     interface Storage {
         suspend fun addParticipant(
-            meetingId: MeetingId,
-            userId: UserId
+            participantId: UserId,
+            meetingId: MeetingId
         )
 
         suspend fun isParticipating(

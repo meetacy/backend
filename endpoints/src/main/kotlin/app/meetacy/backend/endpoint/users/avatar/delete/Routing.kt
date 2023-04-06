@@ -3,7 +3,7 @@ package app.meetacy.backend.endpoint.users.avatar.delete
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.serialization.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*

@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.users.get
 
-import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.UserIdentity
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.usecase.types.*
 
 class GetUserSafeUsecase(

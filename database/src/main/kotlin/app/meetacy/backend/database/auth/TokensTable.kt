@@ -3,7 +3,7 @@
 package app.meetacy.backend.database.auth
 
 import app.meetacy.backend.types.HASH_LENGTH
-import app.meetacy.backend.types.AccessIdentity
+import app.meetacy.backend.types.access.AccessIdentity
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction

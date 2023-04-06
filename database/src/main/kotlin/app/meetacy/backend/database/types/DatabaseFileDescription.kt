@@ -1,8 +1,8 @@
 package app.meetacy.backend.database.types
 
-import app.meetacy.backend.types.FileIdentity
-import app.meetacy.backend.types.FileSize
-import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.file.FileSize
+import app.meetacy.backend.types.user.UserId
 
 class DatabaseFileDescription(
     val userId: UserId,

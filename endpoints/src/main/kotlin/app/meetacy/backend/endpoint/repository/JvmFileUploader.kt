@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint.repository
 
-import app.meetacy.backend.types.FileSize
+import app.meetacy.backend.types.file.FileSize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*

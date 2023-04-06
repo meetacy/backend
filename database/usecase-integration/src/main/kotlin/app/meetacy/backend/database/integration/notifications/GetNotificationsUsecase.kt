@@ -4,8 +4,8 @@ import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.notifications.LastReadNotificationsTable
 import app.meetacy.backend.database.notifications.NotificationsTable
 import app.meetacy.backend.database.types.DatabaseNotification
-import app.meetacy.backend.types.NotificationId
-import app.meetacy.backend.types.UserId
+import app.meetacy.backend.types.notification.NotificationId
+import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import org.jetbrains.exposed.sql.Database
 

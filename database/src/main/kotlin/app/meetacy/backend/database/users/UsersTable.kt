@@ -4,6 +4,12 @@ package app.meetacy.backend.database.users
 
 import app.meetacy.backend.database.types.*
 import app.meetacy.backend.types.*
+import app.meetacy.backend.types.access.AccessHash
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.user.UserIdentity
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction

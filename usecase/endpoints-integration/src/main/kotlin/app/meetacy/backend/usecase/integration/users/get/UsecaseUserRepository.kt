@@ -2,8 +2,8 @@ package app.meetacy.backend.usecase.integration.users.get
 
 import app.meetacy.backend.endpoint.users.get.GetUserResult
 import app.meetacy.backend.endpoint.users.get.UserRepository
-import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.UserIdentity
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 

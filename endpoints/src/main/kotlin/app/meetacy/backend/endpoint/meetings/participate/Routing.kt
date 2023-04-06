@@ -4,10 +4,10 @@ package app.meetacy.backend.endpoint.meetings.participate
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.AccessIdentity
-import app.meetacy.backend.types.MeetingIdentity
-import app.meetacy.backend.types.serialization.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.MeetingIdentitySerializable
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.meeting.MeetingIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
