@@ -13,10 +13,10 @@ class UsecaseListMeetingsMapRepository(
     private val usecase: ListMeetingsMapUsecase
 ) : ListMeetingsMapRepository {
     override suspend fun list(
-        accessIdentity: AccessIdentity,
+        token: AccessIdentity,
         location: LocationSerializable
     ): ListMeetingsResult =
-        when (val result = usecase.getMeetingsList(accessIdentity, location.type())) {
+        when (val result = usecase.getMeetingsList(token, location.type())) {
             is Result.InvalidAccessIdentity -> ListMeetingsResult.InvalidIdentity
             is Result.Success -> ListMeetingsResult.Success(
                 meetings = result.meetings.map(MeetingView::mapToEndpoint)
