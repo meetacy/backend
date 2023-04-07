@@ -5,8 +5,8 @@ package app.meetacy.backend.database.meetings
 import app.meetacy.backend.database.types.DatabaseMeeting
 import app.meetacy.backend.types.*
 import app.meetacy.backend.types.access.AccessHash
+import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.datetime.DateOrTime
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
@@ -43,7 +43,7 @@ class MeetingsTable(private val db: Database) : Table() {
     suspend fun addMeeting(
         accessHash: AccessHash,
         creatorId: UserId,
-        date: DateOrTime,
+        date: Date,
         location: Location,
         title: String?,
         description: String?,
@@ -118,6 +118,7 @@ class MeetingsTable(private val db: Database) : Table() {
         }
     }
 
+    @OptIn(UnsafeConstructor::class)
     private fun ResultRow.toDatabaseMeeting(): DatabaseMeeting {
         val avatarId = this[AVATAR_ID]
         val avatarHash = this[AVATAR_HASH]
@@ -131,7 +132,7 @@ class MeetingsTable(private val db: Database) : Table() {
                 accessHash = AccessHash(this[ACCESS_HASH])
             ),
             creatorId = UserId(this[CREATOR_ID]),
-            date = DateOrTime.parse(this[DATE]),
+            date = Date(this[DATE]),
             location = Location(this[LATITUDE], this[LONGITUDE]),
             description = this[DESCRIPTION],
             title = this[TITLE],

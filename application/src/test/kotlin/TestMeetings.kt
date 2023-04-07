@@ -1,6 +1,7 @@
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.datetime.DateOrTime
+import app.meetacy.sdk.types.datetime.meetacyDate
 import app.meetacy.sdk.types.datetime.meetacyDateTime
 import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.meeting.Meeting
@@ -25,7 +26,7 @@ class TestMeetings {
         val meetings = List(meetingsAmount) { i ->
             testApi.meetings.create(
                 title = "Test Meeting #${i + 1}",
-                date = DateOrTime.Date.today(),
+                date = Date.today(),
                 location = Location.NullIsland
             )
         }
@@ -81,7 +82,7 @@ class TestMeetings {
 
         self.meetings.create(
             title = "Test Meeting #1",
-            date = Instant.now().minus(Duration.ofDays(2)).meetacyDateTime,
+            date = Instant.now().minus(Duration.ofDays(2)).meetacyDate,
             location = Location.NullIsland
         )
 
@@ -90,13 +91,13 @@ class TestMeetings {
 
         self.meetings.create(
             title = "Test Meeting #2",
-            date = DateOrTime.DateTime.now(),
+            date = Date.today(),
             location = Location.NullIsland
         )
 
         self.meetings.create(
             title = "Test Meeting #3",
-            date = Instant.now().plus(Duration.ofDays(1)).meetacyDateTime,
+            date = Instant.now().plus(Duration.ofDays(1)).meetacyDate,
             location = Location.NullIsland
         )
 
@@ -104,7 +105,7 @@ class TestMeetings {
 
         val meeting = secondAccount.meetings.create(
             title = "Test Meeting #4",
-            date = DateOrTime.Date.today(),
+            date = Date.today(),
             location = Location.NullIsland
         )
         meeting.base.participate(self.token)
