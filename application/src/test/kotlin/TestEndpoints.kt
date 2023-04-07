@@ -53,7 +53,9 @@ import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
+import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.logging.*
+import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -65,6 +67,8 @@ val testApi = MeetacyApi(
 //            level = LogLevel.NONE
             level = LogLevel.ALL
         }
+        expectSuccess = true
+        developmentMode = true
     }
 )
 
@@ -85,6 +89,8 @@ fun runTestServer(
     wait: Boolean = false,
     block: suspend TestScope.() -> Unit
 ) = runTest {
+    val mockStorage = MockStorage()
+
     val server = startEndpoints(
         port = port,
         wait = wait,
@@ -92,9 +98,9 @@ fun runTestServer(
             emailDependencies = EmailDependencies(
                 linkEmailRepository = UsecaseLinkEmailRepository(
                     usecase = LinkEmailUsecase(
-                        storage = MockStorage,
+                        storage = mockStorage,
                         hashGenerator = DefaultHashGenerator,
-                        authRepository = MockStorage,
+                        authRepository = mockStorage,
                         mailer = object : LinkEmailUsecase.Mailer {
                             override fun sendEmailOccupiedMessage(email: String) {}
                             override fun sendConfirmationMessage(email: String, confirmationHash: String) {}
@@ -103,13 +109,13 @@ fun runTestServer(
                 ),
                 confirmEmailRepository = UsecaseConfirmEmailRepository(
                     usecase = ConfirmEmailUsecase(
-                        storage = MockStorage
+                        storage = mockStorage
                     )
                 )
             ),
             tokenGenerateRepository = UsecaseTokenGenerateRepository(
                 usecase = GenerateTokenUsecase(
-                    storage = MockStorage,
+                    storage = mockStorage,
                     tokenGenerator = DefaultHashGenerator,
                     utf8Checker = DefaultUtf8Checker
                 )
@@ -118,23 +124,23 @@ fun runTestServer(
         friendsDependencies = FriendsDependencies(
             addFriendRepository = UsecaseAddFriendRepository(
                 usecase = AddFriendUsecase(
-                    authRepository = MockStorage,
-                    getUsersViewsRepository = MockStorage,
-                    storage = MockStorage
+                    authRepository = mockStorage,
+                    getUsersViewsRepository = mockStorage,
+                    storage = mockStorage
                 )
             ),
             listFriendsRepository = UsecaseListFriendsRepository(
                 usecase = ListFriendsUsecase(
-                    authRepository = MockStorage,
-                    storage = MockStorage,
-                    getUsersViewsRepository = MockStorage
+                    authRepository = mockStorage,
+                    storage = mockStorage,
+                    getUsersViewsRepository = mockStorage
                 )
             ),
             deleteFriendRepository = UsecaseDeleteFriendRepository(
                 usecase = DeleteFriendUsecase(
-                    authRepository = MockStorage,
-                    storage = MockStorage,
-                    getUsersViewsRepository = MockStorage
+                    authRepository = mockStorage,
+                    storage = mockStorage,
+                    getUsersViewsRepository = mockStorage
                 )
             )
         ),
@@ -142,108 +148,108 @@ fun runTestServer(
             meetingsHistoryDependencies = MeetingsHistoryDependencies(
                 listMeetingsHistoryRepository = UsecaseListMeetingsHistoryRepository(
                     usecase = ListMeetingsHistoryUsecase(
-                        authRepository = MockStorage,
-                        storage = MockStorage,
-                        getMeetingsViewsRepository = MockStorage
+                        authRepository = mockStorage,
+                        storage = mockStorage,
+                        getMeetingsViewsRepository = mockStorage
                     )
                 )
             ),
             meetingsMapDependencies = MeetingsMapDependencies(
                 listMeetingsMapRepository = UsecaseListMeetingsMapRepository(
                     usecase = ListMeetingsMapUsecase(
-                        authRepository = MockStorage,
-                        storage = MockStorage,
-                        getMeetingsViewsRepository = MockStorage,
-                        viewMeetingsRepository = MockStorage
+                        authRepository = mockStorage,
+                        storage = mockStorage,
+                        getMeetingsViewsRepository = mockStorage,
+                        viewMeetingsRepository = mockStorage
                     )
                 )
             ),
             getMeetingRepository = UsecaseGetMeetingRepository(
                 usecase = GetMeetingUsecase(
-                    authRepository = MockStorage,
-                    getMeetingsViewsRepository = MockStorage
+                    authRepository = mockStorage,
+                    getMeetingsViewsRepository = mockStorage
                 )
             ),
             createMeetingRepository = UsecaseCreateMeetingRepository(
                 usecase = CreateMeetingUsecase(
                     hashGenerator = DefaultHashGenerator,
-                    storage = MockStorage,
-                    authRepository = MockStorage,
-                    viewMeetingRepository = MockStorage,
+                    storage = mockStorage,
+                    authRepository = mockStorage,
+                    viewMeetingRepository = mockStorage,
                     utf8Checker = DefaultUtf8Checker
                 )
             ),
             participateMeetingRepository = UsecaseParticipateMeetingRepository(
                 usecase = ParticipateMeetingUsecase(
-                    authRepository = MockStorage,
-                    storage = MockStorage,
-                    getMeetingsViewsRepository = MockStorage
+                    authRepository = mockStorage,
+                    storage = mockStorage,
+                    getMeetingsViewsRepository = mockStorage
                 )
             ),
             addMeetingAvatarDependencies = MeetingAvatarDependencies(
                 addMeetingAvatarRepository = UsecaseAddMeetingAvatarRepository(
                     usecase = AddMeetingAvatarUsecase(
-                        authRepository = MockStorage,
-                        filesRepository = MockStorage,
-                        getMeetingsViewsRepository = MockStorage,
-                        storage = MockStorage
+                        authRepository = mockStorage,
+                        filesRepository = mockStorage,
+                        getMeetingsViewsRepository = mockStorage,
+                        storage = mockStorage
                     )
                 ),
                 deleteMeetingAvatarRepository = UsecaseDeleteMeetingAvatarRepository(
                     usecase = DeleteMeetingAvatarUsecase(
-                        authRepository = MockStorage,
-                        getMeetingsViewsRepository = MockStorage,
-                        storage = MockStorage
+                        authRepository = mockStorage,
+                        getMeetingsViewsRepository = mockStorage,
+                        storage = mockStorage
                     )
                 )
             ),
             deleteMeetingRepository = UsecaseDeleteMeetingRepository(
                 usecase = DeleteMeetingUsecase(
-                    authRepository = MockStorage,
-                    getMeetingsViewsRepository = MockStorage,
-                    storage = MockStorage
+                    authRepository = mockStorage,
+                    getMeetingsViewsRepository = mockStorage,
+                    storage = mockStorage
                 )
             ),
         ),
         notificationsDependencies = NotificationsDependencies(
             getNotificationsRepository = UsecaseGetNotificationsRepository(
                 usecase = GetNotificationsUsecase(
-                    authRepository = MockStorage,
-                    usersRepository = MockStorage,
-                    meetingsRepository = MockStorage,
-                    storage = MockStorage
+                    authRepository = mockStorage,
+                    usersRepository = mockStorage,
+                    meetingsRepository = mockStorage,
+                    storage = mockStorage
                 )
             ),
             readNotificationsRepository = UsecaseReadNotificationsRepository(
                 usecase = ReadNotificationsUsecase(
-                    authRepository = MockStorage,
-                    storage = MockStorage
+                    authRepository = mockStorage,
+                    storage = mockStorage
                 )
             )
         ),
         filesDependencies = FilesDependencies(
-            saveFileRepository = MockStorage,
-            getFileRepository = MockStorage
+            saveFileRepository = mockStorage,
+            getFileRepository = mockStorage
         ),
         usersDependencies = UsersDependencies(
             getUserRepository = UsecaseUserRepository(
                 usecase = GetUserSafeUsecase(
-                    authRepository = MockStorage,
-                    usersViewsRepository = MockStorage
+                    authRepository = mockStorage,
+                    usersViewsRepository = mockStorage
                 )
             ),
             addUserAvatarDependencies = UserAvatarDependencies(
                 addUserAvatarRepository = UsecaseAddUserAvatarRepository(
                     usecase = AddUserAvatarUsecase(
-                        authRepository = MockStorage,
-                        filesRepository = MockStorage,
-                        storage = MockStorage
+                        authRepository = mockStorage,
+                        filesRepository = mockStorage,
+                        storage = mockStorage
                     )
                 ),
                 deleteUserAvatarRepository = UsecaseDeleteUserAvatarRepository(
                     usecase = DeleteUserAvatarUsecase(
-                        authRepository = MockStorage,
-                        storage = MockStorage
+                        authRepository = mockStorage,
+                        storage = mockStorage
                     )
                 )
             )

@@ -38,7 +38,7 @@ fun startEndpoints(
     notificationsDependencies: NotificationsDependencies,
     filesDependencies: FilesDependencies,
     usersDependencies: UsersDependencies
-) = embeddedServer(CIO, host = "localhost", port = port) {
+): ApplicationEngine = embeddedServer(CIO, host = "localhost", port = port) {
     install(ContentNegotiation) {
         json(
             Json {

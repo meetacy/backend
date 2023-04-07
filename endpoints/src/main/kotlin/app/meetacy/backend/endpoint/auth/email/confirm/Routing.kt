@@ -29,7 +29,6 @@ fun Route.confirmEmail(storage: ConfirmEmailRepository) = post("/confirm") {
     val parameters = call.receive<ConfirmParams>()
 
     when (storage.checkConfirmHash(parameters.email, parameters.confirmHash)) {
-
         ConfirmHashResult.LinkExpired -> call.respondFailure(Failure.ExpiredLink)
         ConfirmHashResult.LinkInvalid -> call.respondFailure(Failure.InvalidLink)
         ConfirmHashResult.LinkMaxAttemptsReached -> call.respondFailure(Failure.LinkMaxAttemptsReached)
