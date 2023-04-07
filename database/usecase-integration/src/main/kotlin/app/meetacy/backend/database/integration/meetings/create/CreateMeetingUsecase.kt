@@ -7,7 +7,6 @@ import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.meetings.ParticipantsTable
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.datetime.DateOrTime
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
@@ -29,7 +28,7 @@ class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsec
     override suspend fun addMeeting(
         accessHash: AccessHash,
         creatorId: UserId,
-        date: DateOrTime,
+        date: Date,
         location: Location,
         title: String?,
         description: String?,
