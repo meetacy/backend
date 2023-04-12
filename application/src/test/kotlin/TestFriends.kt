@@ -1,4 +1,4 @@
-import app.meetacy.types.amount.amount
+import app.meetacy.sdk.types.amount.amount
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlin.test.Test

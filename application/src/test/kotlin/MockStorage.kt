@@ -9,7 +9,6 @@ import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.datetime.DateOrTime
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
@@ -44,7 +43,7 @@ import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
 import kotlinx.coroutines.flow.*
 import java.io.InputStream
 
-object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, AuthRepository,
+class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, AuthRepository,
     ConfirmEmailUsecase.Storage, GetUsersViewsRepository, GetUsersViewsUsecase.Storage,
     GetUsersViewsUsecase.ViewUserRepository, AddFriendUsecase.Storage, ListFriendsUsecase.Storage,
     DeleteFriendUsecase.Storage, ListMeetingsHistoryUsecase.Storage, GetMeetingsViewsRepository,
@@ -208,7 +207,7 @@ object MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Aut
     override suspend fun addMeeting(
         accessHash: AccessHash,
         creatorId: UserId,
-        date: DateOrTime,
+        date: Date,
         location: Location,
         title: String?,
         description: String?,

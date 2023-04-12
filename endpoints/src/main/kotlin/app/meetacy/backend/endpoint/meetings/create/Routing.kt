@@ -18,7 +18,7 @@ data class CreateParam(
     val token: AccessIdentitySerializable,
     val title: String?,
     val description: String?,
-    val date: DateOrTimeSerializable,
+    val date: DateSerializable,
     val location: LocationSerializable,
     val visibility: Meeting.Visibility
 )

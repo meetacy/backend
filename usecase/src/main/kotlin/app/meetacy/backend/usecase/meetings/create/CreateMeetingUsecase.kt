@@ -3,7 +3,6 @@ package app.meetacy.backend.usecase.meetings.create
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.datetime.DateOrTime
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
@@ -27,7 +26,7 @@ class CreateMeetingUsecase(
         accessIdentity: AccessIdentity,
         title: String?,
         description: String?,
-        date: DateOrTime,
+        date: Date,
         location: Location,
         visibility: FullMeeting.Visibility
     ): Result {
@@ -49,7 +48,7 @@ class CreateMeetingUsecase(
         suspend fun addMeeting(
             accessHash: AccessHash,
             creatorId: UserId,
-            date: DateOrTime,
+            date: Date,
             location: Location,
             title: String?,
             description: String?,

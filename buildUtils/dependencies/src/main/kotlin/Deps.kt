@@ -31,7 +31,7 @@ object Deps {
     private const val kvisionVersion = "5.1.1"
     private const val shadowVer = "7.0.0"
 
-    private const val meetacySdkVersion = "0.0.3"
+    private const val meetacySdkVersion = "0.0.8"
     private const val kdsVer = "1.1.0"
     private const val scriptKtVer = "0.0.2"
 
@@ -97,6 +97,7 @@ object Deps {
             object Client {
                 const val Core = "io.ktor:ktor-client-core:$ktorVersion"
                 const val Cio = "io.ktor:ktor-client-cio:$ktorVersion"
+                const val Mock = "io.ktor:ktor-client-mock:$ktorVersion"
                 const val ContentNegotiation = "io.ktor:ktor-client-content-negotiation:$ktorVersion"
                 const val SerializationJson = "io.ktor:ktor-serialization-kotlinx-json:$ktorVersion"
                 const val Logging = "io.ktor:ktor-client-logging:$ktorVersion"

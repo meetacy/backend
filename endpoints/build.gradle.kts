@@ -18,7 +18,4 @@ dependencies {
     implementation(Deps.Libs.Ktor.Server.ContentNegotiation)
     implementation(Deps.Libs.Kotlinx.Serialization)
     implementation(Deps.Libs.Slf4j.Simple)
-
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.7.10")
-    testImplementation("io.ktor:ktor-server-tests-jvm:2.2.3")
 }
