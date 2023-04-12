@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class User(
     val isSelf: Boolean,
-    val identity: UserIdentitySerializable,
+    val id: UserIdentitySerializable,
     val nickname: String,
     val email: String?,
     val emailVerified: Boolean?,
