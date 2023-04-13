@@ -547,64 +547,6 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 LastNotificationIdInvalid:
                   $ref: '#/components/examples/LastNotificationIdInvalid'
-  /users/avatar/add:
-    post:
-      summary: Adding user avatar
-      tags:
-        - user
-      description: "Adding a user avatar via an fileId and token"
-      requestBody:
-        description: response with an token
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccessAvatarRequest'
-      responses:
-        "200":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusTrueResponse'
-        "400":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvalidResponse'
-              examples:
-                InvalidAccessIdentity:
-                  $ref: '#/components/examples/InvalidToken'
-                InvalidUserAvatarIdentity:
-                  $ref: '#/components/examples/InvalidFileId'
-  /users/avatar/delete:
-    post:
-      summary: Deleting user avatar
-      tags:
-        - user
-      description: "Deleting a user avatar via an fileId and token"
-      requestBody:
-        description: response with an token
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccessIdentityRequest'
-      responses:
-        "200":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusTrueResponse'
-        "400":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvalidResponse'
-              examples:
-                InvalidAccessIdentity:
-                  $ref: '#/components/examples/InvalidToken'
   /users/get:
     post:
       summary: Getting user object
