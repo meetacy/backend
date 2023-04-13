@@ -1,3 +1,4 @@
+
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
 import app.meetacy.backend.endpoint.files.upload.SaveFileRepository
@@ -28,6 +29,7 @@ import app.meetacy.backend.usecase.meetings.avatar.add.AddMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
+import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
@@ -40,7 +42,10 @@ import app.meetacy.backend.usecase.users.ViewUserUsecase
 import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
 import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
 import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import java.io.InputStream
 
 class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, AuthRepository,
@@ -53,7 +58,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, AddUserAvatarUsecase.Storage,
     DeleteUserAvatarUsecase.Storage, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
-    ListMeetingsMapUsecase.Storage {
+    ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -182,7 +187,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         friendRelations.any { (_, user, friend) -> userId == user && friendId == friend }
     }
 
-    override suspend fun getFile(fileIdentity: FileIdentity): GetFileResult {
+    override suspend fun getFile(fileId: FileIdentity): GetFileResult {
         TODO("Not yet implemented")
     }
 
@@ -393,4 +398,17 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun getPublicMeetingsFlow(): Flow<FullMeeting> = meetings
         .filter { it.visibility == FullMeeting.Visibility.Public }
         .asFlow()
+
+    override suspend fun editMeeting(
+        idMeeting: IdMeeting,
+        avatarId: FileIdentity?,
+        deleteAvatar: Boolean,
+        title: String?,
+        description: String?,
+        location: Location?,
+        date: Date?,
+        visibility: FullMeeting.Visibility?
+    ) {
+        TODO("Not yet implemented")
+    }
 }

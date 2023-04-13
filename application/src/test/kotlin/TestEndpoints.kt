@@ -1,3 +1,4 @@
+
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
@@ -27,6 +28,7 @@ import app.meetacy.backend.usecase.integration.meetings.avatar.add.UsecaseAddMee
 import app.meetacy.backend.usecase.integration.meetings.avatar.delete.UsecaseDeleteMeetingAvatarRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
+import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.history.list.UsecaseListMeetingsHistoryRepository
 import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
@@ -40,6 +42,7 @@ import app.meetacy.backend.usecase.meetings.avatar.add.AddMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
+import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
@@ -53,9 +56,7 @@ import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
-import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.logging.*
-import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -210,6 +211,15 @@ fun runTestServer(
                     storage = mockStorage
                 )
             ),
+            editMeetingRepository = UsecaseEditMeetingRepository(
+                usecase = EditMeetingUsecase(
+                    storage = mockStorage,
+                    authRepository = mockStorage,
+                    getMeetingsViewsRepository = mockStorage,
+                    filesRepository = mockStorage,
+                    utf8Checker = DefaultUtf8Checker
+                )
+            )
         ),
         notificationsDependencies = NotificationsDependencies(
             getNotificationsRepository = UsecaseGetNotificationsRepository(
