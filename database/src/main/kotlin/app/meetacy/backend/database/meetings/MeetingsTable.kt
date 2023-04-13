@@ -3,10 +3,7 @@
 package app.meetacy.backend.database.meetings
 
 import app.meetacy.backend.database.types.DatabaseMeeting
-import app.meetacy.backend.types.DATE_MAX_LIMIT
-import app.meetacy.backend.types.DESCRIPTION_MAX_LIMIT
-import app.meetacy.backend.types.HASH_LENGTH
-import app.meetacy.backend.types.TITLE_MAX_LIMIT
+import app.meetacy.backend.types.*
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
@@ -96,16 +93,13 @@ class MeetingsTable(private val db: Database) : Table() {
 
     suspend fun editMeeting(
         meetingId: MeetingId,
-        avatarId: FileIdentity?,
-        deleteAvatar: Boolean,
+        avatarId: Optional<FileId?>,
         title: String?,
         description: String?,
         location: Location?,
         date: Date?,
         visibility: DatabaseMeeting.Visibility?
     ) = newSuspendedTransaction(db = db) {
-        if (avatarId == null && deleteAvatar) deleteAvatar(meetingId)
-        if (avatarId != null) addAvatar(meetingId, avatarId)
         update({ MEETING_ID eq meetingId.long }) { statement ->
             title?.let { statement[TITLE] = it }
             description?.let { statement[DESCRIPTION] = it }
@@ -115,6 +109,9 @@ class MeetingsTable(private val db: Database) : Table() {
             }
             date?.let { statement[DATE]= it.iso8601 }
             visibility?.let { statement[VISIBILITY] = it }
+            avatarId.ifPresent {
+                statement[AVATAR_ID] = it?.long
+            }
         }
     }
 

@@ -6,7 +6,10 @@ import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
-import app.meetacy.backend.types.meeting.OptionalParameter
+import app.meetacy.backend.types.Optional
+import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.ifPresent
+import app.meetacy.backend.types.map
 import app.meetacy.backend.usecase.types.*
 
 class EditMeetingUsecase(
@@ -29,7 +32,7 @@ class EditMeetingUsecase(
     suspend fun editMeeting(
         token: AccessIdentity,
         meetingIdentity: MeetingIdentity,
-        avatarIdentity: OptionalParameter<FileIdentity?>,
+        avatarIdentityOptional: Optional<FileIdentity?>,
         title: String?,
         description: String?,
         location: Location?,
@@ -38,9 +41,14 @@ class EditMeetingUsecase(
     ): Result {
         if (title != null) if (!utf8Checker.checkString(title)) return Result.InvalidUtf8String
         if (description != null) if (!utf8Checker.checkString(description)) return Result.InvalidUtf8String
-        if (avatarIdentity != null) {
-            if (!filesRepository.checkFile(avatarIdentity)) return Result.InvalidAvatarIdentity
+
+        avatarIdentityOptional.ifPresent { avatarIdentity ->
+            avatarIdentity ?: return@ifPresent
+            if (!filesRepository.checkFile(avatarIdentity)) {
+                return Result.InvalidAvatarIdentity
+            }
         }
+
         val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
 
         val meetingCreator = getMeetingsViewsRepository
@@ -49,31 +57,31 @@ class EditMeetingUsecase(
             ?.creator
             ?.identity
             ?: return Result.InvalidMeetingIdentity
+
         if (userId != meetingCreator.userId) {
             return Result.InvalidAccessIdentity
         }
-        if (listOf(avatarIdentity, title, description, location, date, visibility).all { it == null }) {
+        if (listOf(avatarIdentityOptional, title, description, location, date, visibility).all { it == null }) {
             return Result.NullEditParameters
         }
 
         storage.editMeeting(
             meetingIdentity.id,
-            avatarIdentity,
-            deleteAvatar,
+            avatarIdentityOptional.map { it?.id },
             title,
             description,
             location,
             date,
             visibility
         )
+
         return Result.Success
     }
 
     interface Storage {
         suspend fun editMeeting(
             meetingId: MeetingId,
-            avatarId: FileIdentity?,
-            deleteAvatar: Boolean,
+            avatarId: Optional<FileId?>,
             title: String?,
             description: String?,
             location: Location?,

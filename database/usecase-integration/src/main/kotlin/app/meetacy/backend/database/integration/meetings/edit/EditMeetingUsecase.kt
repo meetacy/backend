@@ -2,7 +2,9 @@ package app.meetacy.backend.database.integration.meetings.edit
 
 import app.meetacy.backend.database.integration.types.mapToDatabase
 import app.meetacy.backend.database.meetings.MeetingsTable
+import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
@@ -15,8 +17,7 @@ class DatabaseEditMeetingStorage(db: Database) : EditMeetingUsecase.Storage {
 
     override suspend fun editMeeting(
         meetingId: MeetingId,
-        avatarId: FileIdentity?,
-        deleteAvatar: Boolean,
+        avatarId: Optional<FileId?>,
         title: String?,
         description: String?,
         location: Location?,
@@ -26,7 +27,6 @@ class DatabaseEditMeetingStorage(db: Database) : EditMeetingUsecase.Storage {
         meetingsTable.editMeeting(
             meetingId,
             avatarId,
-            deleteAvatar,
             title,
             description,
             location,

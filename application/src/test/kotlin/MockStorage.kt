@@ -6,6 +6,7 @@ import app.meetacy.backend.endpoint.files.upload.UploadFileResult
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
+import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
@@ -401,8 +402,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     override suspend fun editMeeting(
         meetingId: MeetingId,
-        avatarId: FileIdentity?,
-        deleteAvatar: Boolean,
+        avatarId: Optional<Any?>,
         title: String?,
         description: String?,
         location: Location?,

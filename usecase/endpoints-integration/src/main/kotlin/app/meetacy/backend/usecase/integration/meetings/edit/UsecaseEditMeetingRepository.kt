@@ -3,6 +3,7 @@ package app.meetacy.backend.usecase.integration.meetings.edit
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingParams
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingRepository
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingResult
+import app.meetacy.backend.types.map
 import app.meetacy.backend.usecase.integration.types.mapToFullMeeting
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 
@@ -15,7 +16,14 @@ class UsecaseEditMeetingRepository(
     ): EditMeetingResult = with(editMeetingParams) {
         when (
             usecase.editMeeting(
-                token.type(), meetingId.type(), avatarId, title, description, location?.type(), date?.type(), visibility?.mapToFullMeeting()
+                token.type(),
+                meetingId.type(),
+                avatarId.type().map { fileIdentity -> fileIdentity?.type() },
+                title,
+                description,
+                location?.type(),
+                date?.type(),
+                visibility?.mapToFullMeeting()
             )
         ) {
             EditMeetingUsecase.Result.InvalidAccessIdentity ->
