@@ -32,7 +32,6 @@ class MeetingsTable(private val db: Database) : Table() {
     private val TITLE = varchar("TITLE", length = TITLE_MAX_LIMIT).nullable()
     private val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT).nullable()
     private val AVATAR_ID = long("AVATAR_ID").nullable()
-    private val AVATAR_HASH = varchar("AVATAR_HASH", length = HASH_LENGTH).nullable()
     private val VISIBILITY = enumeration("VISIBILITY", klass = DatabaseMeeting.Visibility::class)
 
     override val primaryKey = PrimaryKey(MEETING_ID)
@@ -90,22 +89,6 @@ class MeetingsTable(private val db: Database) : Table() {
             return@newSuspendedTransaction result.filter { it.creatorId == creatorId }.map { it.id }
         }
 
-    suspend fun addAvatar(meetingId: MeetingId, avatarIdentity: FileIdentity) =
-        newSuspendedTransaction(db = db) {
-            update({ MEETING_ID eq meetingId.long }) { statement ->
-                statement[AVATAR_ID] = avatarIdentity.id.long
-                statement[AVATAR_HASH] = avatarIdentity.accessHash.string
-            }
-        }
-
-    suspend fun deleteAvatar(meetingId: MeetingId) =
-        newSuspendedTransaction(db = db) {
-            update({ MEETING_ID eq meetingId.long }) { statement ->
-                statement[AVATAR_ID] = null
-                statement[AVATAR_HASH] = null
-            }
-        }
-
     suspend fun deleteMeeting(meetingId: MeetingId) =
         newSuspendedTransaction(db = db) {
             deleteWhere { ((MEETING_ID eq meetingId.long)) }
@@ -146,14 +129,8 @@ class MeetingsTable(private val db: Database) : Table() {
     }
 
     @OptIn(UnsafeConstructor::class)
-    private fun ResultRow.toDatabaseMeeting(): DatabaseMeeting {
-        val avatarId = this[AVATAR_ID]
-        val avatarHash = this[AVATAR_HASH]
-        val avatarIdentity = if (avatarId != null && avatarHash != null) {
-            FileIdentity(FileId(avatarId), AccessHash(avatarHash))
-        } else null
-
-        return DatabaseMeeting(
+    private fun ResultRow.toDatabaseMeeting(): DatabaseMeeting =
+        DatabaseMeeting(
             identity = MeetingIdentity(
                 meetingId = MeetingId(this[MEETING_ID]),
                 accessHash = AccessHash(this[ACCESS_HASH])
@@ -163,8 +140,7 @@ class MeetingsTable(private val db: Database) : Table() {
             location = Location(this[LATITUDE], this[LONGITUDE]),
             description = this[DESCRIPTION],
             title = this[TITLE],
-            avatarIdentity = avatarIdentity,
+            avatarId = this[AVATAR_ID]?.let(::FileId),
             visibility = this[VISIBILITY]
         )
-    }
 }

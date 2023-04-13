@@ -6,6 +6,7 @@ import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.meeting.OptionalParameter
 import app.meetacy.backend.usecase.types.*
 
 class EditMeetingUsecase(
@@ -21,15 +22,14 @@ class EditMeetingUsecase(
         object InvalidAccessIdentity : Result
         object InvalidUtf8String : Result
         object NullEditParameters : Result
-        object InvalidMeetingId : Result
-        object InvalidAvatarId : Result
+        object InvalidMeetingIdentity : Result
+        object InvalidAvatarIdentity : Result
     }
 
     suspend fun editMeeting(
         token: AccessIdentity,
         meetingIdentity: MeetingIdentity,
-        avatarIdentity: FileIdentity?,
-        deleteAvatar: Boolean,
+        avatarIdentity: OptionalParameter<FileIdentity?>,
         title: String?,
         description: String?,
         location: Location?,
@@ -39,7 +39,7 @@ class EditMeetingUsecase(
         if (title != null) if (!utf8Checker.checkString(title)) return Result.InvalidUtf8String
         if (description != null) if (!utf8Checker.checkString(description)) return Result.InvalidUtf8String
         if (avatarIdentity != null) {
-            if (!filesRepository.checkFile(avatarIdentity)) return Result.InvalidAvatarId
+            if (!filesRepository.checkFile(avatarIdentity)) return Result.InvalidAvatarIdentity
         }
         val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
 
@@ -48,7 +48,7 @@ class EditMeetingUsecase(
             .first()
             ?.creator
             ?.identity
-            ?: return Result.InvalidMeetingId
+            ?: return Result.InvalidMeetingIdentity
         if (userId != meetingCreator.userId) {
             return Result.InvalidAccessIdentity
         }

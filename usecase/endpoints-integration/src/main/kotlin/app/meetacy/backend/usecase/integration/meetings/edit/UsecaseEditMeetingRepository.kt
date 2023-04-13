@@ -15,14 +15,14 @@ class UsecaseEditMeetingRepository(
     ): EditMeetingResult = with(editMeetingParams) {
         when (
             usecase.editMeeting(
-                token.type(), meetingId.type(), avatarId?.type(), deleteAvatar, title, description, location?.type(), date?.type(), visibility?.mapToFullMeeting()
+                token.type(), meetingId.type(), avatarId, title, description, location?.type(), date?.type(), visibility?.mapToFullMeeting()
             )
         ) {
             EditMeetingUsecase.Result.InvalidAccessIdentity ->
                 EditMeetingResult.InvalidAccessIdentity
-            EditMeetingUsecase.Result.InvalidAvatarId ->
-                EditMeetingResult.InvalidAvatarId
-            EditMeetingUsecase.Result.InvalidMeetingId ->
+            EditMeetingUsecase.Result.InvalidAvatarIdentity ->
+                EditMeetingResult.InvalidAvatarIdentity
+            EditMeetingUsecase.Result.InvalidMeetingIdentity ->
                 EditMeetingResult.InvalidMeetingId
             EditMeetingUsecase.Result.InvalidUtf8String ->
                 EditMeetingResult.InvalidUtf8String

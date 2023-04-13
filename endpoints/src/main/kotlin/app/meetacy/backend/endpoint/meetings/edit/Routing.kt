@@ -4,6 +4,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.Meeting
+import app.meetacy.backend.endpoint.types.OptionalParameter
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.datetime.DateSerializable
 import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
@@ -18,8 +19,7 @@ import kotlinx.serialization.Serializable
 data class EditMeetingParams(
     val token: AccessIdentitySerializable,
     val meetingId: MeetingIdentitySerializable,
-    val avatarId: FileIdentitySerializable?,
-    val deleteAvatar: Boolean,
+    val avatarId: OptionalParameter<FileIdentitySerializable?> = OptionalParameter.Undefined,
     val title: String?,
     val description: String?,
     val location: LocationSerializable?,
@@ -33,7 +33,7 @@ sealed interface EditMeetingResult {
     object InvalidUtf8String : EditMeetingResult
     object NullEditParameters : EditMeetingResult
     object InvalidMeetingId : EditMeetingResult
-    object InvalidAvatarId : EditMeetingResult
+    object InvalidAvatarIdentity : EditMeetingResult
 }
 
 interface EditMeetingRepository {
@@ -47,7 +47,7 @@ fun Route.editMeeting(editMeetingRepository: EditMeetingRepository) = post("/edi
         EditMeetingResult.Success -> call.respondSuccess()
         EditMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
         EditMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidTitleOrDescription)
-        EditMeetingResult.InvalidAvatarId -> call.respondFailure(Failure.InvalidFileIdentity)
+        EditMeetingResult.InvalidAvatarIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
         EditMeetingResult.InvalidMeetingId -> call.respondFailure(Failure.InvalidMeetingIdentity)
         EditMeetingResult.NullEditParameters -> call.respondFailure(Failure.NullEditMeetingParams)
     }

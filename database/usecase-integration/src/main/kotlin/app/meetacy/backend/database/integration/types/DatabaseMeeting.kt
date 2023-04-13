@@ -10,7 +10,7 @@ fun DatabaseMeeting.mapToUsecase() = FullMeeting(
     location = location,
     title = title,
     description = description,
-    avatarIdentity = avatarIdentity,
+    avatarIdentity = avatarId,
     visibility = when (visibility) {
         DatabaseMeeting.Visibility.Public -> FullMeeting.Visibility.Public
         DatabaseMeeting.Visibility.Private -> FullMeeting.Visibility.Private
