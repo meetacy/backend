@@ -1,7 +1,7 @@
 package app.meetacy.backend.database.types
 
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.IdMeeting
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.user.UserId
 
@@ -12,7 +12,7 @@ data class DatabaseNotification(
     val date: Date,
     val inviterId: UserId? = null,
     val subscriberId: UserId? = null,
-    val invitedMeetingId: MeetingId? = null
+    val invitedIdMeeting: IdMeeting? = null
 ) {
     enum class Type {
         Subscription, Invitation

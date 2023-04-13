@@ -3,14 +3,17 @@
 package app.meetacy.backend.database.meetings
 
 import app.meetacy.backend.database.types.DatabaseMeeting
-import app.meetacy.backend.types.*
+import app.meetacy.backend.types.DATA_MAX_LIMIT
+import app.meetacy.backend.types.DESCRIPTION_MAX_LIMIT
+import app.meetacy.backend.types.HASH_LENGTH
+import app.meetacy.backend.types.TITLE_MAX_LIMIT
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.IdMeeting
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,7 +23,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class MeetingsTable(private val db: Database) : Table() {
-    private val MEETING_ID = long("MEETING_ID").autoIncrement()
+    private val ID_MEETING = long("ID_MEETING").autoIncrement()
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     private val CREATOR_ID = long("CREATOR_ID")
     private val DATE = varchar("DATE", length = DATA_MAX_LIMIT)
@@ -32,7 +35,7 @@ class MeetingsTable(private val db: Database) : Table() {
     private val AVATAR_HASH = varchar("AVATAR_HASH", length = HASH_LENGTH).nullable()
     private val VISIBILITY = enumeration("VISIBILITY", klass = DatabaseMeeting.Visibility::class)
 
-    override val primaryKey = PrimaryKey(MEETING_ID)
+    override val primaryKey = PrimaryKey(ID_MEETING)
 
     init {
         transaction(db) {
@@ -48,7 +51,7 @@ class MeetingsTable(private val db: Database) : Table() {
         title: String?,
         description: String?,
         visibility: DatabaseMeeting.Visibility
-    ): MeetingId =
+    ): IdMeeting =
         newSuspendedTransaction(db = db) {
             val meetingId = insert { statement ->
                 statement[ACCESS_HASH] = accessHash.string
@@ -59,54 +62,78 @@ class MeetingsTable(private val db: Database) : Table() {
                 statement[TITLE] = title
                 statement[DESCRIPTION] = description
                 statement[VISIBILITY] = visibility
-            }[MEETING_ID]
-            return@newSuspendedTransaction MeetingId(meetingId)
+            }[ID_MEETING]
+            return@newSuspendedTransaction IdMeeting(meetingId)
         }
 
-    suspend fun getMeeting(id: MeetingId): DatabaseMeeting =
+    suspend fun getMeeting(id: IdMeeting): DatabaseMeeting =
         getMeetingOrNull(id) ?: error("Cannot find a meeting with id $id")
 
-    suspend fun getMeetingOrNull(id: MeetingId): DatabaseMeeting? =
+    suspend fun getMeetingOrNull(id: IdMeeting): DatabaseMeeting? =
         getMeetingsOrNull(listOf(id)).first()
 
-    suspend fun getMeetingsOrNull(meetingIds: List<MeetingId>): List<DatabaseMeeting?> =
+    suspend fun getMeetingsOrNull(idMeetings: List<IdMeeting>): List<DatabaseMeeting?> =
         newSuspendedTransaction(db = db) {
-            val rawMeetingIds = meetingIds.map { it.long }
+            val rawMeetingIds = idMeetings.map { it.long }
 
-            val foundMeetings = select { MEETING_ID inList rawMeetingIds }
+            val foundMeetings = select { ID_MEETING inList rawMeetingIds }
                 .map { it.toDatabaseMeeting() }
                 .associateBy { it.id }
 
-            return@newSuspendedTransaction meetingIds.map { foundMeetings[it] }
+            return@newSuspendedTransaction idMeetings.map { foundMeetings[it] }
         }
 
-    suspend fun getMeetingCreator(creatorId: UserId): List<MeetingId> =
+    suspend fun getCreatorMeetings(creatorId: UserId): List<IdMeeting> =
         newSuspendedTransaction(db = db) {
             val result = select { (CREATOR_ID eq creatorId.long) }
                 .map { statement -> statement.toDatabaseMeeting() }
             return@newSuspendedTransaction result.filter { it.creatorId == creatorId }.map { it.id }
         }
 
-    suspend fun addAvatar(meetingId: MeetingId, avatarIdentity: FileIdentity) =
+    suspend fun addAvatar(idMeeting: IdMeeting, avatarIdentity: FileIdentity) =
         newSuspendedTransaction(db = db) {
-            update({ MEETING_ID eq meetingId.long }) {statement ->
+            update({ ID_MEETING eq idMeeting.long }) { statement ->
                 statement[AVATAR_ID] = avatarIdentity.fileId.long
                 statement[AVATAR_HASH] = avatarIdentity.accessHash.string
             }
         }
 
-    suspend fun deleteAvatar(meetingId: MeetingId) =
+    suspend fun deleteAvatar(idMeeting: IdMeeting) =
         newSuspendedTransaction(db = db) {
-            update({ MEETING_ID eq meetingId.long }) {statement ->
+            update({ ID_MEETING eq idMeeting.long }) { statement ->
                 statement[AVATAR_ID] = null
                 statement[AVATAR_HASH] = null
             }
         }
 
-    suspend fun deleteMeeting(meetingId: MeetingId) =
+    suspend fun deleteMeeting(idMeeting: IdMeeting) =
         newSuspendedTransaction(db = db) {
-            deleteWhere { ((MEETING_ID eq meetingId.long)) }
+            deleteWhere { ((ID_MEETING eq idMeeting.long)) }
         }
+
+    suspend fun editMeeting(
+        idMeeting: IdMeeting,
+        avatarId: FileIdentity?,
+        deleteAvatar: Boolean,
+        title: String?,
+        description: String?,
+        location: Location?,
+        date: Date?,
+        visibility: DatabaseMeeting.Visibility?
+    ) = newSuspendedTransaction(db = db) {
+        if (avatarId == null && deleteAvatar) deleteAvatar(idMeeting)
+        if (avatarId != null) addAvatar(idMeeting, avatarId)
+        update({ ID_MEETING eq idMeeting.long }) { statement ->
+            title?.let { statement[TITLE] = it }
+            description?.let { statement[DESCRIPTION] = it }
+            location?.let {
+                statement[LATITUDE] = it.latitude
+                statement[LONGITUDE] = it.longitude
+            }
+            date?.let { statement[DATE]= it.iso8601 }
+            visibility?.let { statement[VISIBILITY] = it }
+        }
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getPublicMeetingsFlow(): Flow<DatabaseMeeting> = channelFlow {
@@ -128,7 +155,7 @@ class MeetingsTable(private val db: Database) : Table() {
 
         return DatabaseMeeting(
             identity = MeetingIdentity(
-                meetingId = MeetingId(this[MEETING_ID]),
+                idMeeting = IdMeeting(this[ID_MEETING]),
                 accessHash = AccessHash(this[ACCESS_HASH])
             ),
             creatorId = UserId(this[CREATOR_ID]),

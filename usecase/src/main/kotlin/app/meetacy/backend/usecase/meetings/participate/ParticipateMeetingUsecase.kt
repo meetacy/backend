@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.meetings.participate
 
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.IdMeeting
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
@@ -21,15 +21,15 @@ class ParticipateMeetingUsecase(
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
         val meeting = getMeetingsViewsRepository
-            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.meetingId))
+            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.id))
             .first()
             ?: return Result.MeetingNotFound
 
         if (meetingIdentity.accessHash != meeting.identity.accessHash)
             return Result.MeetingNotFound
 
-        if(!storage.isParticipating(meetingIdentity.meetingId, userId))
-            storage.addParticipant(userId, meetingIdentity.meetingId) else return Result.MeetingAlreadyParticipate
+        if(!storage.isParticipating(meetingIdentity.id, userId))
+            storage.addParticipant(userId, meetingIdentity.id) else return Result.MeetingAlreadyParticipate
 
         return Result.Success
     }
@@ -44,11 +44,11 @@ class ParticipateMeetingUsecase(
     interface Storage {
         suspend fun addParticipant(
             participantId: UserId,
-            meetingId: MeetingId
+            idMeeting: IdMeeting
         )
 
         suspend fun isParticipating(
-            meetingId: MeetingId, userId: UserId
+            idMeeting: IdMeeting, userId: UserId
         ): Boolean
     }
 

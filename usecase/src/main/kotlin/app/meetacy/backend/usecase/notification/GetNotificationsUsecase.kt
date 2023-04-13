@@ -2,7 +2,7 @@ package app.meetacy.backend.usecase.notification
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.IdMeeting
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
@@ -39,7 +39,7 @@ class GetNotificationsUsecase(
 
         val meetingsIterator = notifications
             .filterIsInstance<NotificationFromStorage.Invitation>()
-            .map { it.meetingId }
+            .map { it.idMeeting }
             .let { meetingsRepository.getMeetingsViews(userId, it) }
             .iterator()
 
@@ -82,7 +82,7 @@ class GetNotificationsUsecase(
 
         class Invitation(
             override val id: NotificationId,
-            val meetingId: MeetingId,
+            val idMeeting: IdMeeting,
             val inviterId: UserId,
             val date: Date
         ) : NotificationFromStorage

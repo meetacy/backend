@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.meetings.get
 
 import app.meetacy.backend.types.amount.Amount
-import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.IdMeeting
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.amount.amount
 import app.meetacy.backend.usecase.types.*
@@ -36,7 +36,7 @@ class ViewMeetingsUsecase(
         val firstParticipants = storage
             .getFirstParticipants(
                 limit = randomParticipantsAmount,
-                meetingIds = meetingIds
+                idMeetings = meetingIds
             )
 
         val randomParticipantsFlat = getUsersViewsRepository
@@ -70,8 +70,8 @@ class ViewMeetingsUsecase(
     }
 
     interface Storage {
-        suspend fun getParticipantsCount(meetingIds: List<MeetingId>): List<Int>
-        suspend fun getIsParticipates(viewerId: UserId, meetingIds: List<MeetingId>): List<Boolean>
-        suspend fun getFirstParticipants(limit: Amount, meetingIds: List<MeetingId>): List<List<UserId>>
+        suspend fun getParticipantsCount(idMeetings: List<IdMeeting>): List<Int>
+        suspend fun getIsParticipates(viewerId: UserId, idMeetings: List<IdMeeting>): List<Boolean>
+        suspend fun getFirstParticipants(limit: Amount, idMeetings: List<IdMeeting>): List<List<UserId>>
     }
 }

@@ -10,6 +10,6 @@ class DatabaseAddMeetingAvatarStorage(db: Database) : AddMeetingAvatarUsecase.St
     private val meetingsTable = MeetingsTable(db)
 
     override suspend fun addAvatar(meetingIdentity: MeetingIdentity, avatarIdentity: FileIdentity) {
-        meetingsTable.addAvatar(meetingIdentity.meetingId, avatarIdentity)
+        meetingsTable.addAvatar(meetingIdentity.id, avatarIdentity)
     }
 }

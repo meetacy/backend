@@ -34,6 +34,7 @@ class Failure {
         val UserNotFound = Failure(false, 9, "FullUser not found")
 
         val MeetingAlreadyParticipate = Failure(false, 10, "You are already participating in this meeting")
+        val NullEditMeetingParams = Failure(false, 14, "Specify at least one meeting edit parameter")
         val FriendAlreadyAdded = Failure(false, 11, "Friend already added")
 
         val ExpiredLink = Failure(false, 12, "This link was expired. Please consider to create a new one")

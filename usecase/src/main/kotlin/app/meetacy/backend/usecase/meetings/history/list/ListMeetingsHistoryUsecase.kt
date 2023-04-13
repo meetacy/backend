@@ -2,7 +2,7 @@ package app.meetacy.backend.usecase.meetings.history.list
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
-import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.IdMeeting
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
@@ -42,6 +42,6 @@ class ListMeetingsHistoryUsecase(
             memberId: UserId,
             amount: Amount,
             pagingId: PagingId?
-        ): PagingResult<List<MeetingId>>
+        ): PagingResult<List<IdMeeting>>
     }
 }

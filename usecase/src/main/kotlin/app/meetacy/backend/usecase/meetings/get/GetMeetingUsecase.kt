@@ -18,7 +18,7 @@ class GetMeetingUsecase(
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
         val meeting = getMeetingsViewsRepository
-            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.meetingId))
+            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.id))
             .first()
             ?: return Result.MeetingNotFound
 

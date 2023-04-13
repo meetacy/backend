@@ -3,7 +3,10 @@ package app.meetacy.backend.usecase.meetings.avatar.add
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.meeting.MeetingIdentity
-import app.meetacy.backend.usecase.types.*
+import app.meetacy.backend.usecase.types.AuthRepository
+import app.meetacy.backend.usecase.types.FilesRepository
+import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
+import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class AddMeetingAvatarUsecase(
     private val authRepository: AuthRepository,
@@ -27,7 +30,7 @@ class AddMeetingAvatarUsecase(
         if (!filesRepository.checkFile(avatarIdentity)) return Result.InvalidFileIdentity
 
         val meeting = getMeetingsViewsRepository
-            .getMeetingsViewsOrNull(accessIdentity.userId, listOf(meetingIdentity.meetingId))
+            .getMeetingsViewsOrNull(accessIdentity.userId, listOf(meetingIdentity.id))
             .first()
             ?: return Result.MeetingNotFound
 

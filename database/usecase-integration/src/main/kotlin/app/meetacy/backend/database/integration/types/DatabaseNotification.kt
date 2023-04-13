@@ -11,6 +11,6 @@ fun DatabaseNotification.mapToUsecase(): GetNotificationsUsecase.NotificationFro
             )
         DatabaseNotification.Type.Invitation ->
             GetNotificationsUsecase.NotificationFromStorage.Invitation(
-                id, invitedMeetingId!!, inviterId!!, date
+                id, invitedIdMeeting!!, inviterId!!, date
             )
     }
