@@ -38,6 +38,8 @@ class Failure {
 
         val ExpiredLink = Failure(false, 12, "This link was expired. Please consider to create a new one")
         val LinkMaxAttemptsReached = Failure(false, 13, "You have reached max attempts for today. Please try again later.")
+
+        val ApiVersionIsNotSpecified = Failure(false, 14, "Please specify api version using header 'Api-Version'")
     }
 }
 
