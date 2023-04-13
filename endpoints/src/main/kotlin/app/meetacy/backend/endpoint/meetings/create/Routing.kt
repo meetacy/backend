@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateParam(
-    val accessIdentity: AccessIdentitySerializable,
+    val token: AccessIdentitySerializable,
     val title: String?,
     val description: String?,
     val date: DateSerializable,

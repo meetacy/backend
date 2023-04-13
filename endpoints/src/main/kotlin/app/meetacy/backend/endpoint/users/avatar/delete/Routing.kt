@@ -16,7 +16,7 @@ sealed interface DeleteUserAvatarResult {
 
 @Serializable
 data class DeleteUserAvatarParams(
-    val accessIdentity: AccessIdentitySerializable
+    val token: AccessIdentitySerializable
 )
 
 interface DeleteUserAvatarRepository {

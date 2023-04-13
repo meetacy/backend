@@ -12,7 +12,7 @@ class UsecaseListFriendsRepository(
     override suspend fun getFriends(token: ListFriendsBody): ListFriendsResult =
         when (
             val result = usecase.getFriendsUsecase(
-                accessIdentity = token.accessIdentity.type(),
+                accessIdentity = token.token.type(),
                 amount = token.amount.type(),
                 pagingId = token.pagingId?.type()
             )

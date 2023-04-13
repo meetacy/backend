@@ -11,7 +11,6 @@ import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.amount.AmountSerializable
 import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
-import app.meetacy.backend.types.serialization.access.serializable
 import app.meetacy.backend.types.serialization.paging.serializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -20,7 +19,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ListParam(
-    val accessIdentity: AccessIdentitySerializable,
+    val token: AccessIdentitySerializable,
     val amount: AmountSerializable,
     val pagingId: PagingIdSerializable? = null
 )
@@ -42,7 +41,7 @@ fun Route.listMeetingsHistory(listMeetingsHistoryRepository: ListMeetingsHistory
     val params = call.receive<ListParam>()
     when (
         val result = listMeetingsHistoryRepository.getList(
-            accessIdentity = params.accessIdentity.type(),
+            accessIdentity = params.token.type(),
             amount = params.amount.type(),
             pagingId = params.pagingId?.type()
         )

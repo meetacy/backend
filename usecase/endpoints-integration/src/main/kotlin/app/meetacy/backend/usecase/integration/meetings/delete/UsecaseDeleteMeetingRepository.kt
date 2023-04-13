@@ -11,7 +11,7 @@ class UsecaseDeleteMeetingRepository(
     override suspend fun deleteMeeting(
         deleteMeetingParams: DeleteMeetingParams
     ): DeleteMeetingResult = with(deleteMeetingParams) {
-        when (usecase.deleteMeeting(accessIdentity.type(), meetingIdentity.type())) {
+        when (usecase.deleteMeeting(token.type(), meetingId.type())) {
             DeleteMeetingUsecase.Result.InvalidIdentity ->
                 DeleteMeetingResult.InvalidIdentity
             DeleteMeetingUsecase.Result.MeetingNotFound ->

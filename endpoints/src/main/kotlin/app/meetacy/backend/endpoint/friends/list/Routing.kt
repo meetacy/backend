@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ListFriendsBody(
-    val accessIdentity: AccessIdentitySerializable,
+    val token: AccessIdentitySerializable,
     val amount: AmountSerializable,
     val pagingId: PagingIdSerializable? = null
 )

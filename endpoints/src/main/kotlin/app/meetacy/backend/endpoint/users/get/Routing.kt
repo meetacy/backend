@@ -22,8 +22,8 @@ interface UserRepository {
 
 @Serializable
 data class GetUserParams(
-    val identity: UserIdentitySerializable? = null,
-    val accessIdentity: AccessIdentitySerializable
+    val id: UserIdentitySerializable? = null,
+    val token: AccessIdentitySerializable
 )
 
 sealed interface GetUserResult {
@@ -35,7 +35,7 @@ sealed interface GetUserResult {
 fun Route.getUser(provider: UserRepository) = post("/get") {
     val params = call.receive<GetUserParams>()
 
-    when (val result = with(params) { provider.getUser(identity?.type(), accessIdentity.type()) }) {
+    when (val result = with(params) { provider.getUser(id?.type(), token.type()) }) {
         is GetUserResult.Success -> call.respondSuccess(result.user)
 
         GetUserResult.UserNotFound -> call.respondFailure(Failure.UserNotFound)

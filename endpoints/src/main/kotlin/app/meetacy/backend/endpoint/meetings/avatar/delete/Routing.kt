@@ -18,8 +18,8 @@ sealed interface DeleteMeetingAvatarResult {
 
 @Serializable
 data class DeleteMeetingAvatarParams(
-    val meetingIdentity: MeetingIdentitySerializable,
-    val accessIdentity: AccessIdentitySerializable
+    val meetingId: MeetingIdentitySerializable,
+    val token: AccessIdentitySerializable
 )
 
 interface DeleteMeetingAvatarRepository {

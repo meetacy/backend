@@ -9,7 +9,7 @@ class UsecaseDeleteFriendRepository(
     private val usecase: DeleteFriendUsecase
 ) : DeleteFriendRepository {
     override suspend fun deleteFriend(deleteFriendParams: DeleteFriendParams): DeleteFriendResult = with(deleteFriendParams) {
-        when (usecase.deleteFriendUsecase(accessIdentity.type(), friendIdentity.type())) {
+        when (usecase.deleteFriendUsecase(token.type(), friendId.type())) {
             DeleteFriendUsecase.Result.FriendNotFound ->
                 DeleteFriendResult.FriendNotFound
             DeleteFriendUsecase.Result.InvalidToken ->

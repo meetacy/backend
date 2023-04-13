@@ -15,7 +15,7 @@ class UsecaseCreateMeetingRepository(
     ): CreateMeetingResult = with(createParam) {
         when (
             val result = usecase.createMeeting(
-                accessIdentity = accessIdentity.type(),
+                accessIdentity = token.type(),
                 title = title,
                 description = description,
                 date = date.type(),

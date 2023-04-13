@@ -9,7 +9,7 @@ class UsecaseAddFriendRepository(
     private val usecase: AddFriendUsecase
 ) : AddFriendRepository {
     override suspend fun addFriend(addFriendParams: AddFriendParams): AddFriendResult = with(addFriendParams) {
-        when (usecase.addFriendUsecase(accessIdentity.type(), friendIdentity.type())) {
+        when (usecase.addFriendUsecase(token.type(), friendId.type())) {
             AddFriendUsecase.Result.FriendNotFound ->
                 AddFriendResult.FriendNotFound
             AddFriendUsecase.Result.InvalidToken ->

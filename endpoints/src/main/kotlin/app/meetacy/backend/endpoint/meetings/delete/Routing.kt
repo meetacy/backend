@@ -12,8 +12,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DeleteMeetingParams(
-    val accessIdentity: AccessIdentitySerializable,
-    val meetingIdentity: MeetingIdentitySerializable
+    val token: AccessIdentitySerializable,
+    val meetingId: MeetingIdentitySerializable
 )
 
 sealed interface DeleteMeetingResult {

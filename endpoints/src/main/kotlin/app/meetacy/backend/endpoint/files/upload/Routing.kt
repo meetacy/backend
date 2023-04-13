@@ -31,14 +31,14 @@ interface SaveFileRepository {
 fun Route.upload(provider: SaveFileRepository) = post("/upload") {
     val multipartData = call.receiveMultipart()
 
-    var accessIdentity: AccessIdentity? = null
+    var token: AccessIdentity? = null
     var inputProvider: (() -> InputStream)? = null
     var fileName = "unnamed"
 
     multipartData.forEachPart { part ->
         when (part) {
             is PartData.FormItem -> {
-                if (part.name == "accessIdentity") accessIdentity = AccessIdentity.parse(part.value)
+                if (part.name == "token") token = AccessIdentity.parse(part.value)
             }
 
             is PartData.FileItem -> {
@@ -50,10 +50,10 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
         }
     }
 
-    if (accessIdentity == null || inputProvider == null) {
+    if (token == null || inputProvider == null) {
         error("Please provide accessIdentity and inputProvider")
     }
-    when (val result = provider.saveFile(accessIdentity!!, fileName, inputProvider!!)) {
+    when (val result = provider.saveFile(token!!, fileName, inputProvider!!)) {
         is UploadFileResult.Success -> call.respondSuccess(
             result.fileIdentity.serializable()
         )

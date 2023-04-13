@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 
 fun interface ListMeetingsMapRepository {
     suspend fun list(
-        accessIdentity: AccessIdentity,
+        token: AccessIdentity,
         location: LocationSerializable
     ): ListMeetingsResult
 }

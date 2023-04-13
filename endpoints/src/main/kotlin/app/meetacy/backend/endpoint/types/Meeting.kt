@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Meeting(
-    val identity: MeetingIdentitySerializable,
+    val id: MeetingIdentitySerializable,
     val creator: User,
     val date: DateSerializable?,
     val location: LocationSerializable,

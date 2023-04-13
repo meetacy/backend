@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LinkParameters(
     val email: String,
-    val accessIdentity: AccessIdentitySerializable
+    val token: AccessIdentitySerializable
 )
 
 sealed interface ConfirmHashResult {
@@ -31,7 +31,7 @@ interface LinkEmailRepository {
 fun Route.linkEmail(repository: LinkEmailRepository) = post("/link") {
     val parameters = call.receive<LinkParameters>()
 
-    when (repository.linkEmail(parameters.accessIdentity.type(), parameters.email)) {
+    when (repository.linkEmail(parameters.token.type(), parameters.email)) {
         is ConfirmHashResult.Success -> call.respondSuccess()
         is ConfirmHashResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
     }
