@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.meetings.avatar.delete
 
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.meeting.IdMeeting
+import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
@@ -37,6 +37,6 @@ class DeleteMeetingAvatarUsecase(
     }
 
     interface Storage {
-        suspend fun deleteAvatar (idMeeting: IdMeeting)
+        suspend fun deleteAvatar (meetingId: MeetingId)
     }
 }

@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.meetings.participate
 
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.meeting.IdMeeting
+import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
@@ -44,11 +44,11 @@ class ParticipateMeetingUsecase(
     interface Storage {
         suspend fun addParticipant(
             participantId: UserId,
-            idMeeting: IdMeeting
+            meetingId: MeetingId
         )
 
         suspend fun isParticipating(
-            idMeeting: IdMeeting, userId: UserId
+            meetingId: MeetingId, userId: UserId
         ): Boolean
     }
 

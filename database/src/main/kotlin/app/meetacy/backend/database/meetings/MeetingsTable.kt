@@ -3,7 +3,7 @@
 package app.meetacy.backend.database.meetings
 
 import app.meetacy.backend.database.types.DatabaseMeeting
-import app.meetacy.backend.types.DATA_MAX_LIMIT
+import app.meetacy.backend.types.DATE_MAX_LIMIT
 import app.meetacy.backend.types.DESCRIPTION_MAX_LIMIT
 import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.TITLE_MAX_LIMIT
@@ -13,7 +13,7 @@ import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.meeting.IdMeeting
+import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,10 +23,10 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class MeetingsTable(private val db: Database) : Table() {
-    private val ID_MEETING = long("ID_MEETING").autoIncrement()
+    private val MEETING_ID = long("ID_MEETING").autoIncrement()
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     private val CREATOR_ID = long("CREATOR_ID")
-    private val DATE = varchar("DATE", length = DATA_MAX_LIMIT)
+    private val DATE = varchar("DATE", length = DATE_MAX_LIMIT)
     private val LATITUDE = double("LATITUDE")
     private val LONGITUDE = double("LONGITUDE")
     private val TITLE = varchar("TITLE", length = TITLE_MAX_LIMIT).nullable()
@@ -35,7 +35,7 @@ class MeetingsTable(private val db: Database) : Table() {
     private val AVATAR_HASH = varchar("AVATAR_HASH", length = HASH_LENGTH).nullable()
     private val VISIBILITY = enumeration("VISIBILITY", klass = DatabaseMeeting.Visibility::class)
 
-    override val primaryKey = PrimaryKey(ID_MEETING)
+    override val primaryKey = PrimaryKey(MEETING_ID)
 
     init {
         transaction(db) {
@@ -51,7 +51,7 @@ class MeetingsTable(private val db: Database) : Table() {
         title: String?,
         description: String?,
         visibility: DatabaseMeeting.Visibility
-    ): IdMeeting =
+    ): MeetingId =
         newSuspendedTransaction(db = db) {
             val meetingId = insert { statement ->
                 statement[ACCESS_HASH] = accessHash.string
@@ -62,57 +62,57 @@ class MeetingsTable(private val db: Database) : Table() {
                 statement[TITLE] = title
                 statement[DESCRIPTION] = description
                 statement[VISIBILITY] = visibility
-            }[ID_MEETING]
-            return@newSuspendedTransaction IdMeeting(meetingId)
+            }[MEETING_ID]
+            return@newSuspendedTransaction MeetingId(meetingId)
         }
 
-    suspend fun getMeeting(id: IdMeeting): DatabaseMeeting =
+    suspend fun getMeeting(id: MeetingId): DatabaseMeeting =
         getMeetingOrNull(id) ?: error("Cannot find a meeting with id $id")
 
-    suspend fun getMeetingOrNull(id: IdMeeting): DatabaseMeeting? =
+    suspend fun getMeetingOrNull(id: MeetingId): DatabaseMeeting? =
         getMeetingsOrNull(listOf(id)).first()
 
-    suspend fun getMeetingsOrNull(idMeetings: List<IdMeeting>): List<DatabaseMeeting?> =
+    suspend fun getMeetingsOrNull(meetingIds: List<MeetingId>): List<DatabaseMeeting?> =
         newSuspendedTransaction(db = db) {
-            val rawMeetingIds = idMeetings.map { it.long }
+            val rawMeetingIds = meetingIds.map { it.long }
 
-            val foundMeetings = select { ID_MEETING inList rawMeetingIds }
+            val foundMeetings = select { MEETING_ID inList rawMeetingIds }
                 .map { it.toDatabaseMeeting() }
                 .associateBy { it.id }
 
-            return@newSuspendedTransaction idMeetings.map { foundMeetings[it] }
+            return@newSuspendedTransaction meetingIds.map { foundMeetings[it] }
         }
 
-    suspend fun getCreatorMeetings(creatorId: UserId): List<IdMeeting> =
+    suspend fun getCreatorMeetings(creatorId: UserId): List<MeetingId> =
         newSuspendedTransaction(db = db) {
             val result = select { (CREATOR_ID eq creatorId.long) }
                 .map { statement -> statement.toDatabaseMeeting() }
             return@newSuspendedTransaction result.filter { it.creatorId == creatorId }.map { it.id }
         }
 
-    suspend fun addAvatar(idMeeting: IdMeeting, avatarIdentity: FileIdentity) =
+    suspend fun addAvatar(meetingId: MeetingId, avatarIdentity: FileIdentity) =
         newSuspendedTransaction(db = db) {
-            update({ ID_MEETING eq idMeeting.long }) { statement ->
-                statement[AVATAR_ID] = avatarIdentity.fileId.long
+            update({ MEETING_ID eq meetingId.long }) { statement ->
+                statement[AVATAR_ID] = avatarIdentity.id.long
                 statement[AVATAR_HASH] = avatarIdentity.accessHash.string
             }
         }
 
-    suspend fun deleteAvatar(idMeeting: IdMeeting) =
+    suspend fun deleteAvatar(meetingId: MeetingId) =
         newSuspendedTransaction(db = db) {
-            update({ ID_MEETING eq idMeeting.long }) { statement ->
+            update({ MEETING_ID eq meetingId.long }) { statement ->
                 statement[AVATAR_ID] = null
                 statement[AVATAR_HASH] = null
             }
         }
 
-    suspend fun deleteMeeting(idMeeting: IdMeeting) =
+    suspend fun deleteMeeting(meetingId: MeetingId) =
         newSuspendedTransaction(db = db) {
-            deleteWhere { ((ID_MEETING eq idMeeting.long)) }
+            deleteWhere { ((MEETING_ID eq meetingId.long)) }
         }
 
     suspend fun editMeeting(
-        idMeeting: IdMeeting,
+        meetingId: MeetingId,
         avatarId: FileIdentity?,
         deleteAvatar: Boolean,
         title: String?,
@@ -121,9 +121,9 @@ class MeetingsTable(private val db: Database) : Table() {
         date: Date?,
         visibility: DatabaseMeeting.Visibility?
     ) = newSuspendedTransaction(db = db) {
-        if (avatarId == null && deleteAvatar) deleteAvatar(idMeeting)
-        if (avatarId != null) addAvatar(idMeeting, avatarId)
-        update({ ID_MEETING eq idMeeting.long }) { statement ->
+        if (avatarId == null && deleteAvatar) deleteAvatar(meetingId)
+        if (avatarId != null) addAvatar(meetingId, avatarId)
+        update({ MEETING_ID eq meetingId.long }) { statement ->
             title?.let { statement[TITLE] = it }
             description?.let { statement[DESCRIPTION] = it }
             location?.let {
@@ -155,7 +155,7 @@ class MeetingsTable(private val db: Database) : Table() {
 
         return DatabaseMeeting(
             identity = MeetingIdentity(
-                idMeeting = IdMeeting(this[ID_MEETING]),
+                meetingId = MeetingId(this[MEETING_ID]),
                 accessHash = AccessHash(this[ACCESS_HASH])
             ),
             creatorId = UserId(this[CREATOR_ID]),

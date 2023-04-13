@@ -6,7 +6,7 @@ import app.meetacy.backend.types.access.AccessHash
 value class FileIdentity private constructor(val string: String) {
     constructor(fileId: FileId, accessHash: AccessHash) : this("${fileId.long}:${accessHash.string}")
 
-    val fileId get() = string
+    val id get() = string
         .split(":")
         .first()
         .toLong()

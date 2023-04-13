@@ -67,7 +67,7 @@ class FilesTable(private val db: Database) : Table() {
     suspend fun checkFileIdentity(fileIdentity: FileIdentity): Boolean =
         newSuspendedTransaction(db = db) {
             select {
-                (FILE_ID eq fileIdentity.fileId.long) and (ACCESS_HASH eq fileIdentity.accessHash.string)
+                (FILE_ID eq fileIdentity.id.long) and (ACCESS_HASH eq fileIdentity.accessHash.string)
             }.firstOrNull() != null
     }
 }

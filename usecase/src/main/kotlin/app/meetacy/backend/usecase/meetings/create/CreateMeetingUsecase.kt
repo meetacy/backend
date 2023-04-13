@@ -4,7 +4,7 @@ import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.meeting.IdMeeting
+import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 
@@ -55,7 +55,7 @@ class CreateMeetingUsecase(
             visibility: FullMeeting.Visibility
         ): FullMeeting
 
-        suspend fun addParticipant(participantId: UserId, idMeeting: IdMeeting)
+        suspend fun addParticipant(participantId: UserId, meetingId: MeetingId)
     }
     interface ViewMeetingRepository {
         suspend fun viewMeeting(viewer: UserId, meeting: FullMeeting): MeetingView

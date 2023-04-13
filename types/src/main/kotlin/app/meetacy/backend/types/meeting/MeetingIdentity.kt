@@ -4,13 +4,13 @@ import app.meetacy.backend.types.access.AccessHash
 
 @JvmInline
 value class MeetingIdentity private constructor(val string: String) {
-    constructor(idMeeting: IdMeeting, accessHash: AccessHash) : this("${idMeeting.long}:${accessHash.string}")
+    constructor(meetingId: MeetingId, accessHash: AccessHash) : this("${meetingId.long}:${accessHash.string}")
 
     val id get() = string
         .split(":")
         .first()
         .toLong()
-        .let(::IdMeeting)
+        .let(::MeetingId)
 
     val accessHash get() = string
         .split(":", limit = 2)

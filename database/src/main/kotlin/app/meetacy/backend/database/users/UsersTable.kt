@@ -109,7 +109,7 @@ class UsersTable(private val db: Database) : Table() {
     suspend fun addAvatar(accessIdentity: AccessIdentity, avatarIdentity: FileIdentity) =
         newSuspendedTransaction(db = db) {
             update({ USER_ID eq accessIdentity.userId.long }) {statement ->
-                statement[AVATAR_ID] = avatarIdentity.fileId.long
+                statement[AVATAR_ID] = avatarIdentity.id.long
                 statement[AVATAR_HASH] = avatarIdentity.accessHash.string
             }
         }

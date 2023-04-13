@@ -5,7 +5,7 @@ package app.meetacy.backend.database.notifications
 import app.meetacy.backend.database.types.DatabaseNotification
 import app.meetacy.backend.types.*
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.meeting.IdMeeting
+import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.user.UserId
 import org.jetbrains.exposed.sql.*
@@ -16,7 +16,7 @@ class NotificationsTable(private val db: Database) : Table() {
     private val NOTIFICATION_ID = long("NOTIFICATION_ID")
     private val OWNER_ID = long("OWNER_ID")
     private val TYPE = enumeration("TYPE", DatabaseNotification.Type::class)
-    private val DATE = varchar("DATE", length = DATA_MAX_LIMIT)
+    private val DATE = varchar("DATE", length = DATE_MAX_LIMIT)
     private val INVITER_ID = long("INVITER_ID").nullable()
     private val SUBSCRIBED_ID = long("SUBSCRIBED_ID").nullable().default(null)
     private val INVITED_MEETING_ID = long("INVITED_MEETING_ID").nullable().default(null)
@@ -37,7 +37,7 @@ class NotificationsTable(private val db: Database) : Table() {
                     statement[DATE] = date.iso8601
                     statement[INVITER_ID] = inviterId?.long
                     statement[SUBSCRIBED_ID] = subscriberId?.long
-                    statement[INVITED_MEETING_ID] = invitedIdMeeting?.long
+                    statement[INVITED_MEETING_ID] = invitedMeetingId?.long
                 }
             }
         }
@@ -63,7 +63,7 @@ class NotificationsTable(private val db: Database) : Table() {
                         Date(it[DATE]),
                         it[INVITER_ID]?.let { UserId(it) },
                         it[SUBSCRIBED_ID]?.let { UserId(it) },
-                        it[INVITED_MEETING_ID]?.let { IdMeeting(it) }
+                        it[INVITED_MEETING_ID]?.let { MeetingId(it) }
                     )
                 }
         }

@@ -4,7 +4,7 @@ import app.meetacy.backend.database.integration.meetings.participate.DatabaseVie
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.meetings.MeetingsTable
-import app.meetacy.backend.types.meeting.IdMeeting
+import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
@@ -21,7 +21,7 @@ class DatabaseGetMeetingsViewsViewMeetingsRepository(private val db: Database) :
 
 class DatabaseGetMeetingsViewsMeetingsProvider(db: Database) : GetMeetingsViewsUsecase.MeetingsProvider {
     private val meetingsTable = MeetingsTable(db)
-    override suspend fun getMeetings(idMeetings: List<IdMeeting>): List<FullMeeting?> =
-        meetingsTable.getMeetingsOrNull(idMeetings)
+    override suspend fun getMeetings(meetingIds: List<MeetingId>): List<FullMeeting?> =
+        meetingsTable.getMeetingsOrNull(meetingIds)
             .map { meeting -> meeting?.mapToUsecase() }
 }
