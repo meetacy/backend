@@ -27,7 +27,6 @@ import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
-import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
@@ -54,8 +53,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     GetUsersViewsUsecase.ViewUserRepository, AddFriendUsecase.Storage, ListFriendsUsecase.Storage,
     DeleteFriendUsecase.Storage, ListMeetingsHistoryUsecase.Storage, GetMeetingsViewsRepository,
     CreateMeetingUsecase.Storage, CreateMeetingUsecase.ViewMeetingRepository,
-    ParticipateMeetingUsecase.Storage, FilesRepository,
-    DeleteMeetingAvatarUsecase.Storage, DeleteMeetingUsecase.Storage, GetNotificationsUsecase.Storage,
+    ParticipateMeetingUsecase.Storage, FilesRepository, DeleteMeetingUsecase.Storage, GetNotificationsUsecase.Storage,
     ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, AddUserAvatarUsecase.Storage,
     DeleteUserAvatarUsecase.Storage, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
@@ -197,11 +195,6 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         fileName: String,
         inputProvider: () -> InputStream
     ): UploadFileResult {
-        TODO("Not yet implemented")
-    }
-
-
-    override suspend fun deleteAvatar(meetingId: MeetingId) {
         TODO("Not yet implemented")
     }
 
