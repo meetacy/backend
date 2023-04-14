@@ -28,6 +28,7 @@ sealed interface CreateMeetingResult {
     class Success(val meeting: Meeting) : CreateMeetingResult
     object InvalidAccessIdentity : CreateMeetingResult
     object InvalidUtf8String : CreateMeetingResult
+    object InvalidFileIdentity : CreateMeetingResult
 }
 
 interface CreateMeetingRepository {
@@ -41,5 +42,6 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
         is CreateMeetingResult.Success -> call.respondSuccess(result.meeting)
         CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
         CreateMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidTitleOrDescription)
+        CreateMeetingResult.InvalidFileIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
     }
 }

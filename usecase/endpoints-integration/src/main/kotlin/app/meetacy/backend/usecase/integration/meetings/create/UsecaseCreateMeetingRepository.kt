@@ -30,8 +30,8 @@ class UsecaseCreateMeetingRepository(
                 CreateMeetingResult.Success(result.meeting.mapToEndpoint())
             CreateMeetingUsecase.Result.InvalidUtf8String ->
                 CreateMeetingResult.InvalidUtf8String
-
-            CreateMeetingUsecase.Result.InvalidFileIdentity -> TODO()
+            CreateMeetingUsecase.Result.InvalidFileIdentity ->
+                CreateMeetingResult.InvalidFileIdentity
         }
     }
 }
