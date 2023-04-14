@@ -4,7 +4,6 @@ import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
-import app.meetacy.backend.endpoint.meetings.avatar.MeetingAvatarDependencies
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
@@ -24,8 +23,6 @@ import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailReposi
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
-import app.meetacy.backend.usecase.integration.meetings.avatar.add.UsecaseAddMeetingAvatarRepository
-import app.meetacy.backend.usecase.integration.meetings.avatar.delete.UsecaseDeleteMeetingAvatarRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
@@ -38,8 +35,6 @@ import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNot
 import app.meetacy.backend.usecase.integration.users.avatar.add.UsecaseAddUserAvatarRepository
 import app.meetacy.backend.usecase.integration.users.avatar.delete.UsecaseDeleteUserAvatarRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
-import app.meetacy.backend.usecase.meetings.avatar.add.AddMeetingAvatarUsecase
-import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
@@ -161,7 +156,8 @@ fun runTestServer(
                         authRepository = mockStorage,
                         storage = mockStorage,
                         getMeetingsViewsRepository = mockStorage,
-                        viewMeetingsRepository = mockStorage
+                        viewMeetingsRepository = mockStorage,
+                        filesRepository = mockStorage
                     )
                 )
             ),
@@ -177,7 +173,8 @@ fun runTestServer(
                     storage = mockStorage,
                     authRepository = mockStorage,
                     viewMeetingRepository = mockStorage,
-                    utf8Checker = DefaultUtf8Checker
+                    utf8Checker = DefaultUtf8Checker,
+                    filesRepository = mockStorage
                 )
             ),
             participateMeetingRepository = UsecaseParticipateMeetingRepository(
@@ -185,23 +182,6 @@ fun runTestServer(
                     authRepository = mockStorage,
                     storage = mockStorage,
                     getMeetingsViewsRepository = mockStorage
-                )
-            ),
-            addMeetingAvatarDependencies = MeetingAvatarDependencies(
-                addMeetingAvatarRepository = UsecaseAddMeetingAvatarRepository(
-                    usecase = AddMeetingAvatarUsecase(
-                        authRepository = mockStorage,
-                        filesRepository = mockStorage,
-                        getMeetingsViewsRepository = mockStorage,
-                        storage = mockStorage
-                    )
-                ),
-                deleteMeetingAvatarRepository = UsecaseDeleteMeetingAvatarRepository(
-                    usecase = DeleteMeetingAvatarUsecase(
-                        authRepository = mockStorage,
-                        getMeetingsViewsRepository = mockStorage,
-                        storage = mockStorage
-                    )
                 )
             ),
             deleteMeetingRepository = UsecaseDeleteMeetingRepository(
