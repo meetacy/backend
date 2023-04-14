@@ -415,5 +415,4 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ) {
         TODO("Not yet implemented")
     }
-
 }
