@@ -11,6 +11,7 @@ import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
@@ -26,7 +27,6 @@ import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
-import app.meetacy.backend.usecase.meetings.avatar.add.AddMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
@@ -54,7 +54,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     GetUsersViewsUsecase.ViewUserRepository, AddFriendUsecase.Storage, ListFriendsUsecase.Storage,
     DeleteFriendUsecase.Storage, ListMeetingsHistoryUsecase.Storage, GetMeetingsViewsRepository,
     CreateMeetingUsecase.Storage, CreateMeetingUsecase.ViewMeetingRepository,
-    ParticipateMeetingUsecase.Storage, FilesRepository, AddMeetingAvatarUsecase.Storage,
+    ParticipateMeetingUsecase.Storage, FilesRepository,
     DeleteMeetingAvatarUsecase.Storage, DeleteMeetingUsecase.Storage, GetNotificationsUsecase.Storage,
     ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, AddUserAvatarUsecase.Storage,
     DeleteUserAvatarUsecase.Storage, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
@@ -200,9 +200,6 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
-    override suspend fun addAvatar(meetingIdentity: MeetingIdentity, avatarIdentity: FileIdentity) {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun deleteAvatar(meetingId: MeetingId) {
         TODO("Not yet implemented")
@@ -217,14 +214,15 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         location: Location,
         title: String?,
         description: String?,
-        visibility: FullMeeting.Visibility
+        visibility: FullMeeting.Visibility,
+        avatarId: FileId?
     ): FullMeeting = synchronized(this) {
         val meeting = FullMeeting(
             identity = MeetingIdentity(
                 meetingId = MeetingId(meetings.size.toLong()),
                 accessHash = accessHash
             ),
-            creatorId, date, location, title, description, avatarIdentity = null, visibility
+            creatorId, date, location, title, description, avatarId = null, visibility
         )
         meetings += meeting
         return@synchronized meeting
@@ -259,8 +257,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             participants.count { (_, _, currentMeetingId) -> meetingId == currentMeetingId }
         }
 
-    override suspend fun viewMeeting(viewer: UserId, meeting: FullMeeting): MeetingView {
-        return viewMeetingUsecase.viewMeetings(viewer, listOf(meeting)).first()
+    override suspend fun viewMeeting(viewer: UserId, avatarAccessHash: AccessHash?, meeting: FullMeeting): MeetingView {
+        return viewMeetingUsecase.viewMeetings(viewer, listOf(avatarAccessHash), listOf(meeting)).first()
     }
 
     override suspend fun deleteMeeting(meetingId: MeetingId) {
@@ -291,9 +289,18 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
+    override suspend fun getFileIdentity(fileId: FileId): FileIdentity? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getFileIdentityList(fileIdList: List<FileId?>): List<FileIdentity?> {
+        TODO("Not yet implemented")
+    }
+
     private val getMeetingViewsUsecase = GetMeetingsViewsUsecase(
         viewMeetingsRepository = this,
-        meetingsProvider = this
+        meetingsProvider = this,
+        filesRepository = this
     )
 
     override suspend fun getMeetingsViewsOrNull(viewerId: UserId, meetingIds: List<MeetingId>): List<MeetingView?> {
@@ -307,8 +314,12 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }
         }
 
-    override suspend fun viewMeetings(viewerId: UserId, meetings: List<FullMeeting>): List<MeetingView> {
-        return viewMeetingUsecase.viewMeetings(viewerId, meetings)
+    override suspend fun viewMeetings(
+        viewerId: UserId,
+        avatarAccessHashList: List<AccessHash?>,
+        meetings: List<FullMeeting>
+    ): List<MeetingView> {
+        return viewMeetingUsecase.viewMeetings(viewerId, avatarAccessHashList, meetings)
     }
 
     override suspend fun addAvatar(accessIdentity: AccessIdentity, avatarIdentity: FileIdentity) {
@@ -402,7 +413,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     override suspend fun editMeeting(
         meetingId: MeetingId,
-        avatarId: Optional<Any?>,
+        avatarId: Optional<FileId?>,
         title: String?,
         description: String?,
         location: Location?,
@@ -411,4 +422,5 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ) {
         TODO("Not yet implemented")
     }
+
 }

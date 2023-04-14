@@ -264,53 +264,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
-  /meetings/avatar/add:
+  /meetings/edit:
     post:
-      summary: Adding meetings avatar
+      summary: Edit parameters in meeting
       tags:
         - meetings
-      description: "Adding a meeting avatar via an fileId and meetingId"
+      description: "Edit avatar, title, description etc"
       requestBody:
-        description: response with an token
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MeetingAvatarAddRequest'
+              $ref: '#/components/schemas/EditMeetingRequest'
       responses:
         "200":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusTrueResponse'
-        "400":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvalidResponse'
-              examples:
-                InvalidIdentity:
-                  $ref: '#/components/examples/InvalidToken'
-                MeetingNotFound:
-                  $ref: '#/components/examples/InvalidMeetingId'
-                InvalidMeetingFileId:
-                  $ref: '#/components/examples/InvalidFileId'
-  /meetings/avatar/delete:
-    post:
-      summary: Removal meetings avatar
-      tags:
-        - meetings
-      description: "Removal a meeting avatar via an fileId and meetingId"
-      requestBody:
-        description: response with an token
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccessMeetingIdRequest'
-      responses:
-        "200":
-          description: An example of a successful generated response with an token
+          description: ""
           content:
             application/json:
               schema:
@@ -324,8 +291,14 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
-                MeetingNotFound:
-                  $ref: '#/components/examples/InvalidMeetingId'
+                InvalidUtf8String:
+                  $ref: '#/components/examples/InvalidNickname'
+                InvalidAvatarIdentity:
+                  $ref: '#/components/examples/InvalidFileId'
+                InvalidMeetingId:
+                  $ref:  '#/components/examples/InvalidMeetingId'
+                NullEditParameters:
+                  $ref: '#/components/examples/NullEditParameters'
   /meetings/create:
     post:
       summary: Creating a meeting
@@ -617,6 +590,11 @@ components:
         status: false
         errorCode: 6
         errorMessage: "Please provide a valid nickname"
+    NullEditParameters:
+      value:
+        status: false
+        errorCode: 14
+        errorMessage: "Specify at least one meeting edit parameter"
     InvalidTitleOrDescription:
       value:
         status: false
@@ -865,24 +843,43 @@ components:
         - "location"
         - "visibility"
       additionalProperties: false
-    MeetingAvatarAddRequest:
+    EditMeetingRequest:
       type: "object"
       properties:
-        token:
+        "token":
           type: string
-          enum:
+          example:
             - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
-        meetingId:
+        "meetingId":
           type: string
-          enum:
+          example:
             - "8:wtzbOPJqX8SVCDQj4UMavNoKJId5UylyL4GRZAkacc2PcGnyu8TCqZCLYvFnG4kb75HOVz6TIeRxXbarsdQZBdrB1rDbHSGD7yCW0EOTbRhxs5qRGncOjG5DmTrAULbWlWMiUkt2RiDRNTkoGJunQgtP63FEZ1MrYJPPdyX1Qn3xpIW6joZZ5p2XahuGGAE13UceQYz6bWO5ZWSJiWjwrA0xOvqf6ad0FHuEXcQaWbJBbBfEA9oGm4KsDHfnkvCT"
-        fileId:
+        "avatarId":
+          type: string
+          example:
+            - "6:27nUexdZbK0BEn9M48Db9SFP6XTd2O6sjQeX5wsfECftnkVDZ0pP0jYGev23GBGHlQu7RsNk9t8SrO3jOZaiQXbVN22IU5o3TeChCZ2qjgZlOT9owypOBbusAJu16TN0YzIsMtzlgspjOyd5lZzV4LL47QLwcc6b7Z6Uuw0Pkz8IMaCCNdlBBvDaRwsQLqQBLkomRjFOye5owLalAguUHxnjJVSquzDjsljqLwprTPfFGSCGQuqh4JUtWtjUsaWi"
+        "title":
+          type: string
+          example:
+            - "Meet on the Elbe"
+        "description":
+          type: string
+          example:
+            - "Thematic meeting of like-minded people on the Elbe"
+        "date":
+          type: string
+          example:
+            - 20232402T100000+0300
+        "location":
+          $ref: '#/components/schemas/Location'
+        "visibility":
           type: string
           enum:
-            - "6:27nUexdZbK0BEn9M48Db9SFP6XTd2O6sjQeX5wsfECftnkVDZ0pP0jYGev23GBGHlQu7RsNk9t8SrO3jOZaiQXbVN22IU5o3TeChCZ2qjgZlOT9owypOBbusAJu16TN0YzIsMtzlgspjOyd5lZzV4LL47QLwcc6b7Z6Uuw0Pkz8IMaCCNdlBBvDaRwsQLqQBLkomRjFOye5owLalAguUHxnjJVSquzDjsljqLwprTPfFGSCGQuqh4JUtWtjUsaWi"
+            - "public"
+            - "private"
       required:
         - "token"
-        - "fileId"
+        - "meetingId"
       additionalProperties: false
     InvalidResponse:
       type: object
@@ -1081,7 +1078,7 @@ components:
         emailVerified:
           type: boolean
           example: true
-        avatarIdentity:
+        avatarId:
           type: string
       required:
         - id

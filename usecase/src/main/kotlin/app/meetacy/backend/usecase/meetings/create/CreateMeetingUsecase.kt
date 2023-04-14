@@ -3,6 +3,8 @@ package app.meetacy.backend.usecase.meetings.create
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
@@ -12,6 +14,7 @@ class CreateMeetingUsecase(
     private val hashGenerator: HashGenerator,
     private val storage: Storage,
     private val authRepository: AuthRepository,
+    private val filesRepository: FilesRepository,
     private val viewMeetingRepository: ViewMeetingRepository,
     private val utf8Checker: Utf8Checker
 ) {
@@ -20,26 +23,31 @@ class CreateMeetingUsecase(
         class Success(val meeting: MeetingView) : Result
         object TokenInvalid : Result
         object InvalidUtf8String : Result
+        object InvalidFileIdentity : Result
     }
 
     suspend fun createMeeting(
-        accessIdentity: AccessIdentity,
+        token: AccessIdentity,
         title: String?,
         description: String?,
         date: Date,
         location: Location,
-        visibility: FullMeeting.Visibility
+        visibility: FullMeeting.Visibility,
+        avatarIdentity: FileIdentity?
     ): Result {
         if (title != null) if (!utf8Checker.checkString(title)) return Result.InvalidUtf8String
         if (description != null) if (!utf8Checker.checkString(description)) return Result.InvalidUtf8String
+        if (avatarIdentity != null && !filesRepository.checkFile(avatarIdentity)) {
+            return Result.InvalidFileIdentity
+        }
 
-        val creatorId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
+        val creatorId = authRepository.authorizeWithUserId(token) { return Result.TokenInvalid }
 
         val accessHash = AccessHash(hashGenerator.generate())
 
-        val fullMeeting = storage.addMeeting(accessHash, creatorId, date, location, title, description, visibility)
+        val fullMeeting = storage.addMeeting(accessHash, creatorId, date, location, title, description, visibility, avatarIdentity?.id)
         storage.addParticipant(creatorId, fullMeeting.id)
-        val meetingView = viewMeetingRepository.viewMeeting(creatorId, fullMeeting)
+        val meetingView = viewMeetingRepository.viewMeeting(creatorId, avatarIdentity?.accessHash, fullMeeting)
 
         return Result.Success(meetingView)
     }
@@ -52,12 +60,13 @@ class CreateMeetingUsecase(
             location: Location,
             title: String?,
             description: String?,
-            visibility: FullMeeting.Visibility
+            visibility: FullMeeting.Visibility,
+            avatarId: FileId?
         ): FullMeeting
 
         suspend fun addParticipant(participantId: UserId, meetingId: MeetingId)
     }
     interface ViewMeetingRepository {
-        suspend fun viewMeeting(viewer: UserId, meeting: FullMeeting): MeetingView
+        suspend fun viewMeeting(viewer: UserId, avatarAccessHash: AccessHash?, meeting: FullMeeting): MeetingView
     }
 }

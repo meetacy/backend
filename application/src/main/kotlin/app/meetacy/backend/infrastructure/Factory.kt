@@ -8,8 +8,6 @@ import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
 import app.meetacy.backend.database.integration.friends.add.DatabaseAddFriendStorage
 import app.meetacy.backend.database.integration.friends.delete.DatabaseDeleteFriendStorage
 import app.meetacy.backend.database.integration.friends.get.DatabaseGetFriendsStorage
-import app.meetacy.backend.database.integration.meetings.avatar.add.DatabaseAddMeetingAvatarStorage
-import app.meetacy.backend.database.integration.meetings.avatar.delete.DatabaseDeleteMeetingAvatarStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
 import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMeetingStorage
@@ -32,7 +30,6 @@ import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
-import app.meetacy.backend.endpoint.meetings.avatar.MeetingAvatarDependencies
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
@@ -54,8 +51,6 @@ import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
-import app.meetacy.backend.usecase.integration.meetings.avatar.add.UsecaseAddMeetingAvatarRepository
-import app.meetacy.backend.usecase.integration.meetings.avatar.delete.UsecaseDeleteMeetingAvatarRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
@@ -68,8 +63,6 @@ import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNot
 import app.meetacy.backend.usecase.integration.users.avatar.add.UsecaseAddUserAvatarRepository
 import app.meetacy.backend.usecase.integration.users.avatar.delete.UsecaseDeleteUserAvatarRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
-import app.meetacy.backend.usecase.meetings.avatar.add.AddMeetingAvatarUsecase
-import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
@@ -187,7 +180,8 @@ fun startEndpoints(
                         authRepository = authRepository,
                         storage = DatabaseListMeetingsMapListStorage(db),
                         getMeetingsViewsRepository = getMeetingsViewsRepository,
-                        viewMeetingsRepository = viewMeetingsRepository
+                        viewMeetingsRepository = viewMeetingsRepository,
+                        filesRepository = filesRepository
                     )
                 )
             ),
@@ -197,7 +191,8 @@ fun startEndpoints(
                     storage = DatabaseCreateMeetingStorage(db),
                     authRepository = authRepository,
                     viewMeetingRepository = DatabaseCreateMeetingViewMeetingRepository(db),
-                    utf8Checker = DefaultUtf8Checker
+                    utf8Checker = DefaultUtf8Checker,
+                    filesRepository = filesRepository
                 )
             ),
             getMeetingRepository = UsecaseGetMeetingRepository(
@@ -211,23 +206,6 @@ fun startEndpoints(
                     authRepository = authRepository,
                     storage = DatabaseParticipateMeetingStorage(db),
                     getMeetingsViewsRepository = getMeetingsViewsRepository
-                )
-            ),
-            addMeetingAvatarDependencies = MeetingAvatarDependencies(
-                addMeetingAvatarRepository = UsecaseAddMeetingAvatarRepository(
-                    usecase = AddMeetingAvatarUsecase(
-                        authRepository = authRepository,
-                        filesRepository = filesRepository,
-                        storage = DatabaseAddMeetingAvatarStorage(db),
-                        getMeetingsViewsRepository = getMeetingsViewsRepository
-                    )
-                ),
-                deleteMeetingAvatarRepository = UsecaseDeleteMeetingAvatarRepository(
-                    usecase = DeleteMeetingAvatarUsecase(
-                        authRepository = authRepository,
-                        storage = DatabaseDeleteMeetingAvatarStorage(db),
-                        getMeetingsViewsRepository = getMeetingsViewsRepository
-                    )
                 )
             ),
             deleteMeetingRepository = UsecaseDeleteMeetingRepository(

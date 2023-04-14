@@ -17,6 +17,7 @@ class ListMeetingsMapUsecase(
     private val authRepository: AuthRepository,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository,
     private val viewMeetingsRepository: ViewMeetingsRepository,
+    private val filesRepository: FilesRepository,
     private val storage: Storage
 ) {
     suspend fun getMeetingsList(
@@ -45,13 +46,17 @@ class ListMeetingsMapUsecase(
             .take(participatingMeetingsLimit.int)
             .toList()
 
+
         val public = storage.getPublicMeetingsFlow()
             .filter { meeting ->
                 meeting.location.measureDistance(location) <= 50.kilometers
             }
             .filter { meeting -> meeting.date.javaLocalDate >= now }
             .chunked(chunkSize.int) { meetings ->
-                viewMeetingsRepository.viewMeetings(userId, meetings)
+                viewMeetingsRepository.viewMeetings(
+                    userId,
+                    filesRepository.getFileIdentityList(meetings.map { it.avatarId }).map { it?.accessHash },
+                    meetings)
             }
             .transform { list -> emitAll(list.asFlow()) }
             .take(publicMeetingsLimit.int)

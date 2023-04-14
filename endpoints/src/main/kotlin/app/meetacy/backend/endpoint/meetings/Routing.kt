@@ -1,7 +1,5 @@
 package app.meetacy.backend.endpoint.meetings
 
-import app.meetacy.backend.endpoint.meetings.avatar.MeetingAvatarDependencies
-import app.meetacy.backend.endpoint.meetings.avatar.avatar
 import app.meetacy.backend.endpoint.meetings.create.CreateMeetingRepository
 import app.meetacy.backend.endpoint.meetings.create.createMeeting
 import app.meetacy.backend.endpoint.meetings.delete.DeleteMeetingRepository
@@ -24,7 +22,6 @@ class MeetingsDependencies(
     val getMeetingRepository: GetMeetingRepository,
     val createMeetingRepository: CreateMeetingRepository,
     val participateMeetingRepository: ParticipateMeetingRepository,
-    val addMeetingAvatarDependencies: MeetingAvatarDependencies,
     val deleteMeetingRepository: DeleteMeetingRepository,
     val editMeetingRepository: EditMeetingRepository
 )
@@ -38,6 +35,5 @@ fun Route.meetings(
     deleteMeeting(dependencies.deleteMeetingRepository)
     getMeetings(dependencies.getMeetingRepository)
     participateMeeting(dependencies.participateMeetingRepository)
-    avatar(dependencies.addMeetingAvatarDependencies)
     editMeeting(dependencies.editMeetingRepository)
 }

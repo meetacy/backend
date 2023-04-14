@@ -1,10 +1,15 @@
 package app.meetacy.backend.usecase.meetings.get
 
+import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.amount.amount
+import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.types.amount.amount
-import app.meetacy.backend.usecase.types.*
+import app.meetacy.backend.usecase.types.FullMeeting
+import app.meetacy.backend.usecase.types.GetUsersViewsRepository
+import app.meetacy.backend.usecase.types.MeetingView
+import app.meetacy.backend.usecase.types.getUsersViews
 
 class ViewMeetingsUsecase(
     private val getUsersViewsRepository: GetUsersViewsRepository,
@@ -12,6 +17,7 @@ class ViewMeetingsUsecase(
 ) {
     suspend fun viewMeetings(
         viewerId: UserId,
+        avatarAccessHashList: List<AccessHash?>,
         meetings: List<FullMeeting>,
         randomParticipantsAmount: Amount = 5.amount
     ): List<MeetingView> {
@@ -21,6 +27,9 @@ class ViewMeetingsUsecase(
         val creators = getUsersViewsRepository
             .getUsersViews(viewerId, creatorIds)
             .iterator()
+
+        val avatarHashIterator = avatarAccessHashList
+            .listIterator()
 
         val meetingIds = meetings
             .map { meeting -> meeting.id }
@@ -49,6 +58,7 @@ class ViewMeetingsUsecase(
 
         return meetings.map { meeting ->
             return@map with (meeting) {
+                val avatarAccessHash = avatarHashIterator.next()
                 MeetingView(
                     identity = identity,
                     creator = creators.next(),
@@ -59,7 +69,7 @@ class ViewMeetingsUsecase(
                     participantsCount = participantsCount.next(),
                     previewParticipants = randomParticipants.next(),
                     isParticipating = participation.next(),
-                    avatarIdentity = avatarIdentity,
+                    avatarIdentity = if (avatarId != null && avatarAccessHash != null) FileIdentity(avatarId, avatarAccessHash) else null,
                     visibility = when (visibility) {
                         FullMeeting.Visibility.Public -> MeetingView.Visibility.Public
                         FullMeeting.Visibility.Private -> MeetingView.Visibility.Private

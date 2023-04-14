@@ -1,15 +1,15 @@
 package app.meetacy.backend.usecase.meetings.edit
 
+import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.ifPresent
 import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.map
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
-import app.meetacy.backend.types.Optional
-import app.meetacy.backend.types.file.FileId
-import app.meetacy.backend.types.ifPresent
-import app.meetacy.backend.types.map
 import app.meetacy.backend.usecase.types.*
 
 class EditMeetingUsecase(
@@ -44,9 +44,7 @@ class EditMeetingUsecase(
 
         avatarIdentityOptional.ifPresent { avatarIdentity ->
             avatarIdentity ?: return@ifPresent
-            if (!filesRepository.checkFile(avatarIdentity)) {
-                return Result.InvalidAvatarIdentity
-            }
+            filesRepository.checkFile(avatarIdentity) { return Result.InvalidAvatarIdentity}
         }
 
         val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }

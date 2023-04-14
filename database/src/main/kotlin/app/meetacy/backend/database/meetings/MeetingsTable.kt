@@ -8,7 +8,6 @@ import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
-import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
@@ -46,7 +45,8 @@ class MeetingsTable(private val db: Database) : Table() {
         location: Location,
         title: String?,
         description: String?,
-        visibility: DatabaseMeeting.Visibility
+        visibility: DatabaseMeeting.Visibility,
+        avatarId: FileId?
     ): MeetingId =
         newSuspendedTransaction(db = db) {
             val meetingId = insert { statement ->
@@ -58,6 +58,7 @@ class MeetingsTable(private val db: Database) : Table() {
                 statement[TITLE] = title
                 statement[DESCRIPTION] = description
                 statement[VISIBILITY] = visibility
+                if (avatarId != null) statement[AVATAR_ID] = avatarId.long
             }[MEETING_ID]
             return@newSuspendedTransaction MeetingId(meetingId)
         }
