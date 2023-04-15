@@ -156,8 +156,7 @@ fun runTestServer(
                         authRepository = mockStorage,
                         storage = mockStorage,
                         getMeetingsViewsRepository = mockStorage,
-                        viewMeetingsRepository = mockStorage,
-                        filesRepository = mockStorage
+                        viewMeetingsRepository = mockStorage
                     )
                 )
             ),
