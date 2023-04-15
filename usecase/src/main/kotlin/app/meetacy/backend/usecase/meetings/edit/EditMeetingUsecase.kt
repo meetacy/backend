@@ -44,7 +44,7 @@ class EditMeetingUsecase(
 
         avatarIdentityOptional.ifPresent { avatarIdentity ->
             avatarIdentity ?: return@ifPresent
-            filesRepository.checkFile(avatarIdentity) { return Result.InvalidAvatarIdentity}
+            filesRepository.checkFile(avatarIdentity) { return Result.InvalidAvatarIdentity }
         }
 
         val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }

@@ -38,7 +38,7 @@ import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecas
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.types.*
-import app.meetacy.backend.usecase.users.ViewUserUsecase
+import app.meetacy.backend.usecase.users.get.ViewUserUsecase
 import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
 import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
 import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase

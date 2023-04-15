@@ -49,6 +49,6 @@ fun Route.editMeeting(editMeetingRepository: EditMeetingRepository) = post("/edi
         EditMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidTitleOrDescription)
         EditMeetingResult.InvalidAvatarIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
         EditMeetingResult.InvalidMeetingId -> call.respondFailure(Failure.InvalidMeetingIdentity)
-        EditMeetingResult.NullEditParameters -> call.respondFailure(Failure.NullEditMeetingParams)
+        EditMeetingResult.NullEditParameters -> call.respondFailure(Failure.NullEditParams)
     }
 }

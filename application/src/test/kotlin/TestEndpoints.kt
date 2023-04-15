@@ -241,7 +241,8 @@ fun runTestServer(
                         storage = mockStorage
                     )
                 )
-            )
+            ),
+            editUserRepository = TODO()
         )
     )
     block()

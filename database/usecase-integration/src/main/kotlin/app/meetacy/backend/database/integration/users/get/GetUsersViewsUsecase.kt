@@ -6,7 +6,7 @@ import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.FullUser
 import app.meetacy.backend.usecase.types.UserView
 import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
-import app.meetacy.backend.usecase.users.ViewUserUsecase
+import app.meetacy.backend.usecase.users.get.ViewUserUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseGetUsersViewsStorage(db: Database) : GetUsersViewsUsecase.Storage {

@@ -6,7 +6,7 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.types.HashGenerator
-import app.meetacy.backend.usecase.users.CreateUserUsecase
+import app.meetacy.backend.usecase.auth.CreateUserUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseGenerateTokenStorage(hashGenerator: HashGenerator, db: Database) : GenerateTokenUsecase.Storage {

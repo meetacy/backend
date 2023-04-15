@@ -139,7 +139,8 @@ fun startEndpoints(
                         storage = DatabaseDeleteUserAvatarStorage(db)
                     )
                 )
-            )
+            ),
+            editUserRepository = TODO()
         ),
         friendsDependencies = FriendsDependencies(
             addFriendRepository = UsecaseAddFriendRepository(
