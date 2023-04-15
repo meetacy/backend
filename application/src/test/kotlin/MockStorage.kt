@@ -223,7 +223,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     private val viewMeetingUsecase = ViewMeetingsUsecase(
         getUsersViewsRepository = this,
-        storage = this
+        storage = this,
+        filesRepository = this
     )
 
     override suspend fun getIsParticipates(
@@ -250,8 +251,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             participants.count { (_, _, currentMeetingId) -> meetingId == currentMeetingId }
         }
 
-    override suspend fun viewMeeting(viewer: UserId, avatarAccessHash: AccessHash?, meeting: FullMeeting): MeetingView {
-        return viewMeetingUsecase.viewMeetings(viewer, listOf(avatarAccessHash), listOf(meeting)).first()
+    override suspend fun viewMeeting(viewer: UserId, meeting: FullMeeting): MeetingView {
+        return viewMeetingUsecase.viewMeetings(viewer, listOf(meeting)).first()
     }
 
     override suspend fun deleteMeeting(meetingId: MeetingId) {
@@ -292,8 +293,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     private val getMeetingViewsUsecase = GetMeetingsViewsUsecase(
         viewMeetingsRepository = this,
-        meetingsProvider = this,
-        filesRepository = this
+        meetingsProvider = this
     )
 
     override suspend fun getMeetingsViewsOrNull(viewerId: UserId, meetingIds: List<MeetingId>): List<MeetingView?> {
@@ -309,10 +309,9 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     override suspend fun viewMeetings(
         viewerId: UserId,
-        avatarAccessHashList: List<AccessHash?>,
         meetings: List<FullMeeting>
     ): List<MeetingView> {
-        return viewMeetingUsecase.viewMeetings(viewerId, avatarAccessHashList, meetings)
+        return viewMeetingUsecase.viewMeetings(viewerId, meetings)
     }
 
     override suspend fun addAvatar(accessIdentity: AccessIdentity, avatarIdentity: FileIdentity) {

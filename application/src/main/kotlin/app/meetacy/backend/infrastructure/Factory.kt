@@ -180,8 +180,7 @@ fun startEndpoints(
                         authRepository = authRepository,
                         storage = DatabaseListMeetingsMapListStorage(db),
                         getMeetingsViewsRepository = getMeetingsViewsRepository,
-                        viewMeetingsRepository = viewMeetingsRepository,
-                        filesRepository = filesRepository
+                        viewMeetingsRepository = viewMeetingsRepository
                     )
                 )
             ),

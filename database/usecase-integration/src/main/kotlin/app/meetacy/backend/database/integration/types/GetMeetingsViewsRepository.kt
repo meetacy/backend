@@ -13,7 +13,6 @@ class DatabaseGetMeetingsViewsRepository(private val db: Database) : GetMeetings
     override suspend fun getMeetingsViewsOrNull(viewerId: UserId, meetingIds: List<MeetingId>): List<MeetingView?> =
         GetMeetingsViewsUsecase(
             viewMeetingsRepository = DatabaseGetMeetingsViewsViewMeetingsRepository(db),
-            meetingsProvider = DatabaseGetMeetingsViewsMeetingsProvider(db),
-            filesRepository = DatabaseFilesRepository(db)
+            meetingsProvider = DatabaseGetMeetingsViewsMeetingsProvider(db)
         ).getMeetingsViewsOrNull(viewerId, meetingIds)
 }

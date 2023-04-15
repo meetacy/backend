@@ -47,7 +47,7 @@ class CreateMeetingUsecase(
 
         val fullMeeting = storage.addMeeting(accessHash, creatorId, date, location, title, description, visibility, avatarIdentity?.id)
         storage.addParticipant(creatorId, fullMeeting.id)
-        val meetingView = viewMeetingRepository.viewMeeting(creatorId, avatarIdentity?.accessHash, fullMeeting)
+        val meetingView = viewMeetingRepository.viewMeeting(creatorId, fullMeeting)
 
         return Result.Success(meetingView)
     }
@@ -67,6 +67,6 @@ class CreateMeetingUsecase(
         suspend fun addParticipant(participantId: UserId, meetingId: MeetingId)
     }
     interface ViewMeetingRepository {
-        suspend fun viewMeeting(viewer: UserId, avatarAccessHash: AccessHash?, meeting: FullMeeting): MeetingView
+        suspend fun viewMeeting(viewer: UserId, meeting: FullMeeting): MeetingView
     }
 }

@@ -1,10 +1,10 @@
 package app.meetacy.backend.database.integration.meetings.get
 
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseViewMeetingsUsecaseStorage
+import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.meetings.MeetingsTable
-import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
@@ -15,9 +15,9 @@ import app.meetacy.backend.usecase.types.ViewMeetingsRepository
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseGetMeetingsViewsViewMeetingsRepository(private val db: Database) : ViewMeetingsRepository {
-    override suspend fun viewMeetings(viewerId: UserId, avatarAccessHashList: List<AccessHash?>, meetings: List<FullMeeting>): List<MeetingView> =
-        ViewMeetingsUsecase(DatabaseGetUsersViewsRepository(db), DatabaseViewMeetingsUsecaseStorage(db))
-            .viewMeetings(viewerId, avatarAccessHashList, meetings)
+    override suspend fun viewMeetings(viewerId: UserId, meetings: List<FullMeeting>): List<MeetingView> =
+        ViewMeetingsUsecase(DatabaseGetUsersViewsRepository(db), DatabaseFilesRepository(db), DatabaseViewMeetingsUsecaseStorage(db))
+            .viewMeetings(viewerId, meetings)
 }
 
 class DatabaseGetMeetingsViewsMeetingsProvider(db: Database) : GetMeetingsViewsUsecase.MeetingsProvider {

@@ -17,7 +17,6 @@ class ListMeetingsMapUsecase(
     private val authRepository: AuthRepository,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository,
     private val viewMeetingsRepository: ViewMeetingsRepository,
-    private val filesRepository: FilesRepository,
     private val storage: Storage
 ) {
     suspend fun getMeetingsList(
@@ -55,7 +54,6 @@ class ListMeetingsMapUsecase(
             .chunked(chunkSize.int) { meetings ->
                 viewMeetingsRepository.viewMeetings(
                     userId,
-                    filesRepository.getFileIdentityList(meetings.map { it.avatarId }).map { it?.accessHash },
                     meetings)
             }
             .transform { list -> emitAll(list.asFlow()) }

@@ -1,6 +1,7 @@
 package app.meetacy.backend.database.integration.meetings.create
 
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseViewMeetingsUsecaseStorage
+import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.database.integration.types.mapToDatabase
 import app.meetacy.backend.database.meetings.MeetingsTable
@@ -18,7 +19,7 @@ import app.meetacy.backend.usecase.types.FullMeeting
 import app.meetacy.backend.usecase.types.MeetingView
 import org.jetbrains.exposed.sql.Database
 
-class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsecase.Storage {
+class DatabaseCreateMeetingStorage(db: Database) : CreateMeetingUsecase.Storage {
     private val meetingsTable = MeetingsTable(db)
     private val participantsTable = ParticipantsTable(db)
     override suspend fun addMeeting(
@@ -61,8 +62,7 @@ class DatabaseCreateMeetingStorage(private val db: Database) : CreateMeetingUsec
 class DatabaseCreateMeetingViewMeetingRepository(private val db: Database) : CreateMeetingUsecase.ViewMeetingRepository {
     override suspend fun viewMeeting(
         viewer: UserId,
-        avatarAccessHash: AccessHash?,
         meeting: FullMeeting
-    ): MeetingView = ViewMeetingsUsecase(DatabaseGetUsersViewsRepository(db), DatabaseViewMeetingsUsecaseStorage(db))
-        .viewMeetings(viewer, avatarAccessHashList = listOf(avatarAccessHash), meetings = listOf(meeting)).first()
+    ): MeetingView = ViewMeetingsUsecase(DatabaseGetUsersViewsRepository(db), DatabaseFilesRepository(db), DatabaseViewMeetingsUsecaseStorage(db))
+        .viewMeetings(viewer, meetings = listOf(meeting)).first()
 }
