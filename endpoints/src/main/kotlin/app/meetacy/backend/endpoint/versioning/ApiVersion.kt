@@ -1,6 +1,11 @@
 package app.meetacy.backend.endpoint.versioning
 
-object ApiVersion {
-    // First versioning was implemented
-    const val INIT = 0
+@JvmInline
+value class ApiVersion(val int: Int) {
+    companion object {
+        const val Header = "Api-Version"
+
+        // First versioning was implemented
+        val VersioningFeature = ApiVersion(0)
+    }
 }
