@@ -1,8 +1,12 @@
+@file:Suppress("DANGEROUS_CHARACTERS")
+
+import app.meetacy.sdk.exception.MeetacyInternalException
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.datetime.meetacyDate
 import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.meeting.Meeting
+import app.meetacy.sdk.types.meeting.MeetingId
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import org.junit.jupiter.api.Test
@@ -148,5 +152,50 @@ class TestMeetings {
 
         // Check that nothing happened to the first
         require(first.meetings.map.list(firstLocation).size == 1)
+    }
+
+    @Test
+    fun `get meeting test`() = runTestServer {
+        val self = generateTestAccount()
+        val other = generateTestAccount()
+
+        val selfMeeting = self.meetings.create(
+            title = "Alex Sokol",
+            date = Date.today(),
+            location = Location.NullIsland
+        ).data
+
+        val selfCheck = self.meetings.get(selfMeeting.id).data
+        require(selfCheck == selfMeeting)
+        val otherCheck = other.meetings.get(selfMeeting.id).data
+        require(otherCheck.id == selfMeeting.id)
+
+        val (id) = selfMeeting.id.string.split(':')
+
+        // self not allowed check
+
+        val selfException = try {
+            self.meetings.get(
+                MeetingId(
+                    "$id:0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                )
+            )
+            null
+        } catch (exception: MeetacyInternalException) {
+            exception
+        }
+        require(selfException is MeetacyInternalException)
+
+        val otherException = try {
+            other.meetings.get(
+                MeetingId(
+                    "$id:0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+                )
+            )
+            null
+        } catch (exception: MeetacyInternalException) {
+            exception
+        }
+        require(otherException is MeetacyInternalException)
     }
 }
