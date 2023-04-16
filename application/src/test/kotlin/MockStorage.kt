@@ -38,9 +38,7 @@ import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecas
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.types.*
-import app.meetacy.backend.usecase.users.get.ViewUserUsecase
-import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
-import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
+import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -54,10 +52,9 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     DeleteFriendUsecase.Storage, ListMeetingsHistoryUsecase.Storage, GetMeetingsViewsRepository,
     CreateMeetingUsecase.Storage, CreateMeetingUsecase.ViewMeetingRepository,
     ParticipateMeetingUsecase.Storage, FilesRepository, DeleteMeetingUsecase.Storage, GetNotificationsUsecase.Storage,
-    ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, AddUserAvatarUsecase.Storage,
-    DeleteUserAvatarUsecase.Storage, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
+    ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
-    ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage {
+    ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -157,16 +154,16 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }.map { user ->
                 if (user == null) return@map null
                 with(user) {
-                    FullUser(identity, nickname, email, emailVerified, avatarIdentity)
+                    FullUser(identity, nickname, email, emailVerified, avatarIdentity?.id)
                 }
             }
         }
 
-    private val viewUserUsecase = ViewUserUsecase()
-
-    override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView {
-        return viewUserUsecase.viewUser(viewerId, user)
-    }
+//    private val viewUserUsecase = TODO()
+//
+//    override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView {
+//        return viewUserUsecase.viewUser(viewerId, user)
+//    }
 
     private val friendRelations = mutableListOf<Triple<PagingId, UserId, UserId>>()
 
@@ -283,7 +280,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
-    override suspend fun getFileIdentity(fileId: FileId): FileIdentity? {
+    override suspend fun getFileIdentity(fileId: FileId, fileAccessIdentity: FileIdentity?): FileIdentity? {
         TODO("Not yet implemented")
     }
 
@@ -312,14 +309,6 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         meetings: List<FullMeeting>
     ): List<MeetingView> {
         return viewMeetingUsecase.viewMeetings(viewerId, meetings)
-    }
-
-    override suspend fun addAvatar(accessIdentity: AccessIdentity, avatarIdentity: FileIdentity) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteAvatar(accessIdentity: AccessIdentity) {
-        TODO("Not yet implemented")
     }
 
     override suspend fun getFriends(
@@ -411,7 +400,15 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         location: Location?,
         date: Date?,
         visibility: FullMeeting.Visibility?
-    ) {
+    ): FullMeeting {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun editUser(userId: UserId, nickname: String?, avatarId: Optional<FileId?>): FullUser {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView {
         TODO("Not yet implemented")
     }
 }

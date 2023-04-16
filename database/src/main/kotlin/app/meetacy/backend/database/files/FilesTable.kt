@@ -71,10 +71,16 @@ class FilesTable(private val db: Database) : Table() {
             }.firstOrNull() != null
         }
 
-    suspend fun getFileIdentity(fileId: FileId): FileIdentity? =
+    suspend fun getFileIdentity(fileId: FileId, fileIdentity: FileIdentity? = null): FileIdentity? =
         newSuspendedTransaction(db = db) {
-            val result = select { (FILE_ID eq fileId.long) }
-                .firstOrNull() ?: return@newSuspendedTransaction null
+            val result = if (fileIdentity == null) {
+                select { (FILE_ID eq fileId.long) }
+                    .firstOrNull() ?: return@newSuspendedTransaction null
+            } else {
+                select { (FILE_ID eq fileIdentity.id.long) }
+                    .firstOrNull() ?: return@newSuspendedTransaction null
+            }
+
             return@newSuspendedTransaction FileIdentity(
                 FileId(result[FILE_ID]),
                 AccessHash(result[ACCESS_HASH])

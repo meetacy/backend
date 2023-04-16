@@ -9,7 +9,6 @@ import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.users.UsersDependencies
-import app.meetacy.backend.endpoint.users.avatar.UserAvatarDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
@@ -32,8 +31,7 @@ import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeet
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
-import app.meetacy.backend.usecase.integration.users.avatar.add.UsecaseAddUserAvatarRepository
-import app.meetacy.backend.usecase.integration.users.avatar.delete.UsecaseDeleteUserAvatarRepository
+import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
@@ -44,8 +42,7 @@ import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
-import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
-import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
+import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
@@ -195,6 +192,7 @@ fun runTestServer(
                     storage = mockStorage,
                     authRepository = mockStorage,
                     getMeetingsViewsRepository = mockStorage,
+                    viewMeetingsRepository = mockStorage,
                     filesRepository = mockStorage,
                     utf8Checker = DefaultUtf8Checker
                 )
@@ -227,22 +225,15 @@ fun runTestServer(
                     usersViewsRepository = mockStorage
                 )
             ),
-            addUserAvatarDependencies = UserAvatarDependencies(
-                addUserAvatarRepository = UsecaseAddUserAvatarRepository(
-                    usecase = AddUserAvatarUsecase(
-                        authRepository = mockStorage,
-                        filesRepository = mockStorage,
-                        storage = mockStorage
-                    )
-                ),
-                deleteUserAvatarRepository = UsecaseDeleteUserAvatarRepository(
-                    usecase = DeleteUserAvatarUsecase(
-                        authRepository = mockStorage,
-                        storage = mockStorage
-                    )
+
+            editUserRepository = UsecaseEditUserRepository(
+                usecase = EditUserUsecase(
+                    storage = mockStorage,
+                    authRepository = mockStorage,
+                    filesRepository = mockStorage,
+                    utf8Checker = DefaultUtf8Checker
                 )
-            ),
-            editUserRepository = TODO()
+            )
         )
     )
     block()

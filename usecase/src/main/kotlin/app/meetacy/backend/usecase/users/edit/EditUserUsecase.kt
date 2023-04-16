@@ -17,7 +17,7 @@ class EditUserUsecase(
 ) {
 
     sealed interface Result {
-        class Success(val user: FullUser) : Result
+        class Success(val user: UserView) : Result
         object InvalidAccessIdentity : Result
         object InvalidUtf8String : Result
         object NullEditParameters : Result
@@ -31,10 +31,10 @@ class EditUserUsecase(
     ): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
         if (nickname != null) if (!utf8Checker.checkString(nickname)) return Result.InvalidUtf8String
-
+        var avatarAccessIdentity: FileIdentity? = null
         avatarIdentityOptional.ifPresent { avatarIdentity ->
             avatarIdentity ?: return@ifPresent
-            filesRepository.checkFile(avatarIdentity) { return Result.InvalidAvatarIdentity }
+            avatarAccessIdentity = filesRepository.getFileIdentity(avatarIdentity.id, avatarIdentity) { return Result.InvalidAvatarIdentity }
         }
 
         if (listOf(nickname, avatarIdentityOptional).all { it == null }) {
@@ -42,12 +42,23 @@ class EditUserUsecase(
         }
 
 
+
+        val fullUser = storage.editUser(
+            userId,
+            nickname,
+            avatarIdentityOptional.map { it?.id }
+        )
         return Result.Success(
-            storage.editUser(
-                userId,
-                nickname,
-                avatarIdentityOptional.map { it?.id }
-            )
+            with(fullUser) {
+                UserView(
+                    true,
+                    identity,
+                    fullUser.nickname,
+                    fullUser.email,
+                    fullUser.emailVerified,
+                    avatarAccessIdentity
+                )
+            }
         )
     }
 

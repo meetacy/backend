@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class MeetingsTable(private val db: Database) : Table() {
-    private val MEETING_ID = long("ID_MEETING").autoIncrement()
+    private val MEETING_ID = long("MEETING_ID").autoIncrement()
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     private val CREATOR_ID = long("CREATOR_ID")
     private val DATE = varchar("DATE", length = DATE_MAX_LIMIT)
@@ -100,7 +100,7 @@ class MeetingsTable(private val db: Database) : Table() {
         location: Location?,
         date: Date?,
         visibility: DatabaseMeeting.Visibility?
-    ) = newSuspendedTransaction(db = db) {
+    ): DatabaseMeeting = newSuspendedTransaction(db = db) {
         update({ MEETING_ID eq meetingId.long }) { statement ->
             title?.let { statement[TITLE] = it }
             description?.let { statement[DESCRIPTION] = it }
@@ -114,6 +114,10 @@ class MeetingsTable(private val db: Database) : Table() {
                 statement[AVATAR_ID] = it?.long
             }
         }
+
+        return@newSuspendedTransaction select { MEETING_ID eq meetingId.long }
+            .first()
+            .toDatabaseMeeting()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

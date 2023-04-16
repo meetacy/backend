@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.types
 
-import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.user.UserIdentity
 
 class DatabaseUser(
@@ -8,5 +8,5 @@ class DatabaseUser(
     val nickname: String,
     val email: String? = null,
     val emailVerified: Boolean = false,
-    val avatarIdentity: FileIdentity? = null
+    val avatarId: FileId? = null
 )

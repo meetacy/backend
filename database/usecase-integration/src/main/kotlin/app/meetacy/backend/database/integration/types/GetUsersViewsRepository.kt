@@ -12,6 +12,6 @@ class DatabaseGetUsersViewsRepository(private val db: Database) : GetUsersViewsR
     override suspend fun getUsersViewsOrNull(viewerId: UserId, userIdentities: List<UserId>): List<UserView?> =
         GetUsersViewsUsecase(
             DatabaseGetUsersViewsStorage(db),
-            DatabaseGetUsersViewsViewUserRepository
+            DatabaseGetUsersViewsViewUserRepository(db)
         ).viewUsers(viewerId, userIdentities)
 }

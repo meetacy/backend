@@ -4,6 +4,7 @@ import app.meetacy.backend.endpoint.meetings.edit.EditMeetingParams
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingRepository
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingResult
 import app.meetacy.backend.types.map
+import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.integration.types.mapToFullMeeting
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 
@@ -15,7 +16,7 @@ class UsecaseEditMeetingRepository(
         editMeetingParams: EditMeetingParams
     ): EditMeetingResult = with(editMeetingParams) {
         when (
-            usecase.editMeeting(
+            val result = usecase.editMeeting(
                 token.type(),
                 meetingId.type(),
                 avatarId.type().map { fileIdentity -> fileIdentity?.type() },
@@ -36,8 +37,8 @@ class UsecaseEditMeetingRepository(
                 EditMeetingResult.InvalidUtf8String
             EditMeetingUsecase.Result.NullEditParameters ->
                 EditMeetingResult.NullEditParameters
-            EditMeetingUsecase.Result.Success ->
-                EditMeetingResult.Success
+            is EditMeetingUsecase.Result.Success ->
+                EditMeetingResult.Success(result.meeting.mapToEndpoint())
         }
     }
 }

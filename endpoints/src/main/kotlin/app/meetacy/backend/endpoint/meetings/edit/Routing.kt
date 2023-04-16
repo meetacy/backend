@@ -28,7 +28,7 @@ data class EditMeetingParams(
 )
 
 sealed interface EditMeetingResult {
-    object Success : EditMeetingResult
+    class Success(val meeting: Meeting) : EditMeetingResult
     object InvalidAccessIdentity : EditMeetingResult
     object InvalidUtf8String : EditMeetingResult
     object NullEditParameters : EditMeetingResult
@@ -43,8 +43,8 @@ interface EditMeetingRepository {
 fun Route.editMeeting(editMeetingRepository: EditMeetingRepository) = post("/edit") {
     val params = call.receive<EditMeetingParams>()
 
-    when (editMeetingRepository.editMeeting(params)) {
-        EditMeetingResult.Success -> call.respondSuccess()
+    when (val result = editMeetingRepository.editMeeting(params)) {
+        is EditMeetingResult.Success -> call.respondSuccess(result.meeting)
         EditMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
         EditMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidTitleOrDescription)
         EditMeetingResult.InvalidAvatarIdentity -> call.respondFailure(Failure.InvalidFileIdentity)

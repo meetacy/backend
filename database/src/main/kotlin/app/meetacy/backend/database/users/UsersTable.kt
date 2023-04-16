@@ -2,12 +2,10 @@
 
 package app.meetacy.backend.database.users
 
-import app.meetacy.backend.database.types.*
+import app.meetacy.backend.database.types.DatabaseUser
 import app.meetacy.backend.types.*
 import app.meetacy.backend.types.access.AccessHash
-import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.file.FileId
-import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import org.jetbrains.exposed.sql.*
@@ -21,7 +19,6 @@ class UsersTable(private val db: Database) : Table() {
     private val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT).nullable()
     private val EMAIL_VERIFIED = bool("EMAIL_VERIFIED").default(false)
     private val AVATAR_ID = long("AVATAR_ID").nullable()
-    private val AVATAR_HASH = varchar("AVATAR_HASH", length = HASH_LENGTH).nullable()
 
 
     init {
@@ -39,10 +36,6 @@ class UsersTable(private val db: Database) : Table() {
             statement[NICKNAME] = nickname
         }
         val avatarId = result[AVATAR_ID]
-        val avatarHash = result[AVATAR_HASH]
-        val avatarIdentity = if (avatarId != null && avatarHash != null) {
-            FileIdentity(FileId(avatarId), AccessHash(avatarHash))
-        } else null
 
         return@newSuspendedTransaction DatabaseUser(
             UserIdentity(
@@ -52,7 +45,7 @@ class UsersTable(private val db: Database) : Table() {
             result[NICKNAME],
             result[EMAIL],
             result[EMAIL_VERIFIED],
-            avatarIdentity
+            if (avatarId != null) FileId(avatarId) else null
         )
     }
 
@@ -76,10 +69,6 @@ class UsersTable(private val db: Database) : Table() {
 
     private fun ResultRow.toUser(): DatabaseUser {
         val avatarId = this[AVATAR_ID]
-        val avatarHash = this[AVATAR_HASH]
-        val avatarIdentity = if (avatarId != null && avatarHash != null) {
-            FileIdentity(FileId(avatarId), AccessHash(avatarHash))
-        } else null
         return DatabaseUser(
             UserIdentity(
                 UserId(this[USER_ID]),
@@ -88,7 +77,7 @@ class UsersTable(private val db: Database) : Table() {
             this[NICKNAME],
             this[EMAIL],
             this[EMAIL_VERIFIED],
-            avatarIdentity
+            if (avatarId != null) FileId(avatarId) else null
         )
     }
 
@@ -106,19 +95,19 @@ class UsersTable(private val db: Database) : Table() {
             }
         }
 
-    suspend fun addAvatar(accessIdentity: AccessIdentity, avatarIdentity: FileIdentity) =
-        newSuspendedTransaction(db = db) {
-            update({ USER_ID eq accessIdentity.userId.long }) {statement ->
-                statement[AVATAR_ID] = avatarIdentity.id.long
-                statement[AVATAR_HASH] = avatarIdentity.accessHash.string
+    suspend fun editUser(
+        userId: UserId,
+        nickname: String?,
+        avatarId: Optional<FileId?>,
+    ): DatabaseUser = newSuspendedTransaction(db = db) {
+        update({ USER_ID eq userId.long }) { statement ->
+            nickname?.let { statement[NICKNAME] = it }
+            avatarId.ifPresent {
+                statement[AVATAR_ID] = it?.long
             }
         }
-
-    suspend fun deleteAvatar(userId: UserId) =
-        newSuspendedTransaction(db = db) {
-            update({ USER_ID eq userId.long }) {statement ->
-                statement[AVATAR_ID] = null
-                statement[AVATAR_HASH] = null
-            }
-        }
+        return@newSuspendedTransaction select { USER_ID eq userId.long }
+            .first<ResultRow>()
+            .toUser()
+    }
 }

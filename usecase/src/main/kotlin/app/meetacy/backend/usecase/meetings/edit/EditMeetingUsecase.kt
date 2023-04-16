@@ -16,12 +16,13 @@ class EditMeetingUsecase(
     private val storage: Storage,
     private val authRepository: AuthRepository,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository,
+    private val viewMeetingsRepository: ViewMeetingsRepository,
     private val filesRepository: FilesRepository,
     private val utf8Checker: Utf8Checker
 ) {
 
     sealed interface Result {
-        object Success : Result
+        class Success(val meeting: MeetingView) : Result
         object InvalidAccessIdentity : Result
         object InvalidUtf8String : Result
         object NullEditParameters : Result
@@ -63,7 +64,7 @@ class EditMeetingUsecase(
             return Result.NullEditParameters
         }
 
-        storage.editMeeting(
+        val fullMeeting = storage.editMeeting(
             meetingIdentity.id,
             avatarIdentityOptional.map { it?.id },
             title,
@@ -73,7 +74,9 @@ class EditMeetingUsecase(
             visibility
         )
 
-        return Result.Success
+        val result = viewMeetingsRepository.viewMeetings(userId, listOf(fullMeeting)).first()
+
+        return Result.Success(result)
     }
 
     interface Storage {
@@ -85,6 +88,6 @@ class EditMeetingUsecase(
             location: Location?,
             date: Date?,
             visibility: FullMeeting.Visibility?
-        )
+        ): FullMeeting
     }
 }

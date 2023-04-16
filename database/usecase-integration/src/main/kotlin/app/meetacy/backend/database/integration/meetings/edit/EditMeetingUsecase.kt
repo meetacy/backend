@@ -1,11 +1,11 @@
 package app.meetacy.backend.database.integration.meetings.edit
 
 import app.meetacy.backend.database.integration.types.mapToDatabase
+import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
-import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
@@ -23,8 +23,8 @@ class DatabaseEditMeetingStorage(db: Database) : EditMeetingUsecase.Storage {
         location: Location?,
         date: Date?,
         visibility: FullMeeting.Visibility?
-    ) {
-        meetingsTable.editMeeting(
+    ): FullMeeting {
+         return meetingsTable.editMeeting(
             meetingId,
             avatarId,
             title,
@@ -32,6 +32,6 @@ class DatabaseEditMeetingStorage(db: Database) : EditMeetingUsecase.Storage {
             location,
             date,
             visibility?.mapToDatabase()
-        )
+        ).mapToUsecase()
     }
 }

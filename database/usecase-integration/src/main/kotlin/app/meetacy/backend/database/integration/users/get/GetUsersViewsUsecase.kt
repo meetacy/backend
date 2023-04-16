@@ -1,5 +1,6 @@
 package app.meetacy.backend.database.integration.users.get
 
+import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.user.UserId
@@ -17,7 +18,7 @@ class DatabaseGetUsersViewsStorage(db: Database) : GetUsersViewsUsecase.Storage 
             .map { user -> user?.mapToUsecase() }
 }
 
-object DatabaseGetUsersViewsViewUserRepository : GetUsersViewsUsecase.ViewUserRepository {
+class DatabaseGetUsersViewsViewUserRepository(val db: Database) : GetUsersViewsUsecase.ViewUserRepository {
     override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
-        ViewUserUsecase().viewUser(viewerId, user)
+        ViewUserUsecase(DatabaseFilesRepository(db)).viewUser(viewerId, user)
 }
