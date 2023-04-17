@@ -77,7 +77,7 @@ class FilesTable(private val db: Database) : Table() {
                 select { (FILE_ID eq fileId.long) }
                     .firstOrNull() ?: return@newSuspendedTransaction null
             } else {
-                select { (FILE_ID eq fileIdentity.id.long) }
+                select { (FILE_ID eq fileIdentity.id.long) and (ACCESS_HASH eq fileIdentity.accessHash.string) }
                     .firstOrNull() ?: return@newSuspendedTransaction null
             }
 

@@ -159,12 +159,6 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }
         }
 
-//    private val viewUserUsecase = TODO()
-//
-//    override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView {
-//        return viewUserUsecase.viewUser(viewerId, user)
-//    }
-
     private val friendRelations = mutableListOf<Triple<PagingId, UserId, UserId>>()
 
     override suspend fun addFriend(userId: UserId, friendId: UserId) {
@@ -183,8 +177,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         friendRelations.any { (_, user, friend) -> userId == user && friendId == friend }
     }
 
+    private val files = mutableListOf<Pair<UserId, FileIdentity>>()
+
     override suspend fun getFile(fileId: FileIdentity): GetFileResult {
-        TODO("Not yet implemented")
+        TODO()
     }
 
     override suspend fun saveFile(
@@ -277,12 +273,19 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     }
 
     override suspend fun checkFile(identity: FileIdentity): Boolean {
-        TODO("Not yet implemented")
+         return files.map { pair ->
+            pair.second == identity
+        }.first()
     }
 
-    override suspend fun getFileIdentity(fileId: FileId, fileAccessIdentity: FileIdentity?): FileIdentity? {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getFileIdentity(fileId: FileId, fileAccessIdentity: FileIdentity?): FileIdentity? =
+        if (fileAccessIdentity == null) {
+            files.firstOrNull { pair ->
+                pair.second.id == fileId
+            }?.second
+        } else files.firstOrNull { pair ->
+            pair.second.id == fileAccessIdentity.id && pair.second.accessHash == fileAccessIdentity.accessHash
+        }?.second
 
     override suspend fun getFileIdentityList(fileIdList: List<FileId?>): List<FileIdentity?> {
         TODO("Not yet implemented")
