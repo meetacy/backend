@@ -1,13 +1,14 @@
 package app.meetacy.backend.usecase.meetings.get
 
 import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.amount.amount
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.types.amount.amount
 import app.meetacy.backend.usecase.types.*
 
 class ViewMeetingsUsecase(
     private val getUsersViewsRepository: GetUsersViewsRepository,
+    private val filesRepository: FilesRepository,
     private val storage: Storage
 ) {
     suspend fun viewMeetings(
@@ -21,6 +22,10 @@ class ViewMeetingsUsecase(
         val creators = getUsersViewsRepository
             .getUsersViews(viewerId, creatorIds)
             .iterator()
+
+        val fileIdentityIterator = filesRepository.getFileIdentities(
+            meetings.mapNotNull { meeting -> meeting.avatarId }
+        ).iterator()
 
         val meetingIds = meetings
             .map { meeting -> meeting.id }
@@ -49,6 +54,8 @@ class ViewMeetingsUsecase(
 
         return meetings.map { meeting ->
             return@map with (meeting) {
+                val avatarIdentity = if (avatarId != null) fileIdentityIterator.next() else null
+
                 MeetingView(
                     identity = identity,
                     creator = creators.next(),

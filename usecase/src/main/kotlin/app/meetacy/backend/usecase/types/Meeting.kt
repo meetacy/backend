@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.types
 
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.datetime.DateTime
+import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
@@ -15,10 +15,10 @@ data class FullMeeting(
     val location: Location,
     val title: String?,
     val description: String?,
-    val avatarIdentity: FileIdentity? = null,
+    val avatarId: FileId?,
     val visibility: Visibility
 ) {
-    val id: MeetingId = identity.meetingId
+    val id: MeetingId = identity.id
 
     enum class Visibility {
         Public, Private
@@ -39,7 +39,7 @@ data class MeetingView(
     val avatarIdentity: FileIdentity? = null,
     val visibility: Visibility
 ) {
-    val id: MeetingId = identity.meetingId
+    val id: MeetingId = identity.id
 
     enum class Visibility {
         Public, Private

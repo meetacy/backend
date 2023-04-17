@@ -1,11 +1,11 @@
-@file:Suppress("DANGEROUS_CHARACTERS")
-
+import app.meetacy.backend.hash.HashGenerator
 import app.meetacy.sdk.exception.MeetacyInternalException
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.datetime.meetacyDate
 import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.meeting.Meeting
+import app.meetacy.sdk.types.optional.Optional
 import app.meetacy.sdk.types.meeting.MeetingId
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
@@ -197,5 +197,26 @@ class TestMeetings {
             exception
         }
         require(otherException is MeetacyInternalException)
+    }
+
+    @Test
+    fun `edit meeting test`() = runTestServer {
+        val client = generateTestAccount()
+
+        val meeting = client.meetings.create(
+            title = "Test Meeting",
+            date = Date.today(),
+            location = Location.NullIsland
+        )
+
+        val newTitle = HashGenerator.generate()
+
+        val edited = meeting.edited(title = Optional.Present(newTitle))
+
+        require(edited.title == newTitle)
+
+        val updated = meeting.updated()
+
+        require(updated.title == newTitle)
     }
 }

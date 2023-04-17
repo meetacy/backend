@@ -1,5 +1,6 @@
 package app.meetacy.backend.usecase.types
 
+import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.user.UserIdentity
 
@@ -9,7 +10,7 @@ data class FullUser(
     val nickname: String,
     val email: String?,
     val emailVerified: Boolean?,
-    val avatarIdentity: FileIdentity?
+    val avatarId: FileId?
 )
 
 data class UserView(

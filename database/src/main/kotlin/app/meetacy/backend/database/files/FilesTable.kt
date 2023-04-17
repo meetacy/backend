@@ -64,10 +64,32 @@ class FilesTable(private val db: Database) : Table() {
             return@newSuspendedTransaction DatabaseFileDescription(UserId(userId), fileSize, fileIdentity, fileName)
         }
 
-    suspend fun checkFileIdentity(fileIdentity: FileIdentity): Boolean =
+    suspend fun getFileIdentity(fileId: FileId): FileIdentity? =
         newSuspendedTransaction(db = db) {
-            select {
-                (FILE_ID eq fileIdentity.fileId.long) and (ACCESS_HASH eq fileIdentity.accessHash.string)
-            }.firstOrNull() != null
-    }
+            val result = select { (FILE_ID eq fileId.long) }
+                    .firstOrNull() ?: return@newSuspendedTransaction null
+            return@newSuspendedTransaction FileIdentity(
+                FileId(result[FILE_ID]),
+                AccessHash(result[ACCESS_HASH])
+            )
+        }
+
+    suspend fun getFileIdentityList(fileIdList: List<FileId?>): List<FileIdentity?> =
+        newSuspendedTransaction(db = db) {
+            val rawFileIds = fileIdList.map { it?.long }
+
+            val fileIdentityList = mutableListOf<FileIdentity?>()
+
+            for (fileId in rawFileIds) {
+                if (fileId == null) {
+                    fileIdentityList.add(fileId)
+                } else {
+                    val result = select { FILE_ID eq fileId }
+                        .first()
+                    fileIdentityList.add(FileIdentity(FileId(fileId), AccessHash(result[ACCESS_HASH])))
+                }
+            }
+
+            return@newSuspendedTransaction fileIdentityList
+        }
 }

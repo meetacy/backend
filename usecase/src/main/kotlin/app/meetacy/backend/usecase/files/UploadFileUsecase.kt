@@ -33,10 +33,10 @@ class UploadFileUsecase(
         val wastedSize = storage.getUserFullSize(userId)
         val userFilesLimit = FileSize(filesLimit - wastedSize.bytesSize)
 
-        return when (val fileSize = fileUploader.uploadFile(fileIdentity.fileId, userFilesLimit)) {
+        return when (val fileSize = fileUploader.uploadFile(fileIdentity.id, userFilesLimit)) {
             null -> Result.LimitSize(wastedSize, filesLimit)
             else -> {
-                storage.uploadFileSize(userId, fileIdentity.fileId, fileSize)
+                storage.uploadFileSize(userId, fileIdentity.id, fileSize)
                 Result.Success(fileIdentity)
             }
         }

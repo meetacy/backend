@@ -23,6 +23,13 @@ tags:
 paths:
   /auth/email/confirm:
     post:
+      parameters:
+        - name: Api-Version
+          in: header
+          description: The version of API to invoke request with
+          required: true
+          schema:
+            type: string
       tags:
         - auth
       summary: Email confirmation
@@ -54,6 +61,13 @@ paths:
                 LinkMaxAttemptsReached:
                   $ref: '#/components/examples/LinkMaxAttemptsReached'
   /auth/email/link:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - auth
@@ -79,6 +93,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
   /auth/generate:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - auth
@@ -108,6 +129,13 @@ paths:
                 errorCode: 1
                 errorMessage: "Please provide a valid nickname"
   /files/download:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     get:
       summary: Download file from server
       tags:
@@ -137,6 +165,13 @@ paths:
                 errorCode: 1
                 errorMessage: "Please provide a valid fileId"
   /files/upload:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Uploading a file to the server
       tags:
@@ -178,6 +213,13 @@ paths:
                 LimitSize:
                   $ref: '#/components/examples/FileSizeLimit'
   /friends/add:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - friends
@@ -210,6 +252,13 @@ paths:
                 FriendAlreadyAdded:
                   $ref: '#/components/examples/FriendAlreadyAdded'
   /friends/delete:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Delete friend
       tags:
@@ -240,6 +289,13 @@ paths:
                 FriendNotFound:
                   $ref: '#/components/examples/FriendNotFound'
   /friends/list:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Get list of friends
       tags:
@@ -264,57 +320,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
-  /meetings/avatar/add:
+  /meetings/edit:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
-      summary: Adding meetings avatar
+      summary: Edit parameters in meeting
       tags:
         - meetings
-      description: "Adding a meeting avatar via an fileId and meetingId"
+      description: "Edit avatar, title, description etc"
       requestBody:
-        description: response with an token
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MeetingAvatarAddRequest'
+              $ref: '#/components/schemas/EditMeetingRequest'
       responses:
         "200":
           description: An example of a successful generated response with an token
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StatusTrueResponse'
-        "400":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvalidResponse'
-              examples:
-                InvalidIdentity:
-                  $ref: '#/components/examples/InvalidToken'
-                MeetingNotFound:
-                  $ref: '#/components/examples/InvalidMeetingId'
-                InvalidMeetingFileId:
-                  $ref: '#/components/examples/InvalidFileId'
-  /meetings/avatar/delete:
-    post:
-      summary: Removal meetings avatar
-      tags:
-        - meetings
-      description: "Removal a meeting avatar via an fileId and meetingId"
-      requestBody:
-        description: response with an token
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccessMeetingIdRequest'
-      responses:
-        "200":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusTrueResponse'
+                $ref: '#/components/schemas/EditMeetingResponse'
         "400":
           description: An example of a successful generated response with an token
           content:
@@ -324,9 +354,22 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
-                MeetingNotFound:
-                  $ref: '#/components/examples/InvalidMeetingId'
+                InvalidUtf8String:
+                  $ref: '#/components/examples/InvalidNickname'
+                InvalidAvatarIdentity:
+                  $ref: '#/components/examples/InvalidFileId'
+                InvalidMeetingId:
+                  $ref:  '#/components/examples/InvalidMeetingId'
+                NullEditParameters:
+                  $ref: '#/components/examples/NullEditParameters'
   /meetings/create:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Creating a meeting
       tags:
@@ -357,6 +400,13 @@ paths:
                 InvalidUtf8String:
                   $ref: '#/components/examples/InvalidNickname'
   /meetings/delete:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Deleting a meeting
       tags:
@@ -387,6 +437,13 @@ paths:
                 MeetingNotFound:
                   $ref: '#/components/examples/InvalidMeetingId'
   /meetings/get:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Getting meeting information
       tags:
@@ -417,6 +474,13 @@ paths:
                 MeetingNotFound:
                   $ref: '#/components/examples/InvalidMeetingId'
   /meetings/history/list:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Getting a list of meetings
       tags:
@@ -445,6 +509,13 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
   /meetings/map/list:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: "Meetings on Map"
       tags:
@@ -472,6 +543,13 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
   /meetings/participate:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Participate meeting
       tags:
@@ -504,6 +582,13 @@ paths:
                 MeetingAlreadyParticipate:
                   $ref: '#/components/examples/MeetingAlreadyParticipate'
   /notifications/get:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - notifications
@@ -525,6 +610,13 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
   /notifications/read:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - notifications
@@ -547,65 +639,14 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 LastNotificationIdInvalid:
                   $ref: '#/components/examples/LastNotificationIdInvalid'
-  /users/avatar/add:
-    post:
-      summary: Adding user avatar
-      tags:
-        - user
-      description: "Adding a user avatar via an fileId and token"
-      requestBody:
-        description: response with an token
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccessAvatarRequest'
-      responses:
-        "200":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusTrueResponse'
-        "400":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvalidResponse'
-              examples:
-                InvalidAccessIdentity:
-                  $ref: '#/components/examples/InvalidToken'
-                InvalidUserAvatarIdentity:
-                  $ref: '#/components/examples/InvalidFileId'
-  /users/avatar/delete:
-    post:
-      summary: Deleting user avatar
-      tags:
-        - user
-      description: "Deleting a user avatar via an fileId and token"
-      requestBody:
-        description: response with an token
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccessIdentityRequest'
-      responses:
-        "200":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusTrueResponse'
-        "400":
-          description: An example of a successful generated response with an token
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InvalidResponse'
-              examples:
-                InvalidAccessIdentity:
-                  $ref: '#/components/examples/InvalidToken'
   /users/get:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Getting user object
       tags:
@@ -648,6 +689,49 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 UserNotFound:
                   $ref: '#/components/examples/UserNotFound'
+  /user/edit:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Editing user object
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditUserRequest'
+      responses:
+        "200":
+          description: An example of a successful generated response with an token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditUserRequest'
+              example:
+                value:
+                  token: "15:fzK6CgXqQihDqeXpVYqVpOIgH0s5HvBAaR2BN2PkCxsLe63fAwMrV4uDInfYgoKFXY5C18Rnu9I2x5d46qmGNPLTM9uDepdKPKo7ss1tPsMk5AbslGwQCjlBrscOJmxUFSt7iwsmbZdLdjgYecKoXrJBVGwkZC3HYBUCLtgkexYsOk1mmDRxk482k3fCuo2Nxnjy82INdkOTjVsnew6vGhtOOrOWdpR1Ci6v1d06SQ6aFqs5QasWiTEPXNyCjGGd"
+                  nickname: Dmytro Koriukivka
+                  email: DmytroKoriukivka@meetacy.app
+                  emailVerified: true
+        "400":
+          description: An example of a successful generated response with an token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidToken'
+                InvalidAvatarIdentity:
+                  $ref: '#/components/examples/InvalidFileId'
+                InvalidNickname:
+                  $ref: '#/components/examples/InvalidNickname'
 components:
   examples:
     ExpiredLink:
@@ -675,6 +759,11 @@ components:
         status: false
         errorCode: 6
         errorMessage: "Please provide a valid nickname"
+    NullEditParameters:
+      value:
+        status: false
+        errorCode: 14
+        errorMessage: "Specify at least one meeting edit parameter"
     InvalidTitleOrDescription:
       value:
         status: false
@@ -720,6 +809,11 @@ components:
         status: false
         errorCode: 9
         errorMessage: "FullUser not found"
+    InvalidUtf8String:
+      value:
+        status: false
+        errorCode: 9
+        errorMessage: "Please provide a valid string"
   schemas:
     GenerateIdentityRequest:
       type: "object"
@@ -897,6 +991,9 @@ components:
           type: string
           example:
             - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+        "avatarId":
+          type: string
+          example: "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         "title":
           type: string
           example:
@@ -923,24 +1020,54 @@ components:
         - "location"
         - "visibility"
       additionalProperties: false
-    MeetingAvatarAddRequest:
+    EditMeetingResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        result:
+          $ref: '#/components/schemas/Meeting'
+      required:
+        - "status"
+        - "result"
+    EditMeetingRequest:
       type: "object"
       properties:
-        token:
+        "token":
           type: string
-          enum:
+          example:
             - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
-        meetingId:
+        "meetingId":
           type: string
-          enum:
+          example:
             - "8:wtzbOPJqX8SVCDQj4UMavNoKJId5UylyL4GRZAkacc2PcGnyu8TCqZCLYvFnG4kb75HOVz6TIeRxXbarsdQZBdrB1rDbHSGD7yCW0EOTbRhxs5qRGncOjG5DmTrAULbWlWMiUkt2RiDRNTkoGJunQgtP63FEZ1MrYJPPdyX1Qn3xpIW6joZZ5p2XahuGGAE13UceQYz6bWO5ZWSJiWjwrA0xOvqf6ad0FHuEXcQaWbJBbBfEA9oGm4KsDHfnkvCT"
-        fileId:
+        "avatarId":
+          type: string
+          example:
+            - "6:27nUexdZbK0BEn9M48Db9SFP6XTd2O6sjQeX5wsfECftnkVDZ0pP0jYGev23GBGHlQu7RsNk9t8SrO3jOZaiQXbVN22IU5o3TeChCZ2qjgZlOT9owypOBbusAJu16TN0YzIsMtzlgspjOyd5lZzV4LL47QLwcc6b7Z6Uuw0Pkz8IMaCCNdlBBvDaRwsQLqQBLkomRjFOye5owLalAguUHxnjJVSquzDjsljqLwprTPfFGSCGQuqh4JUtWtjUsaWi"
+        "title":
+          type: string
+          example:
+            - "Meet on the Elbe"
+        "description":
+          type: string
+          example:
+            - "Thematic meeting of like-minded people on the Elbe"
+        "date":
+          type: string
+          example:
+            - 20232402T100000+0300
+        "location":
+          $ref: '#/components/schemas/Location'
+        "visibility":
           type: string
           enum:
-            - "6:27nUexdZbK0BEn9M48Db9SFP6XTd2O6sjQeX5wsfECftnkVDZ0pP0jYGev23GBGHlQu7RsNk9t8SrO3jOZaiQXbVN22IU5o3TeChCZ2qjgZlOT9owypOBbusAJu16TN0YzIsMtzlgspjOyd5lZzV4LL47QLwcc6b7Z6Uuw0Pkz8IMaCCNdlBBvDaRwsQLqQBLkomRjFOye5owLalAguUHxnjJVSquzDjsljqLwprTPfFGSCGQuqh4JUtWtjUsaWi"
+            - "public"
+            - "private"
       required:
         - "token"
-        - "fileId"
+        - "meetingId"
       additionalProperties: false
     InvalidResponse:
       type: object
@@ -1122,6 +1249,17 @@ components:
           example: true
         result:
           $ref: '#/components/schemas/User'
+    EditUserResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        result:
+          $ref: '#/components/schemas/User'
+      required:
+        - "status"
+        - "result"
     User:
       type: object
       properties:
@@ -1139,7 +1277,7 @@ components:
         emailVerified:
           type: boolean
           example: true
-        avatarIdentity:
+        avatarId:
           type: string
       required:
         - id
@@ -1156,3 +1294,14 @@ components:
       required:
         - token
       additionalProperties: false
+    EditUserRequest:
+      type: object
+      properties:
+        token:
+          type: string
+        avatarId:
+          type: string
+        nickname:
+          type: string
+      required:
+        - token

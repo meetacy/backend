@@ -1,7 +1,7 @@
 package app.meetacy.backend.database.types
 
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
@@ -14,10 +14,10 @@ class DatabaseMeeting(
     val location: Location,
     val title: String?,
     val description: String?,
-    val avatarIdentity: FileIdentity?,
+    val avatarId: FileId?,
     val visibility: Visibility
 ) {
-    val id: MeetingId = identity.meetingId
+    val id: MeetingId = identity.id
 
     enum class Visibility {
         Public, Private

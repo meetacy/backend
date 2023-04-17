@@ -1,3 +1,4 @@
+
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
 import app.meetacy.backend.endpoint.files.upload.SaveFileRepository
@@ -5,11 +6,14 @@ import app.meetacy.backend.endpoint.files.upload.UploadFileResult
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
+import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.ifPresent
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
@@ -24,10 +28,9 @@ import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
-import app.meetacy.backend.usecase.meetings.avatar.add.AddMeetingAvatarUsecase
-import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
+import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
@@ -36,11 +39,13 @@ import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecas
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.types.*
-import app.meetacy.backend.usecase.users.ViewUserUsecase
-import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
-import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
+import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
-import kotlinx.coroutines.flow.*
+import app.meetacy.backend.usecase.users.get.ViewUserUsecase
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import java.io.InputStream
 
 class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, AuthRepository,
@@ -48,12 +53,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     GetUsersViewsUsecase.ViewUserRepository, AddFriendUsecase.Storage, ListFriendsUsecase.Storage,
     DeleteFriendUsecase.Storage, ListMeetingsHistoryUsecase.Storage, GetMeetingsViewsRepository,
     CreateMeetingUsecase.Storage, CreateMeetingUsecase.ViewMeetingRepository,
-    ParticipateMeetingUsecase.Storage, FilesRepository, AddMeetingAvatarUsecase.Storage,
-    DeleteMeetingAvatarUsecase.Storage, DeleteMeetingUsecase.Storage, GetNotificationsUsecase.Storage,
-    ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, AddUserAvatarUsecase.Storage,
-    DeleteUserAvatarUsecase.Storage, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
+    ParticipateMeetingUsecase.Storage, FilesRepository, DeleteMeetingUsecase.Storage, GetNotificationsUsecase.Storage,
+    ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
-    ListMeetingsMapUsecase.Storage {
+    ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -82,7 +85,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         val email: String? = null,
         val emailVerified: Boolean = false,
         val tokens: List<AccessIdentity> = emptyList(),
-        val avatarIdentity: FileIdentity? = null
+        val avatarId: FileId? = null
     )
 
     override suspend fun isEmailOccupied(email: String): Boolean =
@@ -138,6 +141,9 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         storage = this,
         viewUserRepository = this
     )
+    private val viewUserUsecase = ViewUserUsecase(
+        filesRepository = this
+    )
 
     override suspend fun getUsersViewsOrNull(
         viewerId: UserId,
@@ -153,16 +159,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }.map { user ->
                 if (user == null) return@map null
                 with(user) {
-                    FullUser(identity, nickname, email, emailVerified, avatarIdentity)
+                    FullUser(identity, nickname, email, emailVerified, avatarId)
                 }
             }
         }
-
-    private val viewUserUsecase = ViewUserUsecase()
-
-    override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView {
-        return viewUserUsecase.viewUser(viewerId, user)
-    }
 
     private val friendRelations = mutableListOf<Triple<PagingId, UserId, UserId>>()
 
@@ -182,8 +182,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         friendRelations.any { (_, user, friend) -> userId == user && friendId == friend }
     }
 
-    override suspend fun getFile(fileIdentity: FileIdentity): GetFileResult {
-        TODO("Not yet implemented")
+    private val files = mutableListOf<Pair<UserId, FileIdentity>>()
+
+    override suspend fun getFile(fileId: FileIdentity): GetFileResult {
+        TODO()
     }
 
     override suspend fun saveFile(
@@ -191,14 +193,6 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         fileName: String,
         inputProvider: () -> InputStream
     ): UploadFileResult {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun addAvatar(meetingIdentity: MeetingIdentity, avatarIdentity: FileIdentity) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteAvatar(meetingId: MeetingId) {
         TODO("Not yet implemented")
     }
 
@@ -211,14 +205,15 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         location: Location,
         title: String?,
         description: String?,
-        visibility: FullMeeting.Visibility
+        visibility: FullMeeting.Visibility,
+        avatarId: FileId?
     ): FullMeeting = synchronized(this) {
         val meeting = FullMeeting(
             identity = MeetingIdentity(
                 meetingId = MeetingId(meetings.size.toLong()),
                 accessHash = accessHash
             ),
-            creatorId, date, location, title, description, avatarIdentity = null, visibility
+            creatorId, date, location, title, description, avatarId = null, visibility
         )
         meetings += meeting
         return@synchronized meeting
@@ -226,7 +221,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     private val viewMeetingUsecase = ViewMeetingsUsecase(
         getUsersViewsRepository = this,
-        storage = this
+        storage = this,
+        filesRepository = this
     )
 
     override suspend fun getIsParticipates(
@@ -281,9 +277,19 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
-    override suspend fun checkFile(identity: FileIdentity): Boolean {
-        TODO("Not yet implemented")
-    }
+//    override suspend fun getFileIdentity(fileId: FileId, fileAccessIdentity: FileIdentity?): FileIdentity? =
+//        if (fileAccessIdentity == null) {
+//            files.firstOrNull { pair ->
+//                pair.second.id == fileId
+//            }?.second
+//        } else files.firstOrNull { pair ->
+//            pair.second.id == fileAccessIdentity.id && pair.second.accessHash == fileAccessIdentity.accessHash
+//        }?.second
+
+    override suspend fun getFileIdentities(fileIdList: List<FileId>): List<FileIdentity?> =
+        fileIdList.map { fileId ->
+            files.firstOrNull { (_, file) -> file.id == fileId }?.second
+        }
 
     private val getMeetingViewsUsecase = GetMeetingsViewsUsecase(
         viewMeetingsRepository = this,
@@ -301,16 +307,11 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }
         }
 
-    override suspend fun viewMeetings(viewerId: UserId, meetings: List<FullMeeting>): List<MeetingView> {
+    override suspend fun viewMeetings(
+        viewerId: UserId,
+        meetings: List<FullMeeting>
+    ): List<MeetingView> {
         return viewMeetingUsecase.viewMeetings(viewerId, meetings)
-    }
-
-    override suspend fun addAvatar(accessIdentity: AccessIdentity, avatarIdentity: FileIdentity) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteAvatar(accessIdentity: AccessIdentity) {
-        TODO("Not yet implemented")
     }
 
     override suspend fun getFriends(
@@ -393,4 +394,53 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun getPublicMeetingsFlow(): Flow<FullMeeting> = meetings
         .filter { it.visibility == FullMeeting.Visibility.Public }
         .asFlow()
+
+    override suspend fun editMeeting(
+        meetingId: MeetingId,
+        avatarId: Optional<FileId?>,
+        title: String?,
+        description: String?,
+        location: Location?,
+        date: Date?,
+        visibility: FullMeeting.Visibility?
+    ): FullMeeting {
+        synchronized(this) {
+            meetings.replaceAll { meeting ->
+                if (meeting.identity.id != meetingId) return@replaceAll meeting
+
+                meeting.copy(
+                    avatarId = if (avatarId is Optional.Present) avatarId.value else meeting.avatarId,
+                    title = title ?: meeting.title,
+                    description = description ?: meeting.description,
+                    location = location ?: meeting.location,
+                    date = date ?: meeting.date,
+                    visibility = visibility ?: meeting.visibility
+                )
+            }
+        }
+
+        return getMeetings(listOf(meetingId)).first()!!
+    }
+
+    override suspend fun editUser(
+        userId: UserId,
+        nickname: String?,
+        avatarId: Optional<FileId?>
+    ): FullUser {
+        synchronized(this) {
+            users.replaceAll { user ->
+                if (user.identity.userId != userId) return@replaceAll user
+
+                user.copy(
+                    nickname = nickname ?: user.nickname,
+                    avatarId = if (avatarId is Optional.Present) avatarId.value else user.avatarId
+                )
+            }
+        }
+        return getUsers(listOf(userId)).first()!!
+    }
+
+    override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
+        viewUserUsecase.viewUser(viewerId, user)
+
 }

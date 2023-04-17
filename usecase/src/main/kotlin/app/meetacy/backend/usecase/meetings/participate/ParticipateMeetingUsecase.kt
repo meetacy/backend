@@ -21,15 +21,15 @@ class ParticipateMeetingUsecase(
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
         val meeting = getMeetingsViewsRepository
-            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.meetingId))
+            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.id))
             .first()
             ?: return Result.MeetingNotFound
 
         if (meetingIdentity.accessHash != meeting.identity.accessHash)
             return Result.MeetingNotFound
 
-        if(!storage.isParticipating(meetingIdentity.meetingId, userId))
-            storage.addParticipant(userId, meetingIdentity.meetingId) else return Result.MeetingAlreadyParticipate
+        if(!storage.isParticipating(meetingIdentity.id, userId))
+            storage.addParticipant(userId, meetingIdentity.id) else return Result.MeetingAlreadyParticipate
 
         return Result.Success
     }

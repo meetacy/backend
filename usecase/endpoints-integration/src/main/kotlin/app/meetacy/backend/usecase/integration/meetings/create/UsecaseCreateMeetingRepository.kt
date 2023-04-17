@@ -15,12 +15,13 @@ class UsecaseCreateMeetingRepository(
     ): CreateMeetingResult = with(createParam) {
         when (
             val result = usecase.createMeeting(
-                accessIdentity = token.type(),
+                token = token.type(),
                 title = title,
                 description = description,
                 date = date.type(),
                 location = location.type(),
-                visibility = visibility.mapToFullMeeting()
+                visibility = visibility.mapToFullMeeting(),
+                avatarIdentity = avatarId?.type()
             )
         ) {
             CreateMeetingUsecase.Result.TokenInvalid ->
@@ -29,6 +30,8 @@ class UsecaseCreateMeetingRepository(
                 CreateMeetingResult.Success(result.meeting.mapToEndpoint())
             CreateMeetingUsecase.Result.InvalidUtf8String ->
                 CreateMeetingResult.InvalidUtf8String
+            CreateMeetingUsecase.Result.InvalidFileIdentity ->
+                CreateMeetingResult.InvalidFileIdentity
         }
     }
 }

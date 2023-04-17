@@ -19,7 +19,7 @@ class DeleteMeetingUsecase(
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
 
         val meeting = getMeetingsViewsRepository
-            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.meetingId))
+            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.id))
             .first()
             ?: return Result.MeetingNotFound
 
@@ -28,7 +28,7 @@ class DeleteMeetingUsecase(
 
         if (meeting.creator.identity.userId != userId) return Result.InvalidIdentity
 
-        storage.deleteMeeting(meetingIdentity.meetingId)
+        storage.deleteMeeting(meetingIdentity.id)
         return Result.Success
     }
 

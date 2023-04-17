@@ -1,15 +1,14 @@
+
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
-import app.meetacy.backend.endpoint.meetings.avatar.MeetingAvatarDependencies
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.users.UsersDependencies
-import app.meetacy.backend.endpoint.users.avatar.UserAvatarDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
@@ -23,39 +22,33 @@ import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailReposi
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
-import app.meetacy.backend.usecase.integration.meetings.avatar.add.UsecaseAddMeetingAvatarRepository
-import app.meetacy.backend.usecase.integration.meetings.avatar.delete.UsecaseDeleteMeetingAvatarRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
+import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.history.list.UsecaseListMeetingsHistoryRepository
 import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
-import app.meetacy.backend.usecase.integration.users.avatar.add.UsecaseAddUserAvatarRepository
-import app.meetacy.backend.usecase.integration.users.avatar.delete.UsecaseDeleteUserAvatarRepository
+import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
-import app.meetacy.backend.usecase.meetings.avatar.add.AddMeetingAvatarUsecase
-import app.meetacy.backend.usecase.meetings.avatar.delete.DeleteMeetingAvatarUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
+import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
-import app.meetacy.backend.usecase.users.avatar.add.AddUserAvatarUsecase
-import app.meetacy.backend.usecase.users.avatar.delete.DeleteUserAvatarUsecase
+import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
-import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.logging.*
-import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -176,7 +169,8 @@ fun runTestServer(
                     storage = mockStorage,
                     authRepository = mockStorage,
                     viewMeetingRepository = mockStorage,
-                    utf8Checker = DefaultUtf8Checker
+                    utf8Checker = DefaultUtf8Checker,
+                    filesRepository = mockStorage
                 )
             ),
             participateMeetingRepository = UsecaseParticipateMeetingRepository(
@@ -186,23 +180,6 @@ fun runTestServer(
                     getMeetingsViewsRepository = mockStorage
                 )
             ),
-            addMeetingAvatarDependencies = MeetingAvatarDependencies(
-                addMeetingAvatarRepository = UsecaseAddMeetingAvatarRepository(
-                    usecase = AddMeetingAvatarUsecase(
-                        authRepository = mockStorage,
-                        filesRepository = mockStorage,
-                        getMeetingsViewsRepository = mockStorage,
-                        storage = mockStorage
-                    )
-                ),
-                deleteMeetingAvatarRepository = UsecaseDeleteMeetingAvatarRepository(
-                    usecase = DeleteMeetingAvatarUsecase(
-                        authRepository = mockStorage,
-                        getMeetingsViewsRepository = mockStorage,
-                        storage = mockStorage
-                    )
-                )
-            ),
             deleteMeetingRepository = UsecaseDeleteMeetingRepository(
                 usecase = DeleteMeetingUsecase(
                     authRepository = mockStorage,
@@ -210,6 +187,16 @@ fun runTestServer(
                     storage = mockStorage
                 )
             ),
+            editMeetingRepository = UsecaseEditMeetingRepository(
+                usecase = EditMeetingUsecase(
+                    storage = mockStorage,
+                    authRepository = mockStorage,
+                    getMeetingsViewsRepository = mockStorage,
+                    viewMeetingsRepository = mockStorage,
+                    filesRepository = mockStorage,
+                    utf8Checker = DefaultUtf8Checker
+                )
+            )
         ),
         notificationsDependencies = NotificationsDependencies(
             getNotificationsRepository = UsecaseGetNotificationsRepository(
@@ -238,19 +225,13 @@ fun runTestServer(
                     usersViewsRepository = mockStorage
                 )
             ),
-            addUserAvatarDependencies = UserAvatarDependencies(
-                addUserAvatarRepository = UsecaseAddUserAvatarRepository(
-                    usecase = AddUserAvatarUsecase(
-                        authRepository = mockStorage,
-                        filesRepository = mockStorage,
-                        storage = mockStorage
-                    )
-                ),
-                deleteUserAvatarRepository = UsecaseDeleteUserAvatarRepository(
-                    usecase = DeleteUserAvatarUsecase(
-                        authRepository = mockStorage,
-                        storage = mockStorage
-                    )
+
+            editUserRepository = UsecaseEditUserRepository(
+                usecase = EditUserUsecase(
+                    storage = mockStorage,
+                    authRepository = mockStorage,
+                    filesRepository = mockStorage,
+                    utf8Checker = DefaultUtf8Checker
                 )
             )
         )

@@ -5,8 +5,8 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.Meeting
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.datetime.DateOrTimeSerializable
 import app.meetacy.backend.types.serialization.datetime.DateSerializable
+import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
 import app.meetacy.backend.types.serialization.location.LocationSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -20,13 +20,15 @@ data class CreateParam(
     val description: String?,
     val date: DateSerializable,
     val location: LocationSerializable,
-    val visibility: Meeting.Visibility
+    val visibility: Meeting.Visibility,
+    val avatarId: FileIdentitySerializable?
 )
 
 sealed interface CreateMeetingResult {
     class Success(val meeting: Meeting) : CreateMeetingResult
     object InvalidAccessIdentity : CreateMeetingResult
     object InvalidUtf8String : CreateMeetingResult
+    object InvalidFileIdentity : CreateMeetingResult
 }
 
 interface CreateMeetingRepository {
@@ -40,5 +42,6 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
         is CreateMeetingResult.Success -> call.respondSuccess(result.meeting)
         CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
         CreateMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidTitleOrDescription)
+        CreateMeetingResult.InvalidFileIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
     }
 }
