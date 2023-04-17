@@ -4,8 +4,6 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.User
-import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.user.UserIdentitySerializable
 import io.ktor.server.application.*
@@ -14,10 +12,7 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 interface UserRepository {
-    suspend fun getUser(
-        identity: UserIdentity? = null,
-        accessIdentity: AccessIdentity
-    ): GetUserResult
+    suspend fun getUser(params: GetUserParams): GetUserResult
 }
 
 @Serializable
@@ -35,9 +30,8 @@ sealed interface GetUserResult {
 fun Route.getUser(provider: UserRepository) = post("/get") {
     val params = call.receive<GetUserParams>()
 
-    when (val result = with(params) { provider.getUser(id?.type(), token.type()) }) {
+    when (val result = provider.getUser(params)) {
         is GetUserResult.Success -> call.respondSuccess(result.user)
-
         GetUserResult.UserNotFound -> call.respondFailure(Failure.UserNotFound)
         GetUserResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
     }
