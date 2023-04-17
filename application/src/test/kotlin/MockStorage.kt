@@ -40,6 +40,7 @@ import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.types.*
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
+import app.meetacy.backend.usecase.users.get.ViewUserUsecase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
@@ -138,6 +139,9 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     private val getUsersViewsUsecase = GetUsersViewsUsecase(
         storage = this,
         viewUserRepository = this
+    )
+    private val viewUserUsecase = ViewUserUsecase(
+        filesRepository = this
     )
 
     override suspend fun getUsersViewsOrNull(
@@ -288,7 +292,20 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         }?.second
 
     override suspend fun getFileIdentityList(fileIdList: List<FileId?>): List<FileIdentity?> {
-        TODO("Not yet implemented")
+        val rawFileIds = fileIdList.map { it?.long }
+
+        val fileIdentityList = mutableListOf<FileIdentity?>()
+
+        for (fileId in rawFileIds) {
+            if (fileId == null) {
+                fileIdentityList.add(fileId)
+            } else {
+                val result = getFileIdentity(FileId(fileId))!!
+                fileIdentityList.add(result)
+            }
+        }
+
+        return fileIdentityList
     }
 
     private val getMeetingViewsUsecase = GetMeetingsViewsUsecase(
@@ -411,7 +428,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
-    override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView {
-        TODO("Not yet implemented")
-    }
+    override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
+        viewUserUsecase.viewUser(viewerId, user)
+
 }
