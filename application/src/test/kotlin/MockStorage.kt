@@ -13,6 +13,7 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.ifPresent
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
@@ -84,7 +85,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         val email: String? = null,
         val emailVerified: Boolean = false,
         val tokens: List<AccessIdentity> = emptyList(),
-        val avatarIdentity: FileIdentity? = null
+        val avatarId: FileId? = null
     )
 
     override suspend fun isEmailOccupied(email: String): Boolean =
@@ -158,7 +159,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }.map { user ->
                 if (user == null) return@map null
                 with(user) {
-                    FullUser(identity, nickname, email, emailVerified, avatarIdentity?.id)
+                    FullUser(identity, nickname, email, emailVerified, avatarId)
                 }
             }
         }
@@ -403,11 +404,40 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         date: Date?,
         visibility: FullMeeting.Visibility?
     ): FullMeeting {
-        TODO("Not yet implemented")
+        synchronized(this) {
+            meetings.replaceAll { meeting ->
+                if (meeting.identity.id != meetingId) return@replaceAll meeting
+
+                meeting.copy(
+                    avatarId = if (avatarId is Optional.Present) avatarId.value else meeting.avatarId,
+                    title = title ?: meeting.title,
+                    description = description ?: meeting.description,
+                    location = location ?: meeting.location,
+                    date = date ?: meeting.date,
+                    visibility = visibility ?: meeting.visibility
+                )
+            }
+        }
+
+        return getMeetings(listOf(meetingId)).first()!!
     }
 
-    override suspend fun editUser(userId: UserId, nickname: String?, avatarId: Optional<FileId?>): FullUser {
-        TODO("Not yet implemented")
+    override suspend fun editUser(
+        userId: UserId,
+        nickname: String?,
+        avatarId: Optional<FileId?>
+    ): FullUser {
+        synchronized(this) {
+            users.replaceAll { user ->
+                if (user.identity.userId != userId) return@replaceAll user
+
+                user.copy(
+                    nickname = nickname ?: user.nickname,
+                    avatarId = if (avatarId is Optional.Present) avatarId.value else user.avatarId
+                )
+            }
+        }
+        return getUsers(listOf(userId)).first()!!
     }
 
     override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
