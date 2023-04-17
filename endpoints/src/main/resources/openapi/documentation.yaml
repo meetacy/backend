@@ -340,6 +340,7 @@ paths:
               $ref: '#/components/schemas/EditMeetingRequest'
       responses:
         "200":
+          description: An example of a successful generated response with an token
           content:
             application/json:
               schema:
@@ -688,6 +689,51 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 UserNotFound:
                   $ref: '#/components/examples/UserNotFound'
+  /user/edit:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Editing user object
+      tags:
+        - user
+      description: хуй
+      requestBody:
+        description: хуй
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditUserRequest'
+      responses:
+        "200":
+          description: An example of a successful generated response with an token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditUserRequest'
+              example:
+                value:
+                  token: "15:fzK6CgXqQihDqeXpVYqVpOIgH0s5HvBAaR2BN2PkCxsLe63fAwMrV4uDInfYgoKFXY5C18Rnu9I2x5d46qmGNPLTM9uDepdKPKo7ss1tPsMk5AbslGwQCjlBrscOJmxUFSt7iwsmbZdLdjgYecKoXrJBVGwkZC3HYBUCLtgkexYsOk1mmDRxk482k3fCuo2Nxnjy82INdkOTjVsnew6vGhtOOrOWdpR1Ci6v1d06SQ6aFqs5QasWiTEPXNyCjGGd"
+                  nickname: Dmytro Koriukivka
+                  email: DmytroKoriukivka@meetacy.app
+                  emailVerified: true
+        "400":
+          description: An example of a successful generated response with an token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidToken'
+                InvalidAvatarIdentity:
+                  $ref: '#/components/examples/InvalidFileId'
+                InvalidNickname:
+                  $ref: '#/components/examples/InvalidNickname'
 components:
   examples:
     ExpiredLink:
@@ -765,6 +811,11 @@ components:
         status: false
         errorCode: 9
         errorMessage: "FullUser not found"
+    InvalidUtf8String:
+      value:
+        status: false
+        errorCode: 9
+        errorMessage: "Please provide a valid string"
   schemas:
     GenerateIdentityRequest:
       type: "object"
@@ -1189,6 +1240,14 @@ components:
           example: true
         result:
           $ref: '#/components/schemas/User'
+    EditUserResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        result:
+          $ref: '#/components/schemas/User'
     User:
       type: object
       properties:
@@ -1223,3 +1282,15 @@ components:
       required:
         - token
       additionalProperties: false
+    EditUserRequest:
+      description: хуй
+      type: object
+      properties:
+        token:
+          type: string
+        avatarId:
+          type: string
+        nickname:
+          type: string
+      required:
+        - token
