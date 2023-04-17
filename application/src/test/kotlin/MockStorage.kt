@@ -276,23 +276,6 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
-    override suspend fun checkFile(identity: FileIdentity): Boolean {
-         return files.map { pair ->
-            pair.second == identity
-        }.first()
-    }
-
-    override suspend fun checkFileIdentity(identity: FileIdentity): FileIdentity? {
-        files.map { pair ->
-            pair.second == identity
-        }.firstOrNull() ?: return null
-        return identity
-    }
-
-    override suspend fun getFileIdentity(fileId: FileId): FileIdentity? {
-        TODO("Not yet implemented")
-    }
-
 //    override suspend fun getFileIdentity(fileId: FileId, fileAccessIdentity: FileIdentity?): FileIdentity? =
 //        if (fileAccessIdentity == null) {
 //            files.firstOrNull { pair ->
@@ -302,22 +285,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 //            pair.second.id == fileAccessIdentity.id && pair.second.accessHash == fileAccessIdentity.accessHash
 //        }?.second
 
-    override suspend fun getFileIdentityList(fileIdList: List<FileId?>): List<FileIdentity?> {
-        val rawFileIds = fileIdList.map { it?.long }
-
-        val fileIdentityList = mutableListOf<FileIdentity?>()
-
-        for (fileId in rawFileIds) {
-            if (fileId == null) {
-                fileIdentityList.add(fileId)
-            } else {
-                val result = getFileIdentity(FileId(fileId))!!
-                fileIdentityList.add(result)
-            }
+    override suspend fun getFileIdentities(fileIdList: List<FileId>): List<FileIdentity?> =
+        fileIdList.map { fileId ->
+            files.firstOrNull { (_, file) -> file.id == fileId }?.second
         }
-
-        return fileIdentityList
-    }
 
     private val getMeetingViewsUsecase = GetMeetingsViewsUsecase(
         viewMeetingsRepository = this,

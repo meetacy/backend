@@ -23,7 +23,9 @@ class ViewMeetingsUsecase(
             .getUsersViews(viewerId, creatorIds)
             .iterator()
 
-        val fileIdentityIterator = filesRepository.getFileIdentityList(meetings.map { it.avatarId }).iterator()
+        val fileIdentityIterator = filesRepository.getFileIdentities(
+            meetings.mapNotNull { meeting -> meeting.avatarId }
+        ).iterator()
 
         val meetingIds = meetings
             .map { meeting -> meeting.id }
@@ -52,7 +54,8 @@ class ViewMeetingsUsecase(
 
         return meetings.map { meeting ->
             return@map with (meeting) {
-                val avatarIdentity = fileIdentityIterator.next()
+                val avatarIdentity = if (avatarId != null) fileIdentityIterator.next() else null
+
                 MeetingView(
                     identity = identity,
                     creator = creators.next(),

@@ -8,16 +8,22 @@ import app.meetacy.backend.usecase.types.UserView
 class ViewUserUsecase(
     private val filesRepository: FilesRepository
 ) {
-    suspend fun viewUsers(viewerId: UserId, users: List<FullUser>): List<UserView> = users.map { user ->
-        with(user) {
-            UserView(
-                isSelf = viewerId == user.identity.userId,
-                identity = identity,
-                nickname = nickname,
-                email = if (viewerId == user.identity.userId) email else null,
-                emailVerified = if (viewerId == user.identity.userId) emailVerified else null,
-                avatarIdentity = filesRepository.getFileIdentityList(listOf(avatarId)).first()
-            )
+    suspend fun viewUsers(viewerId: UserId, users: List<FullUser>): List<UserView> {
+        val avatarIds = filesRepository.getFileIdentities(
+            users.mapNotNull { user -> user.avatarId }
+        ).iterator()
+
+        return users.map { user ->
+            with(user) {
+                UserView(
+                    isSelf = viewerId == user.identity.userId,
+                    identity = identity,
+                    nickname = nickname,
+                    email = if (viewerId == user.identity.userId) email else null,
+                    emailVerified = if (viewerId == user.identity.userId) emailVerified else null,
+                    avatarIdentity = if (avatarId != null) avatarIds.next() else null
+                )
+            }
         }
     }
 

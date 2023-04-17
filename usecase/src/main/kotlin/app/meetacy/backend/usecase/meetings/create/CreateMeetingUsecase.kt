@@ -37,7 +37,7 @@ class CreateMeetingUsecase(
     ): Result {
         if (title != null) if (!utf8Checker.checkString(title)) return Result.InvalidUtf8String
         if (description != null) if (!utf8Checker.checkString(description)) return Result.InvalidUtf8String
-        if (avatarIdentity != null && !filesRepository.checkFile(avatarIdentity)) {
+        if (avatarIdentity != null && !filesRepository.checkFileIdentity(avatarIdentity)) {
             return Result.InvalidFileIdentity
         }
 
