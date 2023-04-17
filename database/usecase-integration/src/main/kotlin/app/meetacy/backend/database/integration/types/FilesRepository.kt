@@ -8,8 +8,10 @@ import org.jetbrains.exposed.sql.Database
 
 class DatabaseFilesRepository(db: Database) : FilesRepository {
     private val filesTable = FilesTable(db)
-    override suspend fun checkFile(identity: FileIdentity) = filesTable.checkFileIdentity(identity)
-    override suspend fun getFileIdentity(fileId: FileId, fileAccessIdentity: FileIdentity?) = filesTable.getFileIdentity(fileId)
+    override suspend fun checkFile(identity: FileIdentity) = filesTable.checkFile(identity)
+    override suspend fun checkFileIdentity(identity: FileIdentity): FileIdentity? = filesTable.checkFileIdentity(identity)
+
+    override suspend fun getFileIdentity(fileId: FileId) = filesTable.getFileIdentity(fileId)
     override suspend fun getFileIdentityList(fileIdList: List<FileId?>): List<FileIdentity?> =
         filesTable.getFileIdentityList(fileIdList)
 }

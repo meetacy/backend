@@ -282,14 +282,25 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         }.first()
     }
 
-    override suspend fun getFileIdentity(fileId: FileId, fileAccessIdentity: FileIdentity?): FileIdentity? =
-        if (fileAccessIdentity == null) {
-            files.firstOrNull { pair ->
-                pair.second.id == fileId
-            }?.second
-        } else files.firstOrNull { pair ->
-            pair.second.id == fileAccessIdentity.id && pair.second.accessHash == fileAccessIdentity.accessHash
-        }?.second
+    override suspend fun checkFileIdentity(identity: FileIdentity): FileIdentity? {
+        files.map { pair ->
+            pair.second == identity
+        }.firstOrNull() ?: return null
+        return identity
+    }
+
+    override suspend fun getFileIdentity(fileId: FileId): FileIdentity? {
+        TODO("Not yet implemented")
+    }
+
+//    override suspend fun getFileIdentity(fileId: FileId, fileAccessIdentity: FileIdentity?): FileIdentity? =
+//        if (fileAccessIdentity == null) {
+//            files.firstOrNull { pair ->
+//                pair.second.id == fileId
+//            }?.second
+//        } else files.firstOrNull { pair ->
+//            pair.second.id == fileAccessIdentity.id && pair.second.accessHash == fileAccessIdentity.accessHash
+//        }?.second
 
     override suspend fun getFileIdentityList(fileIdList: List<FileId?>): List<FileIdentity?> {
         val rawFileIds = fileIdList.map { it?.long }

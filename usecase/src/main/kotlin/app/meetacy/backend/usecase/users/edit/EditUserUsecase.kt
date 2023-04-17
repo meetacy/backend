@@ -34,7 +34,7 @@ class EditUserUsecase(
         var avatarAccessIdentity: FileIdentity? = null
         avatarIdentityOptional.ifPresent { avatarIdentity ->
             avatarIdentity ?: return@ifPresent
-            avatarAccessIdentity = filesRepository.getFileIdentity(avatarIdentity.id, avatarIdentity) { return Result.InvalidAvatarIdentity }
+            avatarAccessIdentity = filesRepository.checkFileIdentity(avatarIdentity) { return Result.InvalidAvatarIdentity }
         }
 
         if (listOf(nickname, avatarIdentityOptional).all { it == null }) {
