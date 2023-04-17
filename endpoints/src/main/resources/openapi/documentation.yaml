@@ -23,6 +23,13 @@ tags:
 paths:
   /auth/email/confirm:
     post:
+      parameters:
+        - name: Api-Version
+          in: header
+          description: The version of API to invoke request with
+          required: true
+          schema:
+            type: string
       tags:
         - auth
       summary: Email confirmation
@@ -54,6 +61,13 @@ paths:
                 LinkMaxAttemptsReached:
                   $ref: '#/components/examples/LinkMaxAttemptsReached'
   /auth/email/link:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - auth
@@ -79,6 +93,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
   /auth/generate:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - auth
@@ -108,6 +129,13 @@ paths:
                 errorCode: 1
                 errorMessage: "Please provide a valid nickname"
   /files/download:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     get:
       summary: Download file from server
       tags:
@@ -137,6 +165,13 @@ paths:
                 errorCode: 1
                 errorMessage: "Please provide a valid fileId"
   /files/upload:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Uploading a file to the server
       tags:
@@ -178,6 +213,13 @@ paths:
                 LimitSize:
                   $ref: '#/components/examples/FileSizeLimit'
   /friends/add:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - friends
@@ -210,6 +252,13 @@ paths:
                 FriendAlreadyAdded:
                   $ref: '#/components/examples/FriendAlreadyAdded'
   /friends/delete:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Delete friend
       tags:
@@ -240,6 +289,13 @@ paths:
                 FriendNotFound:
                   $ref: '#/components/examples/FriendNotFound'
   /friends/list:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Get list of friends
       tags:
@@ -265,6 +321,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
   /meetings/edit:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Edit parameters in meeting
       tags:
@@ -277,7 +340,6 @@ paths:
               $ref: '#/components/schemas/EditMeetingRequest'
       responses:
         "200":
-          description: ""
           content:
             application/json:
               schema:
@@ -300,6 +362,13 @@ paths:
                 NullEditParameters:
                   $ref: '#/components/examples/NullEditParameters'
   /meetings/create:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Creating a meeting
       tags:
@@ -330,6 +399,13 @@ paths:
                 InvalidUtf8String:
                   $ref: '#/components/examples/InvalidNickname'
   /meetings/delete:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Deleting a meeting
       tags:
@@ -360,6 +436,13 @@ paths:
                 MeetingNotFound:
                   $ref: '#/components/examples/InvalidMeetingId'
   /meetings/get:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Getting meeting information
       tags:
@@ -390,6 +473,13 @@ paths:
                 MeetingNotFound:
                   $ref: '#/components/examples/InvalidMeetingId'
   /meetings/history/list:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Getting a list of meetings
       tags:
@@ -418,6 +508,13 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
   /meetings/map/list:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: "Meetings on Map"
       tags:
@@ -445,6 +542,13 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
   /meetings/participate:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Participate meeting
       tags:
@@ -477,6 +581,13 @@ paths:
                 MeetingAlreadyParticipate:
                   $ref: '#/components/examples/MeetingAlreadyParticipate'
   /notifications/get:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - notifications
@@ -498,6 +609,13 @@ paths:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
   /notifications/read:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - notifications
@@ -521,6 +639,13 @@ paths:
                 LastNotificationIdInvalid:
                   $ref: '#/components/examples/LastNotificationIdInvalid'
   /users/get:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
     post:
       summary: Getting user object
       tags:
@@ -817,6 +942,9 @@ components:
           type: string
           example:
             - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+        "avatarId":
+          type: string
+          example: "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         "title":
           type: string
           example:
