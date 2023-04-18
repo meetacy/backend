@@ -16,6 +16,7 @@ class UsersTable(private val db: Database) : Table() {
     private val USER_ID = long("USER_ID").autoIncrement()
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     private val NICKNAME = varchar("NICKNAME", length = NICKNAME_MAX_LIMIT)
+    private val USERNAME = varchar("USERNAME", length = USERNAME_MAX_LIMIT)
     private val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT).nullable()
     private val EMAIL_VERIFIED = bool("EMAIL_VERIFIED").default(false)
     private val AVATAR_ID = long("AVATAR_ID").nullable()
@@ -43,6 +44,7 @@ class UsersTable(private val db: Database) : Table() {
                 AccessHash(result[ACCESS_HASH])
             ),
             result[NICKNAME],
+            result[USERNAME],
             result[EMAIL],
             result[EMAIL_VERIFIED],
             if (avatarId != null) FileId(avatarId) else null
@@ -75,6 +77,7 @@ class UsersTable(private val db: Database) : Table() {
                 AccessHash(this[ACCESS_HASH])
             ),
             this[NICKNAME],
+            this[USERNAME],
             this[EMAIL],
             this[EMAIL_VERIFIED],
             if (avatarId != null) FileId(avatarId) else null

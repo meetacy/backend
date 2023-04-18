@@ -1264,6 +1264,7 @@ components:
       properties:
         isSelf:
           type: boolean
+          example: false
         id:
           type: string
           example: "15:fzK6CgXqQihDqeXpVYqVpOIgH0s5HvBAaR2BN2PkCxsLe63fAwMrV4uDInfYgoKFXY5C18Rnu9I2x5d46qmGNPLTM9uDepdKPKo7ss1tPsMk5AbslGwQCjlBrscOJmxUFSt7iwsmbZdLdjgYecKoXrJBVGwkZC3HYBUCLtgkexYsOk1mmDRxk482k3fCuo2Nxnjy82INdkOTjVsnew6vGhtOOrOWdpR1Ci6v1d06SQ6aFqs5QasWiTEPXNyCjGGd"
@@ -1278,6 +1279,7 @@ components:
           example: true
         avatarId:
           type: string
+          example: "1:rXfskQTJuGm7U0UvDNpojpDhvrwhfkOfPqRlHRwg2R6EMA9aMtp5iZB2t6JLRTxAJp2LhZIIVrmj3uYpjKzji46krsK4GgtG3Uw3TRudeslGdtL4ye2N6LTWRy8WYN1giGOBgRFZLjwQ4hoEdVIJqmmHCRQZNhHpMAsdWUYdoWStgMumTkCTKbXcraZYMpGESqFcaFfstyjCMVZtuXcl23IusOkEzGPcmWy6ykbiHa4D7lhcq4szdSmpksBo2mov"
       required:
         - id
         - nickname
@@ -1301,11 +1303,14 @@ components:
         token:
           type: string
           example: "9:UjXlL2TeJLWtAoKM1qX6Lv2GjMOvumOzn7Pi9j0q9n28LCCN1WDkFsW7OUi7n2osONPQegFXq9iK3painNnQZeU4J34bBD4DVC5jp4vTK4rdIU28IMEcC0FQdeu3CTbMKXCJWcZXMNIiihJqYOlki5WmjtsWAL84XN0ym1rWFMPrP8yok4jkYAUvPS6APaDU8gHhj5YMARAKdWN4wvTzQ5BbTNrKmmO5d3QdDWNcIH6lGWHPtHXCPjkyFA62iNC5"
-        avatarId:
-          type: string
-          example: "1:rXfskQTJuGm7U0UvDNpojpDhvrwhfkOfPqRlHRwg2R6EMA9aMtp5iZB2t6JLRTxAJp2LhZIIVrmj3uYpjKzji46krsK4GgtG3Uw3TRudeslGdtL4ye2N6LTWRy8WYN1giGOBgRFZLjwQ4hoEdVIJqmmHCRQZNhHpMAsdWUYdoWStgMumTkCTKbXcraZYMpGESqFcaFfstyjCMVZtuXcl23IusOkEzGPcmWy6ykbiHa4D7lhcq4szdSmpksBo2mov"
         nickname:
           type: string
           example: "Alexander"
+        username:
+          type: string
+          example: "alexSokol"
+        avatarId:
+          type: string
+          example: "1:rXfskQTJuGm7U0UvDNpojpDhvrwhfkOfPqRlHRwg2R6EMA9aMtp5iZB2t6JLRTxAJp2LhZIIVrmj3uYpjKzji46krsK4GgtG3Uw3TRudeslGdtL4ye2N6LTWRy8WYN1giGOBgRFZLjwQ4hoEdVIJqmmHCRQZNhHpMAsdWUYdoWStgMumTkCTKbXcraZYMpGESqFcaFfstyjCMVZtuXcl23IusOkEzGPcmWy6ykbiHa4D7lhcq4szdSmpksBo2mov"
       required:
         - token

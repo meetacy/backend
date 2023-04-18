@@ -6,6 +6,7 @@ import app.meetacy.backend.types.user.UserIdentity
 class DatabaseUser(
     val identity: UserIdentity,
     val nickname: String,
+    val username: String? = null,
     val email: String? = null,
     val emailVerified: Boolean = false,
     val avatarId: FileId? = null

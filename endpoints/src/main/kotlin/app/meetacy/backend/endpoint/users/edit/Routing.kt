@@ -16,7 +16,8 @@ import kotlinx.serialization.Serializable
 data class EditUserParams(
     val token: AccessIdentitySerializable,
     val nickname: String?,
-    val avatarId: OptionalSerializable<FileIdentitySerializable?> = OptionalSerializable.Undefined
+    val username: OptionalSerializable<String?> = OptionalSerializable.Undefined,
+    val avatarId: OptionalSerializable<FileIdentitySerializable?> = OptionalSerializable.Undefined,
 )
 
 sealed interface EditUserResult {
@@ -25,6 +26,7 @@ sealed interface EditUserResult {
     object InvalidUtf8String : EditUserResult
     object NullEditParameters : EditUserResult
     object InvalidAvatarIdentity : EditUserResult
+    object InvalidUsername : EditUserResult
 }
 
 interface EditUserRepository {
@@ -40,5 +42,6 @@ fun Route.editUser(editUserRepository: EditUserRepository) = post("/edit") {
         EditUserResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidTitleOrDescription)
         EditUserResult.InvalidAvatarIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
         EditUserResult.NullEditParameters -> call.respondFailure(Failure.NullEditParams)
+        EditUserResult.InvalidUsername -> call.respondFailure(Failure.InvalidUsername)
     }
 }

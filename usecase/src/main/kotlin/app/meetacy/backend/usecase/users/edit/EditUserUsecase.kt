@@ -22,15 +22,22 @@ class EditUserUsecase(
         object InvalidUtf8String : Result
         object NullEditParameters : Result
         object InvalidAvatarIdentity : Result
+        object InvalidUsernameIdentity : Result
     }
 
     suspend fun editUser(
         token: AccessIdentity,
         nickname: String?,
+        usernameOptional: Optional<String?>,
         avatarIdentityOptional: Optional<FileIdentity?>,
     ): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
         if (nickname != null) if (!utf8Checker.checkString(nickname)) return Result.InvalidUtf8String
+        var username: String? = null
+        usernameOptional.ifPresent { it ->
+            it ?: return@ifPresent
+            username = utf8Checker.checkString(it) {return Result.InvalidUsernameIdentity }
+        }
         var avatarAccessIdentity: FileIdentity? = null
         avatarIdentityOptional.ifPresent { avatarIdentity ->
             avatarIdentity ?: return@ifPresent
