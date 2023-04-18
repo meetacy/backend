@@ -16,7 +16,7 @@ class UsersTable(private val db: Database) : Table() {
     private val USER_ID = long("USER_ID").autoIncrement()
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     private val NICKNAME = varchar("NICKNAME", length = NICKNAME_MAX_LIMIT)
-    private val USERNAME = varchar("USERNAME", length = USERNAME_MAX_LIMIT)
+    private val USERNAME = varchar("USERNAME", length = USERNAME_MAX_LIMIT).nullable()
     private val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT).nullable()
     private val EMAIL_VERIFIED = bool("EMAIL_VERIFIED").default(false)
     private val AVATAR_ID = long("AVATAR_ID").nullable()
@@ -101,12 +101,16 @@ class UsersTable(private val db: Database) : Table() {
     suspend fun editUser(
         userId: UserId,
         nickname: String?,
+        username: Optional<String?>,
         avatarId: Optional<FileId?>,
     ): DatabaseUser = newSuspendedTransaction(db = db) {
         update({ USER_ID eq userId.long }) { statement ->
             nickname?.let { statement[NICKNAME] = it }
             avatarId.ifPresent {
                 statement[AVATAR_ID] = it?.long
+            }
+            username.ifPresent {
+                statement[USERNAME] = it
             }
         }
         return@newSuspendedTransaction select { USER_ID eq userId.long }

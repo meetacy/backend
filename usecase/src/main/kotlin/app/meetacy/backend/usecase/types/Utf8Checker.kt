@@ -7,4 +7,4 @@ interface Utf8Checker{
 inline fun Utf8Checker.checkString(
     string: String,
     fallback: () -> Nothing
-): String = if (!checkString(string)) fallback() else string
+): Boolean = if (!checkString(string)) fallback() else true

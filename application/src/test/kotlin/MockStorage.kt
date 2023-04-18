@@ -13,7 +13,6 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
-import app.meetacy.backend.types.ifPresent
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
@@ -64,7 +63,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         synchronized(lock = this) {
             val userId = UserId(users.size.toLong())
             val accessHash = AccessHash(DefaultHashGenerator.generate())
-            val user = User(UserIdentity(userId, accessHash), nickname)
+            val user = User(UserIdentity(userId, accessHash), nickname, null)
             users += user
             return user.identity.userId
         }
@@ -82,6 +81,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     private data class User(
         val identity: UserIdentity,
         val nickname: String,
+        val username: String?,
         val email: String? = null,
         val emailVerified: Boolean = false,
         val tokens: List<AccessIdentity> = emptyList(),
@@ -159,7 +159,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }.map { user ->
                 if (user == null) return@map null
                 with(user) {
-                    FullUser(identity, nickname, email, emailVerified, avatarId)
+                    FullUser(identity, nickname, username, email, emailVerified, avatarId)
                 }
             }
         }
@@ -422,9 +422,13 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         return getMeetings(listOf(meetingId)).first()!!
     }
 
+    override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
+        viewUserUsecase.viewUser(viewerId, user)
+
     override suspend fun editUser(
         userId: UserId,
         nickname: String?,
+        username: Optional<String?>,
         avatarId: Optional<FileId?>
     ): FullUser {
         synchronized(this) {
@@ -439,8 +443,4 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         }
         return getUsers(listOf(userId)).first()!!
     }
-
-    override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
-        viewUserUsecase.viewUser(viewerId, user)
-
 }

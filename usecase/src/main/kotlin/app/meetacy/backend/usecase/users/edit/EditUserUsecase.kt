@@ -22,7 +22,7 @@ class EditUserUsecase(
         object InvalidUtf8String : Result
         object NullEditParameters : Result
         object InvalidAvatarIdentity : Result
-        object InvalidUsernameIdentity : Result
+        object InvalidUsername : Result
     }
 
     suspend fun editUser(
@@ -33,11 +33,11 @@ class EditUserUsecase(
     ): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
         if (nickname != null) if (!utf8Checker.checkString(nickname)) return Result.InvalidUtf8String
-        var username: String? = null
-        usernameOptional.ifPresent { it ->
+        usernameOptional.ifPresent {
             it ?: return@ifPresent
-            username = utf8Checker.checkString(it) {return Result.InvalidUsernameIdentity }
+            utf8Checker.checkString(it) { return Result.InvalidUsername }
         }
+
         var avatarAccessIdentity: FileIdentity? = null
         avatarIdentityOptional.ifPresent { avatarIdentity ->
             avatarIdentity ?: return@ifPresent
@@ -53,6 +53,7 @@ class EditUserUsecase(
         val fullUser = storage.editUser(
             userId,
             nickname,
+            usernameOptional,
             avatarIdentityOptional.map { it?.id }
         )
         return Result.Success(
@@ -61,6 +62,7 @@ class EditUserUsecase(
                     true,
                     identity,
                     fullUser.nickname,
+                    fullUser.username,
                     fullUser.email,
                     fullUser.emailVerified,
                     avatarAccessIdentity
@@ -73,6 +75,7 @@ class EditUserUsecase(
         suspend fun editUser(
             userId: UserId,
             nickname: String?,
+            username: Optional<String?>,
             avatarId: Optional<FileId?>
         ): FullUser
     }

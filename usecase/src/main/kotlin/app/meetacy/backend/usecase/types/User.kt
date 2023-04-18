@@ -8,6 +8,7 @@ import app.meetacy.backend.types.user.UserIdentity
 data class FullUser(
     val identity: UserIdentity,
     val nickname: String,
+    val username: String?,
     val email: String?,
     val emailVerified: Boolean?,
     val avatarId: FileId?
@@ -17,6 +18,7 @@ data class UserView(
     val isSelf: Boolean,
     val identity: UserIdentity,
     val nickname: String,
+    val username: String?,
     val email: String?,
     val emailVerified: Boolean?,
     val avatarIdentity: FileIdentity?

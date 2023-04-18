@@ -18,6 +18,7 @@ class UsecaseEditUserRepository(
             val result = usecase.editUser(
                 token.type(),
                 nickname,
+                username.type(),
                 avatarId.type().map { fileIdentity -> fileIdentity?.type() },
             )
         ) {
@@ -31,6 +32,8 @@ class UsecaseEditUserRepository(
                 EditUserResult.NullEditParameters
             is EditUserUsecase.Result.Success ->
                 EditUserResult.Success(result.user.mapToEndpoint())
+            EditUserUsecase.Result.InvalidUsername ->
+                EditUserResult.InvalidUsername
         }
     }
 }

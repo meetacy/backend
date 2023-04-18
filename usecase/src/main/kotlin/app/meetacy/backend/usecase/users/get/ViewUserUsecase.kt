@@ -19,6 +19,7 @@ class ViewUserUsecase(
                     isSelf = viewerId == user.identity.userId,
                     identity = identity,
                     nickname = nickname,
+                    username = username,
                     email = if (viewerId == user.identity.userId) email else null,
                     emailVerified = if (viewerId == user.identity.userId) emailVerified else null,
                     avatarIdentity = if (avatarId != null) avatarIds.next() else null

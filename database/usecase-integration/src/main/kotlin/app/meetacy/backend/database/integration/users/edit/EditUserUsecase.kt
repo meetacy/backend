@@ -12,7 +12,11 @@ import org.jetbrains.exposed.sql.Database
 class DatabaseEditUserStorage(db: Database) : EditUserUsecase.Storage {
     private val usersTable = UsersTable(db)
 
-    override suspend fun editUser(userId: UserId, nickname: String?, avatarId: Optional<FileId?>): FullUser =
-        usersTable.editUser(userId, nickname, avatarId).mapToUsecase()
+    override suspend fun editUser(
+        userId: UserId, nickname: String?,
+        username: Optional<String?>,
+        avatarId: Optional<FileId?>
+    ): FullUser =
+        usersTable.editUser(userId, nickname, username, avatarId).mapToUsecase()
 
 }
