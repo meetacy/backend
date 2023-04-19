@@ -16,7 +16,7 @@ class DatabaseEditUserStorage(db: Database) : EditUserUsecase.Storage {
         userId: UserId, nickname: String?,
         username: Optional<String?>,
         avatarId: Optional<FileId?>
-    ): FullUser =
-        usersTable.editUser(userId, nickname, username, avatarId).mapToUsecase()
+    ): FullUser? =
+        usersTable.editUser(userId, nickname, username, avatarId)?.mapToUsecase()
 
 }

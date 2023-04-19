@@ -7,6 +7,7 @@ import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.ifPresent
 import app.meetacy.backend.types.map
 import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.user.Username
 import app.meetacy.backend.usecase.types.*
 
 class EditUserUsecase(
@@ -35,7 +36,7 @@ class EditUserUsecase(
         if (nickname != null) if (!utf8Checker.checkString(nickname)) return Result.InvalidUtf8String
         usernameOptional.ifPresent {
             it ?: return@ifPresent
-            utf8Checker.checkString(it) { return Result.InvalidUsername }
+            if (Username.parseOrNull(it) == null) return Result.InvalidUsername
         }
 
         var avatarAccessIdentity: FileIdentity? = null
@@ -55,7 +56,7 @@ class EditUserUsecase(
             nickname,
             usernameOptional,
             avatarIdentityOptional.map { it?.id }
-        )
+        ) ?: return Result.InvalidUsername
         return Result.Success(
             with(fullUser) {
                 UserView(
@@ -77,6 +78,6 @@ class EditUserUsecase(
             nickname: String?,
             username: Optional<String?>,
             avatarId: Optional<FileId?>
-        ): FullUser
+        ): FullUser?
     }
 }

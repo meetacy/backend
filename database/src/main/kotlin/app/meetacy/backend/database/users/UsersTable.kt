@@ -62,7 +62,7 @@ class UsersTable(private val db: Database) : Table() {
     }
 
 
-    suspend fun isEmailOccupied(
+    suspend fun  isEmailOccupied(
         email: String
     ): Boolean = newSuspendedTransaction(db = db) {
        val result = select { (EMAIL eq email) and EMAIL_VERIFIED}.firstOrNull()
@@ -103,7 +103,8 @@ class UsersTable(private val db: Database) : Table() {
         nickname: String?,
         username: Optional<String?>,
         avatarId: Optional<FileId?>,
-    ): DatabaseUser = newSuspendedTransaction(db = db) {
+    ): DatabaseUser? = newSuspendedTransaction(db = db) {
+        if (!checkUsername(username)) return@newSuspendedTransaction null
         update({ USER_ID eq userId.long }) { statement ->
             nickname?.let { statement[NICKNAME] = it }
             avatarId.ifPresent {
@@ -116,5 +117,9 @@ class UsersTable(private val db: Database) : Table() {
         return@newSuspendedTransaction select { USER_ID eq userId.long }
             .first<ResultRow>()
             .toUser()
+    }
+
+    suspend fun checkUsername(username: Optional<String?>): Boolean = newSuspendedTransaction(db = db) {
+        return@newSuspendedTransaction select { USERNAME eq username.ifPresent { it } }.firstOrNull() == null
     }
 }
