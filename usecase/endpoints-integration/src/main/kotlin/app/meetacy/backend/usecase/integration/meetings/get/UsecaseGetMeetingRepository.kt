@@ -18,9 +18,7 @@ class UsecaseGetMeetingRepository(
 
         when (val result = usecase.getMeeting(accessIdentity, meetingIdentity)) {
             is GetMeetingUsecase.Result.Success ->
-                GetMeetingResult.Success(
-                    result.meeting.mapToEndpoint()
-                )
+                GetMeetingResult.Success(result.meeting.mapToEndpoint())
 
             GetMeetingUsecase.Result.MeetingNotFound ->
                 GetMeetingResult.MeetingNotFound

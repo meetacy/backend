@@ -31,7 +31,7 @@ fun Route.deleteFriend(provider: DeleteFriendRepository) = post("/delete") {
     when (provider.deleteFriend(params)) {
 
         DeleteFriendResult.FriendNotFound -> call.respondFailure(Failure.FriendNotFound)
-        DeleteFriendResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        DeleteFriendResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
         DeleteFriendResult.Success -> call.respondSuccess()
     }
 }

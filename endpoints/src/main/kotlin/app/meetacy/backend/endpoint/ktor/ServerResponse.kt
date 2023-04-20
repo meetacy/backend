@@ -9,13 +9,13 @@ data class Success<out T>(
 )
 
 @Serializable
-class Failure(
+data class Failure(
     val status: Boolean,
     val errorCode: Int,
     val errorMessage: String
 ) {
     companion object {
-        val InvalidAccessIdentity = Failure(false, 1, "Please provide a valid token")
+        val InvalidToken = Failure(false, 1, "Please provide a valid token")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingId")
         val InvalidFileIdentity = Failure(false, 3, "Please provide a valid fileId")
         val InvalidLink = Failure(false, 4, "This link is invalid. Please consider to create a new one")

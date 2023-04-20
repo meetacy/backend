@@ -47,6 +47,6 @@ fun Route.listMeetingsHistory(listMeetingsHistoryRepository: ListMeetingsHistory
         )
     ) {
         is ListMeetingsResult.Success -> call.respondSuccess(result.meetings.serializable())
-        is ListMeetingsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        is ListMeetingsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
     }
 }

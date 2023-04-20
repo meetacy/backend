@@ -1,4 +1,5 @@
 import app.meetacy.backend.hash.HashGenerator
+import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.sdk.exception.MeetacyInternalException
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.Date
@@ -9,9 +10,9 @@ import app.meetacy.sdk.types.optional.Optional
 import app.meetacy.sdk.types.meeting.MeetingId
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
-import org.junit.jupiter.api.Test
 import java.time.Duration
 import java.time.Instant
+import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TestMeetings {
@@ -218,5 +219,52 @@ class TestMeetings {
         val updated = meeting.updated()
 
         require(updated.title == newTitle)
+    }
+
+    @Test
+    fun `test meeting with invalid identity`() = runTestServer {
+        val client = generateTestAccount()
+
+        val (meetingId) = client.meetings.createTestMeeting().id.string.split(":")
+
+        val crackedMeetingId = MeetingId(InvalidId(meetingId))
+
+        val exception = try {
+            client.meetings.get(crackedMeetingId)
+            null
+        } catch (exception: MeetacyInternalException) {
+            exception
+        }
+
+        require(exception is MeetacyInternalException)
+    }
+
+    @Test
+    fun `test participants list`() = runTestServer {
+        val participantsCount = (0..50).random()
+
+        println("Test with participants count: $participantsCount")
+
+        val client = generateTestAccount()
+
+        val participants = List(participantsCount) { i ->
+            generateTestAccount(postfix = " participant #$i")
+        }
+
+        val meeting = client.meetings.createTestMeeting()
+
+        val emptyParticipants = meeting.participants.flow(10.amount).toList().flatten()
+
+        require(emptyParticipants.size == 1)
+
+        for (participant in participants) {
+            meeting.base.participate(
+                token = participant.token
+            )
+        }
+
+        val actualParticipants = meeting.participants.flow(10.amount).toList().flatten()
+
+        require(actualParticipants.size == participantsCount + 1)
     }
 }
