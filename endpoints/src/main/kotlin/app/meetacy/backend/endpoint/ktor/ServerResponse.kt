@@ -10,7 +10,7 @@ data class Success<out T>(
 
 @Serializable
 class Failure(
-    val status: Boolean = false,
+    val status: Boolean,
     val errorCode: Int,
     val errorMessage: String
 ) {

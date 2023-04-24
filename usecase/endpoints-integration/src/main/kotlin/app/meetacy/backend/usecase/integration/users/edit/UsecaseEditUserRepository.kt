@@ -18,7 +18,7 @@ class UsecaseEditUserRepository(
             val result = usecase.editUser(
                 token.type(),
                 nickname,
-                username.type(),
+                username.type().map { usernameSerializable -> usernameSerializable?.type() },
                 avatarId.type().map { fileIdentity -> fileIdentity?.type() },
             )
         ) {

@@ -7,6 +7,7 @@ import app.meetacy.backend.endpoint.types.User
 import app.meetacy.backend.types.serialization.OptionalSerializable
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
+import app.meetacy.backend.types.serialization.user.UsernameSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -16,7 +17,7 @@ import kotlinx.serialization.Serializable
 data class EditUserParams(
     val token: AccessIdentitySerializable,
     val nickname: String?,
-    val username: OptionalSerializable<String?> = OptionalSerializable.Undefined,
+    val username: OptionalSerializable<UsernameSerializable?> = OptionalSerializable.Undefined,
     val avatarId: OptionalSerializable<FileIdentitySerializable?> = OptionalSerializable.Undefined,
 )
 

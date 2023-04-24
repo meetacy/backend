@@ -8,6 +8,7 @@ import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
+import app.meetacy.backend.types.user.Username
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -101,7 +102,7 @@ class UsersTable(private val db: Database) : Table() {
     suspend fun editUser(
         userId: UserId,
         nickname: String?,
-        username: Optional<String?>,
+        username: Optional<Username?>,
         avatarId: Optional<FileId?>,
     ): DatabaseUser? = newSuspendedTransaction(db = db) {
         if (!checkUsername(username)) return@newSuspendedTransaction null
@@ -111,7 +112,7 @@ class UsersTable(private val db: Database) : Table() {
                 statement[AVATAR_ID] = it?.long
             }
             username.ifPresent {
-                statement[USERNAME] = it
+                statement[USERNAME] = it?.string
             }
         }
         return@newSuspendedTransaction select { USER_ID eq userId.long }
@@ -119,7 +120,7 @@ class UsersTable(private val db: Database) : Table() {
             .toUser()
     }
 
-    suspend fun checkUsername(username: Optional<String?>): Boolean = newSuspendedTransaction(db = db) {
-        return@newSuspendedTransaction select { USERNAME eq username.ifPresent { it } }.firstOrNull() == null
+    suspend fun checkUsername(username: Optional<Username?>): Boolean = newSuspendedTransaction(db = db) {
+        return@newSuspendedTransaction select { USERNAME eq username.ifPresent { it?.string } }.firstOrNull() == null
     }
 }

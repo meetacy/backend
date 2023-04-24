@@ -6,7 +6,6 @@ import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
-import app.meetacy.backend.types.serialization.access.serializable
 import app.meetacy.backend.types.serialization.file.serializable
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -28,7 +27,7 @@ interface SaveFileRepository {
     ): UploadFileResult
 }
 
-fun Route.upload(provider: SaveFileRepository) = post("/upload") {
+fun Route.upload(saveFileRepository: SaveFileRepository) = post("/upload") {
     val multipartData = call.receiveMultipart()
 
     var token: AccessIdentity? = null
@@ -53,7 +52,7 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
     if (token == null || inputProvider == null) {
         error("Please provide accessIdentity and inputProvider")
     }
-    when (val result = provider.saveFile(token!!, fileName, inputProvider!!)) {
+    when (val result = saveFileRepository.saveFile(token!!, fileName, inputProvider!!)) {
         is UploadFileResult.Success -> call.respondSuccess(
             result.fileIdentity.serializable()
         )

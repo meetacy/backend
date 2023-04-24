@@ -29,14 +29,14 @@ class EditUserUsecase(
     suspend fun editUser(
         token: AccessIdentity,
         nickname: String?,
-        usernameOptional: Optional<String?>,
+        usernameOptional: Optional<Username?>,
         avatarIdentityOptional: Optional<FileIdentity?>,
     ): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
         if (nickname != null) if (!utf8Checker.checkString(nickname)) return Result.InvalidUtf8String
         usernameOptional.ifPresent {
             it ?: return@ifPresent
-            if (Username.parseOrNull(it) == null) return Result.InvalidUsername
+            if (Username.parseOrNull(it.string) == null) return Result.InvalidUsername
         }
 
         var avatarAccessIdentity: FileIdentity? = null
@@ -76,7 +76,7 @@ class EditUserUsecase(
         suspend fun editUser(
             userId: UserId,
             nickname: String?,
-            username: Optional<String?>,
+            username: Optional<Username?>,
             avatarId: Optional<FileId?>
         ): FullUser?
     }
