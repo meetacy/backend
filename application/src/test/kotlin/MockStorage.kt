@@ -13,7 +13,6 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
-import app.meetacy.backend.types.ifPresent
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
@@ -130,9 +129,9 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         }
     }
 
-    override suspend fun verifyEmail(userIdentity: UserId) = synchronized(lock = this) {
+    override suspend fun verifyEmail(userId: UserId) = synchronized(lock = this) {
         users.replaceAll { user ->
-            if (user.identity.userId != userIdentity) return@replaceAll user
+            if (user.identity.userId != userId) return@replaceAll user
             user.copy(emailVerified = true)
         }
     }

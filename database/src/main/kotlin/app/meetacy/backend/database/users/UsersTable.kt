@@ -6,6 +6,7 @@ import app.meetacy.backend.database.types.DatabaseUser
 import app.meetacy.backend.types.*
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.gender.UserGender
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import org.jetbrains.exposed.sql.*
@@ -15,6 +16,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class UsersTable(private val db: Database) : Table() {
     private val USER_ID = long("USER_ID").autoIncrement()
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
+    private val GENDER = varchar("GENDER", length = GENDER_NAME_MAX_LIMIT).nullable()
     private val NICKNAME = varchar("NICKNAME", length = NICKNAME_MAX_LIMIT)
     private val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT).nullable()
     private val EMAIL_VERIFIED = bool("EMAIL_VERIFIED").default(false)
@@ -37,15 +39,17 @@ class UsersTable(private val db: Database) : Table() {
         }
         val avatarId = result[AVATAR_ID]
 
+        // todo я бы писал [fieldName] = .... Так будет норм пон. Еще если дефолтные будут то не будет ошибок
         return@newSuspendedTransaction DatabaseUser(
-            UserIdentity(
+            identity = UserIdentity(
                 UserId(result[USER_ID]),
                 AccessHash(result[ACCESS_HASH])
             ),
-            result[NICKNAME],
-            result[EMAIL],
-            result[EMAIL_VERIFIED],
-            if (avatarId != null) FileId(avatarId) else null
+            gender = result[GENDER]?.let { UserGender.parseByName(it) },
+            nickname = result[NICKNAME],
+            email = result[EMAIL],
+            emailVerified = result[EMAIL_VERIFIED],
+            avatarId = if (avatarId != null) FileId(avatarId) else null
         )
     }
 
@@ -57,6 +61,8 @@ class UsersTable(private val db: Database) : Table() {
             .associateBy { user -> user.identity.userId }
 
         return@newSuspendedTransaction userIds.map { foundUsers[it] }
+        // todo лист конвертируется в мап с ключами, мапа не используется. Можно создать foundUsers: List<>,
+        //  и отдельно foundUsersWithIds, и в данном случае возвращать foundUsers. Потом мб пригодиться и вторая
     }
 
 
@@ -69,38 +75,50 @@ class UsersTable(private val db: Database) : Table() {
 
     private fun ResultRow.toUser(): DatabaseUser {
         val avatarId = this[AVATAR_ID]
+        // todo я бы писал [fieldName] = .... Так будет норм пон. Еще если дефолтные будут то не будет ошибок
         return DatabaseUser(
-            UserIdentity(
+            identity = UserIdentity(
                 UserId(this[USER_ID]),
                 AccessHash(this[ACCESS_HASH])
             ),
-            this[NICKNAME],
-            this[EMAIL],
-            this[EMAIL_VERIFIED],
-            if (avatarId != null) FileId(avatarId) else null
+            gender = this[GENDER]?.let { UserGender.parseByName(it) },
+            nickname = this[NICKNAME],
+            email = this[EMAIL],
+            emailVerified = this[EMAIL_VERIFIED],
+            avatarId = if (avatarId != null) FileId(avatarId) else null
         )
     }
 
-    suspend fun updateEmail(userIdentity: UserId, email: String) =
+    // todo fix: не userIdentity а userId
+    suspend fun updateEmail(userId: UserId, email: String) =
         newSuspendedTransaction(db = db) {
-            update({ USER_ID eq userIdentity.long }) { statement ->
+            update({ USER_ID eq userId.long }) { statement ->
                 statement[EMAIL] = email
             }
         }
 
-    suspend fun verifyEmail(userIdentity: UserId) =
+    // todo fix: не userIdentity а userId
+    suspend fun verifyEmail(userId: UserId) =
         newSuspendedTransaction(db = db) {
-            update({ USER_ID eq userIdentity.long }) { statement ->
+            update({ USER_ID eq userId.long }) { statement ->
                 statement[EMAIL_VERIFIED] = true
             }
         }
 
+    // todo еще надо unverifyEmail пон
+
+    // todo fix: поч не добавить значения по умолчанию, чтобы с добавлением новых полей не приходилось везде писать
+    //  Optional.Undefined и null
     suspend fun editUser(
         userId: UserId,
-        nickname: String?,
-        avatarId: Optional<FileId?>,
+        gender: Optional<UserGender?> = Optional.Undefined,
+        nickname: String? = null,
+        avatarId: Optional<FileId?> = Optional.Undefined,
     ): DatabaseUser = newSuspendedTransaction(db = db) {
         update({ USER_ID eq userId.long }) { statement ->
+            gender.ifPresent {
+                statement[GENDER] = it?.genderName
+            }
             nickname?.let { statement[NICKNAME] = it }
             avatarId.ifPresent {
                 statement[AVATAR_ID] = it?.long

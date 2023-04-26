@@ -16,9 +16,10 @@ class UsecaseEditUserRepository(
     ): EditUserResult = with(editUserParams) {
         when (
             val result = usecase.editUser(
-                token.type(),
-                nickname,
-                avatarId.type().map { fileIdentity -> fileIdentity?.type() },
+                token = token.type(),
+                gender = gender.type().map { it?.type() },
+                nickname = nickname,
+                avatarIdentityOptional = avatarId.type().map { fileIdentity -> fileIdentity?.type() },
             )
         ) {
             EditUserUsecase.Result.InvalidAccessIdentity ->

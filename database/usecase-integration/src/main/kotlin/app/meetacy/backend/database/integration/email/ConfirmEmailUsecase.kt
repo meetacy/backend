@@ -16,7 +16,8 @@ class DatabaseConfirmEmailStorage(database: Database) : ConfirmEmailUsecase.Stor
     override suspend fun deleteHashes(email: String) =
         confirmationTable.deleteHashes(email)
 
-    override suspend fun verifyEmail(userIdentity: UserId) {
-        usersTable.verifyEmail(userIdentity)
+    // todo не userIdentity а userId
+    override suspend fun verifyEmail(userId: UserId) {
+        usersTable.verifyEmail(userId)
     }
 }

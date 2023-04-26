@@ -18,6 +18,7 @@ class ViewUserUsecase(
                 UserView(
                     isSelf = viewerId == user.identity.userId,
                     identity = identity,
+                    gender = gender,
                     nickname = nickname,
                     email = if (viewerId == user.identity.userId) email else null,
                     emailVerified = if (viewerId == user.identity.userId) emailVerified else null,

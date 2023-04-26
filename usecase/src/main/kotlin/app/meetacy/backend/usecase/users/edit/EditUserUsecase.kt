@@ -4,6 +4,7 @@ import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.gender.UserGender
 import app.meetacy.backend.types.ifPresent
 import app.meetacy.backend.types.map
 import app.meetacy.backend.types.user.UserId
@@ -26,6 +27,7 @@ class EditUserUsecase(
 
     suspend fun editUser(
         token: AccessIdentity,
+        gender: Optional<UserGender?>,
         nickname: String?,
         avatarIdentityOptional: Optional<FileIdentity?>,
     ): Result {
@@ -41,22 +43,24 @@ class EditUserUsecase(
             return Result.NullEditParameters
         }
 
-
-
+        // todo я бы писал [fieldName] = .... Так будет норм пон. Еще если дефолтные будут то не будет ошибок
         val fullUser = storage.editUser(
-            userId,
-            nickname,
-            avatarIdentityOptional.map { it?.id }
+            userId = userId,
+            gender = gender,
+            nickname = nickname,
+            avatarId = avatarIdentityOptional.map { it?.id }
         )
         return Result.Success(
             with(fullUser) {
                 UserView(
-                    true,
-                    identity,
-                    fullUser.nickname,
-                    fullUser.email,
-                    fullUser.emailVerified,
-                    avatarAccessIdentity
+                    // todo я бы писал [fieldName] = .... Так будет норм пон. Еще если дефолтные будут то не будет ошибок
+                    isSelf = true,
+                    identity = identity,
+                    gender = fullUser.gender,
+                    nickname = fullUser.nickname,
+                    email = fullUser.email,
+                    emailVerified = fullUser.emailVerified,
+                    avatarIdentity = avatarAccessIdentity
                 )
             }
         )
@@ -65,6 +69,7 @@ class EditUserUsecase(
     interface Storage {
         suspend fun editUser(
             userId: UserId,
+            gender: Optional<UserGender?>,
             nickname: String?,
             avatarId: Optional<FileId?>
         ): FullUser

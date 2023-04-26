@@ -4,6 +4,8 @@ import app.meetacy.backend.infrastructure.startEndpoints
 import org.jetbrains.exposed.sql.Database
 import java.io.File
 
+// todo почему есть Username, но нету Nickname?
+
 fun main() {
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
     val databaseUrl = System.getenv("DATABASE_URL") ?: error("Please provide a database url")
