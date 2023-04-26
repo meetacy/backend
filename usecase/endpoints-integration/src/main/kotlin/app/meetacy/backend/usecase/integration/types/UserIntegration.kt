@@ -8,6 +8,7 @@ import app.meetacy.backend.usecase.types.UserView
 
 fun UserView.mapToEndpoint() = User(
     isSelf = isSelf,
+    yourSubscriber = yourSubscriber,
     id = identity.serializable(),
     gender = gender?.serializable(),
     nickname = nickname,

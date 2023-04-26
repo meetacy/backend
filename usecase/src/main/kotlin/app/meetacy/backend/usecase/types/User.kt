@@ -17,6 +17,7 @@ data class FullUser(
 
 data class UserView(
     val isSelf: Boolean,
+    val yourSubscriber: Boolean?,
     val identity: UserIdentity,
     val gender: UserGender?,
     val nickname: String,

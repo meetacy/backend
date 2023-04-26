@@ -55,6 +55,7 @@ class EditUserUsecase(
                 UserView(
                     // todo я бы писал [fieldName] = .... Так будет норм пон. Еще если дефолтные будут то не будет ошибок
                     isSelf = true,
+                    yourSubscriber = null,
                     identity = identity,
                     gender = fullUser.gender,
                     nickname = fullUser.nickname,

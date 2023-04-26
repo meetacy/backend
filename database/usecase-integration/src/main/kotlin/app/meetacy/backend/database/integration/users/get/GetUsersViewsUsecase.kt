@@ -20,5 +20,5 @@ class DatabaseGetUsersViewsStorage(db: Database) : GetUsersViewsUsecase.Storage 
 
 class DatabaseGetUsersViewsViewUserRepository(val db: Database) : GetUsersViewsUsecase.ViewUserRepository {
     override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
-        ViewUserUsecase(DatabaseFilesRepository(db)).viewUser(viewerId, user)
+        ViewUserUsecase(DatabaseFilesRepository(db), DatabaseGetIsSubscriberStorage(db)).viewUser(viewerId, user)
 }

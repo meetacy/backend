@@ -6,7 +6,8 @@ import app.meetacy.backend.usecase.types.FullUser
 import app.meetacy.backend.usecase.types.UserView
 
 class ViewUserUsecase(
-    private val filesRepository: FilesRepository
+    private val filesRepository: FilesRepository,
+    private val isSubscriberStorage: IsSubscriberStorage
 ) {
     suspend fun viewUsers(viewerId: UserId, users: List<FullUser>): List<UserView> {
         val avatarIds = filesRepository.getFileIdentities(
@@ -15,8 +16,16 @@ class ViewUserUsecase(
 
         return users.map { user ->
             with(user) {
+                val isSelf = viewerId == user.identity.userId
+                val yourSubscriber =
+                    if (isSelf)
+                        null
+                    else
+                        isSubscriberStorage.isSubscriber(viewerId = viewerId, expectedSubscriberId = user.identity.userId)
+
                 UserView(
-                    isSelf = viewerId == user.identity.userId,
+                    isSelf = isSelf,
+                    yourSubscriber = yourSubscriber,
                     identity = identity,
                     gender = gender,
                     nickname = nickname,
@@ -29,4 +38,8 @@ class ViewUserUsecase(
     }
 
     suspend fun viewUser(viewerId: UserId, user: FullUser) = viewUsers(viewerId, listOf(user)).first()
+
+    interface IsSubscriberStorage {
+        suspend fun isSubscriber(viewerId: UserId, expectedSubscriberId: UserId): Boolean
+    }
 }
