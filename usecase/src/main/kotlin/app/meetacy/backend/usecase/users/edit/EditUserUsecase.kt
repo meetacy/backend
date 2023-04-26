@@ -8,6 +8,7 @@ import app.meetacy.backend.types.ifPresent
 import app.meetacy.backend.types.map
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.Username
+import app.meetacy.backend.types.user.usernameOrNull
 import app.meetacy.backend.usecase.types.*
 
 class EditUserUsecase(
@@ -29,20 +30,23 @@ class EditUserUsecase(
     suspend fun editUser(
         token: AccessIdentity,
         nickname: String?,
-        usernameOptional: Optional<Username?>,
+        usernameOptionalString: Optional<String?>,
         avatarIdentityOptional: Optional<FileIdentity?>,
     ): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
         if (nickname != null) if (!utf8Checker.checkString(nickname)) return Result.InvalidUtf8String
-        usernameOptional.ifPresent {
-            it ?: return@ifPresent
-            if (Username.parseOrNull(it.string) == null) return Result.InvalidUsername
+
+        val usernameOptional = usernameOptionalString.map  { string ->
+            string ?: return@map null
+            val username = string.usernameOrNull
+            if (username != null) storage.check(username.string) { return Result.InvalidUsername }
+            string.usernameOrNull
         }
 
-        var avatarAccessIdentity: FileIdentity? = null
-        avatarIdentityOptional.ifPresent { avatarIdentity ->
-            avatarIdentity ?: return@ifPresent
-            avatarAccessIdentity = filesRepository.checkFileIdentity(avatarIdentity) { return Result.InvalidAvatarIdentity }
+        avatarIdentityOptional.ifPresent { identity ->
+            if (identity != null) {
+                filesRepository.checkFileIdentity(identity) { return Result.InvalidAvatarIdentity }
+            }
         }
 
         if (listOf(nickname, avatarIdentityOptional).all { it == null }) {
@@ -56,7 +60,7 @@ class EditUserUsecase(
             nickname,
             usernameOptional,
             avatarIdentityOptional.map { it?.id }
-        ) ?: return Result.InvalidUsername
+        )
         return Result.Success(
             with(fullUser) {
                 UserView(
@@ -66,7 +70,7 @@ class EditUserUsecase(
                     fullUser.username,
                     fullUser.email,
                     fullUser.emailVerified,
-                    avatarAccessIdentity
+                    avatarIdentityOptional.value
                 )
             }
         )
@@ -78,6 +82,18 @@ class EditUserUsecase(
             nickname: String?,
             username: Optional<Username?>,
             avatarId: Optional<FileId?>
-        ): FullUser?
+        ): FullUser
+
+        suspend fun checkUsername(
+            username: String
+        ): Boolean
+
+    }
+
+    private suspend inline fun Storage.check(
+        username: String,
+        fallback: () -> Nothing
+    ) {
+        if(!checkUsername(username)) fallback()
     }
 }

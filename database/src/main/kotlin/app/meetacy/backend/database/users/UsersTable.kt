@@ -9,6 +9,7 @@ import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.types.user.Username
+import app.meetacy.backend.types.user.username
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -45,7 +46,7 @@ class UsersTable(private val db: Database) : Table() {
                 AccessHash(result[ACCESS_HASH])
             ),
             result[NICKNAME],
-            result[USERNAME],
+            result[USERNAME]?.username,
             result[EMAIL],
             result[EMAIL_VERIFIED],
             if (avatarId != null) FileId(avatarId) else null
@@ -62,8 +63,7 @@ class UsersTable(private val db: Database) : Table() {
         return@newSuspendedTransaction userIds.map { foundUsers[it] }
     }
 
-
-    suspend fun  isEmailOccupied(
+    suspend fun isEmailOccupied(
         email: String
     ): Boolean = newSuspendedTransaction(db = db) {
        val result = select { (EMAIL eq email) and EMAIL_VERIFIED}.firstOrNull()
@@ -78,7 +78,7 @@ class UsersTable(private val db: Database) : Table() {
                 AccessHash(this[ACCESS_HASH])
             ),
             this[NICKNAME],
-            this[USERNAME],
+            this[USERNAME]?.username,
             this[EMAIL],
             this[EMAIL_VERIFIED],
             if (avatarId != null) FileId(avatarId) else null
@@ -104,8 +104,7 @@ class UsersTable(private val db: Database) : Table() {
         nickname: String?,
         username: Optional<Username?>,
         avatarId: Optional<FileId?>,
-    ): DatabaseUser? = newSuspendedTransaction(db = db) {
-        if (!checkUsername(username)) return@newSuspendedTransaction null
+    ): DatabaseUser = newSuspendedTransaction(db = db) {
         update({ USER_ID eq userId.long }) { statement ->
             nickname?.let { statement[NICKNAME] = it }
             avatarId.ifPresent {
@@ -120,7 +119,7 @@ class UsersTable(private val db: Database) : Table() {
             .toUser()
     }
 
-    suspend fun checkUsername(username: Optional<Username?>): Boolean = newSuspendedTransaction(db = db) {
-        return@newSuspendedTransaction select { USERNAME eq username.ifPresent { it?.string } }.firstOrNull() == null
+    suspend fun checkUsername(username: String): Boolean = newSuspendedTransaction(db = db) {
+        return@newSuspendedTransaction select { USERNAME eq username }.firstOrNull() == null
     }
 }

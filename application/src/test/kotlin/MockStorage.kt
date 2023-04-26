@@ -21,6 +21,7 @@ import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
+import app.meetacy.backend.types.user.Username
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
@@ -63,7 +64,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         synchronized(lock = this) {
             val userId = UserId(users.size.toLong())
             val accessHash = AccessHash(DefaultHashGenerator.generate())
-            val user = User(UserIdentity(userId, accessHash), nickname, null)
+            val user = User(UserIdentity(userId, accessHash), nickname)
             users += user
             return user.identity.userId
         }
@@ -81,7 +82,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     private data class User(
         val identity: UserIdentity,
         val nickname: String,
-        val username: String?,
+        val username: Username? = null,
         val email: String? = null,
         val emailVerified: Boolean = false,
         val tokens: List<AccessIdentity> = emptyList(),
@@ -159,7 +160,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }.map { user ->
                 if (user == null) return@map null
                 with(user) {
-                    FullUser(identity, nickname, username, email, emailVerified, avatarId)
+                    FullUser(identity, nickname, username?.string, email, emailVerified, avatarId)
                 }
             }
         }
@@ -425,10 +426,11 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
         viewUserUsecase.viewUser(viewerId, user)
 
+
     override suspend fun editUser(
         userId: UserId,
         nickname: String?,
-        username: Optional<String?>,
+        username: Optional<Username?>,
         avatarId: Optional<FileId?>
     ): FullUser {
         synchronized(this) {
@@ -442,5 +444,9 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }
         }
         return getUsers(listOf(userId)).first()!!
+    }
+
+    override suspend fun checkUsername(username: String): Boolean {
+        TODO("Not yet implemented")
     }
 }

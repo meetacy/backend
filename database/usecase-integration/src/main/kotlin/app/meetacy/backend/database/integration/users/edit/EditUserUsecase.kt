@@ -17,7 +17,9 @@ class DatabaseEditUserStorage(db: Database) : EditUserUsecase.Storage {
         userId: UserId, nickname: String?,
         username: Optional<Username?>,
         avatarId: Optional<FileId?>
-    ): FullUser? =
-        usersTable.editUser(userId, nickname, username, avatarId)?.mapToUsecase()
+    ): FullUser =
+        usersTable.editUser(userId, nickname, username, avatarId).mapToUsecase()
+
+    override suspend fun checkUsername(username: String): Boolean = usersTable.checkUsername(username)
 
 }

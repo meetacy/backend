@@ -689,7 +689,7 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 UserNotFound:
                   $ref: '#/components/examples/UserNotFound'
-  /user/edit:
+  /users/edit:
     parameters:
       - name: Api-Version
         in: header
