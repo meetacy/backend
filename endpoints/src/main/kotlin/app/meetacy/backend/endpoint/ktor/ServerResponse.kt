@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package app.meetacy.backend.endpoint.ktor
 
 import kotlinx.serialization.Serializable
@@ -14,6 +16,7 @@ data class Failure(
     val errorCode: Int,
     val errorMessage: String
 ) {
+    // Last errorCode: 15
     companion object {
         val InvalidToken = Failure(false, 1, "Please provide a valid token")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingId")
@@ -35,6 +38,15 @@ data class Failure(
         val LinkMaxAttemptsReached = Failure(false, 13, "You have reached max attempts for today. Please try again later.")
 
         val ApiVersionIsNotSpecified = Failure(false, 14, "Please specify api version using header 'Api-Version'")
+
+        fun UnhandledException(throwable: Throwable): Failure = Failure(
+            status = false,
+            errorCode = 15,
+            errorMessage = buildString {
+                appendLine("Unhandled exception occurred. Stacktrace: ")
+                append(throwable.stackTraceToString())
+            }
+        )
     }
 }
 

@@ -11,16 +11,17 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
-import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
+import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
 import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
 import app.meetacy.backend.usecase.integration.email.confirm.UsecaseConfirmEmailRepository
 import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
+import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
@@ -60,13 +61,14 @@ import io.ktor.client.plugins.logging.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import java.io.File
 
 val testApi = MeetacyApi(
     baseUrl = "http://localhost:8080",
     httpClient = HttpClient {
         Logging {
-//            level = LogLevel.NONE
-            level = LogLevel.ALL
+            level = LogLevel.NONE
+//            level = LogLevel.ALL
         }
         expectSuccess = true
         developmentMode = true
@@ -244,7 +246,22 @@ fun runTestServer(
             )
         ),
         filesDependencies = FilesDependencies(
-            saveFileRepository = mockStorage,
+            saveFileRepository = UsecaseUploadFileRepository(
+                basePath = File(
+                    /* parent = */ System.getenv("user.dir"),
+                    /* child = */ "files"
+                ).apply {
+                    mkdirs()
+                    deleteOnExit()
+                }.absolutePath,
+                usecase = UploadFileUsecase(
+                    authRepository = mockStorage,
+                    storage = mockStorage,
+                    hashGenerator = DefaultHashGenerator
+                ),
+                filesLimit = 100L * 1024 * 1024,
+                deleteFilesOnExit = true
+            ),
             getFileRepository = mockStorage
         ),
         usersDependencies = UsersDependencies(

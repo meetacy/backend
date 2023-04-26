@@ -2,6 +2,7 @@ package app.meetacy.backend.endpoint
 
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.auth
+import app.meetacy.backend.endpoint.exceptions.installExceptionsHandler
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.files.files
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
@@ -22,7 +23,9 @@ import io.ktor.server.plugins.autohead.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.partialcontent.*
+import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.plugins.swagger.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -51,11 +54,8 @@ fun startEndpoints(
         allowHeader(HttpHeaders.ContentType)
     }
     install(AutoHeadResponse)
-    install(PartialContent) {
-        // Maximum number of ranges that will be accepted from an HTTP request.
-        // If the HTTP request specifies more ranges, they will all be merged into a single range.
-        maxRangeCount = 10
-    }
+    install(PartialContent)
+    installExceptionsHandler()
 
     routing {
         static("/") {
