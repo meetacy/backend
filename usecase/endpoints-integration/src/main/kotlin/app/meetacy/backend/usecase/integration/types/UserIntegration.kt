@@ -8,7 +8,7 @@ import app.meetacy.backend.usecase.types.UserView
 
 fun UserView.mapToEndpoint() = User(
     isSelf = isSelf,
-    yourSubscriber = yourSubscriber,
+    friendship = friendship?.mapToEndpoint(),
     id = identity.serializable(),
     gender = gender?.serializable(),
     nickname = nickname,
@@ -16,3 +16,10 @@ fun UserView.mapToEndpoint() = User(
     emailVerified = emailVerified,
     avatarIdentity = avatarIdentity?.serializable()
 )
+
+fun UserView.Friendship.mapToEndpoint() = when (this) {
+    UserView.Friendship.None -> User.Friendship.None
+    UserView.Friendship.Subscription -> User.Friendship.Subscription
+    UserView.Friendship.Subscriber -> User.Friendship.Subscriber
+    UserView.Friendship.Friends -> User.Friendship.Friends
+}

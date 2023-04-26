@@ -17,15 +17,27 @@ class ViewUserUsecase(
         return users.map { user ->
             with(user) {
                 val isSelf = viewerId == user.identity.userId
-                val yourSubscriber =
+                val friendship: UserView.Friendship? = let {
                     if (isSelf)
-                        null
+                        return@let null
+                    val viewerIsSubscriber = isSubscriberStorage.isSubscriber(viewerId = viewerId, expectedSubscriberId = user.identity.userId)
+                    val userIsSubscriber = isSubscriberStorage.isSubscriber(viewerId = user.identity.userId, expectedSubscriberId = viewerId)
+
+                    if (viewerIsSubscriber)
+                        if (userIsSubscriber)
+                            UserView.Friendship.Friends
+                        else
+                            UserView.Friendship.Subscription
                     else
-                        isSubscriberStorage.isSubscriber(viewerId = viewerId, expectedSubscriberId = user.identity.userId)
+                        if (userIsSubscriber)
+                            UserView.Friendship.Subscriber
+                        else
+                            UserView.Friendship.None
+                }
 
                 UserView(
                     isSelf = isSelf,
-                    yourSubscriber = yourSubscriber,
+                    friendship = friendship,
                     identity = identity,
                     gender = gender,
                     nickname = nickname,

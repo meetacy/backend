@@ -17,11 +17,15 @@ data class FullUser(
 
 data class UserView(
     val isSelf: Boolean,
-    val yourSubscriber: Boolean?,
+    val friendship: Friendship?,
     val identity: UserIdentity,
     val gender: UserGender?,
     val nickname: String,
     val email: String?,
     val emailVerified: Boolean?,
     val avatarIdentity: FileIdentity?
-)
+) {
+    enum class Friendship {
+        None, Subscription, Subscriber, Friends;
+    }
+}
