@@ -35,6 +35,6 @@ fun Route.read(repository: ReadNotificationsRepository) = post("/read") {
         ReadNotificationsRepository.Result.Success -> call.respondSuccess()
 
         ReadNotificationsRepository.Result.LastNotificationIdInvalid -> call.respondFailure(Failure.LastNotificationIdInvalid)
-        ReadNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        ReadNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
     }
 }

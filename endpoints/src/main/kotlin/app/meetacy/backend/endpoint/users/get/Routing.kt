@@ -33,6 +33,6 @@ fun Route.getUser(provider: UserRepository) = post("/get") {
     when (val result = provider.getUser(params)) {
         is GetUserResult.Success -> call.respondSuccess(result.user)
         GetUserResult.UserNotFound -> call.respondFailure(Failure.UserNotFound)
-        GetUserResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        GetUserResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
     }
 }

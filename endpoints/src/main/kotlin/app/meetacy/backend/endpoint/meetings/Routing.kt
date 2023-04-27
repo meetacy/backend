@@ -12,6 +12,8 @@ import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.history.meetingsHistory
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.meetings.map.meetingsMap
+import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependencies
+import app.meetacy.backend.endpoint.meetings.participants.meetingParticipants
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepository
 import app.meetacy.backend.endpoint.meetings.participate.participateMeeting
 import io.ktor.server.routing.*
@@ -19,6 +21,7 @@ import io.ktor.server.routing.*
 class MeetingsDependencies(
     val meetingsHistoryDependencies: MeetingsHistoryDependencies,
     val meetingsMapDependencies: MeetingsMapDependencies,
+    val meetingParticipantsDependencies: ParticipantsDependencies,
     val getMeetingRepository: GetMeetingRepository,
     val createMeetingRepository: CreateMeetingRepository,
     val participateMeetingRepository: ParticipateMeetingRepository,
@@ -31,6 +34,8 @@ fun Route.meetings(
 ) = route("/meetings") {
     meetingsHistory(dependencies.meetingsHistoryDependencies)
     meetingsMap(dependencies.meetingsMapDependencies)
+    meetingParticipants(dependencies.meetingParticipantsDependencies)
+
     createMeeting(dependencies.createMeetingRepository)
     deleteMeeting(dependencies.deleteMeetingRepository)
     getMeetings(dependencies.getMeetingRepository)

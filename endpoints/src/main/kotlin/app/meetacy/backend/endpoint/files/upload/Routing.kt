@@ -6,7 +6,6 @@ import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
-import app.meetacy.backend.types.serialization.access.serializable
 import app.meetacy.backend.types.serialization.file.serializable
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -58,7 +57,7 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
             result.fileIdentity.serializable()
         )
 
-        is UploadFileResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        is UploadFileResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
 
         is UploadFileResult.LimitSize -> {
             val filesSizeLimit = result.filesSizeLimit

@@ -33,6 +33,6 @@ fun Route.linkEmail(repository: LinkEmailRepository) = post("/link") {
 
     when (repository.linkEmail(parameters.token.type(), parameters.email)) {
         is ConfirmHashResult.Success -> call.respondSuccess()
-        is ConfirmHashResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        is ConfirmHashResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
     }
 }

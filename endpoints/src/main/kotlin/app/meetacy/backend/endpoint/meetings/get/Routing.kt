@@ -45,7 +45,7 @@ fun Route.getMeetings(getMeetingRepository: GetMeetingRepository) = post("/get")
             result.meeting
         )
 
-        is GetMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        is GetMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
 
         is GetMeetingResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
     }

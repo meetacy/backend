@@ -9,4 +9,4 @@ value class AccessTokenSerializable(private val string: String) {
     fun type() = AccessToken(string)
 }
 
-fun AccessToken.serializable() = AccessIdentitySerializable(string)
+fun AccessToken.serializable() = AccessTokenSerializable(string)

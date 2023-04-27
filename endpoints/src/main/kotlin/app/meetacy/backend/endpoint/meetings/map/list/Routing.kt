@@ -39,7 +39,7 @@ fun Route.listMeetingsMap(
         val result = listMeetingsMapRepository.list(params.token.type(), params.location)
     ) {
         is ListMeetingsResult.InvalidIdentity ->
-            call.respondFailure(Failure.InvalidAccessIdentity)
+            call.respondFailure(Failure.InvalidToken)
         is ListMeetingsResult.Success ->
             call.respondSuccess(result.meetings)
     }

@@ -20,6 +20,7 @@ import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.serialization.amount.serializable
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
@@ -35,6 +36,7 @@ import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
+import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
@@ -56,7 +58,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ParticipateMeetingUsecase.Storage, FilesRepository, DeleteMeetingUsecase.Storage, GetNotificationsUsecase.Storage,
     ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
-    ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage {
+    ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
+    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository {
 
     private val users = mutableListOf<User>()
 
@@ -443,4 +446,21 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
         viewUserUsecase.viewUser(viewerId, user)
 
+    override suspend fun checkMeetingIdentity(identity: MeetingIdentity): Boolean =
+        meetings.any { it.identity == identity }
+
+    override suspend fun getMeetingParticipants(
+        meetingId: MeetingId,
+        amount: Amount,
+        pagingId: PagingId?
+    ): PagingResult<List<UserId>> = synchronized(this) {
+        val participants = participants
+            .reversed()
+            .filter { (_, _, id) -> id == meetingId }
+
+        PagingResult(
+            data = participants.map { it.second },
+            nextPagingId = if (participants.size == amount.int) participants.last().first else null
+        )
+    }
 }

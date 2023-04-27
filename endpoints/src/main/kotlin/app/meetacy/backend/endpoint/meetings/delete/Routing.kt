@@ -33,7 +33,7 @@ fun Route.deleteMeeting(deleteMeetingRepository: DeleteMeetingRepository) = post
 
         is DeleteMeetingResult.Success -> call.respondSuccess()
 
-        is DeleteMeetingResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        is DeleteMeetingResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
 
         is DeleteMeetingResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
     }

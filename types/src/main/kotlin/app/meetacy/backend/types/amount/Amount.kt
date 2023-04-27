@@ -1,8 +1,11 @@
 package app.meetacy.backend.types.amount
 
-@JvmInline
-value class Amount(val int: Int) {
+import app.meetacy.backend.types.annotation.UnsafeConstructor
 
+@JvmInline
+value class Amount @UnsafeConstructor constructor(val int: Int) {
+
+    @OptIn(UnsafeConstructor::class)
     companion object {
         fun parse(int: Int): Amount {
             require(int > 0) { "Positive number expected, but was $int" }
