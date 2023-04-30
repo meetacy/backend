@@ -14,6 +14,8 @@ import app.meetacy.backend.usecase.types.MeetingView
 import app.meetacy.backend.usecase.types.ViewMeetingsRepository
 import org.jetbrains.exposed.sql.Database
 
+// todo почему provider и repository непон
+
 class DatabaseGetMeetingsViewsViewMeetingsRepository(private val db: Database) : ViewMeetingsRepository {
     override suspend fun viewMeetings(viewerId: UserId, meetings: List<FullMeeting>): List<MeetingView> =
         ViewMeetingsUsecase(DatabaseGetUsersViewsRepository(db), DatabaseFilesRepository(db), DatabaseViewMeetingsUsecaseStorage(db))

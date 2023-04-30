@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @JvmInline
 @Serializable
-value class MeetingIdentitySerializable(val string: String) {
+value class MeetingIdentitySerializable(val string: String) { // todo иногда приватная иногда нет
     init {
         type()
     }

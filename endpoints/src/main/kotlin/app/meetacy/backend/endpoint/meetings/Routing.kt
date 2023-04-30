@@ -10,6 +10,8 @@ import app.meetacy.backend.endpoint.meetings.get.GetMeetingRepository
 import app.meetacy.backend.endpoint.meetings.get.getMeetings
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.history.meetingsHistory
+import app.meetacy.backend.endpoint.meetings.inviteCode.MeetingsInviteCodeDependencies
+import app.meetacy.backend.endpoint.meetings.inviteCode.inviteCode
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.meetings.map.meetingsMap
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepository
@@ -23,7 +25,8 @@ class MeetingsDependencies(
     val createMeetingRepository: CreateMeetingRepository,
     val participateMeetingRepository: ParticipateMeetingRepository,
     val deleteMeetingRepository: DeleteMeetingRepository,
-    val editMeetingRepository: EditMeetingRepository
+    val editMeetingRepository: EditMeetingRepository,
+    val meetingsInviteCodeDependencies: MeetingsInviteCodeDependencies
 )
 
 fun Route.meetings(
@@ -36,4 +39,5 @@ fun Route.meetings(
     getMeetings(dependencies.getMeetingRepository)
     participateMeeting(dependencies.participateMeetingRepository)
     editMeeting(dependencies.editMeetingRepository)
+    inviteCode(dependencies.meetingsInviteCodeDependencies)
 }
