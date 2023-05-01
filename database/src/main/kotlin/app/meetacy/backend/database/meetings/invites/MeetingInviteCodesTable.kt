@@ -32,6 +32,12 @@ class MeetingInviteCodesTable(private val db: Database) : Table() {
         }
     }
 
+    suspend fun getMeetingId(inviteCode: MeetingInviteCode): MeetingId? = newSuspendedTransaction(db = db) {
+        val statement = select { INVITE_CODE eq inviteCode.string }
+            .firstOrNull() ?: return@newSuspendedTransaction null
+        return@newSuspendedTransaction MeetingId(statement[MEETING_ID])
+    }
+
     suspend fun removeAll(meetingId: MeetingId) = newSuspendedTransaction(db = db) {
         deleteWhere { MEETING_ID eq meetingId.long }
     }

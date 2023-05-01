@@ -14,7 +14,8 @@ import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMe
 import app.meetacy.backend.database.integration.meetings.edit.DatabaseEditMeetingStorage
 import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
 import app.meetacy.backend.database.integration.meetings.history.list.DatabaseListMeetingsHistoryListStorage
-import app.meetacy.backend.database.integration.meetings.inviteCode.create.DatabaseCreateInviteCodeForMeetingRepository
+import app.meetacy.backend.database.integration.meetings.inviteCode.create.DatabaseCreateInviteCodeForMeetingStorage
+import app.meetacy.backend.database.integration.meetings.inviteCode.getMeeting.DatabaseGetMeetingByInviteCodeStorage
 import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
 import app.meetacy.backend.database.integration.notifications.DatabaseGetNotificationStorage
@@ -32,7 +33,6 @@ import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.inviteCode.MeetingsInviteCodeDependencies
-import app.meetacy.backend.endpoint.meetings.inviteCode.create.CreateInviteCodeForMeetingRepository
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
@@ -58,6 +58,7 @@ import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingR
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.history.list.UsecaseListMeetingsHistoryRepository
 import app.meetacy.backend.usecase.integration.meetings.inviteCode.create.UsecaseCreateInviteCodeForMeetingRepository
+import app.meetacy.backend.usecase.integration.meetings.inviteCode.getMeeting.UsecaseGetMeetingByInviteCodeRepository
 import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
@@ -70,6 +71,7 @@ import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
 import app.meetacy.backend.usecase.meetings.inviteCode.create.CreateInviteCodeForMeetingUsecase
+import app.meetacy.backend.usecase.meetings.inviteCode.getMeeting.GetMeetingByInviteCodeUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
@@ -222,7 +224,14 @@ fun startEndpoints(
                 createInviteCodeForMeetingRepository = UsecaseCreateInviteCodeForMeetingRepository(
                     usecase = CreateInviteCodeForMeetingUsecase(
                         authRepository = authRepository,
-                        storage = DatabaseCreateInviteCodeForMeetingRepository(db)
+                        storage = DatabaseCreateInviteCodeForMeetingStorage(db)
+                    )
+                ),
+                getMeetingByInviteCodeRepository = UsecaseGetMeetingByInviteCodeRepository(
+                    usecase = GetMeetingByInviteCodeUsecase(
+                        authRepository = authRepository,
+                        getMeetingsViewsRepository = getMeetingsViewsRepository,
+                        storage = DatabaseGetMeetingByInviteCodeStorage(db)
                     )
                 )
             )

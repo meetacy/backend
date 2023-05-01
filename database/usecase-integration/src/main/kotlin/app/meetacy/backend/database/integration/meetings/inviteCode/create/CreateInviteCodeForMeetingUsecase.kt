@@ -6,11 +6,14 @@ import app.meetacy.backend.types.meeting.inviteCode.MeetingInviteCode
 import app.meetacy.backend.usecase.meetings.inviteCode.create.CreateInviteCodeForMeetingUsecase
 import org.jetbrains.exposed.sql.Database
 
-class DatabaseCreateInviteCodeForMeetingRepository(private val db: Database) : CreateInviteCodeForMeetingUsecase.Storage {
-    val meetingInviteCodesTable = MeetingInviteCodesTable(db)
+class DatabaseCreateInviteCodeForMeetingStorage(private val db: Database) : CreateInviteCodeForMeetingUsecase.Storage {
+    private val meetingInviteCodesTable = MeetingInviteCodesTable(db)
 
     override suspend fun create(meetingId: MeetingId, inviteCode: MeetingInviteCode) {
         meetingInviteCodesTable.create(meetingId, inviteCode)
     }
+
+    override suspend fun isInviteCodeFree(inviteCode: MeetingInviteCode): Boolean =
+        meetingInviteCodesTable.isInviteCodeFree(inviteCode)
 
 }
