@@ -28,7 +28,7 @@ class ParticipateMeetingUsecase(
         if (meetingIdentity.accessHash != meeting.identity.accessHash)
             return Result.MeetingNotFound
 
-        if(!storage.isParticipating(meetingIdentity.id, userId))
+        if (!storage.isParticipating(meetingIdentity.id, userId))
             storage.addParticipant(userId, meetingIdentity.id) else return Result.MeetingAlreadyParticipate
 
         return Result.Success
