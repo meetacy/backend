@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 @JvmInline
 value class PagingIdSerializable(private val string: String) {
+    // todo почему тут стринг?
     fun type() = PagingId(string.toLong())
 }
 

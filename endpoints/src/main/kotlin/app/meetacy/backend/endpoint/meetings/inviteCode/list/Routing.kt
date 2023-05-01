@@ -3,9 +3,13 @@ package app.meetacy.backend.endpoint.meetings.inviteCode.list
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
+import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meeting.inviteCode.MeetingInviteCode
+import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.amount.AmountSerializable
 import app.meetacy.backend.types.serialization.meeting.MeetingIdentitySerializable
+import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -15,6 +19,8 @@ import kotlinx.serialization.Serializable
 data class GetMeetingInviteCodesParams(
     val token: AccessIdentitySerializable,
     val meetingIdentity: MeetingIdentitySerializable,
+    val amount: AmountSerializable,
+    val pagingId: PagingIdSerializable?
 )
 
 interface GetMeetingInviteCodesRepository {

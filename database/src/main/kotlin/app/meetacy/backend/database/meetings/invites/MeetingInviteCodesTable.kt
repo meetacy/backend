@@ -2,8 +2,10 @@
 
 package app.meetacy.backend.database.meetings.invites
 
+import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.inviteCode.MeetingInviteCode
+import app.meetacy.backend.types.paging.PagingId
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -32,12 +34,22 @@ class MeetingInviteCodesTable(private val db: Database) : Table() {
         }
     }
 
-    suspend fun getMeetingInviteCodes(meetingId: MeetingId): List<MeetingInviteCode> = newSuspendedTransaction(db = db) {
-        val result = select { MEETING_ID eq meetingId.long }.map {
-            MeetingInviteCode(it[INVITE_CODE])
-        }
-        return@newSuspendedTransaction result
+    suspend fun getMeetingInviteCodes(
+        meetingId: MeetingId,
+        amount: Amount,
+        pagingId: PagingId?
+    ): List<MeetingInviteCode> = newSuspendedTransaction(db = db) {
+        select { MEETING_ID eq meetingId.long }
+            .limit(n = amount.int, offset = pagingId?.long ?: 0)
+            .map { MeetingInviteCode(it[INVITE_CODE]) }
     }
+
+//    suspend fun getMeetingAllInviteCodes(meetingId: MeetingId): List<MeetingInviteCode> = newSuspendedTransaction(db = db) {
+//        val result = select { MEETING_ID eq meetingId.long }.map {
+//            MeetingInviteCode(it[INVITE_CODE])
+//        }
+//        return@newSuspendedTransaction result
+//    }
 
     suspend fun getMeetingId(inviteCode: MeetingInviteCode): MeetingId? = newSuspendedTransaction(db = db) {
         val statement = select { INVITE_CODE eq inviteCode.string }

@@ -6,6 +6,12 @@ import java.io.File
 
 // todo почему есть Username, но нету Nickname?
 
+// todo Добавить админов в митинг
+
+// todo Заявки на вступление
+
+// todo UserPreview? Кароч меньше инфы о пользователе в превьювах митинга например
+
 fun main() {
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
     val databaseUrl = System.getenv("DATABASE_URL") ?: error("Please provide a database url")

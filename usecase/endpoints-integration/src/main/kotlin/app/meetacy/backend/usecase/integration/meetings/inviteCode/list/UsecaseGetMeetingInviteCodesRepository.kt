@@ -11,7 +11,12 @@ class UsecaseGetMeetingInviteCodesRepository(
 ) : GetMeetingInviteCodesRepository {
 
     override suspend fun getMeetingInviteCodes(params: GetMeetingInviteCodesParams): GetMeetingInviteCodesResult = when(
-        val result = usecase.getMeetingInviteCodes(params.token.type(), params.meetingIdentity.type())
+        val result = usecase.getMeetingInviteCodes(
+            accessIdentity = params.token.type(),
+            meetingIdentity = params.meetingIdentity.type(),
+            amount = params.amount.type(),
+            pagingId = params.pagingId?.type()
+        )
     ) {
         is GetMeetingInviteCodesUsecase.Result.Success ->
             GetMeetingInviteCodesResult.Success(result.inviteCodes)
