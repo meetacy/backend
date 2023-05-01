@@ -68,6 +68,7 @@ class ParticipantsTable(private val db: Database) : Table() {
         amount: Amount,
         pagingId: PagingId?
     ): PagingResult<List<UserId>> = newSuspendedTransaction(db = db) {
+        // todo ?
         val results = select { (MEETING_ID eq meetingId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
             .orderBy(ID, SortOrder.DESC)
             .take(amount.int)

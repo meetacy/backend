@@ -6,6 +6,7 @@ import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.meeting.inviteCode.MeetingInviteCode
 import app.meetacy.backend.types.paging.PagingId
+import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
 import app.meetacy.backend.usecase.types.authorizeWithUserId
@@ -18,7 +19,7 @@ class GetMeetingInviteCodesUsecase(
 ) {
 
     sealed interface Result {
-        class Success(val inviteCodes: List<MeetingInviteCode>) : Result
+        class Success(val inviteCodes: PagingResult<List<MeetingInviteCode>>) : Result
         object InvalidAccessIdentity : Result
         object InvalidMeetingIdentity : Result
         object CannotAccess : Result
@@ -54,7 +55,7 @@ class GetMeetingInviteCodesUsecase(
             meetingId: MeetingId,
             amount: Amount,
             pagingId: PagingId?
-        ): List<MeetingInviteCode>
+        ): PagingResult<List<MeetingInviteCode>>
 //        suspend fun getMeetingAllInviteCodes(meetingId: MeetingId): List<MeetingInviteCode>
     }
 

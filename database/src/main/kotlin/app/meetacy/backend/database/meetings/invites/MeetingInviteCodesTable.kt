@@ -6,6 +6,7 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.inviteCode.MeetingInviteCode
 import app.meetacy.backend.types.paging.PagingId
+import app.meetacy.backend.types.paging.PagingResult
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -23,7 +24,7 @@ class MeetingInviteCodesTable(private val db: Database) : Table() {
 
 
     suspend fun isInviteCodeFree(inviteCode: MeetingInviteCode): Boolean = newSuspendedTransaction(db = db) {
-        val result = select { INVITE_CODE eq inviteCode.string}.firstOrNull()
+        val result = select { INVITE_CODE eq inviteCode.string }.firstOrNull()
         return@newSuspendedTransaction result == null
     }
 
@@ -38,10 +39,28 @@ class MeetingInviteCodesTable(private val db: Database) : Table() {
         meetingId: MeetingId,
         amount: Amount,
         pagingId: PagingId?
-    ): List<MeetingInviteCode> = newSuspendedTransaction(db = db) {
-        select { MEETING_ID eq meetingId.long }
+    ): PagingResult<List<MeetingInviteCode>> = newSuspendedTransaction(db = db) {
+        val results = select { MEETING_ID eq meetingId.long }
             .limit(n = amount.int, offset = pagingId?.long ?: 0)
             .map { MeetingInviteCode(it[INVITE_CODE]) }
+
+        val nextItem = if (results.size != amount.int) null else {
+            select { MEETING_ID eq meetingId.long }
+                .limit(
+                    n = 1,
+                    offset = (pagingId?.long ?: 0) + amount.int
+                )
+                .firstOrNull()
+        }
+
+        val nextPagingId =
+            if (results.size != amount.int || nextItem == null)
+                null // если конец списка
+            else
+                PagingId(amount.int.toLong() + (pagingId?.long ?: 0) + 0)
+
+        PagingResult(data = results, nextPagingId = nextPagingId)
+
     }
 
 //    suspend fun getMeetingAllInviteCodes(meetingId: MeetingId): List<MeetingInviteCode> = newSuspendedTransaction(db = db) {

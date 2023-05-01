@@ -5,6 +5,7 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.inviteCode.MeetingInviteCode
 import app.meetacy.backend.types.paging.PagingId
+import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.usecase.meetings.inviteCode.list.GetMeetingInviteCodesUsecase
 import org.jetbrains.exposed.sql.Database
 
@@ -16,7 +17,7 @@ class DatabaseGetMeetingInviteCodesStorage(db: Database) : GetMeetingInviteCodes
         meetingId: MeetingId,
         amount: Amount,
         pagingId: PagingId?
-    ): List<MeetingInviteCode> =
+    ): PagingResult<List<MeetingInviteCode>> =
         meetingInviteCodesTable.getMeetingInviteCodes(meetingId, amount, pagingId)
 
 //    override suspend fun getMeetingAllInviteCodes(meetingId: MeetingId): List<MeetingInviteCode> =
