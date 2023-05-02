@@ -20,7 +20,7 @@ class TestVersioning {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `test versioning api`() = runTest {
-        val server = embeddedServer(CIOBackend) {
+        val server = embeddedServer(CIOBackend, port = 8080) {
             install(Routing)
 
             routing {
