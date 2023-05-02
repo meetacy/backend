@@ -13,12 +13,14 @@ import io.ktor.server.routing.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import io.ktor.client.engine.cio.CIO as CIOClient
+import io.ktor.server.cio.CIO as CIOBackend
 
 class TestVersioning {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `test versioning api`() = runTest {
-        val server = embeddedServer(CIO) {
+        val server = embeddedServer(CIOBackend) {
             install(Routing)
 
             routing {
@@ -37,11 +39,8 @@ class TestVersioning {
             }
         }.start(wait = false)
 
-        val client = HttpClient {
+        val client = HttpClient(CIOClient) {
             expectSuccess = true
-            Logging {
-                level = LogLevel.ALL
-            }
         }
 
         client.get("/versioning") {

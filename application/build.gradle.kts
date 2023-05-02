@@ -18,6 +18,7 @@ dependencies {
     testImplementation(Deps.Libs.Ktor.Client.Core)
     testImplementation(Deps.Libs.Ktor.Client.Logging)
     testImplementation(Deps.Libs.Ktor.Client.Mock)
+    testImplementation(Deps.Libs.Ktor.Client.Cio)
     testImplementation(kotlin("test"))
 }
 
