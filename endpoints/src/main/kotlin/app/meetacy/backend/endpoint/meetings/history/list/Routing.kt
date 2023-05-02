@@ -30,21 +30,13 @@ sealed interface ListMeetingsResult {
 }
 
 interface ListMeetingsHistoryRepository {
-    suspend fun getList(
-        accessIdentity: AccessIdentity,
-        amount: Amount,
-        pagingId: PagingId?
-    ): ListMeetingsResult
+    suspend fun getList(params: ListParam): ListMeetingsResult
 }
 
 fun Route.listMeetingsHistory(listMeetingsHistoryRepository: ListMeetingsHistoryRepository) = post("/list") {
     val params = call.receive<ListParam>()
     when (
-        val result = listMeetingsHistoryRepository.getList(
-            accessIdentity = params.token.type(),
-            amount = params.amount.type(),
-            pagingId = params.pagingId?.type()
-        )
+        val result = listMeetingsHistoryRepository.getList(params)
     ) {
         is ListMeetingsResult.Success -> call.respondSuccess(result.meetings.serializable())
         is ListMeetingsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)

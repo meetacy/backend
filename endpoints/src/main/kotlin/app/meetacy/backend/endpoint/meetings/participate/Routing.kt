@@ -27,20 +27,14 @@ sealed interface ParticipateMeetingResult {
 }
 
 interface ParticipateMeetingRepository {
-    suspend fun participateMeeting(
-        meetingIdentity: MeetingIdentity,
-        accessIdentity: AccessIdentity
-    ): ParticipateMeetingResult
+    suspend fun participateMeeting(params: ParticipateParam): ParticipateMeetingResult
 }
 
 fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRepository) = post("/participate") {
     val params = call.receive<ParticipateParam>()
 
     when (
-        participateMeetingRepository.participateMeeting(
-            params.meetingId.type(),
-            params.token.type()
-        )
+        participateMeetingRepository.participateMeeting(params)
     ) {
 
         ParticipateMeetingResult.Success -> call.respondSuccess()

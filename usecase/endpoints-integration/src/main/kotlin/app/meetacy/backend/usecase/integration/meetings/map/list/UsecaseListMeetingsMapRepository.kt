@@ -1,5 +1,6 @@
 package app.meetacy.backend.usecase.integration.meetings.map.list
 
+import app.meetacy.backend.endpoint.meetings.map.list.ListMeetingsMapParams
 import app.meetacy.backend.endpoint.meetings.map.list.ListMeetingsMapRepository
 import app.meetacy.backend.endpoint.meetings.map.list.ListMeetingsResult
 import app.meetacy.backend.types.access.AccessIdentity
@@ -12,11 +13,8 @@ import app.meetacy.backend.usecase.types.MeetingView
 class UsecaseListMeetingsMapRepository(
     private val usecase: ListMeetingsMapUsecase
 ) : ListMeetingsMapRepository {
-    override suspend fun list(
-        token: AccessIdentity,
-        location: LocationSerializable
-    ): ListMeetingsResult =
-        when (val result = usecase.getMeetingsList(token, location.type())) {
+    override suspend fun list(params: ListMeetingsMapParams): ListMeetingsResult =
+        when (val result = usecase.getMeetingsList(params.token.type(), params.location.type())) {
             is Result.InvalidAccessIdentity -> ListMeetingsResult.InvalidIdentity
             is Result.Success -> ListMeetingsResult.Success(
                 meetings = result.meetings.map(MeetingView::mapToEndpoint)

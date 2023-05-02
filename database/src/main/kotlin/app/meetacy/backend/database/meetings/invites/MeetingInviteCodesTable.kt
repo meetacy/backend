@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class MeetingInviteCodesTable(private val db: Database) : Table() {
-    private val MEETING_INVITE_ID = long("MEETING_INVITE_ID").autoIncrement()
+    private val INVITE_CODE_ID = long("INVITE_CODE_ID").autoIncrement()
     private val MEETING_ID = long("MEETING_ID")
     private val INVITE_CODE = varchar("INVITE_CODE", 512) // todo max-512
 

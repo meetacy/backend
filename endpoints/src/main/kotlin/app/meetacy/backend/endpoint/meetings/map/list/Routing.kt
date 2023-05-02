@@ -13,10 +13,7 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 fun interface ListMeetingsMapRepository {
-    suspend fun list(
-        token: AccessIdentity,
-        location: LocationSerializable
-    ): ListMeetingsResult
+    suspend fun list(params: ListMeetingsMapParams): ListMeetingsResult
 }
 
 sealed interface ListMeetingsResult {
@@ -25,7 +22,7 @@ sealed interface ListMeetingsResult {
 }
 
 @Serializable
-private data class ListMeetingsMapParams(
+data class ListMeetingsMapParams(
     val token: AccessIdentitySerializable,
     val location: LocationSerializable
 )
@@ -36,7 +33,7 @@ fun Route.listMeetingsMap(
     val params = call.receive<ListMeetingsMapParams>()
 
     when (
-        val result = listMeetingsMapRepository.list(params.token.type(), params.location)
+        val result = listMeetingsMapRepository.list(params)
     ) {
         is ListMeetingsResult.InvalidIdentity ->
             call.respondFailure(Failure.InvalidAccessIdentity)
