@@ -26,7 +26,7 @@ class DeleteMeetingUsecase(
         if (meetingIdentity.accessHash != meeting.identity.accessHash)
             return Result.MeetingNotFound
 
-        if (meeting.creator.identity.userId != userId) return Result.InvalidIdentity
+        if (meeting.creator.identity.id != userId) return Result.InvalidIdentity
 
         storage.deleteMeeting(meetingIdentity.id)
         return Result.Success

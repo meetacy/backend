@@ -12,6 +12,7 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.notifications.notifications
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.endpoint.users.users
+import app.meetacy.backend.endpoint.versioning.ApiVersion
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -39,6 +40,7 @@ fun startEndpoints(
     filesDependencies: FilesDependencies,
     usersDependencies: UsersDependencies
 ): ApplicationEngine = embeddedServer(CIO, host = "localhost", port = port) {
+
     install(ContentNegotiation) {
         json(
             Json {
@@ -49,6 +51,7 @@ fun startEndpoints(
     install(CORS) {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
+        allowHeader(ApiVersion.Header)
     }
     install(AutoHeadResponse)
     install(PartialContent) {

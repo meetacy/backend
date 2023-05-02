@@ -39,9 +39,6 @@ class TestVersioning {
 
         val client = HttpClient {
             expectSuccess = true
-            Logging {
-                level = LogLevel.ALL
-            }
         }
 
         client.get("/versioning") {

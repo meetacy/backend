@@ -231,7 +231,6 @@ fun startEndpoints(
                 )
             )
         ),
-
         notificationsDependencies = NotificationsDependencies(
             getNotificationsRepository = UsecaseGetNotificationsRepository(
                 usecase = GetNotificationsUsecase(
