@@ -1,6 +1,7 @@
 import app.meetacy.backend.endpoint.versioning.ApiVersion
 import app.meetacy.backend.endpoint.versioning.versioning
 import io.ktor.client.*
+import io.ktor.client.plugins.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.content.*
@@ -41,6 +42,10 @@ class TestVersioning {
 
         val client = HttpClient(CIOClient) {
             expectSuccess = true
+
+            defaultRequest {
+                url(port = 8080)
+            }
         }
 
         client.get("/versioning") {
