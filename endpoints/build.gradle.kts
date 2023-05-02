@@ -8,14 +8,16 @@ dependencies {
 
     api(Deps.Libs.Ktor.Server.Core)
     api(Deps.Libs.Ktor.Server.Cio)
-    api(Deps.Libs.Ktor.Client.Core)
-    api(Deps.Libs.Ktor.Client.Cio)
-    api(Deps.Libs.Ktor.Server.Swagger)
-    api(Deps.Libs.Ktor.Server.PartialContent)
-    api(Deps.Libs.Ktor.Server.Cors)
-    api(Deps.Libs.Ktor.Server.AutoHead)
+
+    implementation(Deps.Libs.Ktor.Client.Core)
+    implementation(Deps.Libs.Ktor.Client.Cio)
+    implementation(Deps.Libs.Ktor.Server.Swagger)
+    implementation(Deps.Libs.Ktor.Server.PartialContent)
+    implementation(Deps.Libs.Ktor.Server.Cors)
+    implementation(Deps.Libs.Ktor.Server.AutoHead)
     implementation(Deps.Libs.Ktor.Server.SerializationJson)
     implementation(Deps.Libs.Ktor.Server.ContentNegotiation)
+    implementation(Deps.Libs.Ktor.Server.StatusPages)
     implementation(Deps.Libs.Kotlinx.Serialization)
     implementation(Deps.Libs.Slf4j.Simple)
 }

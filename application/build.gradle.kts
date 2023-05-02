@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.util.GUtil.loadProperties
 
 plugins {
@@ -18,11 +19,15 @@ dependencies {
     testImplementation(Deps.Libs.Ktor.Client.Core)
     testImplementation(Deps.Libs.Ktor.Client.Logging)
     testImplementation(Deps.Libs.Ktor.Client.Mock)
+    testImplementation(Deps.Libs.Ktor.Client.Cio)
     testImplementation(kotlin("test"))
 }
 
 tasks.test {
     useJUnitPlatform()
+    testLogging {
+        exceptionFormat = TestExceptionFormat.FULL
+    }
 }
 
 val propertiesFile = rootProject.file("deploy.properties")
