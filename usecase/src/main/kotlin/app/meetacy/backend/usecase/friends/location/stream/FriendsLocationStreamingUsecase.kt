@@ -36,7 +36,7 @@ class FriendsLocationStreamingUsecase(
 
             for (friendId in friendIds) launch {
                 storage
-                    .locationsFlow(friendId)
+                    .locationFlow(friendId)
                     .collect { location ->
                         val updatedFriend = usersViewsRepository.getUserView(userId, friendId)
                         collector.emit(
@@ -60,6 +60,6 @@ class FriendsLocationStreamingUsecase(
     interface Storage {
         suspend fun setLocation(userId: UserId, location: Location)
         suspend fun getFriends(maxAmount: Amount): List<UserId>
-        fun locationsFlow(userId: UserId): Flow<UpdatedLocation>
+        fun locationFlow(userId: UserId): Flow<UpdatedLocation>
     }
 }
