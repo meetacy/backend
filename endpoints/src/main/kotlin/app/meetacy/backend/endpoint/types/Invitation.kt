@@ -11,5 +11,7 @@ data class Invitation(
     val expiryDate: DateTimeSerializable,
     val invitedUserId: UserIdSerializable,
     val invitorUserId: UserIdSerializable,
-    val meeting: MeetingIdSerializable
+    val meeting: MeetingIdSerializable,
+    val title: String,
+    val description: String
 )
