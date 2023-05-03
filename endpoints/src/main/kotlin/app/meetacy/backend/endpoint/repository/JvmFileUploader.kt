@@ -16,13 +16,13 @@ object JvmFileUploader {
         try {
             file.createNewFile()
             val stream = FileOutputStream(file)
-            val bytesSize = inputStream.transferTo(stream, limit)
+            val writtenSize = inputStream.transferTo(stream, limit)
             stream.close()
-            if (bytesSize == null) {
+            if (writtenSize != file.length()) {
                 file.delete()
                 return@withContext null
             }
-            return@withContext FileSize(bytesSize)
+            return@withContext FileSize(writtenSize)
         } catch (e: Throwable) {
             e.printStackTrace()
             null
@@ -31,16 +31,19 @@ object JvmFileUploader {
 }
 
 @Throws(IOException::class)
-fun InputStream.transferTo(out: OutputStream, limit: FileSize): Long? {
-    Objects.requireNonNull(out, "out")
+fun InputStream.transferTo(out: OutputStream, limit: FileSize): Long {
     var transferred: Long = 0
     val buffer = ByteArray(8192)
     var read: Int
-    while (this.read(buffer, 0, 8192).also { read = it } >= 0) {
+
+    while (read(buffer).also { read = it } >= 0) {
         out.write(buffer, 0, read)
         if (transferred <= limit.bytesSize) {
             transferred += read.toLong()
-        } else return null
+        } else {
+            return transferred
+        }
     }
+
     return transferred
 }

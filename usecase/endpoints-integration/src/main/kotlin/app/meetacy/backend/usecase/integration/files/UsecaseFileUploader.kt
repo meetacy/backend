@@ -9,9 +9,13 @@ import java.io.InputStream
 
 class UsecaseFileUploader(
     private val inputStream: InputStream,
-    private val basePath: String
+    private val basePath: String,
+    private val deleteFilesOnExit: Boolean
 ): UploadFileUsecase.FileUploader {
-    override suspend fun uploadFile(fileId: FileId, userFilesFreeLimit: FileSize): FileSize? =
-        JvmFileUploader.upload(inputStream, File(basePath, "${fileId.long}"), userFilesFreeLimit)
-
+    override suspend fun uploadFile(fileId: FileId, userFilesFreeLimit: FileSize): FileSize? {
+        val file = File(basePath, "${fileId.long}").apply {
+            if (deleteFilesOnExit) deleteOnExit()
+        }
+        return JvmFileUploader.upload(inputStream, file, userFilesFreeLimit)
+    }
 }

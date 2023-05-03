@@ -31,7 +31,7 @@ object Deps {
     private const val kvisionVersion = "5.1.1"
     private const val shadowVer = "7.0.0"
 
-    private const val meetacySdkVersion = "0.0.27"
+    private const val meetacySdkVersion = "0.0.28"
     private const val kdsVer = "1.1.0"
     private const val scriptKtVer = "0.0.2"
 
@@ -113,6 +113,7 @@ object Deps {
                 const val AutoHead = "io.ktor:ktor-server-auto-head-response:$ktorVersion"
                 const val Cors = "io.ktor:ktor-server-cors:2.2.3"
                 const val Swagger = "io.ktor:ktor-server-swagger:2.2.3"
+                const val StatusPages = "io.ktor:ktor-server-status-pages:$ktorVersion"
             }
         }
         object Exposed {
