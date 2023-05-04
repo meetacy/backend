@@ -67,14 +67,14 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             val accessHash = AccessHash(DefaultHashGenerator.generate())
             val user = User(UserIdentity(userId, accessHash), nickname)
             users += user
-            return user.identity.userId
+            return user.identity.id
         }
     }
 
     override suspend fun addToken(accessIdentity: AccessIdentity) {
         synchronized(lock = this) {
             users.replaceAll { user ->
-                if (user.identity.userId != accessIdentity.userId) return@replaceAll user
+                if (user.identity.id != accessIdentity.userId) return@replaceAll user
                 user.copy(tokens = user.tokens + accessIdentity)
             }
         }
@@ -97,7 +97,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun updateEmail(userId: UserId, email: String) {
         synchronized(lock = this) {
             users.replaceAll { user ->
-                if (user.identity.userId != userId) return@replaceAll user
+                if (user.identity.id != userId) return@replaceAll user
                 user.copy(email = email)
             }
         }
@@ -114,7 +114,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun authorize(accessIdentity: AccessIdentity): Boolean =
         synchronized(lock = this) {
             users.any { user ->
-                user.identity.userId == accessIdentity.userId && user.tokens.any { token -> token == accessIdentity }
+                user.identity.id == accessIdentity.userId && user.tokens.any { token -> token == accessIdentity }
             }
         }
 
@@ -133,7 +133,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     override suspend fun verifyEmail(userIdentity: UserId) = synchronized(lock = this) {
         users.replaceAll { user ->
-            if (user.identity.userId != userIdentity) return@replaceAll user
+            if (user.identity.id != userIdentity) return@replaceAll user
             user.copy(emailVerified = true)
         }
     }
@@ -155,7 +155,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         synchronized(lock = this) {
             userIdentities.map { userId ->
                 users.firstOrNull {  user ->
-                    user.identity.userId == userId
+                    user.identity.id == userId
                 }
             }.map { user ->
                 if (user == null) return@map null
@@ -423,7 +423,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ): FullUser {
         synchronized(this) {
             users.replaceAll { user ->
-                if (user.identity.userId != userId) return@replaceAll user
+                if (user.identity.id != userId) return@replaceAll user
 
                 user.copy(
                     nickname = nickname ?: user.nickname,
