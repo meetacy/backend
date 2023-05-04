@@ -8,26 +8,46 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class InvitationAcceptParams(
+data class InvitationAcceptDeclineParams(
     val id: String,
     val reason: String
 )
 
 fun Route.invitationAcceptRouting() {
     post("/accept") {
-        val acceptParams: InvitationAcceptParams = call.receive()
+        val acceptParams: InvitationAcceptDeclineParams = call.receive()
 
         val httpStatusCode = when (acceptInvitation(acceptParams)) {
-            InvitationAcceptResponse.Success -> {
+            InvitationAcceptDeclineResponse.Success -> {
                 HttpStatusCode.OK
             }
-            InvitationAcceptResponse.NoPermissions -> {
+            InvitationAcceptDeclineResponse.NoPermissions -> {
                 HttpStatusCode.MethodNotAllowed
             }
-            InvitationAcceptResponse.Unauthorized -> {
+            InvitationAcceptDeclineResponse.Unauthorized -> {
                 HttpStatusCode.Unauthorized
             }
-            InvitationAcceptResponse.NotFound -> {
+            InvitationAcceptDeclineResponse.NotFound -> {
+                HttpStatusCode.NotFound
+            }
+        }
+
+        call.respond(httpStatusCode)
+    }
+    post("/decline") {
+        val acceptParams: InvitationAcceptDeclineParams = call.receive()
+
+        val httpStatusCode = when (declineInvitation(acceptParams)) {
+            InvitationAcceptDeclineResponse.Success -> {
+                HttpStatusCode.OK
+            }
+            InvitationAcceptDeclineResponse.NoPermissions -> {
+                HttpStatusCode.MethodNotAllowed
+            }
+            InvitationAcceptDeclineResponse.Unauthorized -> {
+                HttpStatusCode.Unauthorized
+            }
+            InvitationAcceptDeclineResponse.NotFound -> {
                 HttpStatusCode.NotFound
             }
         }
@@ -38,13 +58,17 @@ fun Route.invitationAcceptRouting() {
 
 // code below is needed to be implemented in use-cases/repositories/somewhere else
 // and added just for getting rid of red lines in IDE
-fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse {
+fun acceptInvitation(params: InvitationAcceptDeclineParams): InvitationAcceptDeclineResponse {
     TODO("Not yet implemented")
 }
 
-sealed interface InvitationAcceptResponse {
-    object Success: InvitationAcceptResponse
-    object NotFound: InvitationAcceptResponse
-    object Unauthorized: InvitationAcceptResponse
-    object NoPermissions: InvitationAcceptResponse
+fun declineInvitation(params: InvitationAcceptDeclineParams): InvitationAcceptDeclineResponse {
+    TODO("Not yet implemented")
+}
+
+sealed interface InvitationAcceptDeclineResponse {
+    object Success: InvitationAcceptDeclineResponse
+    object NotFound: InvitationAcceptDeclineResponse
+    object Unauthorized: InvitationAcceptDeclineResponse
+    object NoPermissions: InvitationAcceptDeclineResponse
 }
