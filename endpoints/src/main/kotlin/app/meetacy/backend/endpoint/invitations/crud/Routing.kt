@@ -65,28 +65,7 @@ fun Route.crudInvitationRouting() {
 
         call.respond(httpStatusCode, if (response is InvitationsUpdateResponse.Success) response else "")
     }
-    delete("/delete") {
-        val invitationDeletingForm: InvitationDeletingFormSerializable = call.receive()
 
-        val httpStatusCode: HttpStatusCode = when (deleteInvitation(invitationDeletingForm)) {
-            InvitationsDeletionResponse.Success -> {
-                HttpStatusCode.OK
-            }
-
-            InvitationsDeletionResponse.Unauthorized -> {
-                HttpStatusCode.Unauthorized
-            }
-
-            InvitationsDeletionResponse.NoPermissions -> {
-                HttpStatusCode.MethodNotAllowed
-            }
-
-            InvitationsDeletionResponse.NotFound -> {
-                HttpStatusCode.NotFound
-            }
-        }
-        call.respond(httpStatusCode)
-    }
 }
 
 // code below is needed to be implemented in use-cases/repositories/somewhere else
@@ -98,9 +77,6 @@ fun updateInvitation(invitationUpdatingForm: InvitationUpdatingFormSerializable)
     TODO("Not yet implemented")
 }
 
-fun deleteInvitation(invitationDeletingForm: InvitationDeletingFormSerializable): InvitationsDeletionResponse {
-    TODO("Not yet implemented")
-}
 
 
 
@@ -110,11 +86,4 @@ sealed interface InvitationsUpdateResponse {
     object Unauthorized: InvitationsUpdateResponse
     object NoPermissions: InvitationsUpdateResponse
     object NotFound: InvitationsUpdateResponse /* invitation not found */
-}
-
-sealed interface InvitationsDeletionResponse {
-    object Success: InvitationsDeletionResponse
-    object Unauthorized: InvitationsDeletionResponse
-    object NoPermissions: InvitationsDeletionResponse
-    object NotFound: InvitationsDeletionResponse
 }
