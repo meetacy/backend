@@ -12,7 +12,7 @@ import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import org.jetbrains.exposed.sql.Database
 
-class DatabaseCreateInvitationUsecase(db: Database): CreateInvitationUsecase.Storage {
+class DatabaseCreateInvitationStorage(db: Database): CreateInvitationUsecase.Storage {
     private val friendsTable = FriendsTable(db)
     private val invitationTable = InvitationsTable(db)
     private val meetingsTable = MeetingsTable(db)

@@ -1,5 +1,7 @@
 package app.meetacy.backend.endpoint.invitations.create
 
+import app.meetacy.backend.types.invitation.InvitationId
+import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.datetime.DateTimeSerializable
 import app.meetacy.backend.types.serialization.meeting.MeetingIdSerializable
 import app.meetacy.backend.types.serialization.user.UserIdSerializable
@@ -12,6 +14,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class InvitationCreatingFormSerializable(
+    val token: AccessIdentitySerializable,
     val meeting: MeetingIdSerializable,
     val invitedUser: UserIdSerializable,
     val expiryDate: DateTimeSerializable,
@@ -44,21 +47,26 @@ fun Route.createInvitationRouting() {
             InvitationsCreateResponse.UserAlreadyInvited -> {
                 HttpStatusCode.Conflict
             }
+
+            else -> {
+                HttpStatusCode.BadRequest
+            }
         }
 
-        call.respond(httpStatusCode, if (response is InvitationsCreateResponse.Success) response else "")
+        call.respond(httpStatusCode, if (response is InvitationsCreateResponse.Success) response.response else "")
     }
 }
 
+interface CreateInvitationRepository {
+    suspend fun createInvitation(invitationCreatingForm: InvitationCreatingFormSerializable): InvitationsCreateResponse
+}
+
 sealed interface InvitationsCreateResponse {
-    data class Success(val response: String /* invitation ID */): InvitationsCreateResponse
+    data class Success(val response: InvitationId): InvitationsCreateResponse
     object Unauthorized: InvitationsCreateResponse
     object NoPermissions: InvitationsCreateResponse
     object UserAlreadyInvited: InvitationsCreateResponse
     object UserNotFound: InvitationsCreateResponse
     object MeetingNotFound: InvitationsCreateResponse
-}
-
-fun createInvitation(invitationCreatingForm: InvitationCreatingFormSerializable): InvitationsCreateResponse {
-    TODO("Not yet implemented")
+    object InvalidData: InvitationsCreateResponse
 }
