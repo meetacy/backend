@@ -37,11 +37,11 @@ class InvitationsTable(private val db: Database) : Table() {
 
     suspend fun addInvitation(
         accessHash: AccessHash,
-        expiryDate: Date,
-        invitedUserId: UserId,
-        invitorUserId: UserId,
+        title: String,
         description: String,
-        title: String
+        invitorUserId: UserId,
+        invitedUserId: UserId,
+        expiryDate: Date
     ): InvitationId =
         newSuspendedTransaction(db = db) {
             val invitationId = insert { statement ->
