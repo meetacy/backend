@@ -1,6 +1,5 @@
 package app.meetacy.backend.endpoint.invitations.crud
 
-import app.meetacy.backend.endpoint.types.Invitation
 import app.meetacy.backend.types.serialization.datetime.DateTimeSerializable
 import app.meetacy.backend.types.serialization.meeting.MeetingIdSerializable
 import app.meetacy.backend.types.serialization.user.UserIdSerializable
@@ -39,27 +38,7 @@ data class InvitationDeletingFormSerializable(
 )
 
 fun Route.crudInvitationRouting() {
-    get("/get") {
-        val invitationParams: GetInvitationParams = call.receive()
 
-        val response = getInvitation(invitationParams)
-
-        val httpStatusCode = when (response) {
-            is InvitationsGetResponse.Success -> {
-                HttpStatusCode.OK
-            }
-
-            InvitationsGetResponse.NoPermissions -> {
-                HttpStatusCode.MethodNotAllowed
-            }
-
-            InvitationsGetResponse.NotFound -> {
-                HttpStatusCode.NotFound
-            }
-        }
-
-        call.respond(httpStatusCode, if (response is InvitationsGetResponse.Success) response else "")
-    }
 
     put("/update") {
         val invitationUpdatingForm: InvitationUpdatingFormSerializable = call.receive()
@@ -112,9 +91,7 @@ fun Route.crudInvitationRouting() {
 
 // code below is needed to be implemented in use-cases/repositories/somewhere else
 // and added just for getting rid of red lines in IDE
-fun getInvitation(getInvitationParams: GetInvitationParams): InvitationsGetResponse {
-    TODO("Not yet implemented")
-}
+
 
 
 fun updateInvitation(invitationUpdatingForm: InvitationUpdatingFormSerializable): InvitationsUpdateResponse {
@@ -125,11 +102,6 @@ fun deleteInvitation(invitationDeletingForm: InvitationDeletingFormSerializable)
     TODO("Not yet implemented")
 }
 
-sealed interface InvitationsGetResponse {
-    data class Success(val response: Invitation): InvitationsGetResponse
-    object NoPermissions: InvitationsGetResponse
-    object NotFound: InvitationsGetResponse
-}
 
 
 
