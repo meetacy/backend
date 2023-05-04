@@ -2,16 +2,16 @@ package app.meetacy.backend.database.types
 
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.invitation.InvitationIdentity
-import app.meetacy.backend.types.meeting.MeetingIdentity
-import app.meetacy.backend.types.user.UserIdentity
+import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.user.UserId
 
 
 class DatabaseInvitation(
-    val id: InvitationIdentity,
+    val identity: InvitationIdentity,
     val expiryDate: Date,
-    val invitedUserId: UserIdentity,
-    val invitorUserId: UserIdentity,
-    val meeting: MeetingIdentity,
+    val invitedUserId: UserId,
+    val invitorUserId: UserId,
+    val meeting: MeetingId,
     val title: String,
     val description: String
 )
