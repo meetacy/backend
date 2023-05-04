@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.invitations.update
 
+import app.meetacy.backend.endpoint.invitations.InvitationsUpdateDependencies
 import app.meetacy.backend.types.serialization.datetime.DateTimeSerializable
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -16,7 +17,7 @@ data class InvitationUpdatingFormSerializable(
     val description: String
 )
 
-fun Route.invitationUpdateRouting() {
+fun Route.invitationUpdateRouting(invitationsUpdateDependencies: InvitationsUpdateDependencies?) {
     put("/update") {
         val invitationUpdatingForm: InvitationUpdatingFormSerializable = call.receive()
 

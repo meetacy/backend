@@ -22,11 +22,11 @@ data class InvitationCreatingFormSerializable(
     val description: String
 )
 
-fun Route.createInvitationRouting() {
+fun Route.createInvitationRouting(invitationsCreateDependencies: CreateInvitationRepository) {
     post("/create") {
         val invitationCreatingForm: InvitationCreatingFormSerializable = call.receive()
 
-        val response = createInvitation(invitationCreatingForm)
+        val response = invitationsCreateDependencies.createInvitation(invitationCreatingForm)
 
         val httpStatusCode = when (response) {
             is InvitationsCreateResponse.Success -> {

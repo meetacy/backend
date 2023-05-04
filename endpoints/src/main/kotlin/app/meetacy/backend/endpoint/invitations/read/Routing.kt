@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.invitations.read
 
+import app.meetacy.backend.endpoint.invitations.InvitationsGetDependencies
 import app.meetacy.backend.endpoint.types.Invitation
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -13,7 +14,7 @@ data class GetInvitationParams(
     val id: String,
 )
 
-fun Route.getInvitationRouting() {
+fun Route.getInvitationRouting(invitationsGetDependencies: InvitationsGetDependencies?) {
     get("/get") {
         val invitationParams: GetInvitationParams = call.receive()
 

@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.invitations.accept
 
+import app.meetacy.backend.endpoint.invitations.InvitationsAcceptationDependencies
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -13,7 +14,7 @@ data class InvitationAcceptDeclineParams(
     val reason: String
 )
 
-fun Route.invitationAcceptRouting() {
+fun Route.invitationAcceptRouting(invitationsAcceptDependencies: InvitationsAcceptationDependencies?) {
     post("/accept") {
         val acceptParams: InvitationAcceptDeclineParams = call.receive()
 
