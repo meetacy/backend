@@ -14,4 +14,6 @@ class DatabaseInvitation(
     val meeting: MeetingId,
     val title: String,
     val description: String
-)
+) {
+    val id = identity.id
+}
