@@ -42,76 +42,76 @@ fun Route.crudInvitationRouting() {
     get("/get") {
         val invitationParams: GetInvitationParams = call.receive()
 
-        val httpStatusCode: HttpStatusCode
+        val response = getInvitation(invitationParams)
 
-        when (val invitationsGetResponse = getInvitation(invitationParams)) {
+        val httpStatusCode = when (response) {
             is InvitationsGetResponse.Success -> {
-                httpStatusCode = HttpStatusCode.OK
-                call.respond(httpStatusCode, invitationsGetResponse)
+                HttpStatusCode.OK
             }
+
             InvitationsGetResponse.NoPermissions -> {
-                httpStatusCode = HttpStatusCode.MethodNotAllowed
-                call.respond(httpStatusCode, "Probably, you are neither invitor nor invited person")
+                HttpStatusCode.MethodNotAllowed
             }
+
             InvitationsGetResponse.NotFound -> {
-                httpStatusCode = HttpStatusCode.NotFound
-                call.respond(httpStatusCode, "Invitation not found")
+                HttpStatusCode.NotFound
             }
         }
+
+        call.respond(httpStatusCode, if (response is InvitationsGetResponse.Success) response else "")
     }
     post("/create") {
         val invitationCreatingForm: InvitationCreatingFormSerializable = call.receive()
-        val httpStatusCode: HttpStatusCode
 
-        when (val response = createInvitation(invitationCreatingForm)) {
+        val response = createInvitation(invitationCreatingForm)
+
+        val httpStatusCode = when (response) {
             is InvitationsCreateResponse.Success -> {
-                httpStatusCode = HttpStatusCode.OK
-                call.respond(httpStatusCode, response)
+                HttpStatusCode.OK
             }
             InvitationsCreateResponse.UserNotFound -> {
-                httpStatusCode = HttpStatusCode.NotFound
-                call.respond(httpStatusCode)
+                HttpStatusCode.NotFound
             }
             InvitationsCreateResponse.MeetingNotFound -> {
-                httpStatusCode = HttpStatusCode.NotFound
-                call.respond(httpStatusCode)
+                HttpStatusCode.NotFound
             }
             InvitationsCreateResponse.NoPermissions -> {
-                httpStatusCode = HttpStatusCode.MethodNotAllowed
-                call.respond(httpStatusCode)
+                HttpStatusCode.MethodNotAllowed
             }
             InvitationsCreateResponse.Unauthorized -> {
-                httpStatusCode = HttpStatusCode.Unauthorized
-                call.respond(httpStatusCode)
+                HttpStatusCode.Unauthorized
             }
             InvitationsCreateResponse.UserAlreadyInvited -> {
-                httpStatusCode = HttpStatusCode.Conflict
-                call.respond(httpStatusCode)
+                HttpStatusCode.Conflict
             }
         }
+
+        call.respond(httpStatusCode, if (response is InvitationsCreateResponse.Success) response else "")
     }
     put("/update") {
         val invitationUpdatingForm: InvitationUpdatingFormSerializable = call.receive()
-        val httpStatusCode: HttpStatusCode
 
-        when (val response = updateInvitation(invitationUpdatingForm)) {
+        val response = updateInvitation(invitationUpdatingForm)
+
+        val httpStatusCode = when (response) {
             is InvitationsUpdateResponse.Success -> {
-                httpStatusCode = HttpStatusCode.OK
-                call.respond(httpStatusCode, response)
+                HttpStatusCode.OK
             }
+
             InvitationsUpdateResponse.Unauthorized -> {
-                httpStatusCode = HttpStatusCode.Unauthorized
-                call.respond(httpStatusCode)
+                HttpStatusCode.Unauthorized
             }
+
             InvitationsUpdateResponse.NoPermissions -> {
-                httpStatusCode = HttpStatusCode.MethodNotAllowed
-                call.respond(httpStatusCode)
+                HttpStatusCode.MethodNotAllowed
             }
+
             InvitationsUpdateResponse.NotFound -> {
-                httpStatusCode = HttpStatusCode.NotFound
-                call.respond(httpStatusCode)
+                HttpStatusCode.NotFound
             }
         }
+
+        call.respond(httpStatusCode, if (response is InvitationsUpdateResponse.Success) response else "")
     }
     delete("/delete") {
         val invitationDeletingForm: InvitationDeletingFormSerializable = call.receive()
