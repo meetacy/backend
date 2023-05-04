@@ -24,6 +24,7 @@ class FriendsTable(private val db: Database) : Table()  {
         }
     }
 
+    // bpavuk's proposal: rename this function to "subscribeOn" for the sake of clarity
     suspend fun addFriend(userId: UserId, friendId: UserId) {
         newSuspendedTransaction(db = db) {
             insert { statement ->
