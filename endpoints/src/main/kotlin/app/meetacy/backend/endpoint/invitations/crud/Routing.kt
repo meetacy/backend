@@ -33,6 +33,11 @@ data class InvitationUpdatingFormSerializable(
     val description: String
 )
 
+@Serializable
+data class InvitationDeletingFormSerializable(
+    val id: String, /* again, invitation ID */
+)
+
 fun Route.crudInvitationRouting() {
     get("/get") {
         val invitationParams: GetInvitationParams = call.receive()
@@ -109,7 +114,26 @@ fun Route.crudInvitationRouting() {
         }
     }
     delete("/delete") {
+        val invitationDeletingForm: InvitationDeletingFormSerializable = call.receive()
 
+        val httpStatusCode: HttpStatusCode = when (deleteInvitation(invitationDeletingForm)) {
+            InvitationsDeletionResponse.Success -> {
+                HttpStatusCode.OK
+            }
+
+            InvitationsDeletionResponse.Unauthorized -> {
+                HttpStatusCode.Unauthorized
+            }
+
+            InvitationsDeletionResponse.NoPermissions -> {
+                HttpStatusCode.MethodNotAllowed
+            }
+
+            InvitationsDeletionResponse.NotFound -> {
+                HttpStatusCode.NotFound
+            }
+        }
+        call.respond(httpStatusCode)
     }
 }
 
@@ -124,6 +148,10 @@ fun createInvitation(invitationCreatingForm: InvitationCreatingFormSerializable)
 }
 
 fun updateInvitation(invitationUpdatingForm: InvitationUpdatingFormSerializable): InvitationsUpdateResponse {
+    TODO("Not yet implemented")
+}
+
+fun deleteInvitation(invitationDeletingForm: InvitationDeletingFormSerializable): InvitationsDeletionResponse {
     TODO("Not yet implemented")
 }
 
@@ -147,4 +175,11 @@ sealed interface InvitationsUpdateResponse {
     object Unauthorized: InvitationsUpdateResponse
     object NoPermissions: InvitationsUpdateResponse
     object NotFound: InvitationsUpdateResponse /* invitation not found */
+}
+
+sealed interface InvitationsDeletionResponse {
+    object Success: InvitationsDeletionResponse
+    object Unauthorized: InvitationsDeletionResponse
+    object NoPermissions: InvitationsDeletionResponse
+    object NotFound: InvitationsDeletionResponse
 }
