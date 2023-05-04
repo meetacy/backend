@@ -1,12 +1,17 @@
 package app.meetacy.backend.endpoint.invitations.read
 
-import app.meetacy.backend.endpoint.invitations.crud.GetInvitationParams
 import app.meetacy.backend.endpoint.types.Invitation
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class GetInvitationParams(
+    val id: String,
+)
 
 fun Route.getInvitationRouting() {
     get("/get") {

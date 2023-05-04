@@ -1,11 +1,16 @@
 package app.meetacy.backend.endpoint.invitations.delete
 
-import app.meetacy.backend.endpoint.invitations.crud.InvitationDeletingFormSerializable
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class InvitationDeletingFormSerializable(
+    val id: String, /* invitation ID */
+)
 
 fun Route.invitationDeleteRouting() {
     delete("/delete") {
