@@ -63,6 +63,25 @@ class InvitationsTable(private val db: Database) : Table() {
                 .map { it.toInvitation() }
         }
 
+    /**
+     * Returns list of invitations sent by [invitorUserId], and [invitedUserIdsList] if specified
+     */
+    suspend fun getInvitations(
+        invitedUserIdsList: List<UserId> = emptyList(),
+        invitorUserId: UserId
+    ): List<DatabaseInvitation> =
+        newSuspendedTransaction(db = db) {
+            return@newSuspendedTransaction if (invitedUserIdsList.isEmpty()) {
+                select { INVITOR_USER_ID eq invitorUserId.long }
+                    .map { it.toInvitation() }
+            } else {
+                select {
+                    (INVITOR_USER_ID eq invitorUserId.long) and
+                            (INVITED_USER_ID inList invitedUserIdsList.map { it.long })
+                }.map { it.toInvitation() }
+            }
+        }
+
     private fun ResultRow.toInvitation() = DatabaseInvitation(
         identity = InvitationIdentity(
             accessHash = AccessHash(this[ACCESS_HASH]),
