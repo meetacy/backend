@@ -7,6 +7,8 @@ import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.files.files
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.friends
+import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
+import app.meetacy.backend.endpoint.invitations.invitations
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.meetings
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
@@ -24,9 +26,7 @@ import io.ktor.server.plugins.autohead.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.partialcontent.*
-import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.plugins.swagger.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -41,7 +41,8 @@ fun startEndpoints(
     meetingsDependencies: MeetingsDependencies,
     notificationsDependencies: NotificationsDependencies,
     filesDependencies: FilesDependencies,
-    usersDependencies: UsersDependencies
+    usersDependencies: UsersDependencies,
+    invitationsDependencies: InvitationsDependencies
 ): ApplicationEngine = embeddedServer(CIO, host = "localhost", port = port) {
 
     install(ContentNegotiation) {
@@ -71,5 +72,6 @@ fun startEndpoints(
         friends(friendsDependencies)
         notifications(notificationsDependencies)
         files(filesDependencies)
+        invitations(invitationsDependencies)
     }
 }.start(wait)
