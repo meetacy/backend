@@ -25,6 +25,14 @@ data class InvitationCreatingFormSerializable(
     val description: String
 )
 
+@Serializable
+data class InvitationUpdatingFormSerializable(
+    val id: String, /* invitation ID */
+    val expiryDate: DateTimeSerializable,
+    val title: String,
+    val description: String
+)
+
 fun Route.crudInvitationRouting() {
     get("/get") {
         val invitationParams: GetInvitationParams = call.receive()
@@ -78,7 +86,27 @@ fun Route.crudInvitationRouting() {
         }
     }
     put("/update") {
+        val invitationUpdatingForm: InvitationUpdatingFormSerializable = call.receive()
+        val httpStatusCode: HttpStatusCode
 
+        when (val response = updateInvitation(invitationUpdatingForm)) {
+            is InvitationsUpdateResponse.Success -> {
+                httpStatusCode = HttpStatusCode.OK
+                call.respond(httpStatusCode, response)
+            }
+            InvitationsUpdateResponse.Unauthorized -> {
+                httpStatusCode = HttpStatusCode.Unauthorized
+                call.respond(httpStatusCode)
+            }
+            InvitationsUpdateResponse.NoPermissions -> {
+                httpStatusCode = HttpStatusCode.MethodNotAllowed
+                call.respond(httpStatusCode)
+            }
+            InvitationsUpdateResponse.NotFound -> {
+                httpStatusCode = HttpStatusCode.NotFound
+                call.respond(httpStatusCode)
+            }
+        }
     }
     delete("/delete") {
 
@@ -95,6 +123,10 @@ fun createInvitation(invitationCreatingForm: InvitationCreatingFormSerializable)
     TODO("Not yet implemented")
 }
 
+fun updateInvitation(invitationUpdatingForm: InvitationUpdatingFormSerializable): InvitationsUpdateResponse {
+    TODO("Not yet implemented")
+}
+
 sealed interface InvitationsGetResponse {
     data class Success(val response: Invitation): InvitationsGetResponse
     object NoPermissions: InvitationsGetResponse
@@ -108,4 +140,11 @@ sealed interface InvitationsCreateResponse {
     object UserAlreadyInvited: InvitationsCreateResponse
     object UserNotFound: InvitationsCreateResponse
     object MeetingNotFound: InvitationsCreateResponse
+}
+
+sealed interface InvitationsUpdateResponse {
+    data class Success(val response: String /* invitation ID */): InvitationsUpdateResponse
+    object Unauthorized: InvitationsUpdateResponse
+    object NoPermissions: InvitationsUpdateResponse
+    object NotFound: InvitationsUpdateResponse /* invitation not found */
 }
