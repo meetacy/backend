@@ -41,6 +41,9 @@ data class Failure(
 
         val UnableToInvite = Failure(false, 16, "You are unable to invite this user. Probably, you are not admin of event, or this person is not your subscriber or friend")
         val FriendAlreadyInvited = Failure(false, 17, "You have already invited this friend. Try another one")
+        val InvalidInvitationIds = Failure(false, 18, "One of your invitation IDs you sent is invalid")
+        val InvalidUserIds = Failure(false, 19, "One of your user IDs you sent is invalid")
+        val OnlyUserIdsOrInvitationIdsAreAllowed = Failure(false, 20, "Only user IDs or invitation IDs are allowed. You have specified both ones")
 
         fun UnhandledException(throwable: Throwable): Failure = Failure(
             status = false,
