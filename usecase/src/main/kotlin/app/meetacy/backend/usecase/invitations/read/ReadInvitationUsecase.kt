@@ -14,7 +14,6 @@ class ReadInvitationUsecase(
     sealed interface Result {
         data class Success(val invitations: List<Invitation>): Result
         object UsersNotFound: Result
-        object InvalidUserId: Result
         object InvitationsNotFound: Result
         object Unauthorized: Result
     }
@@ -42,7 +41,6 @@ class ReadInvitationUsecase(
 
     interface Storage {
         sealed interface DatabaseResult {
-            object UserNotValid: DatabaseResult
             object UsersNotFound: DatabaseResult
             object InvitationsNotFound: DatabaseResult
             data class Success(val invitations: List<Invitation>): DatabaseResult
@@ -57,7 +55,6 @@ class ReadInvitationUsecase(
         return when (this) {
             is Storage.DatabaseResult.Success -> Result.Success(this.invitations)
             Storage.DatabaseResult.InvitationsNotFound -> Result.InvitationsNotFound
-            Storage.DatabaseResult.UserNotValid -> Result.InvalidUserId
             Storage.DatabaseResult.UsersNotFound -> Result.UsersNotFound
         }
     }

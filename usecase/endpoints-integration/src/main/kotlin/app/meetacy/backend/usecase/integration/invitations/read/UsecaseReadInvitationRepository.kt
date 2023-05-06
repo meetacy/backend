@@ -43,7 +43,6 @@ class UsecaseReadInvitationRepository(
     }
 
     private fun ReadInvitationUsecase.Result.toGetResponse(): InvitationsGetResponse = when (this) {
-        ReadInvitationUsecase.Result.InvalidUserId -> InvitationsGetResponse.NotFound
         ReadInvitationUsecase.Result.InvitationsNotFound -> InvitationsGetResponse.InvalidInvitationIds
         is ReadInvitationUsecase.Result.Success -> InvitationsGetResponse.Success(this.invitations.map { it.toEndpoint() })
         ReadInvitationUsecase.Result.Unauthorized -> InvitationsGetResponse.Unauthorized

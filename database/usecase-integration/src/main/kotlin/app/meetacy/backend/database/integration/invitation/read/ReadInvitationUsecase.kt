@@ -2,7 +2,6 @@ package app.meetacy.backend.database.integration.invitation.read
 
 import app.meetacy.backend.database.invitations.InvitationsTable
 import app.meetacy.backend.database.types.DatabaseInvitation
-import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
@@ -12,19 +11,14 @@ import org.jetbrains.exposed.sql.Database
 
 
 class DatabaseReadInvitationStorage(db: Database): ReadInvitationUsecase.Storage {
-    private val usersTable = UsersTable(db)
     private val invitationsTable = InvitationsTable(db)
 
     override suspend fun UserId.getInvitations(): DatabaseResult {
-        if (usersTable.getUsersOrNull(listOf(this)).isEmpty()) return DatabaseResult.UserNotValid
-
         val invitations = invitationsTable.getInvitations(invitedUserId = this)
         return DatabaseResult.Success(invitations.map { it.toInvitation() })
     }
 
     override suspend fun UserId.getInvitations(from: List<UserId>): DatabaseResult {
-        if (usersTable.getUsersOrNull(listOf(this)).isEmpty()) return DatabaseResult.UserNotValid
-
         val invitations = invitationsTable
             .getInvitations(invitedUserId = this, invitorUserIdsList = from)
             .filter { it.invitorUserId in from }
@@ -39,8 +33,6 @@ class DatabaseReadInvitationStorage(db: Database): ReadInvitationUsecase.Storage
     }
 
     override suspend fun UserId.getInvitations(ids: List<InvitationId>): DatabaseResult {
-        if (usersTable.getUsersOrNull(listOf(this)).isEmpty()) return DatabaseResult.UserNotValid
-
         val invitations = invitationsTable
             .getInvitations(this, ids)
 
