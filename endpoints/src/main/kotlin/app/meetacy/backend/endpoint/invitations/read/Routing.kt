@@ -14,11 +14,11 @@ data class GetInvitationParams(
     val id: String,
 )
 
-fun Route.getInvitationRouting(invitationsGetDependencies: InvitationsGetDependencies?) {
-    get("/get") {
+fun Route.readInvitationRouting(readInvitationRepository: ReadInvitationRepository) {
+    get("/read") {
         val invitationParams: GetInvitationParams = call.receive()
 
-        val response = getInvitation(invitationParams)
+        val response = readInvitationRepository.getInvitation(invitationParams)
 
         val httpStatusCode = when (response) {
             is InvitationsGetResponse.Success -> {
@@ -38,8 +38,8 @@ fun Route.getInvitationRouting(invitationsGetDependencies: InvitationsGetDepende
     }
 }
 
-fun getInvitation(getInvitationParams: GetInvitationParams): InvitationsGetResponse {
-    TODO("Not yet implemented")
+interface ReadInvitationRepository {
+    fun getInvitation(getInvitationParams: GetInvitationParams): InvitationsGetResponse
 }
 
 sealed interface InvitationsGetResponse {
