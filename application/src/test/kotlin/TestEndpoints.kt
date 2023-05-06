@@ -284,7 +284,7 @@ fun runTestServer(
         ),
         invitationsDependencies = InvitationsDependencies(
             invitationsCreateDependencies = mockStorage,
-            invitationsGetDependencies = null,
+            invitationsGetDependencies = mockStorage,
             invitationsAcceptDependencies = null,
             invitationsDeleteDependencies = null,
             invitationsUpdateDependencies = null

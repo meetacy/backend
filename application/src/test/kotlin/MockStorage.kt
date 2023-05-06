@@ -5,6 +5,9 @@ import app.meetacy.backend.endpoint.files.download.GetFileResult
 import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
 import app.meetacy.backend.endpoint.invitations.create.InvitationCreatingFormSerializable
 import app.meetacy.backend.endpoint.invitations.create.InvitationsCreateResponse
+import app.meetacy.backend.endpoint.invitations.read.GetInvitationParams
+import app.meetacy.backend.endpoint.invitations.read.InvitationsGetResponse
+import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
@@ -62,7 +65,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ReadNotificationsUsecase.Storage, GetFileRepository, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
-    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage, CreateInvitationRepository {
+    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage,
+    CreateInvitationRepository, ReadInvitationRepository{
 
     private val users = mutableListOf<User>()
 
@@ -522,6 +526,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }
         )
         return InvitationsCreateResponse.Success(InvitationId(42131151825))
+    }
+
+    override fun getInvitation(getInvitationParams: GetInvitationParams): InvitationsGetResponse {
+        TODO("Not yet implemented")
     }
 }
 
