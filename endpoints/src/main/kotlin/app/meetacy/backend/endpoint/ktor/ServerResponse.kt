@@ -16,7 +16,7 @@ data class Failure(
     val errorCode: Int,
     val errorMessage: String
 ) {
-    // Last errorCode: 15
+    // Last errorCode: 17
     companion object {
         val InvalidToken = Failure(false, 1, "Please provide a valid token")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingId")
@@ -38,6 +38,9 @@ data class Failure(
         val LinkMaxAttemptsReached = Failure(false, 13, "You have reached max attempts for today. Please try again later.")
 
         val ApiVersionIsNotSpecified = Failure(false, 14, "Please specify api version using header 'Api-Version'")
+
+        val UnableToInvite = Failure(false, 16, "You are unable to invite this user. Probably, you are not admin of event, or this person is not your subscriber or friend")
+        val FriendAlreadyInvited = Failure(false, 17, "You have already invited this friend. Try another one")
 
         fun UnhandledException(throwable: Throwable): Failure = Failure(
             status = false,
