@@ -32,10 +32,10 @@ class ReadInvitationUsecase(
         return invitations.toResult()
     }
 
-    suspend fun AccessIdentity.getInvitations(ids: List<InvitationId>): Result {
+    suspend fun AccessIdentity.getInvitationsByIds(ids: List<InvitationId>): Result {
         val userId = authRepository.authorizeWithUserId(this) { return Result.Unauthorized }
 
-        val invitations = with(storage) { userId.getInvitations(ids) }
+        val invitations = with(storage) { userId.getInvitationsByIds(ids) }
         return invitations.toResult()
     }
 
@@ -48,7 +48,7 @@ class ReadInvitationUsecase(
 
         suspend fun UserId.getInvitations(): DatabaseResult
         suspend fun UserId.getInvitations(from: List<UserId>): DatabaseResult
-        suspend fun UserId.getInvitations(ids: List<InvitationId>): DatabaseResult
+        suspend fun UserId.getInvitationsByIds(ids: List<InvitationId>): DatabaseResult
     }
 
     private fun Storage.DatabaseResult.toResult(): Result {

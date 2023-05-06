@@ -32,9 +32,9 @@ class DatabaseReadInvitationStorage(db: Database): ReadInvitationUsecase.Storage
         }
     }
 
-    override suspend fun UserId.getInvitations(ids: List<InvitationId>): DatabaseResult {
+    override suspend fun UserId.getInvitationsByIds(ids: List<InvitationId>): DatabaseResult {
         val invitations = invitationsTable
-            .getInvitations(this, ids)
+            .getInvitationsByInvitationIds(this, ids)
 
         return if (invitations.map { it.id }.toSet() != ids) {
             DatabaseResult.InvitationsNotFound

@@ -29,7 +29,7 @@ class UsecaseReadInvitationRepository(
                 // retrieve invitations by invitation ids
                 val invitationIds = (getInvitationParams.invitationIds as List<InvitationIdSerializable>)
                     .map { it.type() }
-                return userIdentity.getInvitations(invitationIds).toGetResponse()
+                return userIdentity.getInvitationsByIds(invitationIds).toGetResponse()
             }
             if (getInvitationParams.invitorUserIds != null) {
                 // retrieve invitations by invitor ids
