@@ -1,13 +1,12 @@
 import app.meetacy.backend.hash.HashGenerator
-import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.sdk.exception.MeetacyInternalException
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.datetime.meetacyDate
 import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.meeting.Meeting
-import app.meetacy.sdk.types.optional.Optional
 import app.meetacy.sdk.types.meeting.MeetingId
+import app.meetacy.sdk.types.optional.Optional
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import java.time.Duration
