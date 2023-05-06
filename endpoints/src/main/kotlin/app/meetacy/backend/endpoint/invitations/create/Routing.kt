@@ -18,8 +18,8 @@ data class InvitationCreatingFormSerializable(
     val meeting: MeetingIdSerializable,
     val invitedUser: UserIdSerializable,
     val expiryDate: DateTimeSerializable,
-    val title: String,
-    val description: String
+    val title: String?,
+    val description: String?
 )
 
 fun Route.createInvitationRouting(invitationsCreateDependencies: CreateInvitationRepository) {
