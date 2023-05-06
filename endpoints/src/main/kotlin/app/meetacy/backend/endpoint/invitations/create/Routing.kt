@@ -1,14 +1,15 @@
 package app.meetacy.backend.endpoint.invitations.create
 
+import app.meetacy.backend.endpoint.ktor.Failure
+import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.datetime.DateTimeSerializable
 import app.meetacy.backend.types.serialization.meeting.MeetingIdSerializable
 import app.meetacy.backend.types.serialization.user.UserIdSerializable
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
@@ -26,34 +27,30 @@ fun Route.createInvitationRouting(invitationsCreateDependencies: CreateInvitatio
     post("/create") {
         val invitationCreatingForm: InvitationCreatingFormSerializable = call.receive()
 
-        val response = invitationsCreateDependencies.createInvitation(invitationCreatingForm)
-
-        val httpStatusCode = when (response) {
+        when (val response = invitationsCreateDependencies.createInvitation(invitationCreatingForm)) {
             is InvitationsCreateResponse.Success -> {
-                HttpStatusCode.OK
+                call.respondSuccess(response)
             }
             InvitationsCreateResponse.UserNotFound -> {
-                HttpStatusCode.NotFound
+                call.respondFailure(Failure.FriendNotFound)
             }
             InvitationsCreateResponse.MeetingNotFound -> {
-                HttpStatusCode.NotFound
+                call.respondFailure(Failure.InvalidMeetingIdentity)
             }
             InvitationsCreateResponse.NoPermissions -> {
-                HttpStatusCode.MethodNotAllowed
+                call.respondFailure(Failure.UnableToInvite)
             }
             InvitationsCreateResponse.Unauthorized -> {
-                HttpStatusCode.Unauthorized
+                call.respondFailure(Failure.InvalidToken)
             }
             InvitationsCreateResponse.UserAlreadyInvited -> {
-                HttpStatusCode.Conflict
+                call.respondFailure(Failure.FriendAlreadyInvited)
             }
 
             else -> {
-                HttpStatusCode.BadRequest
+                call.respondFailure(15, "Unknown error! See logs of API for details")
             }
         }
-
-        call.respond(httpStatusCode, if (response is InvitationsCreateResponse.Success) response.response else "")
     }
 }
 
