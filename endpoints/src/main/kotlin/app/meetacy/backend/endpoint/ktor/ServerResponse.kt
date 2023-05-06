@@ -2,6 +2,7 @@
 
 package app.meetacy.backend.endpoint.ktor
 
+import io.ktor.utils.io.*
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -45,14 +46,21 @@ data class Failure(
         val InvalidUserIds = Failure(false, 19, "One of your user IDs you sent is invalid")
         val OnlyUserIdsOrInvitationIdsAreAllowed = Failure(false, 20, "Only user IDs or invitation IDs are allowed. You have specified both ones")
 
-        fun UnhandledException(throwable: Throwable): Failure = Failure(
-            status = false,
-            errorCode = 15,
-            errorMessage = buildString {
+        fun UnhandledException(throwable: Throwable): Failure {
+            val error = buildString {
                 appendLine("Unhandled exception occurred. Stacktrace: ")
                 append(throwable.stackTraceToString())
             }
-        )
+            println(error)
+            return Failure(
+                status = false,
+                errorCode = 15,
+                errorMessage = buildString {
+                    appendLine("Unhandled exception occurred. Stacktrace: ")
+                    append(throwable.stackTraceToString())
+                }
+            )
+        }
     }
 }
 
