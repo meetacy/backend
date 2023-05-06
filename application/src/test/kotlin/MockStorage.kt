@@ -1,6 +1,10 @@
 
+import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
+import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
+import app.meetacy.backend.endpoint.invitations.create.InvitationCreatingFormSerializable
+import app.meetacy.backend.endpoint.invitations.create.InvitationsCreateResponse
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
@@ -12,6 +16,8 @@ import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
+import app.meetacy.backend.types.invitation.InvitationId
+import app.meetacy.backend.types.invitation.InvitationIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
@@ -47,7 +53,6 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import java.io.File
-
 class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, AuthRepository,
     ConfirmEmailUsecase.Storage, GetUsersViewsRepository, GetUsersViewsUsecase.Storage,
     GetUsersViewsUsecase.ViewUserRepository, AddFriendUsecase.Storage, ListFriendsUsecase.Storage,
@@ -57,7 +62,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ReadNotificationsUsecase.Storage, GetFileRepository, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
-    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage {
+    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage, CreateInvitationRepository {
 
     private val users = mutableListOf<User>()
 
@@ -496,4 +501,27 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         var size: FileSize? = null,
         val fileName: String
     )
+
+    private val invitations: MutableList<DatabaseInvitation> = mutableListOf()
+
+    override suspend fun createInvitation(invitationCreatingForm: InvitationCreatingFormSerializable): InvitationsCreateResponse {
+        invitations.add(
+            with(invitationCreatingForm) {
+                DatabaseInvitation(
+                    identity = InvitationIdentity(
+                        invitationId = InvitationId(42131151825),
+                        accessHash = AccessHash(invitationCreatingForm.token.type().accessToken.string)
+                    ),
+                    title = title ?: "",
+                    description = description ?: "",
+                    invitedUserId = invitedUser.type(),
+                    invitorUserId = invitationCreatingForm.token.type().userId,
+                    expiryDate = expiryDate.type().date,
+                    meeting = meeting.type()
+                )
+            }
+        )
+        return InvitationsCreateResponse.Success(InvitationId(42131151825))
+    }
 }
+
