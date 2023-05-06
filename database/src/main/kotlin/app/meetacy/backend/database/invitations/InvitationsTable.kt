@@ -55,6 +55,9 @@ class InvitationsTable(private val db: Database) : Table() {
             return@newSuspendedTransaction InvitationId(invitationId)
         }
 
+    /**
+     * Returns list of invitations, which IDs are listed in [invitationIdsList]
+     */
     suspend fun getInvitations(invitationIdsList: List<InvitationId>): List<DatabaseInvitation> =
         newSuspendedTransaction(db = db) {
             val rawInvitationIds = invitationIdsList.map { it.long }
