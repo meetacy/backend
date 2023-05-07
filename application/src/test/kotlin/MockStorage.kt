@@ -11,9 +11,11 @@ import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.location.TimedLocation
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.notification.NotificationId
@@ -27,6 +29,8 @@ import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
+import app.meetacy.backend.usecase.location.stream.BaseFriendsLocationStreamingStorage
+import app.meetacy.backend.usecase.location.stream.LocationFlowStorage
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
@@ -57,7 +61,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
-    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository {
+    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, LocationFlowStorage.Underlying,
+    BaseFriendsLocationStreamingStorage.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -460,5 +465,19 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             data = participants.map { it.second },
             nextPagingId = if (participants.size == amount.int) participants.last().first else null
         )
+    }
+
+    private val locations = mutableMapOf<UserId, TimedLocation>()
+
+    override suspend fun setLocation(userId: UserId, location: Location) = synchronized(location) {
+        locations[userId] = TimedLocation(location, DateTime.now())
+    }
+
+    override suspend fun getLocation(userId: UserId): TimedLocation? = synchronized(locations) {
+        return locations[userId]
+    }
+
+    override suspend fun getFriends(userId: UserId, maxAmount: Amount): List<UserId> {
+        return getFriends(userId, maxAmount, pagingId = null).data
     }
 }

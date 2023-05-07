@@ -25,6 +25,8 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.partialcontent.*
 import io.ktor.server.plugins.swagger.*
 import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
+import io.rsocket.kotlin.ktor.server.RSocketSupport
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
@@ -59,6 +61,8 @@ fun startEndpoints(
         // If the HTTP request specifies more ranges, they will all be merged into a single range.
         maxRangeCount = 10
     }
+    install(WebSockets)
+    install(RSocketSupport)
 
     routing {
         static("/") {
