@@ -11,9 +11,9 @@ import io.rsocket.kotlin.ktor.server.rSocket
 import io.rsocket.kotlin.payload.Payload
 import io.rsocket.kotlin.payload.buildPayload
 import io.rsocket.kotlin.payload.data
+import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -34,7 +34,7 @@ interface StreamLocationRepository {
     suspend fun stream(
         accessIdentity: AccessIdentity,
         selfLocation: Flow<Location>,
-        collector: FlowCollector<UserOnMap>
+        channel: SendChannel<UserOnMap>
     )
 }
 
@@ -44,17 +44,20 @@ fun Route.streamFriendsLocation(
     RSocketRequestHandler {
         requestChannel { initialPayload, flow ->
             val initial = initialPayload.decodeToInit()
+
             val selfLocation = flow.map { payload ->
                 payload.decodeToSelfLocation().location.type()
             }
 
-            flow {
+            channelFlow {
                 repository.stream(
                     accessIdentity = initial.token.type(),
                     selfLocation = selfLocation,
-                    collector = this
+                    channel = channel
                 )
-            }.map { user -> user.encodeToPayload() }
+            }.map { user ->
+                user.encodeToPayload()
+            }
         }
     }
 }
