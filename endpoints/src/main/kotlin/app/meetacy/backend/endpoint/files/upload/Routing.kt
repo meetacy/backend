@@ -34,6 +34,8 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
     var inputProvider: (() -> InputStream)? = null
     var fileName = "unnamed"
 
+    val partsToDispose = mutableListOf<PartData>()
+
     multipartData.forEachPart { part ->
         when (part) {
             is PartData.FormItem -> {
@@ -47,10 +49,14 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
 
             else -> {}
         }
+        partsToDispose += part
     }
 
-    if (token == null || inputProvider == null) {
-        error("Please provide accessIdentity and inputProvider")
+    if (token == null) {
+        error("Please provide token")
+    }
+    if (inputProvider == null) {
+        error("Please provide file part")
     }
     when (val result = provider.saveFile(token!!, fileName, inputProvider!!)) {
         is UploadFileResult.Success -> call.respondSuccess(
@@ -66,4 +72,6 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
             call.respondFailure(14, "You have exceed your storage limit (max: $filesSizeLimit, now: $filesSize)")
         }
     }
+
+    partsToDispose.forEach { it.dispose() }
 }

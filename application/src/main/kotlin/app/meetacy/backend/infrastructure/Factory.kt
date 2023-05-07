@@ -274,7 +274,8 @@ fun startEndpoints(
                     hashGenerator = DefaultHashGenerator
                 ),
                 basePath = filesBasePath,
-                filesLimit = filesLimit
+                filesLimit = filesLimit,
+                deleteFilesOnExit = false
             ),
             getFileRepository = DatabaseGetFileRepository(
                 database = db,

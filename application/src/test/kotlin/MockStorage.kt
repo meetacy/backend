@@ -1,8 +1,6 @@
 
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
-import app.meetacy.backend.endpoint.files.upload.SaveFileRepository
-import app.meetacy.backend.endpoint.files.upload.UploadFileResult
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
@@ -14,6 +12,7 @@ import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.TimedLocation
 import app.meetacy.backend.types.meeting.MeetingId
@@ -26,6 +25,7 @@ import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
+import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
@@ -50,7 +50,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
-import java.io.InputStream
+import java.io.File
 
 class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, AuthRepository,
     ConfirmEmailUsecase.Storage, GetUsersViewsRepository, GetUsersViewsUsecase.Storage,
@@ -58,10 +58,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     DeleteFriendUsecase.Storage, ListMeetingsHistoryUsecase.Storage, GetMeetingsViewsRepository,
     CreateMeetingUsecase.Storage, CreateMeetingUsecase.ViewMeetingRepository,
     ParticipateMeetingUsecase.Storage, FilesRepository, DeleteMeetingUsecase.Storage, GetNotificationsUsecase.Storage,
-    ReadNotificationsUsecase.Storage, SaveFileRepository, GetFileRepository, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
+    ReadNotificationsUsecase.Storage, GetFileRepository, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
-    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, LocationFlowStorage.Underlying,
+    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage, LocationFlowStorage.Underlying,
     BaseFriendsLocationStreamingStorage.Storage {
 
     private val users = mutableListOf<User>()
@@ -188,18 +188,20 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         friendRelations.any { (_, user, friend) -> userId == user && friendId == friend }
     }
 
-    private val files = mutableListOf<Pair<UserId, FileIdentity>>()
+    private val baseDir = File(
+        /* parent = */ System.getenv("user.dir"),
+        /* child = */ "files"
+    ).apply { mkdirs() }.absolutePath
 
     override suspend fun getFile(fileId: FileIdentity): GetFileResult {
-        TODO()
-    }
+        val file = files.firstOrNull { it.identity == fileId }
+            ?: return GetFileResult.InvalidFileIdentity
 
-    override suspend fun saveFile(
-        accessIdentity: AccessIdentity,
-        fileName: String,
-        inputProvider: () -> InputStream
-    ): UploadFileResult {
-        TODO("Not yet implemented")
+        return GetFileResult.Success(
+            file = File(baseDir, "${fileId.id.long}"),
+            fileName = file.fileName,
+            fileSize = file.size ?: return GetFileResult.InvalidFileIdentity
+        )
     }
 
     private val meetings = mutableListOf<FullMeeting>()
@@ -283,19 +285,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
-//    override suspend fun getFileIdentity(fileId: FileId, fileAccessIdentity: FileIdentity?): FileIdentity? =
-//        if (fileAccessIdentity == null) {
-//            files.firstOrNull { pair ->
-//                pair.second.id == fileId
-//            }?.second
-//        } else files.firstOrNull { pair ->
-//            pair.second.id == fileAccessIdentity.id && pair.second.accessHash == fileAccessIdentity.accessHash
-//        }?.second
-
     override suspend fun getFileIdentities(fileIdList: List<FileId>): List<FileIdentity?> =
-        fileIdList.map { fileId ->
-            files.firstOrNull { (_, file) -> file.id == fileId }?.second
-        }
+        files.filter { file ->
+            file.identity.id in fileIdList
+        }.map { it.identity }
 
     private val getMeetingViewsUsecase = GetMeetingsViewsUsecase(
         viewMeetingsRepository = this,
@@ -480,4 +473,46 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun getFriends(userId: UserId, maxAmount: Amount): List<UserId> {
         return getFriends(userId, maxAmount, pagingId = null).data
     }
+
+    private val files = mutableListOf<File>()
+
+    override suspend fun getUserWastedSize(userId: UserId): FileSize {
+        val long = files.sumOf { file ->
+            if (file.ownerId == userId) (file.size?.bytesSize ?: 0) else 0L
+        }
+        return FileSize(long)
+    }
+
+    override suspend fun saveFileDescription(
+        userId: UserId,
+        accessHash: AccessHash,
+        fileName: String
+    ): FileIdentity = synchronized(this) {
+        val id = FileId(files.size.toLong())
+        val identity = FileIdentity(id, accessHash)
+
+        files += File(
+            identity = identity,
+            ownerId = userId,
+            size = null,
+            fileName = fileName
+        )
+
+        return FileIdentity(id, accessHash)
+    }
+
+    override suspend fun uploadFileSize(fileId: FileId, fileSize: FileSize) {
+        for (file in files) {
+            if (file.identity.id == fileId) {
+                file.size = fileSize
+            }
+        }
+    }
+
+    private data class File(
+        val identity: FileIdentity,
+        val ownerId: UserId,
+        var size: FileSize? = null,
+        val fileName: String
+    )
 }

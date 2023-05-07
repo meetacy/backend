@@ -15,9 +15,9 @@ dependencies {
     implementation(Deps.Libs.Ktor.Server.PartialContent)
     implementation(Deps.Libs.Ktor.Server.Cors)
     implementation(Deps.Libs.Ktor.Server.AutoHead)
-    implementation(Deps.Libs.Ktor.Server.Cors)
     implementation(Deps.Libs.Ktor.Server.SerializationJson)
     implementation(Deps.Libs.Ktor.Server.ContentNegotiation)
+    implementation(Deps.Libs.Ktor.Server.StatusPages)
     implementation(Deps.Libs.Kotlinx.Serialization)
     implementation(Deps.Libs.Slf4j.Simple)
 }
