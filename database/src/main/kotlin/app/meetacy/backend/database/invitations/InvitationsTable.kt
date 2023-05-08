@@ -26,6 +26,7 @@ class InvitationsTable(private val db: Database) : Table() {
     private val TITLE = varchar("TITLE", length = TITLE_MAX_LIMIT)
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     private val MEETING_ID = long("MEETING_ID")
+    private val IS_ACCEPTED = bool("IS_ACCEPTED").nullable().default(null)
 
     override val primaryKey = PrimaryKey(INVITATION_ID)
 
@@ -105,8 +106,6 @@ class InvitationsTable(private val db: Database) : Table() {
             }
         }
 
-    // TODO: add isAccepted field in the invitations table
-
     private fun ResultRow.toInvitation() = DatabaseInvitation(
         identity = InvitationIdentity(
             accessHash = AccessHash(this[ACCESS_HASH]),
@@ -117,6 +116,7 @@ class InvitationsTable(private val db: Database) : Table() {
         invitedUserId = UserId(this[INVITED_USER_ID]),
         invitorUserId = UserId(this[INVITOR_USER_ID]),
         meeting = MeetingId(this[MEETING_ID]),
-        expiryDate = Date.parse(this[EXPIRY_DATE])
+        expiryDate = Date.parse(this[EXPIRY_DATE]),
+        isAccepted = this[IS_ACCEPTED]
     )
 }
