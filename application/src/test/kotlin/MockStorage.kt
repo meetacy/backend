@@ -27,6 +27,7 @@ import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.serialization.invitation.serializable
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
@@ -521,11 +522,12 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
                     invitedUserId = invitedUser.type(),
                     invitorUserId = invitationCreatingForm.token.type().userId,
                     expiryDate = expiryDate.type().date,
-                    meeting = meeting.type()
+                    meeting = meeting.type(),
+                    isAccepted = null
                 )
             }
         )
-        return InvitationsCreateResponse.Success(InvitationId(42131151825))
+        return InvitationsCreateResponse.Success(InvitationId(42131151825).serializable())
     }
 
     override suspend fun getInvitation(getInvitationParams: GetInvitationParams): InvitationsGetResponse {
