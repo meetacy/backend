@@ -109,6 +109,18 @@ class InvitationsTable(private val db: Database) : Table() {
             }
         }
 
+    suspend fun markAsAccepted(
+        userId: UserId,
+        invitationId: InvitationId
+    ) = newSuspendedTransaction(db = db) {
+        getInvitationsByInvitationIds(invitedUserId = userId, invitationIdsList = listOf(invitationId))
+            .firstOrNull() ?: return@newSuspendedTransaction false
+
+        update(where = { (INVITATION_ID eq invitationId.long) and (INVITED_USER_ID eq userId.long) }) {
+            it[IS_ACCEPTED] = true
+        }
+    }
+
     private fun ResultRow.toInvitation() = DatabaseInvitation(
         identity = InvitationIdentity(
             accessHash = AccessHash(this[ACCESS_HASH]),
