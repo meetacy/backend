@@ -528,7 +528,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         return InvitationsCreateResponse.Success(InvitationId(42131151825))
     }
 
-    override fun getInvitation(getInvitationParams: GetInvitationParams): InvitationsGetResponse {
+    override suspend fun getInvitation(getInvitationParams: GetInvitationParams): InvitationsGetResponse {
         TODO("Not yet implemented")
     }
 }
