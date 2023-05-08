@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.integration.invitations.accept
 
-import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptDeclineParams
+import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptParams
 import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptRepository
 import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptResponse
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
@@ -8,7 +8,14 @@ import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 class UsecaseAcceptInvitationRepository(
     private val usecase: AcceptInvitationUsecase
 ): InvitationAcceptRepository {
-    override suspend fun acceptInvitation(params: InvitationAcceptDeclineParams): InvitationAcceptResponse {
-        TODO()
+    override suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse =
+        with(usecase) {
+            params.token.type().isInvited(params.invitationId.type()).toEndpoint()
+        }
+
+    private fun AcceptInvitationUsecase.Result.toEndpoint(): InvitationAcceptResponse = when (this) {
+        AcceptInvitationUsecase.Result.NotFound -> InvitationAcceptResponse.NotFound
+        AcceptInvitationUsecase.Result.Success -> InvitationAcceptResponse.Success
+        AcceptInvitationUsecase.Result.Unauthorized -> InvitationAcceptResponse.Unauthorized
     }
 }
