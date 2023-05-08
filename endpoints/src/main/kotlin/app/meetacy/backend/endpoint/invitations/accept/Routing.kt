@@ -24,9 +24,6 @@ fun Route.invitationAcceptRouting(invitationsAcceptDependencies: InvitationAccep
             InvitationAcceptResponse.Success -> {
                 call.respondSuccess()
             }
-            InvitationAcceptResponse.NoPermissions -> {
-                call.respondFailure(Failure.InvitationNotFound)
-            }
             InvitationAcceptResponse.Unauthorized -> {
                 call.respondFailure(Failure.InvalidToken)
             }
@@ -46,5 +43,4 @@ sealed interface InvitationAcceptResponse {
     object Success: InvitationAcceptResponse
     object NotFound: InvitationAcceptResponse
     object Unauthorized: InvitationAcceptResponse
-    object NoPermissions: InvitationAcceptResponse
 }

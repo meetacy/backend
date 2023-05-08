@@ -10,7 +10,6 @@ class AcceptInvitationUsecase(
         object Success: Result
         object NotFound: Result
         object Unauthorized: Result
-        object NoPermissions: Result
     }
 
     // TODO
