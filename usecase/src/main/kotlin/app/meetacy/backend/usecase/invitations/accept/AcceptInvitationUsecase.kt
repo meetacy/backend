@@ -30,6 +30,6 @@ class AcceptInvitationUsecase(
 
     interface Storage {
         suspend fun UserId.isInvited(invitationId: InvitationId): Boolean
-        suspend fun UserId.addToMeetingByInvitation(invitationId: InvitationId)
+        suspend fun UserId.addToMeetingByInvitation(invitationId: InvitationId): Boolean
     }
 }
