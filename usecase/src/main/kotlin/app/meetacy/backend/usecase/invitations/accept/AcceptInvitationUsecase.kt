@@ -14,22 +14,33 @@ class AcceptInvitationUsecase(
         object Success: Result
         object NotFound: Result
         object Unauthorized: Result
+        object InvitationExpired: Result
     }
 
     suspend fun AccessIdentity.isInvited(invitationId: InvitationId): Result {
         val userId = authRepository.authorizeWithUserId(this) { return Result.Unauthorized }
 
         with(storage) {
-            if (userId.isInvited(invitationId)) {
-                userId.addToMeetingByInvitation(invitationId)
+            if (userId.isInvited(invitationId) == Storage.DatabaseResult.Success) {
+                return userId.addToMeetingByInvitation(invitationId).toUsecase()
             } else return Result.NotFound
         }
-
-        return Result.Success
     }
 
     interface Storage {
-        suspend fun UserId.isInvited(invitationId: InvitationId): Boolean
-        suspend fun UserId.addToMeetingByInvitation(invitationId: InvitationId): Boolean
+        sealed interface DatabaseResult {
+            object Success: DatabaseResult
+            object InvitationExpired: DatabaseResult
+            object NotInvited: DatabaseResult
+        }
+
+        suspend fun UserId.isInvited(invitationId: InvitationId): DatabaseResult
+        suspend fun UserId.addToMeetingByInvitation(invitationId: InvitationId): DatabaseResult
+    }
+
+    private fun Storage.DatabaseResult.toUsecase(): Result = when (this) {
+        Storage.DatabaseResult.InvitationExpired -> Result.InvitationExpired
+        Storage.DatabaseResult.NotInvited -> Result.NotFound
+        Storage.DatabaseResult.Success -> Result.Success
     }
 }
