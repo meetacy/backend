@@ -3,7 +3,6 @@ package app.meetacy.backend.types.datetime
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.time.ZoneOffset
 import java.util.*
 import java.time.Instant as JavaInstant
 import java.time.LocalDate as JavaLocalDate
@@ -15,6 +14,7 @@ private val iso8601DateFormat = SimpleDateFormat("yyyy-MM-dd").apply {
 
 @JvmInline
 value class Date @UnsafeConstructor constructor(val iso8601: String) {
+    operator fun compareTo(today: Date): Int = this.javaLocalDate.compareTo(today.javaLocalDate)
 
     val atStartOfDay: DateTime get() = iso8601DateFormat.parse(iso8601).meetacyDateTime
     val javaLocalDate: JavaLocalDate get() = JavaLocalDate.parse(iso8601)
