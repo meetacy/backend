@@ -39,9 +39,6 @@ fun Route.readInvitationRouting(readInvitationRepository: ReadInvitationReposito
             InvitationsGetResponse.OnlyUserIdsOrInvitationIdsAreAllowed -> {
                 call.respondFailure(Failure.OnlyUserIdsOrInvitationIdsAreAllowed)
             }
-            InvitationsGetResponse.SpecifyAtLeastOneParam -> {
-                call.respondFailure(Failure.NullEditParams)
-            }
             InvitationsGetResponse.Unauthorized -> {
                 call.respondFailure(Failure.InvalidToken)
             }
@@ -50,9 +47,6 @@ fun Route.readInvitationRouting(readInvitationRepository: ReadInvitationReposito
 }
 
 suspend fun GetInvitationParams.processRequest(ifValid: suspend (GetInvitationParams) -> InvitationsGetResponse): InvitationsGetResponse {
-    if (invitationIds == null && invitorUserIds == null) {
-        return InvitationsGetResponse.SpecifyAtLeastOneParam
-    }
     if (invitationIds != null && invitorUserIds != null) {
         return InvitationsGetResponse.OnlyUserIdsOrInvitationIdsAreAllowed
     }
@@ -65,7 +59,6 @@ interface ReadInvitationRepository {
 
 sealed interface InvitationsGetResponse {
     data class Success(val response: List<Invitation>): InvitationsGetResponse
-    object SpecifyAtLeastOneParam: InvitationsGetResponse
     object OnlyUserIdsOrInvitationIdsAreAllowed: InvitationsGetResponse
     object InvalidUserIds: InvitationsGetResponse
     object InvalidInvitationIds: InvitationsGetResponse
