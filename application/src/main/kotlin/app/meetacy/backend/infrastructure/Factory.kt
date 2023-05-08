@@ -8,6 +8,7 @@ import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
 import app.meetacy.backend.database.integration.friends.add.DatabaseAddFriendStorage
 import app.meetacy.backend.database.integration.friends.delete.DatabaseDeleteFriendStorage
 import app.meetacy.backend.database.integration.friends.get.DatabaseGetFriendsStorage
+import app.meetacy.backend.database.integration.invitation.accept.DatabaseAcceptInvitationStorage
 import app.meetacy.backend.database.integration.invitation.create.DatabaseCreateInvitationStorage
 import app.meetacy.backend.database.integration.invitation.read.DatabaseReadInvitationStorage
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
@@ -55,6 +56,7 @@ import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
+import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.read.UsecaseReadInvitationRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
@@ -69,6 +71,7 @@ import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotif
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
+import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
@@ -278,7 +281,12 @@ fun startEndpoints(
                     hashGenerator = DefaultHashGenerator
                 )
             ),
-            invitationsAcceptDependencies = null,
+            invitationsAcceptDependencies = UsecaseAcceptInvitationRepository(
+                usecase = AcceptInvitationUsecase(
+                    authRepository = authRepository,
+                    storage = DatabaseAcceptInvitationStorage(db)
+                )
+            ),
             invitationsDeleteDependencies = null,
             invitationsGetDependencies = UsecaseReadInvitationRepository(
                 usecase = ReadInvitationUsecase(

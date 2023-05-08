@@ -1,5 +1,6 @@
 package app.meetacy.backend.endpoint.invitations
 
+import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptRepository
 import app.meetacy.backend.endpoint.invitations.accept.invitationAcceptRouting
 import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
 import app.meetacy.backend.endpoint.invitations.create.createInvitationRouting
@@ -14,10 +15,8 @@ class InvitationsDependencies(
     val invitationsGetDependencies: ReadInvitationRepository,
     val invitationsUpdateDependencies: InvitationsUpdateDependencies?,
     val invitationsDeleteDependencies: InvitationsDeletionDependencies?,
-    val invitationsAcceptDependencies: InvitationsAcceptationDependencies?
+    val invitationsAcceptDependencies: InvitationAcceptRepository?
 )
-
-class InvitationsAcceptationDependencies
 
 class InvitationsDeletionDependencies
 

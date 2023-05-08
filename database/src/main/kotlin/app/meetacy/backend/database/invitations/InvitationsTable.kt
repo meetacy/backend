@@ -105,6 +105,8 @@ class InvitationsTable(private val db: Database) : Table() {
             }
         }
 
+    // TODO: add isAccepted field in the invitations table
+
     private fun ResultRow.toInvitation() = DatabaseInvitation(
         identity = InvitationIdentity(
             accessHash = AccessHash(this[ACCESS_HASH]),
