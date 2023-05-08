@@ -15,14 +15,7 @@ class UsecaseReadInvitationRepository(
     private val usecase: ReadInvitationUsecase
 ): ReadInvitationRepository {
     override suspend fun getInvitation(getInvitationParams: GetInvitationParams): InvitationsGetResponse {
-        with (getInvitationParams) {
-            if (invitationIds == null && invitorUserIds == null) {
-                return InvitationsGetResponse.SpecifyAtLeastOneParam
-            }
-            if (invitationIds != null && invitorUserIds != null) {
-                return InvitationsGetResponse.OnlyUserIdsOrInvitationIdsAreAllowed
-            }
-        }
+
         val userIdentity = getInvitationParams.token.type()
         with (usecase) {
             if (getInvitationParams.invitationIds != null) {

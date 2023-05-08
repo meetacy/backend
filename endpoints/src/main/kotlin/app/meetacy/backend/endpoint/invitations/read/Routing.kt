@@ -22,8 +22,11 @@ data class GetInvitationParams(
 fun Route.readInvitationRouting(readInvitationRepository: ReadInvitationRepository) {
     get("/read") {
         val invitationParams: GetInvitationParams = call.receive()
+        val response = invitationParams.processRequest { params ->
+            return@processRequest readInvitationRepository.getInvitation(params)
+        }
 
-        when (val response = readInvitationRepository.getInvitation(invitationParams)) {
+        when (response) {
             is InvitationsGetResponse.Success -> {
                 call.respondSuccess(response.response)
             }
@@ -44,6 +47,16 @@ fun Route.readInvitationRouting(readInvitationRepository: ReadInvitationReposito
             }
         }
     }
+}
+
+suspend fun GetInvitationParams.processRequest(ifValid: suspend (GetInvitationParams) -> InvitationsGetResponse): InvitationsGetResponse {
+    if (invitationIds == null && invitorUserIds == null) {
+        return InvitationsGetResponse.SpecifyAtLeastOneParam
+    }
+    if (invitationIds != null && invitorUserIds != null) {
+        return InvitationsGetResponse.OnlyUserIdsOrInvitationIdsAreAllowed
+    }
+    return ifValid(this)
 }
 
 interface ReadInvitationRepository {
