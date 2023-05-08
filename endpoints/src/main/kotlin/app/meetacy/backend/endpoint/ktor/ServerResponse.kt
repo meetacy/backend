@@ -17,7 +17,7 @@ data class Failure(
     val errorCode: Int,
     val errorMessage: String
 ) {
-    // Last errorCode: 17
+    // Last errorCode: 21
     companion object {
         val InvalidToken = Failure(false, 1, "Please provide a valid token")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingId")
@@ -45,6 +45,7 @@ data class Failure(
         val InvalidInvitationIds = Failure(false, 18, "One of your invitation IDs you sent is invalid")
         val InvalidUserIds = Failure(false, 19, "One of your user IDs you sent is invalid")
         val OnlyUserIdsOrInvitationIdsAreAllowed = Failure(false, 20, "Only user IDs or invitation IDs are allowed. You have specified both ones")
+        val InvitationNotFound = Failure(false, 21, "Invitation you are requested for is not found ¬_¬")
 
         fun UnhandledException(throwable: Throwable): Failure {
             val error = buildString {
