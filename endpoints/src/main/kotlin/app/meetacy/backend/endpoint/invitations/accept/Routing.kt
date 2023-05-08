@@ -11,14 +11,14 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class InvitationAcceptDeclineParams(
+data class InvitationAcceptParams(
     val token: AccessIdentitySerializable,
     val invitationId: InvitationIdSerializable,
 )
 
 fun Route.invitationAcceptRouting(invitationsAcceptDependencies: InvitationAcceptRepository?) {
     post("/accept") {
-        val acceptParams: InvitationAcceptDeclineParams = call.receive()
+        val acceptParams: InvitationAcceptParams = call.receive()
 
         when (invitationsAcceptDependencies!!.acceptInvitation(acceptParams)) {
             InvitationAcceptResponse.Success -> {
@@ -35,7 +35,7 @@ fun Route.invitationAcceptRouting(invitationsAcceptDependencies: InvitationAccep
 }
 
 interface InvitationAcceptRepository {
-    suspend fun acceptInvitation(params: InvitationAcceptDeclineParams): InvitationAcceptResponse
+    suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse
 }
 
 
