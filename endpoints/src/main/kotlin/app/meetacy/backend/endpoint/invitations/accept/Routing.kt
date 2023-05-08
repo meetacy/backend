@@ -1,75 +1,50 @@
 package app.meetacy.backend.endpoint.invitations.accept
 
-import app.meetacy.backend.endpoint.invitations.InvitationsAcceptationDependencies
-import io.ktor.http.*
+import app.meetacy.backend.endpoint.ktor.Failure
+import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
+import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class InvitationAcceptDeclineParams(
-    val id: String,
-    val reason: String
+    val token: AccessIdentitySerializable,
+    val invitationId: InvitationIdSerializable,
 )
 
-fun Route.invitationAcceptRouting(invitationsAcceptDependencies: InvitationsAcceptationDependencies?) {
+fun Route.invitationAcceptRouting(invitationsAcceptDependencies: InvitationAcceptRepository?) {
     post("/accept") {
         val acceptParams: InvitationAcceptDeclineParams = call.receive()
 
-        val httpStatusCode = when (acceptInvitation(acceptParams)) {
-            InvitationAcceptDeclineResponse.Success -> {
-                HttpStatusCode.OK
+        when (invitationsAcceptDependencies!!.acceptInvitation(acceptParams)) {
+            InvitationAcceptResponse.Success -> {
+                call.respondSuccess()
             }
-            InvitationAcceptDeclineResponse.NoPermissions -> {
-                HttpStatusCode.MethodNotAllowed
+            InvitationAcceptResponse.NoPermissions -> {
+                call.respondFailure(Failure.InvitationNotFound)
             }
-            InvitationAcceptDeclineResponse.Unauthorized -> {
-                HttpStatusCode.Unauthorized
+            InvitationAcceptResponse.Unauthorized -> {
+                call.respondFailure(Failure.InvalidToken)
             }
-            InvitationAcceptDeclineResponse.NotFound -> {
-                HttpStatusCode.NotFound
-            }
-        }
-
-        call.respond(httpStatusCode)
-    }
-    post("/decline") {
-        val acceptParams: InvitationAcceptDeclineParams = call.receive()
-
-        val httpStatusCode = when (declineInvitation(acceptParams)) {
-            InvitationAcceptDeclineResponse.Success -> {
-                HttpStatusCode.OK
-            }
-            InvitationAcceptDeclineResponse.NoPermissions -> {
-                HttpStatusCode.MethodNotAllowed
-            }
-            InvitationAcceptDeclineResponse.Unauthorized -> {
-                HttpStatusCode.Unauthorized
-            }
-            InvitationAcceptDeclineResponse.NotFound -> {
-                HttpStatusCode.NotFound
+            InvitationAcceptResponse.NotFound -> {
+                call.respondFailure(Failure.InvitationNotFound)
             }
         }
-
-        call.respond(httpStatusCode)
     }
 }
 
-// code below is needed to be implemented in use-cases/repositories/somewhere else
-// and added just for getting rid of red lines in IDE
-fun acceptInvitation(params: InvitationAcceptDeclineParams): InvitationAcceptDeclineResponse {
-    TODO("Not yet implemented")
+interface InvitationAcceptRepository {
+    suspend fun acceptInvitation(params: InvitationAcceptDeclineParams): InvitationAcceptResponse
 }
 
-fun declineInvitation(params: InvitationAcceptDeclineParams): InvitationAcceptDeclineResponse {
-    TODO("Not yet implemented")
-}
 
-sealed interface InvitationAcceptDeclineResponse {
-    object Success: InvitationAcceptDeclineResponse
-    object NotFound: InvitationAcceptDeclineResponse
-    object Unauthorized: InvitationAcceptDeclineResponse
-    object NoPermissions: InvitationAcceptDeclineResponse
+sealed interface InvitationAcceptResponse {
+    object Success: InvitationAcceptResponse
+    object NotFound: InvitationAcceptResponse
+    object Unauthorized: InvitationAcceptResponse
+    object NoPermissions: InvitationAcceptResponse
 }
