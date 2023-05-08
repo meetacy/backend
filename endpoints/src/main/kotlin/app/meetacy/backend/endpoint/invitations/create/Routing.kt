@@ -3,9 +3,9 @@ package app.meetacy.backend.endpoint.invitations.create
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.datetime.DateTimeSerializable
+import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
 import app.meetacy.backend.types.serialization.meeting.MeetingIdSerializable
 import app.meetacy.backend.types.serialization.user.UserIdSerializable
 import io.ktor.server.application.*
@@ -59,7 +59,7 @@ interface CreateInvitationRepository {
 }
 
 sealed interface InvitationsCreateResponse {
-    data class Success(val response: InvitationId): InvitationsCreateResponse
+    @Serializable data class Success(val response: InvitationIdSerializable): InvitationsCreateResponse
     object Unauthorized: InvitationsCreateResponse
     object NoPermissions: InvitationsCreateResponse
     object UserAlreadyInvited: InvitationsCreateResponse

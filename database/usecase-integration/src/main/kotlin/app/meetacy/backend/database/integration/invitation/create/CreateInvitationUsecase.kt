@@ -55,7 +55,8 @@ class DatabaseCreateInvitationStorage(db: Database): CreateInvitationUsecase.Sto
                 description,
                 invitorUserId,
                 invitedUserId,
-                expiryDate
+                expiryDate,
+                meetingId
             )
         }
     }
