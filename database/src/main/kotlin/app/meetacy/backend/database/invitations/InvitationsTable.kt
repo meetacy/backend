@@ -42,7 +42,8 @@ class InvitationsTable(private val db: Database) : Table() {
         description: String,
         invitorUserId: UserId,
         invitedUserId: UserId,
-        expiryDate: Date
+        expiryDate: Date,
+        meetingId: MeetingId
     ): InvitationId =
         newSuspendedTransaction(db = db) {
             val invitationId = insert { statement ->
@@ -52,6 +53,8 @@ class InvitationsTable(private val db: Database) : Table() {
                 statement[INVITOR_USER_ID] = invitorUserId.long
                 statement[DESCRIPTION] = description
                 statement[TITLE] = title
+                statement[IS_ACCEPTED] = null
+                statement[MEETING_ID] = meetingId.long
             }[INVITATION_ID]
             return@newSuspendedTransaction InvitationId(invitationId)
         }
