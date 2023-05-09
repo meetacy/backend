@@ -10,7 +10,7 @@ class UsecaseAcceptInvitationRepository(
 ): InvitationAcceptRepository {
     override suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse =
         with(usecase) {
-            params.token.type().isInvited(params.invitationId.type()).toEndpoint()
+            params.token.type().addToMeetingByInvitation(params.invitationId.type()).toEndpoint()
         }
 
     private fun AcceptInvitationUsecase.Result.toEndpoint(): InvitationAcceptResponse = when (this) {

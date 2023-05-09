@@ -17,7 +17,7 @@ class AcceptInvitationUsecase(
         object InvitationExpired: Result
     }
 
-    suspend fun AccessIdentity.isInvited(invitationId: InvitationId): Result {
+    suspend fun AccessIdentity.addToMeetingByInvitation(invitationId: InvitationId): Result {
         val userId = authRepository.authorizeWithUserId(this) { return Result.Unauthorized }
 
         with(storage) {
