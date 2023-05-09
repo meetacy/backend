@@ -121,6 +121,29 @@ class InvitationsTable(private val db: Database) : Table() {
         } > 0
     }
 
+    suspend fun update(
+        invitationId: InvitationId,
+        invitorUserId: UserId,
+        invitedUserId: UserId,
+        title: String? = null,
+        description: String? = null,
+        expiryDate: Date? = null,
+        meetingId: MeetingId? = null
+    ): Boolean = newSuspendedTransaction(db = db) {
+        // get invitation, and return error if invitation not found
+        val prevInvitation = getInvitationsByInvitationIds(
+            invitedUserId,
+            listOf(invitationId)
+        ).singleOrNull() ?: return@newSuspendedTransaction false
+
+        update(where = { (INVITATION_ID eq invitationId.long) and (INVITOR_USER_ID eq invitorUserId.long) }) {
+            it[TITLE] = title ?: prevInvitation.title
+            it[DESCRIPTION] = description ?: prevInvitation.description
+            it[EXPIRY_DATE] = expiryDate?.iso8601 ?: prevInvitation.expiryDate.iso8601
+            it[MEETING_ID] = meetingId?.long ?: prevInvitation.meeting.long
+        } > 0
+    }
+
     private fun ResultRow.toInvitation() = DatabaseInvitation(
         identity = InvitationIdentity(
             accessHash = AccessHash(this[ACCESS_HASH]),
