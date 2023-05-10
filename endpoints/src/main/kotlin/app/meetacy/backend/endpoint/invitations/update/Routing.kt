@@ -1,8 +1,10 @@
 package app.meetacy.backend.endpoint.invitations.update
 
-import app.meetacy.backend.endpoint.invitations.InvitationsUpdateDependencies
+import app.meetacy.backend.endpoint.ktor.Failure
+import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.datetime.DateTimeSerializable
-import io.ktor.http.*
+import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -11,47 +13,35 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class InvitationUpdatingFormSerializable(
-    val id: String, /* invitation ID */
+    val id: InvitationIdSerializable,
     val expiryDate: DateTimeSerializable,
     val title: String,
-    val description: String
+    val description: String,
+
 )
 
-fun Route.invitationUpdateRouting(invitationsUpdateDependencies: InvitationsUpdateDependencies?) {
-    put("/update") {
-        val invitationUpdatingForm: InvitationUpdatingFormSerializable = call.receive()
+fun Route.invitationUpdateRouting(invitationUpdateRepository: InvitationUpdateRepository?) =
+    post("/update") {
+        val form: InvitationUpdatingFormSerializable = call.receive()
 
-        val response = updateInvitation(invitationUpdatingForm)
-
-        val httpStatusCode = when (response) {
-            is InvitationsUpdateResponse.Success -> {
-                HttpStatusCode.OK
-            }
-
-            InvitationsUpdateResponse.Unauthorized -> {
-                HttpStatusCode.Unauthorized
-            }
-
-            InvitationsUpdateResponse.NoPermissions -> {
-                HttpStatusCode.MethodNotAllowed
-            }
-
-            InvitationsUpdateResponse.NotFound -> {
-                HttpStatusCode.NotFound
-            }
+        when (invitationUpdateRepository?.update(form = form)) {
+            InvitationsUpdateResponse.Success -> call.respondSuccess(form.id)
+            InvitationsUpdateResponse.Unauthorized -> call.respondFailure(Failure.InvalidToken)
+            InvitationsUpdateResponse.InvalidData -> TODO()
+            InvitationsUpdateResponse.InvitationNotFound -> call.respondFailure(Failure.InvitationNotFound)
+            InvitationsUpdateResponse.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
+            null -> call.respond("Very well, tests lover")
         }
-
-        call.respond(httpStatusCode, if (response is InvitationsUpdateResponse.Success) response else "")
     }
-}
 
-fun updateInvitation(invitationUpdatingForm: InvitationUpdatingFormSerializable): InvitationsUpdateResponse {
-    TODO("Not yet implemented")
+interface InvitationUpdateRepository {
+    suspend fun update(form: InvitationUpdatingFormSerializable): InvitationsUpdateResponse
 }
 
 sealed interface InvitationsUpdateResponse {
-    data class Success(val response: String /* invitation ID */): InvitationsUpdateResponse
+    object Success: InvitationsUpdateResponse
     object Unauthorized: InvitationsUpdateResponse
-    object NoPermissions: InvitationsUpdateResponse
-    object NotFound: InvitationsUpdateResponse /* invitation not found */
+    object InvitationNotFound: InvitationsUpdateResponse
+    object InvalidData: InvitationsUpdateResponse
+    object MeetingNotFound: InvitationsUpdateResponse
 }

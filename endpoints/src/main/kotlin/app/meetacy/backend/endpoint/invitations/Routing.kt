@@ -7,13 +7,14 @@ import app.meetacy.backend.endpoint.invitations.create.createInvitationRouting
 import app.meetacy.backend.endpoint.invitations.delete.invitationDeleteRouting
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
 import app.meetacy.backend.endpoint.invitations.read.readInvitationRouting
+import app.meetacy.backend.endpoint.invitations.update.InvitationUpdateRepository
 import app.meetacy.backend.endpoint.invitations.update.invitationUpdateRouting
 import io.ktor.server.routing.*
 
 class InvitationsDependencies(
     val invitationsCreateDependencies: CreateInvitationRepository,
     val invitationsGetDependencies: ReadInvitationRepository,
-    val invitationsUpdateDependencies: InvitationsUpdateDependencies?,
+    val invitationsUpdateDependencies: InvitationUpdateRepository?,
     val invitationsDeleteDependencies: InvitationsDeletionDependencies?,
     val invitationsAcceptDependencies: InvitationAcceptRepository?
 )
