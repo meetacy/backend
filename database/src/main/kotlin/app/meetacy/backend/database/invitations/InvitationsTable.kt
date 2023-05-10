@@ -73,7 +73,7 @@ class InvitationsTable(private val db: Database) : Table() {
                 .map { it.toInvitation() }
         }
 
-    suspend fun getInvitationByInvitationIds(invitationIdsList: List<InvitationId>): List<DatabaseInvitation> =
+    suspend fun getInvitationsByInvitationIds(invitationIdsList: List<InvitationId>): List<DatabaseInvitation> =
         newSuspendedTransaction(db = db) {
             val rawInvitationIds = invitationIdsList.map { it.long }
 
@@ -134,7 +134,6 @@ class InvitationsTable(private val db: Database) : Table() {
     suspend fun update(
         invitationId: InvitationId,
         invitorUserId: UserId,
-        invitedUserId: UserId,
         title: String? = null,
         description: String? = null,
         expiryDate: Date? = null,
@@ -142,7 +141,6 @@ class InvitationsTable(private val db: Database) : Table() {
     ): Boolean = newSuspendedTransaction(db = db) {
         // get invitation, and return error if invitation not found
         val prevInvitation = getInvitationsByInvitationIds(
-            invitedUserId,
             listOf(invitationId)
         ).singleOrNull() ?: return@newSuspendedTransaction false
 
