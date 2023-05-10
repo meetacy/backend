@@ -1,20 +1,13 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 import app.meetacy.sdk.types.location.Location
-import app.meetacy.sdk.types.url.url
-import io.ktor.client.*
-import io.ktor.client.plugins.websocket.*
-import io.rsocket.kotlin.ktor.client.RSocketSupport
-import io.rsocket.kotlin.ktor.client.rSocket
-import io.rsocket.kotlin.payload.buildPayload
-import io.rsocket.kotlin.payload.data
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 import kotlin.test.Test
 
 class TestLocationStreaming {
