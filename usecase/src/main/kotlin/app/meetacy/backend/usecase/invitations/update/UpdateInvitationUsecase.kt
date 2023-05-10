@@ -31,7 +31,8 @@ class UpdateInvitationUsecase(
         with(storage) {
             if (!doesExist() || !isCreatedBy(authorId)) return Result.InvitationNotFound
             if (meetingId != null) {
-                if (!meetingId.doesExist() || !meetingId.ableToInvite(authorId)) return Result.MeetingNotFound
+                if (!meetingId.doesExist() || !meetingId.ableToInvite(authorId, getInvitedUser()))
+                    return Result.MeetingNotFound
             }
             if (!update(title, description, expiryDate, meetingId)) return Result.InvalidData
             return Result.Success
@@ -40,8 +41,9 @@ class UpdateInvitationUsecase(
 
     interface Storage {
         suspend fun InvitationId.doesExist(): Boolean
+        suspend fun InvitationId.getInvitedUser(): UserId
         suspend fun MeetingId.doesExist(): Boolean
-        suspend fun MeetingId.ableToInvite(invitorId: UserId): Boolean
+        suspend fun MeetingId.ableToInvite(invitorId: UserId, invitedId: UserId): Boolean
         suspend fun InvitationId.isCreatedBy(userId: UserId): Boolean
         suspend fun InvitationId.update(
             title: String? = null,
