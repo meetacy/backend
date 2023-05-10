@@ -1,6 +1,7 @@
 package app.meetacy.backend.endpoint.friends.location.stream
 
 import app.meetacy.backend.endpoint.types.UserOnMap
+import app.meetacy.backend.endpoint.versioning.ApiVersion
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
@@ -22,7 +23,8 @@ import kotlinx.serialization.json.Json
 
 @Serializable
 data class InitStreamLocation(
-    val token: AccessIdentitySerializable
+    val token: AccessIdentitySerializable,
+    val apiVersion: Int
 )
 
 @Serializable

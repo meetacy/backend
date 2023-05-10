@@ -22,8 +22,6 @@ dependencies {
     testImplementation(Deps.Libs.Ktor.Client.Mock)
     testImplementation(Deps.Libs.Ktor.Client.Cio)
     testImplementation(kotlin("test"))
-
-    testImplementation("io.rsocket.kotlin:rsocket-ktor-client:0.15.4")
 }
 
 tasks.test {
