@@ -1,7 +1,6 @@
 package app.meetacy.backend.endpoint.friends.location.stream
 
-import app.meetacy.backend.endpoint.types.UserOnMap
-import app.meetacy.backend.endpoint.versioning.ApiVersion
+import app.meetacy.backend.endpoint.types.UserLocationSnapshot
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
@@ -36,7 +35,7 @@ interface StreamLocationRepository {
     suspend fun stream(
         accessIdentity: AccessIdentity,
         selfLocation: Flow<Location>,
-        channel: SendChannel<UserOnMap>
+        channel: SendChannel<UserLocationSnapshot>
     )
 }
 
@@ -70,6 +69,6 @@ private fun Payload.decodeToInit(): InitStreamLocation =
 private fun Payload.decodeToSelfLocation(): ProvideSelfLocation =
     Json.decodeFromString(data.readText())
 
-private fun UserOnMap.encodeToPayload(): Payload = buildPayload {
+private fun UserLocationSnapshot.encodeToPayload(): Payload = buildPayload {
     data(Json.encodeToString(value = this@encodeToPayload))
 }

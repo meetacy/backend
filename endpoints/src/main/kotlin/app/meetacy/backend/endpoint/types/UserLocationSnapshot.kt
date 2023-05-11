@@ -5,7 +5,7 @@ import app.meetacy.backend.types.serialization.location.LocationSerializable
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserOnMap(
+data class UserLocationSnapshot(
     val user: User,
     val location: LocationSerializable,
     val capturedAt: DateTimeSerializable

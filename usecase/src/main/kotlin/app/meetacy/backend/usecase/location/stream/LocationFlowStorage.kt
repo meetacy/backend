@@ -2,7 +2,7 @@ package app.meetacy.backend.usecase.location.stream
 
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.location.TimedLocation
+import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -16,7 +16,7 @@ class LocationFlowStorage(private val underlying: Underlying) {
         underlying.setLocation(userId, location)
     }
 
-    fun locationFlow(userId: UserId): Flow<TimedLocation> = channelFlow {
+    fun locationFlow(userId: UserId): Flow<LocationSnapshot> = channelFlow {
         val channel = Channel<Update>()
 
         launch {
@@ -32,7 +32,7 @@ class LocationFlowStorage(private val underlying: Underlying) {
 
         for (element in channel) {
             send(
-                element = TimedLocation(
+                element = LocationSnapshot(
                     location = element.location,
                     capturedAt = DateTime.now()
                 )
@@ -42,7 +42,7 @@ class LocationFlowStorage(private val underlying: Underlying) {
 
     interface Underlying {
         suspend fun setLocation(userId: UserId, location: Location)
-        suspend fun getLocation(userId: UserId): TimedLocation?
+        suspend fun getLocation(userId: UserId): LocationSnapshot?
     }
 
     private data class Update(

@@ -14,7 +14,7 @@ import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.location.TimedLocation
+import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.notification.NotificationId
@@ -460,13 +460,13 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         )
     }
 
-    private val locations = mutableMapOf<UserId, TimedLocation>()
+    private val locations = mutableMapOf<UserId, LocationSnapshot>()
 
     override suspend fun setLocation(userId: UserId, location: Location) = synchronized(location) {
-        locations[userId] = TimedLocation(location, DateTime.now())
+        locations[userId] = LocationSnapshot(location, DateTime.now())
     }
 
-    override suspend fun getLocation(userId: UserId): TimedLocation? = synchronized(locations) {
+    override suspend fun getLocation(userId: UserId): LocationSnapshot? = synchronized(locations) {
         return locations[userId]
     }
 

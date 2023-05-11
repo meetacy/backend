@@ -2,7 +2,7 @@ package app.meetacy.backend.types.location
 
 import app.meetacy.backend.types.datetime.DateTime
 
-data class TimedLocation(
+data class LocationSnapshot(
     val location: Location,
     val capturedAt: DateTime
 ) {

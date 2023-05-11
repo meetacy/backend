@@ -2,7 +2,7 @@ package app.meetacy.backend.usecase.location.stream
 
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.location.TimedLocation
+import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.flow.Flow
 
@@ -19,7 +19,7 @@ class BaseFriendsLocationStreamingStorage(
     override suspend fun getFriends(userId: UserId, maxAmount: Amount): List<UserId> =
         friendsStorage.getFriends(userId, maxAmount)
 
-    override fun locationFlow(userId: UserId): Flow<TimedLocation> =
+    override fun locationFlow(userId: UserId): Flow<LocationSnapshot> =
         storage.locationFlow(userId)
 
     interface Storage {
