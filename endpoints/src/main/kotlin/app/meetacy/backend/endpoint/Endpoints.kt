@@ -28,6 +28,8 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.partialcontent.*
 import io.ktor.server.plugins.swagger.*
 import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
+import io.rsocket.kotlin.ktor.server.RSocketSupport
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
@@ -57,9 +59,11 @@ fun startEndpoints(
         allowHeader(HttpHeaders.ContentType)
         allowHeader(ApiVersion.Header)
     }
-    install(AutoHeadResponse)
     install(PartialContent)
+    install(AutoHeadResponse)
     installExceptionsHandler()
+    install(WebSockets)
+    install(RSocketSupport)
 
     routing {
         static("/") {

@@ -4,6 +4,7 @@ import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
+import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
@@ -26,6 +27,7 @@ import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
+import app.meetacy.backend.usecase.integration.friends.location.stream.UsecaseStreamLocationRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
@@ -38,6 +40,8 @@ import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotif
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
+import app.meetacy.backend.usecase.location.stream.BaseFriendsLocationStreamingStorage
+import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
@@ -56,6 +60,7 @@ import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
 import app.meetacy.sdk.types.auth.Token
 import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.location.Location
+import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
@@ -65,7 +70,7 @@ import kotlinx.coroutines.test.runTest
 import java.io.File
 
 val testApi = MeetacyApi(
-    baseUrl = "http://localhost:8080",
+    baseUrl = "http://localhost:8080".url,
     httpClient = HttpClient {
         Logging {
             level = LogLevel.NONE
@@ -137,6 +142,18 @@ fun runTestServer(
             )
         ),
         friendsDependencies = FriendsDependencies(
+            friendsLocationDependencies = FriendsLocationDependencies(
+                streamLocationRepository = UsecaseStreamLocationRepository(
+                    usecase = FriendsLocationStreamingUsecase(
+                        authRepository = mockStorage,
+                        storage = BaseFriendsLocationStreamingStorage(
+                            flowStorageUnderlying = mockStorage,
+                            friendsStorage = mockStorage
+                        ),
+                        usersViewsRepository = mockStorage
+                    )
+                )
+            ),
             addFriendRepository = UsecaseAddFriendRepository(
                 usecase = AddFriendUsecase(
                     authRepository = mockStorage,

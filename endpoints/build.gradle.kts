@@ -9,8 +9,8 @@ dependencies {
     api(Deps.Libs.Ktor.Server.Core)
     api(Deps.Libs.Ktor.Server.Cio)
 
-    implementation(Deps.Libs.Ktor.Client.Core)
-    implementation(Deps.Libs.Ktor.Client.Cio)
+    implementation(Deps.Libs.Ktor.Server.WebSockets)
+    implementation(Deps.Libs.Ktor.Server.RSocket)
     implementation(Deps.Libs.Ktor.Server.Swagger)
     implementation(Deps.Libs.Ktor.Server.PartialContent)
     implementation(Deps.Libs.Ktor.Server.Cors)
