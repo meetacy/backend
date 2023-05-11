@@ -57,7 +57,7 @@ class EditMeetingUsecase(
             ?.identity
             ?: return Result.InvalidMeetingIdentity
 
-        if (userId != meetingCreator.userId) {
+        if (userId != meetingCreator.id) {
             return Result.InvalidAccessIdentity
         }
         if (listOf(avatarIdentityOptional, title, description, location, date, visibility).all { it == null }) {

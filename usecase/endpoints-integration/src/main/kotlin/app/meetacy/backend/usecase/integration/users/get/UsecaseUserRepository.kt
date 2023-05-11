@@ -12,7 +12,7 @@ class UsecaseUserRepository(private val usecase: GetUserSafeUsecase) : UserRepos
         val identity = id?.type()
         val accessIdentity = token.type()
 
-        val usecaseParams = if (identity?.accessHash == null && identity?.userId == null)
+        val usecaseParams = if (identity?.accessHash == null && identity?.id == null)
             GetUserSafeUsecase.Params.Self(accessIdentity)
         else GetUserSafeUsecase.Params.User(
             identity = identity,

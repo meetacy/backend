@@ -22,7 +22,7 @@ class MeetingsTable(private val db: Database) : Table() {
     private val MEETING_ID = long("MEETING_ID").autoIncrement()
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     private val CREATOR_ID = long("CREATOR_ID")
-    private val DATE = varchar("DATE", length = DATE_MAX_LIMIT)
+    private val DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
     private val LATITUDE = double("LATITUDE")
     private val LONGITUDE = double("LONGITUDE")
     private val TITLE = varchar("TITLE", length = TITLE_MAX_LIMIT).nullable()

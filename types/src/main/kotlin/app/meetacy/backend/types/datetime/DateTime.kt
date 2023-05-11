@@ -19,9 +19,14 @@ value class DateTime @UnsafeConstructor constructor(val iso8601: String) {
 
     val javaDate: JavaDate get() = iso8601DateTimeFormat.parse(iso8601)
 
+    val epochMillis: Long get() = javaInstant.toEpochMilli()
+
     @OptIn(UnsafeConstructor::class)
     companion object {
+        const val LENGTH = 24
+
         fun now(): DateTime = JavaDate().meetacyDateTime
+        fun ofEpochMillis(millis: Long): DateTime = JavaDate(millis).meetacyDateTime
         fun parse(iso8601: String): DateTime = parseOrNull(iso8601)
             ?: error("Given string '$iso8601' is not in iso8601 format for date-time")
         fun parseOrNull(iso8601: String): DateTime? = try {

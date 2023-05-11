@@ -16,11 +16,11 @@ class ViewUserUsecase(
         return users.map { user ->
             with(user) {
                 UserView(
-                    isSelf = viewerId == user.identity.userId,
+                    isSelf = viewerId == user.identity.id,
                     identity = identity,
                     nickname = nickname,
-                    email = if (viewerId == user.identity.userId) email else null,
-                    emailVerified = if (viewerId == user.identity.userId) emailVerified else null,
+                    email = if (viewerId == user.identity.id) email else null,
+                    emailVerified = if (viewerId == user.identity.id) emailVerified else null,
                     avatarIdentity = if (avatarId != null) avatarIds.next() else null
                 )
             }

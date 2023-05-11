@@ -7,7 +7,7 @@ import app.meetacy.backend.types.access.AccessHash
 value class UserIdentity private constructor(val string: String) {
     constructor(userId: UserId, accessHash: AccessHash) : this("${userId.long}:${accessHash.string}")
 
-    val userId get() = string
+    val id get() = string
         .split(":")
         .first()
         .toLong()

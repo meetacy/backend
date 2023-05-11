@@ -3,6 +3,7 @@ import app.meetacy.sdk.exception.MeetacyConnectionException
 import app.meetacy.sdk.exception.MeetacyUnauthorizedException
 import app.meetacy.sdk.types.annotation.UnsafeConstructor
 import app.meetacy.sdk.types.auth.Token
+import app.meetacy.sdk.types.url.url
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.utils.io.errors.*
@@ -25,7 +26,7 @@ class TestExceptions {
     @Test
     fun `no internet test`() = runTestServer {
         val noNetworkApi = MeetacyApi(
-            baseUrl = "http://localhost:8080",
+            baseUrl = "http://localhost:8080".url,
             httpClient = HttpClient(MockEngine) {
                 engine {
                     addHandler {

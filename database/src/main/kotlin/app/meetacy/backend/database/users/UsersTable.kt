@@ -54,7 +54,7 @@ class UsersTable(private val db: Database) : Table() {
 
         val foundUsers = select { USER_ID inList rawUserIds }
             .map { it.toUser() }
-            .associateBy { user -> user.identity.userId }
+            .associateBy { user -> user.identity.id }
 
         return@newSuspendedTransaction userIds.map { foundUsers[it] }
     }

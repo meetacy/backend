@@ -17,6 +17,7 @@ dependencies {
     testImplementation(Deps.Libs.MeetacySdk.ApiKtor)
     testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
     testImplementation(Deps.Libs.Ktor.Client.Core)
+    testImplementation(Deps.Libs.Ktor.Client.Cio)
     testImplementation(Deps.Libs.Ktor.Client.Logging)
     testImplementation(Deps.Libs.Ktor.Client.Mock)
     testImplementation(Deps.Libs.Ktor.Client.Cio)
