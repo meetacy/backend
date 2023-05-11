@@ -3,7 +3,7 @@
 package app.meetacy.backend.database.invitations
 
 import app.meetacy.backend.database.types.DatabaseInvitation
-import app.meetacy.backend.types.DATE_MAX_LIMIT
+import app.meetacy.backend.types.DATE_TIME_MAX_LIMIT
 import app.meetacy.backend.types.DESCRIPTION_MAX_LIMIT
 import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.TITLE_MAX_LIMIT
@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 class InvitationsTable(private val db: Database) : Table() {
     private val INVITATION_ID = long("INVITATION_ID").autoIncrement()
-    private val EXPIRY_DATE = varchar("DATE", length = DATE_MAX_LIMIT)
+    private val EXPIRY_DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
     private val INVITED_USER_ID = long("INVITED_USER_ID")
     private val INVITOR_USER_ID = long("INVITOR_USER_ID")
     private val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT)

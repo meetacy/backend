@@ -72,8 +72,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
     ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage,
     CreateInvitationRepository, ReadInvitationRepository,
-    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage, LocationFlowStorage.Underlying,
-    BaseFriendsLocationStreamingStorage.Storage {
+    LocationFlowStorage.Underlying, BaseFriendsLocationStreamingStorage.Storage {
 
     private val users = mutableListOf<User>()
 
