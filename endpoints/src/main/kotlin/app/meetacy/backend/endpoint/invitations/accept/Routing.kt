@@ -33,6 +33,9 @@ fun Route.invitationAcceptRouting(invitationsAcceptDependencies: InvitationAccep
             InvitationAcceptResponse.InvitationExpired -> {
                 call.respondFailure(Failure.InvitationExpired)
             }
+            InvitationAcceptResponse.MeetingNotFound -> {
+                call.respondFailure(Failure.InvalidMeetingIdentity)
+            }
         }
     }
 }
@@ -47,4 +50,5 @@ sealed interface InvitationAcceptResponse {
     object NotFound: InvitationAcceptResponse
     object Unauthorized: InvitationAcceptResponse
     object InvitationExpired : InvitationAcceptResponse
+    object MeetingNotFound : InvitationAcceptResponse
 }
