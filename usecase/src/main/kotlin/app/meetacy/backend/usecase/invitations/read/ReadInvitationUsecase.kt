@@ -22,40 +22,34 @@ class ReadInvitationUsecase(
         val userId = authRepository.authorizeWithUserId(this) { return Result.Unauthorized }
 
         val invitations = with(storage) { userId.getInvitations() }
-        return invitations.toResult()
+        return Result.Success(invitations)
     }
 
     suspend fun AccessIdentity.getInvitations(from: List<UserId>): Result {
         val userId = authRepository.authorizeWithUserId(this) { return Result.Unauthorized }
+        with(storage) {
+            if (from.any { !it.doesExist() }) return Result.UsersNotFound
+        }
 
         val invitations = with(storage) { userId.getInvitations(from) }
-        return invitations.toResult()
+        return Result.Success(invitations)
     }
 
     suspend fun AccessIdentity.getInvitationsByIds(ids: List<InvitationId>): Result {
         val userId = authRepository.authorizeWithUserId(this) { return Result.Unauthorized }
+        with(storage) {
+            if (ids.any { !it.doesExist() }) return Result.InvitationsNotFound
+        }
 
         val invitations = with(storage) { userId.getInvitationsByIds(ids) }
-        return invitations.toResult()
+        return Result.Success(invitations)
     }
 
     interface Storage {
-        sealed interface DatabaseResult {
-            object UsersNotFound: DatabaseResult
-            object InvitationsNotFound: DatabaseResult
-            data class Success(val invitations: List<Invitation>): DatabaseResult
-        }
-
-        suspend fun UserId.getInvitations(): DatabaseResult
-        suspend fun UserId.getInvitations(from: List<UserId>): DatabaseResult
-        suspend fun UserId.getInvitationsByIds(ids: List<InvitationId>): DatabaseResult
-    }
-
-    private fun Storage.DatabaseResult.toResult(): Result {
-        return when (this) {
-            is Storage.DatabaseResult.Success -> Result.Success(this.invitations)
-            Storage.DatabaseResult.InvitationsNotFound -> Result.InvitationsNotFound
-            Storage.DatabaseResult.UsersNotFound -> Result.UsersNotFound
-        }
+        suspend fun UserId.getInvitations(): List<Invitation>
+        suspend fun UserId.getInvitations(from: List<UserId>): List<Invitation>
+        suspend fun UserId.getInvitationsByIds(ids: List<InvitationId>): List<Invitation>
+        suspend fun UserId.doesExist(): Boolean
+        suspend fun InvitationId.doesExist(): Boolean
     }
 }
