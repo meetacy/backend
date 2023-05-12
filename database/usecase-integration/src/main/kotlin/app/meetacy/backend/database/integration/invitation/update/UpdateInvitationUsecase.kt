@@ -11,7 +11,7 @@ import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
 import org.jetbrains.exposed.sql.Database
 
-class DatabaseUpdateInvitationUsecase(db: Database): UpdateInvitationUsecase.Storage {
+class DatabaseUpdateInvitationStorage(db: Database): UpdateInvitationUsecase.Storage {
     private val invitationsTable = InvitationsTable(db)
     private val meetingsTable = MeetingsTable(db)
     private val participantsTable = ParticipantsTable(db)
