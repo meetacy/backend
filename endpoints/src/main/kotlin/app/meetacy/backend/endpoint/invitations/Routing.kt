@@ -14,7 +14,7 @@ import io.ktor.server.routing.*
 class InvitationsDependencies(
     val invitationsCreateDependencies: CreateInvitationRepository,
     val invitationsGetDependencies: ReadInvitationRepository,
-    val invitationUpdateRepository: InvitationUpdateRepository?,
+    val invitationUpdateRepository: InvitationUpdateRepository,
     val invitationsDeleteDependencies: InvitationsDeletionDependencies?,
     val invitationsAcceptDependencies: InvitationAcceptRepository?
 )

@@ -22,17 +22,16 @@ data class InvitationUpdatingFormSerializable(
     val meetingId: MeetingIdSerializable
 )
 
-fun Route.invitationUpdateRouting(invitationUpdateRepository: InvitationUpdateRepository?) =
+fun Route.invitationUpdateRouting(invitationUpdateRepository: InvitationUpdateRepository) =
     post("/update") {
         val form: InvitationUpdatingFormSerializable = call.receive()
 
-        when (invitationUpdateRepository?.update(form = form)) {
+        when (invitationUpdateRepository.update(form = form)) {
             InvitationsUpdateResponse.Success -> call.respondSuccess(form.id)
             InvitationsUpdateResponse.Unauthorized -> call.respondFailure(Failure.InvalidToken)
             InvitationsUpdateResponse.InvalidData -> TODO()
             InvitationsUpdateResponse.InvitationNotFound -> call.respondFailure(Failure.InvitationNotFound)
             InvitationsUpdateResponse.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
-            null -> call.respond("Very well, tests lover")
         }
     }
 
