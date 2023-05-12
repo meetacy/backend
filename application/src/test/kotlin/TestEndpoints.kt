@@ -3,8 +3,8 @@ import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
-import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
 import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
+import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
@@ -304,7 +304,7 @@ fun runTestServer(
             invitationsGetDependencies = mockStorage,
             invitationsAcceptDependencies = null,
             invitationsDeleteDependencies = null,
-            invitationsUpdateDependencies = null
+            invitationUpdateRepository = mockStorage
         )
     )
     block()
