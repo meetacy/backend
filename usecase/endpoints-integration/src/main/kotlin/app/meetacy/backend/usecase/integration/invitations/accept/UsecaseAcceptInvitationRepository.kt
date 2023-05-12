@@ -18,5 +18,6 @@ class UsecaseAcceptInvitationRepository(
         AcceptInvitationUsecase.Result.Success -> InvitationAcceptResponse.Success
         AcceptInvitationUsecase.Result.Unauthorized -> InvitationAcceptResponse.Unauthorized
         AcceptInvitationUsecase.Result.InvitationExpired -> InvitationAcceptResponse.InvitationExpired
+        AcceptInvitationUsecase.Result.MeetingNotFound -> InvitationAcceptResponse.MeetingNotFound
     }
 }

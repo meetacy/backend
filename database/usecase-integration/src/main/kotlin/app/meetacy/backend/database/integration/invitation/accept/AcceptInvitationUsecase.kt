@@ -1,6 +1,7 @@
 package app.meetacy.backend.database.integration.invitation.accept
 
 import app.meetacy.backend.database.invitations.InvitationsTable
+import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.meetings.ParticipantsTable
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.invitation.InvitationId
@@ -11,31 +12,51 @@ import org.jetbrains.exposed.sql.Database
 class DatabaseAcceptInvitationStorage(db: Database): Storage {
     private val invitationsTable = InvitationsTable(db)
     private val participantsTable = ParticipantsTable(db)
+    private val meetingsTable = MeetingsTable(db)
 
-    override suspend fun UserId.isInvited(invitationId: InvitationId): Storage.DatabaseResult {
+    override suspend fun UserId.isInvited(invitationId: InvitationId): Boolean {
         with(invitationsTable) {
             getInvitationsByInvitationIds(
                 this@isInvited,
                 listOf(invitationId)
-            ).firstOrNull() ?: return Storage.DatabaseResult.NotInvited
+            ).singleOrNull() ?: return false
 
-            /* else */ return Storage.DatabaseResult.Success
+            return true
         }
     }
 
-    override suspend fun UserId.addToMeetingByInvitation(invitationId: InvitationId): Storage.DatabaseResult {
+    /**
+     * @return true if user is successfully added to meeting, false otherwise
+     */
+    override suspend fun UserId.addToMeetingByInvitation(invitationId: InvitationId): Boolean {
         val invitation = invitationsTable.getInvitationsByInvitationIds(
             this,
             listOf(invitationId)
-        ).firstOrNull() ?: return Storage.DatabaseResult.NotInvited
-        if (invitation.expiryDate < Date.today() || invitation.isAccepted == true) return Storage.DatabaseResult.InvitationExpired
+        ).singleOrNull() ?: return false
+
         with(participantsTable) {
             addParticipant(
                 participantId = this@addToMeetingByInvitation,
                 meetingId = invitation.meeting
             )
         }
-        invitationsTable.markAsAccepted(this, invitationId)
-        return Storage.DatabaseResult.Success
+        return invitationsTable.markAsAccepted(this, invitationId)
+    }
+
+    /**
+     * @return true if invitation is expired, false otherwise
+     */
+    override suspend fun InvitationId.isExpired(): Boolean {
+        val invitation = invitationsTable.getInvitationsByInvitationIds(listOf(this)).singleOrNull() ?: return true
+        return invitation.expiryDate < Date.today() || invitation.isAccepted == true
+    }
+
+    override suspend fun InvitationId.doesMeetingExist(): Boolean {
+        return meetingsTable
+            .getMeetingOrNull(
+                id = invitationsTable.getInvitationsByInvitationIds(listOf(this))
+                    .singleOrNull()
+                    ?.meeting ?: return false
+            ) != null
     }
 }
