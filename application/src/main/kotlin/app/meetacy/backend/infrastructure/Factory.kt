@@ -305,7 +305,7 @@ fun startEndpoints(
                     hashGenerator = DefaultHashGenerator
                 )
             ),
-            invitationsAcceptDependencies = UsecaseAcceptInvitationRepository(
+            invitationsAcceptRepository = UsecaseAcceptInvitationRepository(
                 usecase = AcceptInvitationUsecase(
                     authRepository = authRepository,
                     storage = DatabaseAcceptInvitationStorage(db)
