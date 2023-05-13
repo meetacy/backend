@@ -33,13 +33,16 @@ fun Route.invitationDenyRouting(invitationsDenyDependencies: DenyInvitationRepos
             InvitationsDeletionResponse.NotFound -> {
                 call.respondFailure(Failure.InvitationNotFound)
             }
+            InvitationsDeletionResponse.UserNotFound -> {
+                call.respondFailure(Failure.UserNotFound)
+            }
             null -> call.respondSuccess("Very well, tests lover")
         }
     }
 }
 
 interface DenyInvitationRepository{
-    fun deleteInvitation(invitationDeletingForm: InvitationDeletingFormSerializable): InvitationsDeletionResponse
+    suspend fun deleteInvitation(invitationDeletingForm: InvitationDeletingFormSerializable): InvitationsDeletionResponse
 }
 
 sealed interface InvitationsDeletionResponse {
@@ -47,4 +50,5 @@ sealed interface InvitationsDeletionResponse {
     object Unauthorized: InvitationsDeletionResponse
     object NoPermissions: InvitationsDeletionResponse
     object NotFound: InvitationsDeletionResponse
+    object UserNotFound: InvitationsDeletionResponse
 }
