@@ -1,4 +1,4 @@
-@file:Suppress("PrivatePropertyName")
+﻿@file:Suppress("PrivatePropertyName")
 
 package app.meetacy.backend.database.invitations
 
@@ -128,6 +128,20 @@ class InvitationsTable(private val db: Database) : Table() {
 
         update(where = { (INVITATION_ID eq invitationId.long) and (INVITED_USER_ID eq userId.long) }) {
             it[IS_ACCEPTED] = true
+        } > 0
+    }
+
+    suspend fun markAsDenied(
+        userId: UserId,
+        invitationId: InvitationId
+    ): Boolean = newSuspendedTransaction(db = db) {
+        getInvitationsByInvitationIds(
+            invitedUserId = userId,
+            invitationIdsList = listOf(invitationId)
+        ).singleOrNull() ?: return@newSuspendedTransaction false
+
+        update(where = { (INVITATION_ID eq invitationId.long) and (INVITED_USER_ID eq userId.long) }) {
+            it[IS_ACCEPTED] = false
         } > 0
     }
 
