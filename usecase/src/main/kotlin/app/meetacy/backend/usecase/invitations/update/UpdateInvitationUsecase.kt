@@ -34,6 +34,7 @@ class UpdateInvitationUsecase(
                 if (!meetingId.doesExist() || !meetingId.ableToInvite(authorId, getInvitedUser()))
                     return Result.MeetingNotFound
             }
+            if (listOf(title, description, expiryDate, meetingId).all { it == null }) return Result.InvalidData
             if (!update(title, description, expiryDate, meetingId)) return Result.InvalidData
             return Result.Success
         }
