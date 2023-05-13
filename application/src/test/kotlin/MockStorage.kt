@@ -5,6 +5,9 @@ import app.meetacy.backend.endpoint.files.download.GetFileResult
 import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
 import app.meetacy.backend.endpoint.invitations.create.InvitationCreatingFormSerializable
 import app.meetacy.backend.endpoint.invitations.create.InvitationsCreateResponse
+import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationRepository
+import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationResponse
+import app.meetacy.backend.endpoint.invitations.deny.InvitationDenyingFormSerializable
 import app.meetacy.backend.endpoint.invitations.read.GetInvitationParams
 import app.meetacy.backend.endpoint.invitations.read.InvitationsGetResponse
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
@@ -75,7 +78,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
     ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage,
     CreateInvitationRepository, ReadInvitationRepository,
-    LocationFlowStorage.Underlying, BaseFriendsLocationStreamingStorage.Storage, InvitationUpdateRepository {
+    LocationFlowStorage.Underlying, BaseFriendsLocationStreamingStorage.Storage, InvitationUpdateRepository,
+    DenyInvitationRepository {
 
     private val users = mutableListOf<User>()
 
@@ -557,6 +561,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     }
 
     override suspend fun update(form: InvitationUpdatingFormSerializable): InvitationsUpdateResponse {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteInvitation(invitationDenyingForm: InvitationDenyingFormSerializable): DenyInvitationResponse {
         TODO("Not yet implemented")
     }
 }
