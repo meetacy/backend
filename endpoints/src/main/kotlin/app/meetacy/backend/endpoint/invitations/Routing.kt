@@ -1,10 +1,11 @@
 package app.meetacy.backend.endpoint.invitations
 
-import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptRepository
+import app.meetacy.backend.endpoint.invitations.accept.AcceptInvitationRepository
 import app.meetacy.backend.endpoint.invitations.accept.invitationAcceptRouting
 import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
 import app.meetacy.backend.endpoint.invitations.create.createInvitationRouting
-import app.meetacy.backend.endpoint.invitations.delete.invitationDeleteRouting
+import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationRepository
+import app.meetacy.backend.endpoint.invitations.deny.invitationDenyRouting
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
 import app.meetacy.backend.endpoint.invitations.read.readInvitationRouting
 import app.meetacy.backend.endpoint.invitations.update.InvitationUpdateRepository
@@ -15,13 +16,9 @@ class InvitationsDependencies(
     val invitationsCreateDependencies: CreateInvitationRepository,
     val invitationsGetDependencies: ReadInvitationRepository,
     val invitationUpdateRepository: InvitationUpdateRepository,
-    val invitationsDeleteDependencies: InvitationsDeletionDependencies?,
-    val invitationsAcceptDependencies: InvitationAcceptRepository?
+    val invitationsDenyDependencies: DenyInvitationRepository?,
+    val invitationsAcceptDependencies: AcceptInvitationRepository?
 )
-
-class InvitationsDeletionDependencies
-
-class InvitationsUpdateDependencies
 
 fun Route.invitations(
     invitationsDependencies: InvitationsDependencies
@@ -29,6 +26,6 @@ fun Route.invitations(
     createInvitationRouting(invitationsDependencies.invitationsCreateDependencies)
     readInvitationRouting(invitationsDependencies.invitationsGetDependencies)
     invitationUpdateRouting(invitationsDependencies.invitationUpdateRepository)
-    invitationDeleteRouting(invitationsDependencies.invitationsDeleteDependencies)
+    invitationDenyRouting(invitationsDependencies.invitationsDenyDependencies)
     invitationAcceptRouting(invitationsDependencies.invitationsAcceptDependencies)
 }
