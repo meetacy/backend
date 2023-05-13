@@ -16,7 +16,7 @@ class InvitationsDependencies(
     val invitationsCreateDependencies: CreateInvitationRepository,
     val invitationsGetDependencies: ReadInvitationRepository,
     val invitationUpdateRepository: InvitationUpdateRepository,
-    val invitationsDenyRepository: DenyInvitationRepository?,
+    val invitationsDenyRepository: DenyInvitationRepository,
     val invitationsAcceptDependencies: AcceptInvitationRepository?
 )
 
