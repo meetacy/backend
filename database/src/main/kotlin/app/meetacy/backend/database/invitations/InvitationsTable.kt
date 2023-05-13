@@ -164,6 +164,14 @@ class InvitationsTable(private val db: Database) : Table() {
         } > 0
     }
 
+    suspend fun cancel(invitationId: InvitationId): Boolean = newSuspendedTransaction(db = db) {
+        getInvitationsByInvitationIds(
+            listOf(invitationId)
+        ).singleOrNull() ?: return@newSuspendedTransaction false
+
+        deleteWhere { INVITATION_ID eq invitationId.long } > 0
+    }
+
     private fun ResultRow.toInvitation() = DatabaseInvitation(
         identity = InvitationIdentity(
             accessHash = AccessHash(this[ACCESS_HASH]),
