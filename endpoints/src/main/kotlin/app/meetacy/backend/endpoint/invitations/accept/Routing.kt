@@ -16,7 +16,7 @@ data class InvitationAcceptParams(
     val invitationId: InvitationIdSerializable,
 )
 
-fun Route.invitationAcceptRouting(invitationsAcceptDependencies: InvitationAcceptRepository?) {
+fun Route.invitationAcceptRouting(invitationsAcceptDependencies: AcceptInvitationRepository?) {
     post("/accept") {
         val acceptParams: InvitationAcceptParams = call.receive()
 
@@ -40,7 +40,7 @@ fun Route.invitationAcceptRouting(invitationsAcceptDependencies: InvitationAccep
     }
 }
 
-interface InvitationAcceptRepository {
+interface AcceptInvitationRepository {
     suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse
 }
 

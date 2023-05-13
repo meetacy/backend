@@ -1,13 +1,13 @@
 package app.meetacy.backend.usecase.integration.invitations.accept
 
 import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptParams
-import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptRepository
+import app.meetacy.backend.endpoint.invitations.accept.AcceptInvitationRepository
 import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptResponse
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 
 class UsecaseAcceptInvitationRepository(
     private val usecase: AcceptInvitationUsecase
-): InvitationAcceptRepository {
+): AcceptInvitationRepository {
     override suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse =
         with(usecase) {
             params.token.type().addToMeetingByInvitation(params.invitationId.type()).toEndpoint()
