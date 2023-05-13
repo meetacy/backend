@@ -2,6 +2,7 @@ package app.meetacy.backend.database.integration.invitation.deny
 
 import app.meetacy.backend.database.invitations.InvitationsTable
 import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
@@ -29,5 +30,13 @@ class DatabaseDenyInvitationStorage(db: Database): DenyInvitationUsecase.Storage
 
     override suspend fun InvitationId.markAsDenied(): Boolean =
         invitationsTable.markAsDenied(this)
+
+    override suspend fun InvitationId.isExpired(): Boolean {
+        val invitation = invitationsTable
+            .getInvitationsByInvitationIds(listOf(this))
+            .singleOrNull() ?: return true
+
+        return invitation.expiryDate > Date.today()
+    }
 
 }
