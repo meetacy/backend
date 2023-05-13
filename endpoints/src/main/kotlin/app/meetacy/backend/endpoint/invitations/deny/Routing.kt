@@ -17,7 +17,7 @@ data class InvitationDeletingFormSerializable(
 )
 
 fun Route.invitationDenyRouting(invitationsDenyDependencies: DenyInvitationRepository?) {
-    delete("/delete") {
+    post("/deny") {
         val invitationDeletingForm: InvitationDeletingFormSerializable = call.receive()
 
         when (invitationsDenyDependencies?.deleteInvitation(invitationDeletingForm)) {
