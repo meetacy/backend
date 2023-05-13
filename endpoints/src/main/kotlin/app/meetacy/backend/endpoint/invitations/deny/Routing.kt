@@ -11,29 +11,29 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class InvitationDeletingFormSerializable(
+data class InvitationDenyingFormSerializable(
     val id: InvitationIdSerializable,
     val token: AccessIdentitySerializable
 )
 
-fun Route.invitationDenyRouting(invitationsDenyDependencies: DenyInvitationRepository?) {
+fun Route.invitationDenyRouting(invitationsDenyRepository: DenyInvitationRepository?) {
     post("/deny") {
-        val invitationDeletingForm: InvitationDeletingFormSerializable = call.receive()
+        val invitationDeletingForm: InvitationDenyingFormSerializable = call.receive()
 
-        when (invitationsDenyDependencies?.deleteInvitation(invitationDeletingForm)) {
-            InvitationsDeletionResponse.Success -> {
+        when (invitationsDenyRepository?.deleteInvitation(invitationDeletingForm)) {
+            DenyInvitationResponse.Success -> {
                 call.respondSuccess()
             }
-            InvitationsDeletionResponse.Unauthorized -> {
+            DenyInvitationResponse.Unauthorized -> {
                 call.respondFailure(Failure.InvalidToken)
             }
-            InvitationsDeletionResponse.NoPermissions -> {
+            DenyInvitationResponse.NoPermissions -> {
                 call.respondFailure(Failure.InvitationNotFound)
             }
-            InvitationsDeletionResponse.NotFound -> {
+            DenyInvitationResponse.NotFound -> {
                 call.respondFailure(Failure.InvitationNotFound)
             }
-            InvitationsDeletionResponse.UserNotFound -> {
+            DenyInvitationResponse.UserNotFound -> {
                 call.respondFailure(Failure.UserNotFound)
             }
             null -> call.respondSuccess("Very well, tests lover")
@@ -42,13 +42,13 @@ fun Route.invitationDenyRouting(invitationsDenyDependencies: DenyInvitationRepos
 }
 
 interface DenyInvitationRepository{
-    suspend fun deleteInvitation(invitationDeletingForm: InvitationDeletingFormSerializable): InvitationsDeletionResponse
+    suspend fun deleteInvitation(invitationDenyingForm: InvitationDenyingFormSerializable): DenyInvitationResponse
 }
 
-sealed interface InvitationsDeletionResponse {
-    object Success: InvitationsDeletionResponse
-    object Unauthorized: InvitationsDeletionResponse
-    object NoPermissions: InvitationsDeletionResponse
-    object NotFound: InvitationsDeletionResponse
-    object UserNotFound: InvitationsDeletionResponse
+sealed interface DenyInvitationResponse {
+    object Success: DenyInvitationResponse
+    object Unauthorized: DenyInvitationResponse
+    object NoPermissions: DenyInvitationResponse
+    object NotFound: DenyInvitationResponse
+    object UserNotFound: DenyInvitationResponse
 }

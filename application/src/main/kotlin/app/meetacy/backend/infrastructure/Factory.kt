@@ -311,7 +311,7 @@ fun startEndpoints(
                     storage = DatabaseAcceptInvitationStorage(db)
                 )
             ),
-            invitationsDenyDependencies = UsecaseDenyInvitationRepository(
+            invitationsDenyRepository = UsecaseDenyInvitationRepository(
                 usecase = DenyInvitationUsecase(
                     authRepository = authRepository,
                     storage = DatabaseDenyInvitationStorage(db)

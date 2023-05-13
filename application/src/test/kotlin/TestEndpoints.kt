@@ -303,7 +303,7 @@ fun runTestServer(
             invitationsCreateDependencies = mockStorage,
             invitationsGetDependencies = mockStorage,
             invitationsAcceptDependencies = null,
-            invitationsDenyDependencies = null,
+            invitationsDenyRepository = null,
             invitationUpdateRepository = mockStorage
         )
     )

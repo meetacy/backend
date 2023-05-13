@@ -16,7 +16,7 @@ class InvitationsDependencies(
     val invitationsCreateDependencies: CreateInvitationRepository,
     val invitationsGetDependencies: ReadInvitationRepository,
     val invitationUpdateRepository: InvitationUpdateRepository,
-    val invitationsDenyDependencies: DenyInvitationRepository?,
+    val invitationsDenyRepository: DenyInvitationRepository?,
     val invitationsAcceptDependencies: AcceptInvitationRepository?
 )
 
@@ -26,6 +26,6 @@ fun Route.invitations(
     createInvitationRouting(invitationsDependencies.invitationsCreateDependencies)
     readInvitationRouting(invitationsDependencies.invitationsGetDependencies)
     invitationUpdateRouting(invitationsDependencies.invitationUpdateRepository)
-    invitationDenyRouting(invitationsDependencies.invitationsDenyDependencies)
+    invitationDenyRouting(invitationsDependencies.invitationsDenyRepository)
     invitationAcceptRouting(invitationsDependencies.invitationsAcceptDependencies)
 }
