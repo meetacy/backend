@@ -15,12 +15,14 @@ class DenyInvitationUsecase(
         object Unauthorized: Result
         object NoPermissions: Result
         object NotFound: Result
+        object UserNotFound: Result
     }
 
     suspend fun InvitationId.markAsDenied(token: AccessIdentity): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
 
         with(storage) {
+            if (!userId.doesExist()) return Result.UserNotFound
             if (!doesExist()) return Result.NotFound
             if (!userId.isInvited(this@markAsDenied)) return Result.NoPermissions  // yes, I love smart this
             markAsDenied()
@@ -29,6 +31,7 @@ class DenyInvitationUsecase(
     }
 
     interface Storage {
+        suspend fun UserId.doesExist(): Boolean
         suspend fun UserId.isInvited(invitation: InvitationId): Boolean
         suspend fun InvitationId.doesExist(): Boolean
         suspend fun InvitationId.markAsDenied(): Boolean
