@@ -31,6 +31,6 @@ class DenyInvitationUsecase(
     interface Storage {
         suspend fun UserId.isInvited(invitation: InvitationId): Boolean
         suspend fun InvitationId.doesExist(): Boolean
-        suspend fun InvitationId.markAsDenied()
+        suspend fun InvitationId.markAsDenied(): Boolean
     }
 }
