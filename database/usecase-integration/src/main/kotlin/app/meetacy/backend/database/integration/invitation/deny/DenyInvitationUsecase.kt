@@ -19,10 +19,13 @@ class DatabaseDenyInvitationStorage(db: Database): DenyInvitationUsecase.Storage
     override suspend fun UserId.doesExist(): Boolean =
         usersTable.getUsersOrNull(listOf(this)).singleOrNull() != null
 
-    override suspend fun InvitationId.doesExist(): Boolean =
-        invitationsTable
+    override suspend fun InvitationId.doesExist(): Boolean {
+        val invitation = invitationsTable
             .getInvitationsByInvitationIds(listOf(this))
-            .singleOrNull() != null
+            .singleOrNull()
+
+        return invitation != null && invitation.isAccepted == null
+    }
 
     override suspend fun InvitationId.markAsDenied(): Boolean =
         invitationsTable.markAsDenied(this)
