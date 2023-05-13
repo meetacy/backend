@@ -10,6 +10,7 @@ import app.meetacy.backend.database.integration.friends.delete.DatabaseDeleteFri
 import app.meetacy.backend.database.integration.friends.get.DatabaseGetFriendsStorage
 import app.meetacy.backend.database.integration.invitation.accept.DatabaseAcceptInvitationStorage
 import app.meetacy.backend.database.integration.invitation.create.DatabaseCreateInvitationStorage
+import app.meetacy.backend.database.integration.invitation.deny.DatabaseDenyInvitationStorage
 import app.meetacy.backend.database.integration.invitation.read.DatabaseReadInvitationStorage
 import app.meetacy.backend.database.integration.invitation.update.DatabaseUpdateInvitationStorage
 import app.meetacy.backend.database.integration.location.stream.DatabaseFriendsLocationStreamingStorage
@@ -63,6 +64,7 @@ import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRep
 import app.meetacy.backend.usecase.integration.friends.location.stream.UsecaseStreamLocationRepository
 import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
+import app.meetacy.backend.usecase.integration.invitations.deny.UsecaseDenyInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.read.UsecaseReadInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.update.UsecaseUpdateInvitationRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
@@ -79,6 +81,7 @@ import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserReposit
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
+import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
 import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
 import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
 import app.meetacy.backend.usecase.location.stream.BaseFriendsLocationStreamingStorage
@@ -308,7 +311,12 @@ fun startEndpoints(
                     storage = DatabaseAcceptInvitationStorage(db)
                 )
             ),
-            invitationsDenyDependencies = null,
+            invitationsDenyDependencies = UsecaseDenyInvitationRepository(
+                usecase = DenyInvitationUsecase(
+                    authRepository = authRepository,
+                    storage = DatabaseDenyInvitationStorage(db)
+                )
+            ),
             invitationsGetDependencies = UsecaseReadInvitationRepository(
                 usecase = ReadInvitationUsecase(
                     storage = DatabaseReadInvitationStorage(db),
