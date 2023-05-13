@@ -2,6 +2,9 @@
 import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
+import app.meetacy.backend.endpoint.invitations.accept.AcceptInvitationRepository
+import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptParams
+import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptResponse
 import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
 import app.meetacy.backend.endpoint.invitations.create.InvitationCreatingFormSerializable
 import app.meetacy.backend.endpoint.invitations.create.InvitationsCreateResponse
@@ -79,7 +82,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage,
     CreateInvitationRepository, ReadInvitationRepository,
     LocationFlowStorage.Underlying, BaseFriendsLocationStreamingStorage.Storage, InvitationUpdateRepository,
-    DenyInvitationRepository {
+    DenyInvitationRepository, AcceptInvitationRepository {
 
     private val users = mutableListOf<User>()
 
@@ -565,6 +568,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     }
 
     override suspend fun deleteInvitation(invitationDenyingForm: InvitationDenyingFormSerializable): DenyInvitationResponse {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse {
         TODO("Not yet implemented")
     }
 }

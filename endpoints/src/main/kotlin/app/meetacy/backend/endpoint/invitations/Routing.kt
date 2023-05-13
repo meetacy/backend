@@ -17,7 +17,7 @@ class InvitationsDependencies(
     val invitationsGetDependencies: ReadInvitationRepository,
     val invitationUpdateRepository: InvitationUpdateRepository,
     val invitationsDenyRepository: DenyInvitationRepository,
-    val invitationsAcceptDependencies: AcceptInvitationRepository?
+    val invitationsAcceptDependencies: AcceptInvitationRepository
 )
 
 fun Route.invitations(
