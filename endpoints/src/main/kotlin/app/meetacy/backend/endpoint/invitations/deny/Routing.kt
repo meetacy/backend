@@ -36,7 +36,6 @@ fun Route.invitationDenyRouting(invitationsDenyRepository: DenyInvitationReposit
             DenyInvitationResponse.UserNotFound -> {
                 call.respondFailure(Failure.UserNotFound)
             }
-            null -> call.respondSuccess("Very well, tests lover")
         }
     }
 }
