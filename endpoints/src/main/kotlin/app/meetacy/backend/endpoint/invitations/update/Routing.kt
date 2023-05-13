@@ -29,7 +29,7 @@ fun Route.invitationUpdateRouting(invitationUpdateRepository: InvitationUpdateRe
         when (invitationUpdateRepository.update(form = form)) {
             InvitationsUpdateResponse.Success -> call.respondSuccess(form.id)
             InvitationsUpdateResponse.Unauthorized -> call.respondFailure(Failure.InvalidToken)
-            InvitationsUpdateResponse.InvalidData -> TODO()
+            InvitationsUpdateResponse.InvalidData -> call.respondFailure(Failure.NullEditParams)
             InvitationsUpdateResponse.InvitationNotFound -> call.respondFailure(Failure.InvitationNotFound)
             InvitationsUpdateResponse.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
         }
