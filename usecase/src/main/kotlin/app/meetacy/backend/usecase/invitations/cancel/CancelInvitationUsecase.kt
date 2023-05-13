@@ -22,7 +22,7 @@ class CancelInvitationUsecase(
         val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
 
         with(storage) {
-            if (!doesExist()) return Result.NotFound
+            if (!doesExist() || isExpired()) return Result.NotFound  // smart this is very nice
             if (!userId.doesExist()) return Result.UserNotFound
             if (!userId.isInvitor(this@cancel)) return Result.NoPermissions
             cancel()
@@ -32,9 +32,10 @@ class CancelInvitationUsecase(
     }
 
     interface Storage {
-        fun UserId.isInvitor(invitationId: InvitationId): Boolean
-        fun InvitationId.doesExist(): Boolean
-        fun UserId.doesExist(): Boolean
-        fun InvitationId.cancel(): Boolean
+        suspend fun UserId.isInvitor(invitationId: InvitationId): Boolean
+        suspend fun InvitationId.doesExist(): Boolean
+        suspend fun UserId.doesExist(): Boolean
+        suspend fun InvitationId.cancel(): Boolean
+        suspend fun InvitationId.isExpired(): Boolean
     }
 }
