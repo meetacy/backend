@@ -550,7 +550,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
                     description = description ?: "",
                     invitedUserId = invitedUser.type(),
                     invitorUserId = invitationCreatingForm.token.type().userId,
-                    expiryDate = expiryDate.type().date,
+                    expiryDate = expiryDate.type(),
                     meeting = meeting.type(),
                     isAccepted = null
                 )
