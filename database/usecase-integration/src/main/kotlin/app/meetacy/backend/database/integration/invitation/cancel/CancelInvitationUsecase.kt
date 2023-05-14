@@ -13,7 +13,7 @@ class DatabaseCancelInvitationStorage(db: Database): CancelInvitationUsecase.Sto
     private val usersTable = UsersTable(db)
 
     override suspend fun UserId.isInvitor(invitationId: InvitationId): Boolean =
-        invitationsTable.getInvitationsByInvitationIds(listOf(invitationId)).singleOrNull()!!.invitedUserId == this
+        invitationsTable.getInvitationsByInvitationIds(listOf(invitationId)).singleOrNull()!!.invitorUserId == this
 
     override suspend fun InvitationId.doesExist(): Boolean {
         val invitation = invitationsTable
