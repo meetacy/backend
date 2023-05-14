@@ -17,7 +17,7 @@ data class CancelInvitationForm(
     val invitationId: InvitationIdSerializable
 )
 
-fun Route.invitationCancelRouting(invitationCancelRepository: CancelInvitationRepository?) = post("/delete") {
+fun Route.invitationCancelRouting(invitationCancelRepository: CancelInvitationRepository?) = post("/cancel") {
     val form: CancelInvitationForm = call.receive()
 
     with(invitationCancelRepository) {
@@ -46,7 +46,7 @@ fun Route.invitationCancelRouting(invitationCancelRepository: CancelInvitationRe
 }
 
 interface CancelInvitationRepository {
-    fun CancelInvitationForm.cancel(): CancelInvitationResponse
+    suspend fun CancelInvitationForm.cancel(): CancelInvitationResponse
 }
 
 sealed interface CancelInvitationResponse {
