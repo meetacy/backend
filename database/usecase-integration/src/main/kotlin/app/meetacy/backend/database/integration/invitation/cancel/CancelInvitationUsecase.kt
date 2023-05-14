@@ -28,7 +28,7 @@ class DatabaseCancelInvitationStorage(db: Database): CancelInvitationUsecase.Sto
             .getInvitationsByInvitationIds(listOf(this))
             .singleOrNull()
 
-        return invitation!!.expiryDate > DateTime.now()
+        return invitation!!.expiryDate < DateTime.now()
     }
 
     override suspend fun UserId.doesExist(): Boolean {
