@@ -1065,22 +1065,22 @@ components:
         "token":
           type: string
           example:
-            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+            "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         "avatarId":
           type: string
           example: "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         "title":
           type: string
           example:
-            - "Meet on the Elbe"
+            "Meet on the Elbe"
         "description":
           type: string
           example:
-            - "Thematic meeting of like-minded people on the Elbe"
+            "Thematic meeting of like-minded people on the Elbe"
         "date":
           type: string
           example:
-            - 20232402T100000+0300
+            20232402T100000+0300
         "location":
           $ref: '#/components/schemas/Location'
         "visibility":
@@ -1112,27 +1112,27 @@ components:
         "token":
           type: string
           example:
-            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+            "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         "meetingId":
           type: string
           example:
-            - "8:wtzbOPJqX8SVCDQj4UMavNoKJId5UylyL4GRZAkacc2PcGnyu8TCqZCLYvFnG4kb75HOVz6TIeRxXbarsdQZBdrB1rDbHSGD7yCW0EOTbRhxs5qRGncOjG5DmTrAULbWlWMiUkt2RiDRNTkoGJunQgtP63FEZ1MrYJPPdyX1Qn3xpIW6joZZ5p2XahuGGAE13UceQYz6bWO5ZWSJiWjwrA0xOvqf6ad0FHuEXcQaWbJBbBfEA9oGm4KsDHfnkvCT"
+            "8:wtzbOPJqX8SVCDQj4UMavNoKJId5UylyL4GRZAkacc2PcGnyu8TCqZCLYvFnG4kb75HOVz6TIeRxXbarsdQZBdrB1rDbHSGD7yCW0EOTbRhxs5qRGncOjG5DmTrAULbWlWMiUkt2RiDRNTkoGJunQgtP63FEZ1MrYJPPdyX1Qn3xpIW6joZZ5p2XahuGGAE13UceQYz6bWO5ZWSJiWjwrA0xOvqf6ad0FHuEXcQaWbJBbBfEA9oGm4KsDHfnkvCT"
         "avatarId":
           type: string
           example:
-            - "6:27nUexdZbK0BEn9M48Db9SFP6XTd2O6sjQeX5wsfECftnkVDZ0pP0jYGev23GBGHlQu7RsNk9t8SrO3jOZaiQXbVN22IU5o3TeChCZ2qjgZlOT9owypOBbusAJu16TN0YzIsMtzlgspjOyd5lZzV4LL47QLwcc6b7Z6Uuw0Pkz8IMaCCNdlBBvDaRwsQLqQBLkomRjFOye5owLalAguUHxnjJVSquzDjsljqLwprTPfFGSCGQuqh4JUtWtjUsaWi"
+            "6:27nUexdZbK0BEn9M48Db9SFP6XTd2O6sjQeX5wsfECftnkVDZ0pP0jYGev23GBGHlQu7RsNk9t8SrO3jOZaiQXbVN22IU5o3TeChCZ2qjgZlOT9owypOBbusAJu16TN0YzIsMtzlgspjOyd5lZzV4LL47QLwcc6b7Z6Uuw0Pkz8IMaCCNdlBBvDaRwsQLqQBLkomRjFOye5owLalAguUHxnjJVSquzDjsljqLwprTPfFGSCGQuqh4JUtWtjUsaWi"
         "title":
           type: string
           example:
-            - "Meet on the Elbe"
+            "Meet on the Elbe"
         "description":
           type: string
           example:
-            - "Thematic meeting of like-minded people on the Elbe"
+            "Thematic meeting of like-minded people on the Elbe"
         "date":
           type: string
           example:
-            - 20232402T100000+0300
+            20232402T100000+0300
         "location":
           $ref: '#/components/schemas/Location'
         "visibility":
