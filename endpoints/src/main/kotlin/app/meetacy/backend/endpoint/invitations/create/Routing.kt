@@ -46,8 +46,7 @@ fun Route.createInvitationRouting(invitationsCreateDependencies: CreateInvitatio
             InvitationsCreateResponse.UserAlreadyInvited -> {
                 call.respondFailure(Failure.FriendAlreadyInvited)
             }
-
-            else -> {
+            InvitationsCreateResponse.InvalidData -> {
                 call.respondFailure(15, "Unknown error! See logs of API for details")
             }
         }
