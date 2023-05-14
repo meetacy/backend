@@ -2,7 +2,7 @@ package app.meetacy.backend.database.integration.invitation.cancel
 
 import app.meetacy.backend.database.invitations.InvitationsTable
 import app.meetacy.backend.database.users.UsersTable
-import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
@@ -28,7 +28,7 @@ class DatabaseCancelInvitationStorage(db: Database): CancelInvitationUsecase.Sto
             .getInvitationsByInvitationIds(listOf(this))
             .singleOrNull()
 
-        return invitation!!.expiryDate > Date.today()
+        return invitation!!.expiryDate > DateTime.now()
     }
 
     override suspend fun UserId.doesExist(): Boolean {

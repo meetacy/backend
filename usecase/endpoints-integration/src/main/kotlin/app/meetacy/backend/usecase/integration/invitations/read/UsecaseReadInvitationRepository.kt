@@ -45,7 +45,7 @@ class UsecaseReadInvitationRepository(
     private fun app.meetacy.backend.usecase.types.Invitation.toEndpoint(): Invitation {
         return Invitation(
             id.toString(),
-            expiryDate.atStartOfDay.serializable(),
+            expiryDate.serializable(),
             invitedUserId.serializable(),
             invitorUserId.serializable(),
             meeting.serializable(),

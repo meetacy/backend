@@ -4,14 +4,13 @@ import app.meetacy.backend.types.DESCRIPTION_MAX_LIMIT
 import app.meetacy.backend.types.TITLE_MAX_LIMIT
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.HashGenerator
 import app.meetacy.backend.usecase.types.authorizeWithUserId
-import java.time.LocalDate
 
 class CreateInvitationUsecase (
     private val authRepository: AuthRepository,
@@ -32,7 +31,7 @@ class CreateInvitationUsecase (
         token: AccessIdentity,
         title: String,
         description: String,
-        expiryDate: Date,
+        expiryDate: DateTime,
         meetingId: MeetingId,
         invitedUserId: UserId
     ): Result {
@@ -46,7 +45,7 @@ class CreateInvitationUsecase (
                 !(invitedUserId.isSubscriberOf(invitorId) ||
                         invitorId.isFriend(invitedUserId)) -> return Result.NoPermissions
 
-                (expiryDate.javaLocalDate < LocalDate.now()!! ||
+                (expiryDate < DateTime.now() ||
                         title.length > TITLE_MAX_LIMIT ||
                         description.length > DESCRIPTION_MAX_LIMIT) -> return Result.InvalidData
 
@@ -76,7 +75,7 @@ class CreateInvitationUsecase (
             invitorUserId: UserId,
             title: String,
             description: String,
-            expiryDate: Date,
+            expiryDate: DateTime,
             meetingId: MeetingId
         ): InvitationId?
     }

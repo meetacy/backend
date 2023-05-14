@@ -3,7 +3,7 @@ package app.meetacy.backend.database.integration.invitation.accept
 import app.meetacy.backend.database.invitations.InvitationsTable
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.meetings.ParticipantsTable
-import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase.Storage
@@ -48,7 +48,7 @@ class DatabaseAcceptInvitationStorage(db: Database): Storage {
      */
     override suspend fun InvitationId.isExpired(): Boolean {
         val invitation = invitationsTable.getInvitationsByInvitationIds(listOf(this)).singleOrNull() ?: return true
-        return invitation.expiryDate < Date.today() || invitation.isAccepted == true
+        return invitation.expiryDate < DateTime.now() || invitation.isAccepted == true
     }
 
     override suspend fun InvitationId.doesMeetingExist(): Boolean {

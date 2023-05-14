@@ -16,7 +16,7 @@ class UsecaseCreateInvitationRepository(
                 title = title ?: "",
                 description = description ?: "",
                 invitedUserId = invitedUser.type(),
-                expiryDate = expiryDate.type().date,
+                expiryDate = expiryDate.type(),
                 meetingId = meeting.type()
             )
             return when (response) {
@@ -32,7 +32,6 @@ class UsecaseCreateInvitationRepository(
                     InvitationsCreateResponse.Unauthorized
                 is CreateInvitationUsecase.Result.Success ->
                     InvitationsCreateResponse.Success(response.invitation.serializable())
-
                 CreateInvitationUsecase.Result.InvalidData ->
                     InvitationsCreateResponse.InvalidData
             }

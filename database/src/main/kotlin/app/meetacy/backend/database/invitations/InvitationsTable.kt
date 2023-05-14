@@ -9,6 +9,7 @@ import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.TITLE_MAX_LIMIT
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.invitation.InvitationIdentity
 import app.meetacy.backend.types.meeting.MeetingId
@@ -42,7 +43,7 @@ class InvitationsTable(private val db: Database) : Table() {
         description: String,
         invitorUserId: UserId,
         invitedUserId: UserId,
-        expiryDate: Date,
+        expiryDate: DateTime,
         meetingId: MeetingId
     ): InvitationId =
         newSuspendedTransaction(db = db) {
@@ -182,7 +183,7 @@ class InvitationsTable(private val db: Database) : Table() {
         invitedUserId = UserId(this[INVITED_USER_ID]),
         invitorUserId = UserId(this[INVITOR_USER_ID]),
         meeting = MeetingId(this[MEETING_ID]),
-        expiryDate = Date.parse(this[EXPIRY_DATE]),
+        expiryDate = DateTime.parse(this[EXPIRY_DATE]),
         isAccepted = this[IS_ACCEPTED]
     )
 }

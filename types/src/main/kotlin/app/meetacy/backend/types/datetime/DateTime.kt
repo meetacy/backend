@@ -13,6 +13,9 @@ private val iso8601DateTimeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'
 
 @JvmInline
 value class DateTime @UnsafeConstructor constructor(val iso8601: String) {
+    operator fun compareTo(now: DateTime): Int =
+        this.epochMillis.compareTo(now.epochMillis)
+
     val date: Date get() = javaDate.meetacyDate
 
     val javaInstant: JavaInstant get() = javaDate.toInstant()

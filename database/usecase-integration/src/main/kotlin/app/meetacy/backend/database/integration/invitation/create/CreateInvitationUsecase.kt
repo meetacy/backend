@@ -5,7 +5,7 @@ import app.meetacy.backend.database.invitations.InvitationsTable
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash
-import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
@@ -39,7 +39,7 @@ class DatabaseCreateInvitationStorage(db: Database): CreateInvitationUsecase.Sto
         invitorUserId: UserId,
         title: String,
         description: String,
-        expiryDate: Date,
+        expiryDate: DateTime,
         meetingId: MeetingId
     ): InvitationId? {
         val invitationsList = invitationTable.getInvitations(
