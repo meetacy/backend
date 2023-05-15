@@ -1,4 +1,6 @@
 import app.meetacy.sdk.types.amount.amount
+import app.meetacy.sdk.types.paging.asFlow
+import app.meetacy.sdk.types.paging.flatten
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlin.test.Test
@@ -25,7 +27,9 @@ class TestFriends {
             friend.friends.add(self.id)
         }
 
-        val actualFriends = self.friends.flow(chunkSize = 2.amount).toList().flatten()
+        val actualFriends = self.friends
+            .paging(chunkSize = 2.amount).flatten()
+            .asFlow().toList()
 
         assert(actualFriends.size == friendsAmount)
     }
