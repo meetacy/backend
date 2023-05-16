@@ -17,21 +17,20 @@ class DenyInvitationUsecase(
         object NotFound: Result
     }
 
-    suspend fun InvitationId.markAsDenied(token: AccessIdentity): Result {
+    suspend fun markAsDenied(token: AccessIdentity, id: InvitationId): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
 
-        with(storage) {
-            if (!doesExist() || isExpired()) return Result.NotFound
-            if (!userId.isInvited(this@markAsDenied)) return Result.NoPermissions
-            markAsDenied()
-        }
+        if (!storage.doesExist(id) || storage.isExpired(id)) return Result.NotFound
+        if (!storage.isInvited(id, userId)) return Result.NoPermissions
+        storage.markAsDenied(id)
+
         return Result.Success
     }
 
     interface Storage {
-        suspend fun UserId.isInvited(invitation: InvitationId): Boolean
-        suspend fun InvitationId.doesExist(): Boolean
-        suspend fun InvitationId.markAsDenied(): Boolean
-        suspend fun InvitationId.isExpired(): Boolean
+        suspend fun isInvited(invitation: InvitationId, user: UserId): Boolean
+        suspend fun doesExist(id: InvitationId): Boolean
+        suspend fun markAsDenied(id: InvitationId): Boolean
+        suspend fun isExpired(id: InvitationId): Boolean
     }
 }

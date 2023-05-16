@@ -18,9 +18,9 @@ data class InvitationDenyingFormSerializable(
 
 fun Route.invitationDeny(invitationsDenyRepository: DenyInvitationRepository) {
     post("/deny") {
-        val invitationDeletingForm: InvitationDenyingFormSerializable = call.receive()
+        val form: InvitationDenyingFormSerializable = call.receive()
 
-        when (invitationsDenyRepository.deleteInvitation(invitationDeletingForm)) {
+        when (invitationsDenyRepository.denyInvitation(form)) {
             DenyInvitationResponse.Success -> {
                 call.respondSuccess()
             }
@@ -38,7 +38,7 @@ fun Route.invitationDeny(invitationsDenyRepository: DenyInvitationRepository) {
 }
 
 interface DenyInvitationRepository{
-    suspend fun deleteInvitation(invitationDenyingForm: InvitationDenyingFormSerializable): DenyInvitationResponse
+    suspend fun denyInvitation(form: InvitationDenyingFormSerializable): DenyInvitationResponse
 }
 
 sealed interface DenyInvitationResponse {

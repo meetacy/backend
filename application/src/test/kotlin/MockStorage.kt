@@ -570,7 +570,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteInvitation(invitationDenyingForm: InvitationDenyingFormSerializable): DenyInvitationResponse {
+    override suspend fun denyInvitation(form: InvitationDenyingFormSerializable): DenyInvitationResponse {
         TODO("Not yet implemented")
     }
 
@@ -578,7 +578,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
-    override suspend fun CancelInvitationForm.cancel(): CancelInvitationResponse {
+    override suspend fun cancel(form: CancelInvitationForm): CancelInvitationResponse {
         TODO("Not yet implemented")
     }
 }

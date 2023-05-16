@@ -36,19 +36,18 @@ class CreateInvitationUsecase (
     ): Result {
         val invitorId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
 
-        with(storage) {
             when {
-                !doesExist(meetingId) -> return Result.MeetingNotFound
-                !(doesExist(invitedUserId)) -> return Result.UserNotFound
+                !storage.doesExist(meetingId) -> return Result.MeetingNotFound
+                !(storage.doesExist(invitedUserId)) -> return Result.UserNotFound
 
-                !(isSubscriberOf(invitedUserId, invitorId)) -> return Result.NoPermissions
+                !(storage.isSubscriberOf(invitedUserId, invitorId)) -> return Result.NoPermissions
 
                 (expiryDate < DateTime.now() ||
                         title.length > TITLE_MAX_LIMIT ||
                         description.length > DESCRIPTION_MAX_LIMIT) -> throw IllegalArgumentException("Too long data")
 
                 else -> return Result.Success(
-                    invitation = createInvitation(
+                    invitation = storage.createInvitation(
                         AccessHash(hashGenerator.generate()),
                         invitedUserId,
                         invitorId,
@@ -59,7 +58,6 @@ class CreateInvitationUsecase (
                     ) ?: return Result.UserAlreadyInvited
                 )
             }
-        }
     }
 
     interface Storage {

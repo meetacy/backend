@@ -8,10 +8,8 @@ import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
 class UsecaseDenyInvitationRepository(
     private val usecase: DenyInvitationUsecase
 ): DenyInvitationRepository {
-    override suspend fun deleteInvitation(invitationDenyingForm: InvitationDenyingFormSerializable): DenyInvitationResponse =
-        with(usecase) {
-            invitationDenyingForm.id.type().markAsDenied(invitationDenyingForm.token.type()).toEndpoint()
-        }
+    override suspend fun denyInvitation(form: InvitationDenyingFormSerializable): DenyInvitationResponse =
+        usecase.markAsDenied(form.token.type(), form.id.type()).toEndpoint()
 
     private fun DenyInvitationUsecase.Result.toEndpoint() = when (this) {
         DenyInvitationUsecase.Result.NoPermissions -> DenyInvitationResponse.NoPermissions

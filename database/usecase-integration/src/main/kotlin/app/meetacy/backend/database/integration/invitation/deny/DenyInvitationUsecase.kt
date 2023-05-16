@@ -9,26 +9,26 @@ import org.jetbrains.exposed.sql.Database
 
 class DatabaseDenyInvitationStorage(db: Database): DenyInvitationUsecase.Storage {
     private val invitationsTable = InvitationsTable(db)
-    override suspend fun UserId.isInvited(invitation: InvitationId): Boolean =
+    override suspend fun isInvited(invitation: InvitationId, user: UserId): Boolean =
         invitationsTable
             .getInvitationsByInvitationIds(listOf(invitation))
             .singleOrNull()
-            ?.invitedUserId == this
+            ?.invitedUserId == user
 
-    override suspend fun InvitationId.doesExist(): Boolean {
+    override suspend fun doesExist(id: InvitationId): Boolean {
         val invitation = invitationsTable
-            .getInvitationsByInvitationIds(listOf(this))
+            .getInvitationsByInvitationIds(listOf(id))
             .singleOrNull()
 
         return invitation != null && invitation.isAccepted == null
     }
 
-    override suspend fun InvitationId.markAsDenied(): Boolean =
-        invitationsTable.markAsDenied(this)
+    override suspend fun markAsDenied(id: InvitationId): Boolean =
+        invitationsTable.markAsDenied(id)
 
-    override suspend fun InvitationId.isExpired(): Boolean {
+    override suspend fun isExpired(id: InvitationId): Boolean {
         val invitation = invitationsTable
-            .getInvitationsByInvitationIds(listOf(this))
+            .getInvitationsByInvitationIds(listOf(id))
             .singleOrNull() ?: return true
 
         return invitation.expiryDate > DateTime.now()
