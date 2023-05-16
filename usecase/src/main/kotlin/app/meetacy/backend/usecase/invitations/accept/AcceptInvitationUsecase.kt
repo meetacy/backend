@@ -21,22 +21,20 @@ class AcceptInvitationUsecase(
     suspend fun AccessIdentity.addToMeetingByInvitation(invitationId: InvitationId): Result {
         val userId = authRepository.authorizeWithUserId(this) { return Result.Unauthorized }
 
-        with(storage) {
-            when {
-                !userId.isInvited(invitationId) -> return Result.NotFound
-                invitationId.isExpired() -> return Result.InvitationExpired
-                !invitationId.doesMeetingExist() -> return Result.MeetingNotFound
-                else -> {
-                    return if (userId.addToMeetingByInvitation(invitationId)) Result.Success else Result.NotFound
-                }
+        return when {
+            !storage.isInvited(userId, invitationId) -> Result.NotFound
+            storage.isExpired(invitationId) -> Result.InvitationExpired
+            !storage.doesMeetingExist(invitationId) -> Result.MeetingNotFound
+            else -> {
+                if (storage.addToMeetingByInvitation(userId, invitationId)) Result.Success else Result.NotFound
             }
         }
     }
 
     interface Storage {
-        suspend fun UserId.isInvited(invitationId: InvitationId): Boolean
-        suspend fun UserId.addToMeetingByInvitation(invitationId: InvitationId): Boolean
-        suspend fun InvitationId.isExpired(): Boolean
-        suspend fun InvitationId.doesMeetingExist(): Boolean
+        suspend fun isInvited(userId: UserId, invitationId: InvitationId): Boolean
+        suspend fun addToMeetingByInvitation(userId: UserId, invitationId: InvitationId): Boolean
+        suspend fun isExpired(id: InvitationId): Boolean
+        suspend fun doesMeetingExist(id: InvitationId): Boolean
     }
 }
