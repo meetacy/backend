@@ -7,7 +7,6 @@ import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
@@ -17,27 +16,23 @@ data class CancelInvitationForm(
     val invitationId: InvitationIdSerializable
 )
 
-fun Route.invitationCancelRouting(invitationCancelRepository: CancelInvitationRepository?) = post("/cancel") {
+fun Route.invitationCancel(invitationCancelRepository: CancelInvitationRepository) = post("/cancel") {
     val form: CancelInvitationForm = call.receive()
 
     with(invitationCancelRepository) {
-        if (this != null) {
-            when (form.cancel()) {
-                CancelInvitationResponse.Success -> {
-                    call.respondSuccess()
-                }
-                CancelInvitationResponse.Unauthorized -> {
-                    call.respondFailure(Failure.InvalidToken)
-                }
-                CancelInvitationResponse.NoPermissions -> {
-                    call.respondFailure(Failure.InvitationNotFound)
-                }
-                CancelInvitationResponse.NotFound -> {
-                    call.respondFailure(Failure.InvitationNotFound)
-                }
+        when (form.cancel()) {
+            CancelInvitationResponse.Success -> {
+                call.respondSuccess()
             }
-        } else {
-            call.respond("Very well, tests lover")
+            CancelInvitationResponse.Unauthorized -> {
+                call.respondFailure(Failure.InvalidToken)
+            }
+            CancelInvitationResponse.NoPermissions -> {
+                call.respondFailure(Failure.InvitationNotFound)
+            }
+            CancelInvitationResponse.NotFound -> {
+                call.respondFailure(Failure.InvitationNotFound)
+            }
         }
     }
 }

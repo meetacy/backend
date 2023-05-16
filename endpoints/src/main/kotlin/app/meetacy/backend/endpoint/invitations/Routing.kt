@@ -1,9 +1,9 @@
 package app.meetacy.backend.endpoint.invitations
 
 import app.meetacy.backend.endpoint.invitations.accept.AcceptInvitationRepository
-import app.meetacy.backend.endpoint.invitations.accept.invitationAcceptRouting
+import app.meetacy.backend.endpoint.invitations.accept.invitationAccept
 import app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationRepository
-import app.meetacy.backend.endpoint.invitations.cancel.invitationCancelRouting
+import app.meetacy.backend.endpoint.invitations.cancel.invitationCancel
 import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
 import app.meetacy.backend.endpoint.invitations.create.createInvitation
 import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationRepository
@@ -20,7 +20,7 @@ class InvitationsDependencies(
     val invitationUpdateRepository: InvitationUpdateRepository,
     val invitationsDenyRepository: DenyInvitationRepository,
     val invitationsAcceptRepository: AcceptInvitationRepository,
-    val invitationCancelRepository: CancelInvitationRepository?
+    val invitationCancelRepository: CancelInvitationRepository
 )
 
 fun Route.invitations(
@@ -30,6 +30,6 @@ fun Route.invitations(
     readInvitation(invitationsDependencies.invitationsGetDependencies)
     invitationUpdateRouting(invitationsDependencies.invitationUpdateRepository)
     invitationDeny(invitationsDependencies.invitationsDenyRepository)
-    invitationAcceptRouting(invitationsDependencies.invitationsAcceptRepository)
-    invitationCancelRouting(invitationsDependencies.invitationCancelRepository)
+    invitationAccept(invitationsDependencies.invitationsAcceptRepository)
+    invitationCancel(invitationsDependencies.invitationCancelRepository)
 }

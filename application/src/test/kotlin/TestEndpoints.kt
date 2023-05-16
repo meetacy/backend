@@ -305,7 +305,7 @@ fun runTestServer(
             invitationsAcceptRepository = mockStorage,
             invitationsDenyRepository = mockStorage,
             invitationUpdateRepository = mockStorage,
-            invitationCancelRepository = null
+            invitationCancelRepository = mockStorage
         )
     )
     block()

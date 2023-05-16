@@ -6,7 +6,10 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -24,7 +27,6 @@ class FriendsTable(private val db: Database) : Table()  {
         }
     }
 
-    // bpavuk's proposal: rename this function to "subscribeOn" for the sake of clarity
     suspend fun addFriend(userId: UserId, friendId: UserId) {
         newSuspendedTransaction(db = db) {
             insert { statement ->

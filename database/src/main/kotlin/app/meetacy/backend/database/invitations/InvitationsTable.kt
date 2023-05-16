@@ -61,11 +61,11 @@ class InvitationsTable(private val db: Database) : Table() {
         }
 
     /**
-     * Returns list of invitations, which IDs are listed in [invitationIdsList]
+     * Returns list of invitations, which IDs are listed in [list]
      */
-    suspend fun getInvitationsByInvitationIds(invitedUserId: UserId, invitationIdsList: List<InvitationId>): List<DatabaseInvitation> =
+    suspend fun getInvitationsByInvitationIds(invitedUserId: UserId, list: List<InvitationId>): List<DatabaseInvitation> =
         newSuspendedTransaction(db = db) {
-            val rawInvitationIds = invitationIdsList.map { it.long }
+            val rawInvitationIds = list.map { it.long }
 
             return@newSuspendedTransaction select {
                 (INVITATION_ID inList rawInvitationIds) and
@@ -74,9 +74,9 @@ class InvitationsTable(private val db: Database) : Table() {
                 .map { it.toInvitation() }
         }
 
-    suspend fun getInvitationsByInvitationIds(invitationIdsList: List<InvitationId>): List<DatabaseInvitation> =
+    suspend fun getInvitationsByInvitationIds(list: List<InvitationId>): List<DatabaseInvitation> =
         newSuspendedTransaction(db = db) {
-            val rawInvitationIds = invitationIdsList.map { it.long }
+            val rawInvitationIds = list.map { it.long }
 
             return@newSuspendedTransaction select {
                 (INVITATION_ID inList rawInvitationIds)
@@ -124,7 +124,7 @@ class InvitationsTable(private val db: Database) : Table() {
         userId: UserId,
         invitationId: InvitationId
     ): Boolean = newSuspendedTransaction(db = db) {
-        getInvitationsByInvitationIds(invitedUserId = userId, invitationIdsList = listOf(invitationId))
+        getInvitationsByInvitationIds(invitedUserId = userId, list = listOf(invitationId))
             .singleOrNull() ?: return@newSuspendedTransaction false
 
         update(where = { (INVITATION_ID eq invitationId.long) and (INVITED_USER_ID eq userId.long) }) {
@@ -136,7 +136,7 @@ class InvitationsTable(private val db: Database) : Table() {
         invitationId: InvitationId
     ): Boolean = newSuspendedTransaction(db = db) {
         getInvitationsByInvitationIds(
-            invitationIdsList = listOf(invitationId)
+            list = listOf(invitationId)
         ).singleOrNull() ?: return@newSuspendedTransaction false
 
         update(where = { INVITATION_ID eq invitationId.long }) {
@@ -146,18 +146,16 @@ class InvitationsTable(private val db: Database) : Table() {
 
     suspend fun update(
         invitationId: InvitationId,
-        invitorUserId: UserId,
         title: String? = null,
         description: String? = null,
         expiryDate: Date? = null,
         meetingId: MeetingId? = null
     ): Boolean = newSuspendedTransaction(db = db) {
-        // get invitation, and return error if invitation not found
         val prevInvitation = getInvitationsByInvitationIds(
             listOf(invitationId)
         ).singleOrNull() ?: return@newSuspendedTransaction false
 
-        update(where = { (INVITATION_ID eq invitationId.long) and (INVITOR_USER_ID eq invitorUserId.long) }) {
+        update(where = { INVITATION_ID eq invitationId.long }) {
             it[TITLE] = title ?: prevInvitation.title
             it[DESCRIPTION] = description ?: prevInvitation.description
             it[EXPIRY_DATE] = expiryDate?.iso8601 ?: prevInvitation.expiryDate.iso8601

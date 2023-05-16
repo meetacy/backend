@@ -31,5 +31,4 @@ class DatabaseCancelInvitationStorage(db: Database): CancelInvitationUsecase.Sto
 
     override suspend fun InvitationId.cancel(): Boolean =
         invitationsTable.cancel(this)
-
 }

@@ -31,12 +31,6 @@ class DatabaseUpdateInvitationStorage(db: Database): UpdateInvitationUsecase.Sto
             .single()
             .invitedUserId
 
-    private suspend fun InvitationId.getInvitor(): UserId =
-        invitationsTable
-            .getInvitationsByInvitationIds(listOf(this))
-            .single()
-            .invitorUserId
-
     override suspend fun MeetingId.ableToInvite(invitorId: UserId, invitedId: UserId): Boolean {
         val invitorIsParticipating = participantsTable
             .isParticipating(this, invitorId)
@@ -63,7 +57,6 @@ class DatabaseUpdateInvitationStorage(db: Database): UpdateInvitationUsecase.Sto
         invitationsTable
             .update(
                 invitationId = this,
-                invitorUserId = getInvitor(),
                 title, description, expiryDate, meetingId
             )
 
