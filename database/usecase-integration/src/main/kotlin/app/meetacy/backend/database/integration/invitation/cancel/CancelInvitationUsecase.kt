@@ -10,25 +10,25 @@ import org.jetbrains.exposed.sql.Database
 class DatabaseCancelInvitationStorage(db: Database): CancelInvitationUsecase.Storage {
     private val invitationsTable = InvitationsTable(db)
 
-    override suspend fun UserId.isInvitor(invitationId: InvitationId): Boolean =
-        invitationsTable.getInvitationsByInvitationIds(listOf(invitationId)).singleOrNull()!!.invitorUserId == this
+    override suspend fun isInvitor(userId: UserId, invitationId: InvitationId): Boolean =
+        invitationsTable.getInvitationsByInvitationIds(listOf(invitationId)).singleOrNull()!!.invitorUserId == userId
 
-    override suspend fun InvitationId.doesExist(): Boolean {
+    override suspend fun doesExist(id: InvitationId): Boolean {
         val invitation = invitationsTable
-            .getInvitationsByInvitationIds(listOf(this))
+            .getInvitationsByInvitationIds(listOf(id))
             .singleOrNull()
 
         return invitation != null && invitation.isAccepted == null
     }
 
-    override suspend fun InvitationId.isExpired(): Boolean {
+    override suspend fun isExpired(id: InvitationId): Boolean {
         val invitation = invitationsTable
-            .getInvitationsByInvitationIds(listOf(this))
+            .getInvitationsByInvitationIds(listOf(id))
             .singleOrNull()
 
         return invitation!!.expiryDate < DateTime.now()
     }
 
-    override suspend fun InvitationId.cancel(): Boolean =
-        invitationsTable.cancel(this)
+    override suspend fun cancel(id: InvitationId): Boolean =
+        invitationsTable.cancel(id)
 }

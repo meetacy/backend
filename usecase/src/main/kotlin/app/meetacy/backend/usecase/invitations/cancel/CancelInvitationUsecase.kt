@@ -17,22 +17,20 @@ class CancelInvitationUsecase(
         object NotFound: Result
     }
 
-    suspend fun InvitationId.cancel(token: AccessIdentity): Result {
+    suspend fun cancel(token: AccessIdentity, invitationId: InvitationId): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
 
-        with(storage) {
-            if (!doesExist() || isExpired()) return Result.NotFound
-            if (!userId.isInvitor(this@cancel)) return Result.NoPermissions
-            cancel()
-        }
+        if (!storage.doesExist(invitationId) || storage.isExpired(invitationId)) return Result.NotFound
+        if (!storage.isInvitor(userId, invitationId)) return Result.NoPermissions
+        storage.cancel(invitationId)
 
         return Result.Success
     }
 
     interface Storage {
-        suspend fun UserId.isInvitor(invitationId: InvitationId): Boolean
-        suspend fun InvitationId.doesExist(): Boolean
-        suspend fun InvitationId.cancel(): Boolean
-        suspend fun InvitationId.isExpired(): Boolean
+        suspend fun isInvitor(userId: UserId, invitationId: InvitationId): Boolean
+        suspend fun doesExist(id: InvitationId): Boolean
+        suspend fun cancel(id: InvitationId): Boolean
+        suspend fun isExpired(id: InvitationId): Boolean
     }
 }

@@ -20,7 +20,7 @@ fun Route.invitationCancel(invitationCancelRepository: CancelInvitationRepositor
     val form: CancelInvitationForm = call.receive()
 
     with(invitationCancelRepository) {
-        when (form.cancel()) {
+        when (cancel(form)) {
             CancelInvitationResponse.Success -> {
                 call.respondSuccess()
             }
@@ -38,7 +38,7 @@ fun Route.invitationCancel(invitationCancelRepository: CancelInvitationRepositor
 }
 
 interface CancelInvitationRepository {
-    suspend fun CancelInvitationForm.cancel(): CancelInvitationResponse
+    suspend fun cancel(form: CancelInvitationForm): CancelInvitationResponse
 }
 
 sealed interface CancelInvitationResponse {

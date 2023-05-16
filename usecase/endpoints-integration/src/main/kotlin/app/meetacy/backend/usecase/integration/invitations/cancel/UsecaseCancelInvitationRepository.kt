@@ -9,9 +9,8 @@ class UsecaseCancelInvitationRepository(
     private val usecase: CancelInvitationUsecase
 ): CancelInvitationRepository {
 
-    override suspend fun CancelInvitationForm.cancel(): CancelInvitationResponse = with(usecase) {
-        invitationId.type().cancel(token.type()).toEndpoint()
-    }
+    override suspend fun cancel(form: CancelInvitationForm): CancelInvitationResponse =
+        usecase.cancel(form.token.type(), form.invitationId.type()).toEndpoint()
 
     private fun CancelInvitationUsecase.Result.toEndpoint(): CancelInvitationResponse = when (this) {
         CancelInvitationUsecase.Result.NoPermissions -> CancelInvitationResponse.NoPermissions
