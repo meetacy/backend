@@ -17,21 +17,19 @@ class UsecaseReadInvitationRepository(
     override suspend fun readInvitation(readInvitationParams: ReadInvitationParams): InvitationsReadResponse {
 
         val userIdentity = readInvitationParams.token.type()
-        with (usecase) {
-            if (readInvitationParams.invitationIds != null) {
-                // retrieve invitations by invitation ids
-                val invitationIds = (readInvitationParams.invitationIds as List<InvitationIdSerializable>)
-                    .map { it.type() }
-                return userIdentity.getInvitationsByIds(invitationIds).toReadResponse()
-            }
-            if (readInvitationParams.invitorUserIds != null) {
-                // retrieve invitations by invitor ids
-                val userIds = (readInvitationParams.invitorUserIds as List<UserIdSerializable>)
-                    .map { it.type() }
-                return userIdentity.getInvitations(from = userIds).toReadResponse()
-            }
-            return userIdentity.getInvitations().toReadResponse()
+        if (readInvitationParams.invitationIds != null) {
+            // retrieve invitations by invitation ids
+            val invitationIds = (readInvitationParams.invitationIds as List<InvitationIdSerializable>)
+                .map { it.type() }
+            return usecase.getInvitationsByIds(invitationIds, token = userIdentity).toReadResponse()
         }
+        if (readInvitationParams.invitorUserIds != null) {
+            // retrieve invitations by invitor ids
+            val userIds = (readInvitationParams.invitorUserIds as List<UserIdSerializable>)
+                .map { it.type() }
+            return usecase.getInvitations(from = userIds, token = userIdentity).toReadResponse()
+        }
+        return usecase.getInvitations(userIdentity).toReadResponse()
 
     }
 

@@ -18,38 +18,34 @@ class ReadInvitationUsecase(
         object Unauthorized: Result
     }
 
-    suspend fun AccessIdentity.getInvitations(): Result {
-        val userId = authRepository.authorizeWithUserId(this) { return Result.Unauthorized }
+    suspend fun getInvitations(token: AccessIdentity): Result {
+        val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
 
-        val invitations = with(storage) { userId.getInvitations() }
+        val invitations = storage.getInvitations(userId)
         return Result.Success(invitations)
     }
 
-    suspend fun AccessIdentity.getInvitations(from: List<UserId>): Result {
-        val userId = authRepository.authorizeWithUserId(this) { return Result.Unauthorized }
-        with(storage) {
-            if (from.any { !it.doesExist() }) return Result.UsersNotFound
-        }
+    suspend fun getInvitations(from: List<UserId>, token: AccessIdentity): Result {
+        val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
+        if (from.any { !storage.doesExist(it) }) return Result.UsersNotFound
+        val invitations = storage.getInvitations(from, userId)
 
-        val invitations = with(storage) { userId.getInvitations(from) }
         return Result.Success(invitations)
     }
 
-    suspend fun AccessIdentity.getInvitationsByIds(ids: List<InvitationId>): Result {
-        val userId = authRepository.authorizeWithUserId(this) { return Result.Unauthorized }
-        with(storage) {
-            if (ids.any { !it.doesExist() }) return Result.InvitationsNotFound
-        }
+    suspend fun getInvitationsByIds(ids: List<InvitationId>, token: AccessIdentity): Result {
+        val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
+        if (ids.any { !storage.doesExist(it) }) return Result.InvitationsNotFound
+        val invitations = storage.getInvitationsByIds(ids).filter { it.invitedUserId == userId }
 
-        val invitations = with(storage) { userId.getInvitationsByIds(ids) }
         return Result.Success(invitations)
     }
 
     interface Storage {
-        suspend fun UserId.getInvitations(): List<Invitation>
-        suspend fun UserId.getInvitations(from: List<UserId>): List<Invitation>
-        suspend fun UserId.getInvitationsByIds(ids: List<InvitationId>): List<Invitation>
-        suspend fun UserId.doesExist(): Boolean
-        suspend fun InvitationId.doesExist(): Boolean
+        suspend fun getInvitations(invited: UserId): List<Invitation>
+        suspend fun getInvitations(from: List<UserId>, to: UserId): List<Invitation>
+        suspend fun getInvitationsByIds(ids: List<InvitationId>): List<Invitation>
+        suspend fun doesExist(id: UserId): Boolean
+        suspend fun doesExist(id: InvitationId): Boolean
     }
 }

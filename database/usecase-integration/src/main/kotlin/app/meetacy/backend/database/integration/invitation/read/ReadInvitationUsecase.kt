@@ -14,34 +14,33 @@ class DatabaseReadInvitationStorage(db: Database): ReadInvitationUsecase.Storage
     private val invitationsTable = InvitationsTable(db)
     private val usersTable = UsersTable(db)
 
-    override suspend fun UserId.getInvitations(): List<Invitation> {
-        val invitations = invitationsTable.getInvitations(invitedUserId = this)
+    override suspend fun getInvitations(invited: UserId): List<Invitation> {
+        val invitations = invitationsTable.getInvitations(invitedUserId = invited)
         return invitations.map { it.toInvitation() }
     }
 
-    override suspend fun UserId.getInvitations(from: List<UserId>): List<Invitation> {
+    override suspend fun getInvitations(from: List<UserId>, to: UserId): List<Invitation> {
         val invitations = invitationsTable
-            .getInvitations(invitedUserId = this, invitorUserIdsList = from)
+            .getInvitations(invitedUserId = to, invitorUserIdsList = from)
             .filter { it.invitorUserId in from }
 
         return invitations.map { it.toInvitation() }
     }
 
-    override suspend fun UserId.getInvitationsByIds(ids: List<InvitationId>): List<Invitation> {
-        val invitations = invitationsTable
-            .getInvitationsByInvitationIds(this, ids)
-
-        return invitations.map { it.toInvitation() }
+    override suspend fun getInvitationsByIds(ids: List<InvitationId>): List<Invitation> {
+        return invitationsTable
+            .getInvitationsByInvitationIds(ids)
+            .map { it.toInvitation() }
     }
 
-    override suspend fun UserId.doesExist(): Boolean =
+    override suspend fun doesExist(id: UserId): Boolean =
         usersTable
-            .getUsersOrNull(listOf(this))
+            .getUsersOrNull(listOf(id))
             .singleOrNull() != null
 
-    override suspend fun InvitationId.doesExist(): Boolean =
+    override suspend fun doesExist(id: InvitationId): Boolean =
         invitationsTable
-            .getInvitationsByInvitationIds(listOf(this))
+            .getInvitationsByInvitationIds(listOf(id))
             .singleOrNull() != null
 
 
