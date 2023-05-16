@@ -23,7 +23,7 @@ data class InvitationCreatingFormSerializable(
     val description: String?
 )
 
-fun Route.createInvitationRouting(invitationsCreateDependencies: CreateInvitationRepository) {
+fun Route.createInvitation(invitationsCreateDependencies: CreateInvitationRepository) {
     post("/create") {
         val invitationCreatingForm: InvitationCreatingFormSerializable = call.receive()
 
@@ -46,9 +46,6 @@ fun Route.createInvitationRouting(invitationsCreateDependencies: CreateInvitatio
             InvitationsCreateResponse.UserAlreadyInvited -> {
                 call.respondFailure(Failure.FriendAlreadyInvited)
             }
-            InvitationsCreateResponse.InvalidData -> {
-                call.respondFailure(15, "Unknown error! See logs of API for details")
-            }
         }
     }
 }
@@ -64,5 +61,4 @@ sealed interface InvitationsCreateResponse {
     object UserAlreadyInvited: InvitationsCreateResponse
     object UserNotFound: InvitationsCreateResponse
     object MeetingNotFound: InvitationsCreateResponse
-    object InvalidData: InvitationsCreateResponse
 }

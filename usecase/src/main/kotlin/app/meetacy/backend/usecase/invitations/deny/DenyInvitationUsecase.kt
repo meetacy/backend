@@ -22,14 +22,13 @@ class DenyInvitationUsecase(
 
         with(storage) {
             if (!doesExist() || isExpired()) return Result.NotFound
-            if (!userId.isInvited(this@markAsDenied)) return Result.NoPermissions  // yes, I love smart this
+            if (!userId.isInvited(this@markAsDenied)) return Result.NoPermissions
             markAsDenied()
         }
         return Result.Success
     }
 
     interface Storage {
-        suspend fun UserId.doesExist(): Boolean
         suspend fun UserId.isInvited(invitation: InvitationId): Boolean
         suspend fun InvitationId.doesExist(): Boolean
         suspend fun InvitationId.markAsDenied(): Boolean

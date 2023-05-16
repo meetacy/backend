@@ -24,7 +24,6 @@ class CreateInvitationUsecase (
         object UserNotFound: Result
         object MeetingNotFound: Result
         object UserAlreadyInvited: Result
-        object InvalidData: Result
     }
 
     suspend fun createInvitation(
@@ -47,7 +46,7 @@ class CreateInvitationUsecase (
 
                 (expiryDate < DateTime.now() ||
                         title.length > TITLE_MAX_LIMIT ||
-                        description.length > DESCRIPTION_MAX_LIMIT) -> return Result.InvalidData
+                        description.length > DESCRIPTION_MAX_LIMIT) -> throw IllegalArgumentException("Too long data")
 
                 else -> return Result.Success(
                     invitation = createInvitation(

@@ -11,8 +11,8 @@ import app.meetacy.backend.endpoint.invitations.create.InvitationsCreateResponse
 import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationRepository
 import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationResponse
 import app.meetacy.backend.endpoint.invitations.deny.InvitationDenyingFormSerializable
-import app.meetacy.backend.endpoint.invitations.read.GetInvitationParams
-import app.meetacy.backend.endpoint.invitations.read.InvitationsGetResponse
+import app.meetacy.backend.endpoint.invitations.read.InvitationsReadResponse
+import app.meetacy.backend.endpoint.invitations.read.ReadInvitationParams
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
 import app.meetacy.backend.endpoint.invitations.update.InvitationUpdateRepository
 import app.meetacy.backend.endpoint.invitations.update.InvitationUpdatingFormSerializable
@@ -559,7 +559,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         return InvitationsCreateResponse.Success(InvitationId(42131151825).serializable())
     }
 
-    override suspend fun getInvitation(getInvitationParams: GetInvitationParams): InvitationsGetResponse {
+    override suspend fun readInvitation(readInvitationParams: ReadInvitationParams): InvitationsReadResponse {
         TODO("Not yet implemented")
     }
 

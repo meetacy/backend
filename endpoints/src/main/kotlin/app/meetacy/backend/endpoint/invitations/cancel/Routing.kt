@@ -35,9 +35,6 @@ fun Route.invitationCancelRouting(invitationCancelRepository: CancelInvitationRe
                 CancelInvitationResponse.NotFound -> {
                     call.respondFailure(Failure.InvitationNotFound)
                 }
-                CancelInvitationResponse.UserNotFound -> {
-                    call.respondFailure(Failure.UserNotFound)
-                }
             }
         } else {
             call.respond("Very well, tests lover")
@@ -54,5 +51,4 @@ sealed interface CancelInvitationResponse {
     object Unauthorized: CancelInvitationResponse
     object NoPermissions: CancelInvitationResponse
     object NotFound: CancelInvitationResponse
-    object UserNotFound: CancelInvitationResponse
 }

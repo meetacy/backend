@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.integration.invitations.read
 
-import app.meetacy.backend.endpoint.invitations.read.GetInvitationParams
-import app.meetacy.backend.endpoint.invitations.read.InvitationsGetResponse
+import app.meetacy.backend.endpoint.invitations.read.InvitationsReadResponse
+import app.meetacy.backend.endpoint.invitations.read.ReadInvitationParams
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
 import app.meetacy.backend.endpoint.types.Invitation
 import app.meetacy.backend.types.serialization.datetime.serializable
@@ -14,32 +14,32 @@ import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
 class UsecaseReadInvitationRepository(
     private val usecase: ReadInvitationUsecase
 ): ReadInvitationRepository {
-    override suspend fun getInvitation(getInvitationParams: GetInvitationParams): InvitationsGetResponse {
+    override suspend fun readInvitation(readInvitationParams: ReadInvitationParams): InvitationsReadResponse {
 
-        val userIdentity = getInvitationParams.token.type()
+        val userIdentity = readInvitationParams.token.type()
         with (usecase) {
-            if (getInvitationParams.invitationIds != null) {
+            if (readInvitationParams.invitationIds != null) {
                 // retrieve invitations by invitation ids
-                val invitationIds = (getInvitationParams.invitationIds as List<InvitationIdSerializable>)
+                val invitationIds = (readInvitationParams.invitationIds as List<InvitationIdSerializable>)
                     .map { it.type() }
-                return userIdentity.getInvitationsByIds(invitationIds).toGetResponse()
+                return userIdentity.getInvitationsByIds(invitationIds).toReadResponse()
             }
-            if (getInvitationParams.invitorUserIds != null) {
+            if (readInvitationParams.invitorUserIds != null) {
                 // retrieve invitations by invitor ids
-                val userIds = (getInvitationParams.invitorUserIds as List<UserIdSerializable>)
+                val userIds = (readInvitationParams.invitorUserIds as List<UserIdSerializable>)
                     .map { it.type() }
-                return userIdentity.getInvitations(from = userIds).toGetResponse()
+                return userIdentity.getInvitations(from = userIds).toReadResponse()
             }
-            return userIdentity.getInvitations().toGetResponse()
+            return userIdentity.getInvitations().toReadResponse()
         }
 
     }
 
-    private fun ReadInvitationUsecase.Result.toGetResponse(): InvitationsGetResponse = when (this) {
-        ReadInvitationUsecase.Result.InvitationsNotFound -> InvitationsGetResponse.InvalidInvitationIds
-        is ReadInvitationUsecase.Result.Success -> InvitationsGetResponse.Success(this.invitations.map { it.toEndpoint() })
-        ReadInvitationUsecase.Result.Unauthorized -> InvitationsGetResponse.Unauthorized
-        ReadInvitationUsecase.Result.UsersNotFound -> InvitationsGetResponse.InvalidUserIds
+    private fun ReadInvitationUsecase.Result.toReadResponse(): InvitationsReadResponse = when (this) {
+        ReadInvitationUsecase.Result.InvitationsNotFound -> InvitationsReadResponse.InvalidInvitationIds
+        is ReadInvitationUsecase.Result.Success -> InvitationsReadResponse.Success(this.invitations.map { it.toEndpoint() })
+        ReadInvitationUsecase.Result.Unauthorized -> InvitationsReadResponse.Unauthorized
+        ReadInvitationUsecase.Result.UsersNotFound -> InvitationsReadResponse.InvalidUserIds
     }
 
     private fun app.meetacy.backend.usecase.types.Invitation.toEndpoint(): Invitation {

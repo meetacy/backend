@@ -16,7 +16,7 @@ data class InvitationDenyingFormSerializable(
     val token: AccessIdentitySerializable
 )
 
-fun Route.invitationDenyRouting(invitationsDenyRepository: DenyInvitationRepository) {
+fun Route.invitationDeny(invitationsDenyRepository: DenyInvitationRepository) {
     post("/deny") {
         val invitationDeletingForm: InvitationDenyingFormSerializable = call.receive()
 

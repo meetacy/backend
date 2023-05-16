@@ -13,54 +13,49 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetInvitationParams(
+data class ReadInvitationParams(
     val token: AccessIdentitySerializable,
     val invitorUserIds: List<UserIdSerializable>?,
     val invitationIds: List<InvitationIdSerializable>?
 )
 
-fun Route.readInvitationRouting(readInvitationRepository: ReadInvitationRepository) {
+fun Route.readInvitation(readInvitationRepository: ReadInvitationRepository) {
     get("/read") {
-        val invitationParams: GetInvitationParams = call.receive()
-        val response = invitationParams.processRequest { params ->
-            return@processRequest readInvitationRepository.getInvitation(params)
+        val invitationParams: ReadInvitationParams = call.receive()
+
+        if (invitationParams.invitationIds != null && invitationParams.invitorUserIds != null) {
+            call.respondFailure(Failure.OnlyUserIdsOrInvitationIdsAreAllowed)
+            return@get
         }
 
-        when (response) {
-            is InvitationsGetResponse.Success -> {
+        when (val response = readInvitationRepository.readInvitation(invitationParams)) {
+            is InvitationsReadResponse.Success -> {
                 call.respondSuccess(response.response)
             }
-            InvitationsGetResponse.InvalidInvitationIds -> {
+            InvitationsReadResponse.InvalidInvitationIds -> {
                 call.respondFailure(Failure.InvalidInvitationIds)
             }
-            InvitationsGetResponse.InvalidUserIds -> {
+            InvitationsReadResponse.InvalidUserIds -> {
                 call.respondFailure(Failure.InvalidUserIds)
             }
-            InvitationsGetResponse.OnlyUserIdsOrInvitationIdsAreAllowed -> {
+            InvitationsReadResponse.OnlyUserIdsOrInvitationIdsAreAllowed -> {
                 call.respondFailure(Failure.OnlyUserIdsOrInvitationIdsAreAllowed)
             }
-            InvitationsGetResponse.Unauthorized -> {
+            InvitationsReadResponse.Unauthorized -> {
                 call.respondFailure(Failure.InvalidToken)
             }
         }
     }
 }
 
-suspend fun GetInvitationParams.processRequest(ifValid: suspend (GetInvitationParams) -> InvitationsGetResponse): InvitationsGetResponse {
-    if (invitationIds != null && invitorUserIds != null) {
-        return InvitationsGetResponse.OnlyUserIdsOrInvitationIdsAreAllowed
-    }
-    return ifValid(this)
-}
-
 interface ReadInvitationRepository {
-    suspend fun getInvitation(getInvitationParams: GetInvitationParams): InvitationsGetResponse
+    suspend fun readInvitation(readInvitationParams: ReadInvitationParams): InvitationsReadResponse
 }
 
-sealed interface InvitationsGetResponse {
-    data class Success(val response: List<Invitation>): InvitationsGetResponse
-    object OnlyUserIdsOrInvitationIdsAreAllowed: InvitationsGetResponse
-    object InvalidUserIds: InvitationsGetResponse
-    object InvalidInvitationIds: InvitationsGetResponse
-    object Unauthorized: InvitationsGetResponse
+sealed interface InvitationsReadResponse {
+    data class Success(val response: List<Invitation>): InvitationsReadResponse
+    object OnlyUserIdsOrInvitationIdsAreAllowed: InvitationsReadResponse
+    object InvalidUserIds: InvitationsReadResponse
+    object InvalidInvitationIds: InvitationsReadResponse
+    object Unauthorized: InvitationsReadResponse
 }

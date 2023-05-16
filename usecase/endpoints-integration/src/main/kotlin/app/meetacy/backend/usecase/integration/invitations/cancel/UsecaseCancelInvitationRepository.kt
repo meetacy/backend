@@ -18,6 +18,5 @@ class UsecaseCancelInvitationRepository(
         CancelInvitationUsecase.Result.NotFound -> CancelInvitationResponse.NotFound
         CancelInvitationUsecase.Result.Success -> CancelInvitationResponse.Success
         CancelInvitationUsecase.Result.Unauthorized -> CancelInvitationResponse.Unauthorized
-        CancelInvitationUsecase.Result.UserNotFound -> CancelInvitationResponse.UserNotFound
     }
 }
