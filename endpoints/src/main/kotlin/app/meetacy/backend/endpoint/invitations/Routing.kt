@@ -5,13 +5,13 @@ import app.meetacy.backend.endpoint.invitations.accept.invitationAccept
 import app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationRepository
 import app.meetacy.backend.endpoint.invitations.cancel.invitationCancel
 import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
-import app.meetacy.backend.endpoint.invitations.create.createInvitation
+import app.meetacy.backend.endpoint.invitations.create.invitationCreate
 import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationRepository
 import app.meetacy.backend.endpoint.invitations.deny.invitationDeny
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
 import app.meetacy.backend.endpoint.invitations.read.readInvitation
 import app.meetacy.backend.endpoint.invitations.update.InvitationUpdateRepository
-import app.meetacy.backend.endpoint.invitations.update.invitationUpdateRouting
+import app.meetacy.backend.endpoint.invitations.update.invitationUpdate
 import io.ktor.server.routing.*
 
 class InvitationsDependencies(
@@ -26,9 +26,9 @@ class InvitationsDependencies(
 fun Route.invitations(
     invitationsDependencies: InvitationsDependencies
 ) = route("/invitations") {
-    createInvitation(invitationsDependencies.invitationsCreateDependencies)
+    invitationCreate(invitationsDependencies.invitationsCreateDependencies)
     readInvitation(invitationsDependencies.invitationsGetDependencies)
-    invitationUpdateRouting(invitationsDependencies.invitationUpdateRepository)
+    invitationUpdate(invitationsDependencies.invitationUpdateRepository)
     invitationDeny(invitationsDependencies.invitationsDenyRepository)
     invitationAccept(invitationsDependencies.invitationsAcceptRepository)
     invitationCancel(invitationsDependencies.invitationCancelRepository)

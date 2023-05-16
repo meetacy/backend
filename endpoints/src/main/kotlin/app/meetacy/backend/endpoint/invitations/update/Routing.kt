@@ -22,7 +22,7 @@ data class InvitationUpdatingFormSerializable(
     val meetingId: MeetingIdSerializable
 )
 
-fun Route.invitationUpdateRouting(invitationUpdateRepository: InvitationUpdateRepository) =
+fun Route.invitationUpdate(invitationUpdateRepository: InvitationUpdateRepository) =
     post("/update") {
         val form: InvitationUpdatingFormSerializable = call.receive()
 

@@ -23,7 +23,7 @@ data class InvitationCreatingFormSerializable(
     val description: String?
 )
 
-fun Route.createInvitation(invitationsCreateDependencies: CreateInvitationRepository) {
+fun Route.invitationCreate(invitationsCreateDependencies: CreateInvitationRepository) {
     post("/create") {
         val invitationCreatingForm: InvitationCreatingFormSerializable = call.receive()
 
