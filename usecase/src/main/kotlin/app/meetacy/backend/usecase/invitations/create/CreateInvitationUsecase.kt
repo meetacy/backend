@@ -38,11 +38,10 @@ class CreateInvitationUsecase (
 
         with(storage) {
             when {
-                !meetingId.doesExist() -> return Result.MeetingNotFound
-                !(invitedUserId.doesExist()) -> return Result.UserNotFound
+                !doesExist(meetingId) -> return Result.MeetingNotFound
+                !(doesExist(invitedUserId)) -> return Result.UserNotFound
 
-                !(invitedUserId.isSubscriberOf(invitorId) ||
-                        invitorId.isFriend(invitedUserId)) -> return Result.NoPermissions
+                !(isSubscriberOf(invitedUserId, invitorId)) -> return Result.NoPermissions
 
                 (expiryDate < DateTime.now() ||
                         title.length > TITLE_MAX_LIMIT ||
@@ -64,10 +63,9 @@ class CreateInvitationUsecase (
     }
 
     interface Storage {
-        suspend fun UserId.isFriend(user: UserId): Boolean
-        suspend fun UserId.isSubscriberOf(subscriberId: UserId): Boolean
-        suspend fun MeetingId.doesExist(): Boolean
-        suspend fun UserId.doesExist(): Boolean
+        suspend fun isSubscriberOf(subscriberId: UserId, authorId: UserId): Boolean
+        suspend fun doesExist(meetingId: MeetingId): Boolean
+        suspend fun doesExist(userId: UserId): Boolean
         suspend fun createInvitation(
             accessHash: AccessHash,
             invitedUserId: UserId,

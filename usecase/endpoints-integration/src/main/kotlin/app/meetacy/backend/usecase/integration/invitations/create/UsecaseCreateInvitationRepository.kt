@@ -9,8 +9,8 @@ import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 class UsecaseCreateInvitationRepository(
     private val usecase: CreateInvitationUsecase
 ): CreateInvitationRepository {
-    override suspend fun createInvitation(invitationCreatingForm: InvitationCreatingFormSerializable): InvitationsCreateResponse {
-        with(invitationCreatingForm) {
+    override suspend fun createInvitation(form: InvitationCreatingFormSerializable): InvitationsCreateResponse {
+        with(form) {
             val response = usecase.createInvitation(
                 token = token.type(),
                 title = title ?: "",

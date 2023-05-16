@@ -18,17 +18,14 @@ class DatabaseCreateInvitationStorage(db: Database): CreateInvitationUsecase.Sto
     private val meetingsTable = MeetingsTable(db)
     private val usersTable = UsersTable(db)
 
-    override suspend fun UserId.isFriend(user: UserId): Boolean =
-        with(friendsTable) { isSubscribed(this@isFriend, user) && isSubscribed(user, this@isFriend) }
+    override suspend fun isSubscriberOf(subscriberId: UserId, authorId: UserId): Boolean =
+        friendsTable.isSubscribed(authorId, subscriberId)
 
-    override suspend fun UserId.isSubscriberOf(subscriberId: UserId): Boolean =
-        friendsTable.isSubscribed(this, subscriberId)
+    override suspend fun doesExist(meetingId: MeetingId): Boolean =
+        meetingsTable.getMeetingOrNull(meetingId) != null
 
-    override suspend fun MeetingId.doesExist(): Boolean =
-        meetingsTable.getMeetingOrNull(this) != null
-
-    override suspend fun UserId.doesExist(): Boolean {
-        val usersList = usersTable.getUsersOrNull(listOf(this))
+    override suspend fun doesExist(userId: UserId): Boolean {
+        val usersList = usersTable.getUsersOrNull(listOf(userId))
         val user = if (usersList.isEmpty()) null else usersList.first()
         return user != null
     }

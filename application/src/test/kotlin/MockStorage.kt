@@ -541,18 +541,18 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     private val invitations: MutableList<DatabaseInvitation> = mutableListOf()
 
-    override suspend fun createInvitation(invitationCreatingForm: InvitationCreatingFormSerializable): InvitationsCreateResponse {
+    override suspend fun createInvitation(form: InvitationCreatingFormSerializable): InvitationsCreateResponse {
         invitations.add(
-            with(invitationCreatingForm) {
+            with(form) {
                 DatabaseInvitation(
                     identity = InvitationIdentity(
                         invitationId = InvitationId(42131151825),
-                        accessHash = AccessHash(invitationCreatingForm.token.type().accessToken.string)
+                        accessHash = AccessHash(form.token.type().accessToken.string)
                     ),
                     title = title ?: "",
                     description = description ?: "",
                     invitedUserId = invitedUser.type(),
-                    invitorUserId = invitationCreatingForm.token.type().userId,
+                    invitorUserId = form.token.type().userId,
                     expiryDate = expiryDate.type(),
                     meeting = meeting.type(),
                     isAccepted = null

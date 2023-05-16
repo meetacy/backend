@@ -23,11 +23,11 @@ data class InvitationCreatingFormSerializable(
     val description: String?
 )
 
-fun Route.invitationCreate(invitationsCreateDependencies: CreateInvitationRepository) {
+fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationRepository) {
     post("/create") {
         val invitationCreatingForm: InvitationCreatingFormSerializable = call.receive()
 
-        when (val response = invitationsCreateDependencies.createInvitation(invitationCreatingForm)) {
+        when (val response = invitationsCreateRepository.createInvitation(invitationCreatingForm)) {
             is InvitationsCreateResponse.Success -> {
                 call.respondSuccess(response)
             }
@@ -51,7 +51,7 @@ fun Route.invitationCreate(invitationsCreateDependencies: CreateInvitationReposi
 }
 
 interface CreateInvitationRepository {
-    suspend fun createInvitation(invitationCreatingForm: InvitationCreatingFormSerializable): InvitationsCreateResponse
+    suspend fun createInvitation(form: InvitationCreatingFormSerializable): InvitationsCreateResponse
 }
 
 sealed interface InvitationsCreateResponse {
