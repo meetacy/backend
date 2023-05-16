@@ -1,8 +1,8 @@
 package app.meetacy.backend.usecase.integration.invitations.deny
 
 import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationRepository
-import app.meetacy.backend.endpoint.invitations.deny.InvitationDenyingFormSerializable
 import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationResponse
+import app.meetacy.backend.endpoint.invitations.deny.InvitationDenyingFormSerializable
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
 
 class UsecaseDenyInvitationRepository(
@@ -14,7 +14,6 @@ class UsecaseDenyInvitationRepository(
         }
 
     private fun DenyInvitationUsecase.Result.toEndpoint() = when (this) {
-        DenyInvitationUsecase.Result.UserNotFound -> DenyInvitationResponse.UserNotFound
         DenyInvitationUsecase.Result.NoPermissions -> DenyInvitationResponse.NoPermissions
         DenyInvitationUsecase.Result.NotFound -> DenyInvitationResponse.NotFound
         DenyInvitationUsecase.Result.Success -> DenyInvitationResponse.Success

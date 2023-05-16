@@ -33,9 +33,6 @@ fun Route.invitationDenyRouting(invitationsDenyRepository: DenyInvitationReposit
             DenyInvitationResponse.NotFound -> {
                 call.respondFailure(Failure.InvitationNotFound)
             }
-            DenyInvitationResponse.UserNotFound -> {
-                call.respondFailure(Failure.UserNotFound)
-            }
         }
     }
 }
@@ -49,5 +46,4 @@ sealed interface DenyInvitationResponse {
     object Unauthorized: DenyInvitationResponse
     object NoPermissions: DenyInvitationResponse
     object NotFound: DenyInvitationResponse
-    object UserNotFound: DenyInvitationResponse
 }
