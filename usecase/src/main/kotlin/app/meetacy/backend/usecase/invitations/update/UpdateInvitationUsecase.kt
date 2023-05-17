@@ -6,6 +6,8 @@ import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
+import app.meetacy.backend.usecase.types.FullMeeting
+import app.meetacy.backend.usecase.types.Invitation
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class UpdateInvitationUsecase(
@@ -28,23 +30,21 @@ class UpdateInvitationUsecase(
         meetingId: MeetingId? = null
     ): Result {
         val authorId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
-        with(storage) {
-            if (!doesExist(id) || !isCreatedBy(authorId, id)) return Result.InvitationNotFound
-            if (meetingId != null) {
-                if (!doesExist(meetingId) || !ableToInvite(meetingId, authorId, getInvitedUser(id)))
-                    return Result.MeetingNotFound
-            }
-            if (!update(id, title, description, expiryDate, meetingId)) return Result.InvitationNotFound
-            return Result.Success
+        val invitation = storage.getInvitationOrNull(id) ?: return Result.InvitationNotFound
+
+        if (invitation.invitorUserId != authorId) return Result.InvitationNotFound
+        if (meetingId != null) {
+            if (storage.getMeetingOrNull(meetingId) == null || !ableToInvite(meetingId, authorId, invitation.invitedUserId))
+                return Result.MeetingNotFound
         }
+        storage.update(id, title, description, expiryDate, meetingId)
+        return Result.Success
     }
 
     interface Storage {
-        suspend fun doesExist(invitationId: InvitationId): Boolean
-        suspend fun getInvitedUser(invitationId: InvitationId): UserId
-        suspend fun doesExist(meetingId: MeetingId): Boolean
-        suspend fun ableToInvite(meetingId: MeetingId, invitorId: UserId, invitedId: UserId): Boolean
-        suspend fun isCreatedBy(userId: UserId, invitationId: InvitationId): Boolean
+        suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean
+        suspend fun getInvitationOrNull(id: InvitationId): Invitation?
+        suspend fun getMeetingOrNull(id: MeetingId): FullMeeting?
         suspend fun update(
             invitationId: InvitationId,
             title: String? = null,
@@ -53,4 +53,7 @@ class UpdateInvitationUsecase(
             meetingId: MeetingId? = null
         ): Boolean
     }
+
+    private suspend fun ableToInvite(meetingId: MeetingId, invitorId: UserId, invitedId: UserId): Boolean =
+        storage.isParticipating(meetingId, invitorId) && storage.isParticipating(meetingId, invitedId)
 }
