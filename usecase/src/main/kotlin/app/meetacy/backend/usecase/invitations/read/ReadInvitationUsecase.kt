@@ -4,6 +4,7 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
+import app.meetacy.backend.usecase.types.FullUser
 import app.meetacy.backend.usecase.types.Invitation
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
@@ -27,7 +28,7 @@ class ReadInvitationUsecase(
 
     suspend fun getInvitations(from: List<UserId>, token: AccessIdentity): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
-        if (from.any { !storage.doesExist(it) }) return Result.UsersNotFound
+        if (from.any { storage.getFullUser(it) == null }) return Result.UsersNotFound
         val invitations = storage.getInvitations(from, userId)
 
         return Result.Success(invitations)
@@ -35,7 +36,7 @@ class ReadInvitationUsecase(
 
     suspend fun getInvitationsByIds(ids: List<InvitationId>, token: AccessIdentity): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
-        if (ids.any { !storage.doesExist(it) }) return Result.InvitationsNotFound
+        if (ids.any { storage.getInvitation(it) == null }) return Result.InvitationsNotFound
         val invitations = storage.getInvitationsByIds(ids).filter { it.invitedUserId == userId }
 
         return Result.Success(invitations)
@@ -45,7 +46,7 @@ class ReadInvitationUsecase(
         suspend fun getInvitations(invited: UserId): List<Invitation>
         suspend fun getInvitations(from: List<UserId>, to: UserId): List<Invitation>
         suspend fun getInvitationsByIds(ids: List<InvitationId>): List<Invitation>
-        suspend fun doesExist(id: UserId): Boolean
-        suspend fun doesExist(id: InvitationId): Boolean
+        suspend fun getFullUser(id: UserId): FullUser?
+        suspend fun getInvitation(id: InvitationId): Invitation?
     }
 }
