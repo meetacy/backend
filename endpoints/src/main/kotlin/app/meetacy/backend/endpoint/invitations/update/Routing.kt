@@ -9,6 +9,7 @@ import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializab
 import app.meetacy.backend.types.serialization.meeting.MeetingIdSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
@@ -26,10 +27,13 @@ fun Route.invitationUpdate(invitationUpdateRepository: InvitationUpdateRepositor
     post("/update") {
         val form: InvitationUpdatingFormSerializable = call.receive()
 
+        if (listOf(form.title, form.description, form.expiryDate, form.meetingId).all { it == null }) {
+            call.respond(Failure.NullEditParams)
+        }
+
         when (invitationUpdateRepository.update(form = form)) {
             InvitationsUpdateResponse.Success -> call.respondSuccess(form.id)
             InvitationsUpdateResponse.Unauthorized -> call.respondFailure(Failure.InvalidToken)
-            InvitationsUpdateResponse.InvalidData -> call.respondFailure(Failure.NullEditParams)
             InvitationsUpdateResponse.InvitationNotFound -> call.respondFailure(Failure.InvitationNotFound)
             InvitationsUpdateResponse.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
         }
@@ -43,6 +47,5 @@ sealed interface InvitationsUpdateResponse {
     object Success: InvitationsUpdateResponse
     object Unauthorized: InvitationsUpdateResponse
     object InvitationNotFound: InvitationsUpdateResponse
-    object InvalidData: InvitationsUpdateResponse
     object MeetingNotFound: InvitationsUpdateResponse
 }

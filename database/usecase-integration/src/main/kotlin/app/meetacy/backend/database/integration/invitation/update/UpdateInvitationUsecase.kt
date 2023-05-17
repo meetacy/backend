@@ -16,39 +16,40 @@ class DatabaseUpdateInvitationStorage(db: Database): UpdateInvitationUsecase.Sto
     private val meetingsTable = MeetingsTable(db)
     private val participantsTable = ParticipantsTable(db)
 
-    override suspend fun InvitationId.doesExist(): Boolean =
+    override suspend fun doesExist(invitationId: InvitationId): Boolean =
         invitationsTable
-            .getInvitationsByInvitationIds(listOf(this))
+            .getInvitationsByInvitationIds(listOf(invitationId))
             .singleOrNull() is DatabaseInvitation
 
-    override suspend fun MeetingId.doesExist(): Boolean =
+    override suspend fun doesExist(meetingId: MeetingId): Boolean =
         meetingsTable
-            .getMeetingOrNull(this) != null
+            .getMeetingOrNull(meetingId) != null
 
-    override suspend fun InvitationId.getInvitedUser(): UserId =
+    override suspend fun getInvitedUser(invitationId: InvitationId): UserId =
         invitationsTable
-            .getInvitationsByInvitationIds(listOf(this))
+            .getInvitationsByInvitationIds(listOf(invitationId))
             .single()
             .invitedUserId
 
-    override suspend fun MeetingId.ableToInvite(invitorId: UserId, invitedId: UserId): Boolean {
+    override suspend fun ableToInvite(meetingId: MeetingId, invitorId: UserId, invitedId: UserId): Boolean {
         val invitorIsParticipating = participantsTable
-            .isParticipating(this, invitorId)
+            .isParticipating(meetingId, invitorId)
 
         val invitedIsParticipating = participantsTable
-            .isParticipating(this, invitedId)
+            .isParticipating(meetingId, invitedId)
 
         return invitorIsParticipating && !invitedIsParticipating
         // TODO: Due to limited possibilities of MeetingsTable validation ends up with this
     }
 
-    override suspend fun InvitationId.isCreatedBy(userId: UserId): Boolean =
+    override suspend fun isCreatedBy(userId: UserId, invitationId: InvitationId): Boolean =
         invitationsTable
-            .getInvitationsByInvitationIds(listOf(this))
+            .getInvitationsByInvitationIds(listOf(invitationId))
             .single()
             .invitorUserId == userId
 
-    override suspend fun InvitationId.update(
+    override suspend fun update(
+        invitationId: InvitationId,
         title: String?,
         description: String?,
         expiryDate: Date?,
@@ -56,7 +57,7 @@ class DatabaseUpdateInvitationStorage(db: Database): UpdateInvitationUsecase.Sto
     ): Boolean =
         invitationsTable
             .update(
-                invitationId = this,
+                invitationId = invitationId,
                 title, description, expiryDate, meetingId
             )
 

@@ -15,12 +15,12 @@ class UpdateInvitationUsecase(
     sealed interface Result {
         object Unauthorized: Result
         object InvitationNotFound: Result
-        object InvalidData: Result
         object Success: Result
         object MeetingNotFound: Result
     }
 
-    suspend fun InvitationId.update(
+    suspend fun update(
+        id: InvitationId,
         token: AccessIdentity,
         title: String? = null,
         description: String? = null,
@@ -29,24 +29,24 @@ class UpdateInvitationUsecase(
     ): Result {
         val authorId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
         with(storage) {
-            if (!doesExist() || !isCreatedBy(authorId)) return Result.InvitationNotFound
+            if (!doesExist(id) || !isCreatedBy(authorId, id)) return Result.InvitationNotFound
             if (meetingId != null) {
-                if (!meetingId.doesExist() || !meetingId.ableToInvite(authorId, getInvitedUser()))
+                if (!doesExist(meetingId) || !ableToInvite(meetingId, authorId, getInvitedUser(id)))
                     return Result.MeetingNotFound
             }
-            if (listOf(title, description, expiryDate, meetingId).all { it == null }) return Result.InvalidData
-            if (!update(title, description, expiryDate, meetingId)) return Result.InvalidData
+            if (!update(id, title, description, expiryDate, meetingId)) return Result.InvitationNotFound
             return Result.Success
         }
     }
 
     interface Storage {
-        suspend fun InvitationId.doesExist(): Boolean
-        suspend fun InvitationId.getInvitedUser(): UserId
-        suspend fun MeetingId.doesExist(): Boolean
-        suspend fun MeetingId.ableToInvite(invitorId: UserId, invitedId: UserId): Boolean
-        suspend fun InvitationId.isCreatedBy(userId: UserId): Boolean
-        suspend fun InvitationId.update(
+        suspend fun doesExist(invitationId: InvitationId): Boolean
+        suspend fun getInvitedUser(invitationId: InvitationId): UserId
+        suspend fun doesExist(meetingId: MeetingId): Boolean
+        suspend fun ableToInvite(meetingId: MeetingId, invitorId: UserId, invitedId: UserId): Boolean
+        suspend fun isCreatedBy(userId: UserId, invitationId: InvitationId): Boolean
+        suspend fun update(
+            invitationId: InvitationId,
             title: String? = null,
             description: String? = null,
             expiryDate: Date? = null,

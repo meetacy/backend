@@ -9,18 +9,16 @@ class UsecaseUpdateInvitationRepository(
     private val usecase: UpdateInvitationUsecase
 ): InvitationUpdateRepository {
     override suspend fun update(form: InvitationUpdatingFormSerializable): InvitationsUpdateResponse =
-        with(usecase) {
-            form.id.type().update(
-                token = form.token.type(),
-                title = form.title,
-                description = form.description,
-                meetingId = form.meetingId.type(),
-                expiryDate = form.expiryDate?.type()
-            ).toEndpoint()
-        }
+        usecase.update(
+            id = form.id.type(),
+            token = form.token.type(),
+            title = form.title,
+            description = form.description,
+            meetingId = form.meetingId.type(),
+            expiryDate = form.expiryDate?.type()
+        ).toEndpoint()
 
     private fun UpdateInvitationUsecase.Result.toEndpoint() = when (this) {
-        UpdateInvitationUsecase.Result.InvalidData -> InvitationsUpdateResponse.InvalidData
         UpdateInvitationUsecase.Result.InvitationNotFound -> InvitationsUpdateResponse.InvitationNotFound
         UpdateInvitationUsecase.Result.MeetingNotFound -> InvitationsUpdateResponse.MeetingNotFound
         UpdateInvitationUsecase.Result.Success -> InvitationsUpdateResponse.Success
