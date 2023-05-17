@@ -1,10 +1,10 @@
 package app.meetacy.backend.database.integration.invitation.update
 
 import app.meetacy.backend.database.integration.types.mapToUsecase
+import app.meetacy.backend.database.integration.types.toUsecase
 import app.meetacy.backend.database.invitations.InvitationsTable
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.meetings.ParticipantsTable
-import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
@@ -23,7 +23,7 @@ class DatabaseUpdateInvitationStorage(db: Database): UpdateInvitationUsecase.Sto
         participantsTable.isParticipating(meetingId, userId)
 
     override suspend fun getInvitationOrNull(id: InvitationId): Invitation? =
-        invitationsTable.getInvitationsByInvitationIds(listOf(id)).singleOrNull().toUsecase()
+        invitationsTable.getInvitationsByInvitationIds(listOf(id)).singleOrNull()?.toUsecase()
 
     override suspend fun update(
         invitationId: InvitationId,
@@ -37,8 +37,4 @@ class DatabaseUpdateInvitationStorage(db: Database): UpdateInvitationUsecase.Sto
     override suspend fun getMeetingOrNull(id: MeetingId): FullMeeting? =
         meetingsTable.getMeetingOrNull(id)?.mapToUsecase()
 
-    private fun DatabaseInvitation?.toUsecase(): Invitation? {
-        return if (this != null) Invitation(identity, expiryDate, invitedUserId,
-            invitorUserId, meeting, title, description) else null
-    }
 }
