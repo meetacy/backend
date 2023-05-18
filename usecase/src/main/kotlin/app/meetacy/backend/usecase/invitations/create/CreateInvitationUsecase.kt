@@ -6,9 +6,7 @@ import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.HashGenerator
-import app.meetacy.backend.usecase.types.authorizeWithUserId
+import app.meetacy.backend.usecase.types.*
 
 class CreateInvitationUsecase (
     private val authRepository: AuthRepository,
@@ -32,37 +30,39 @@ class CreateInvitationUsecase (
         invitedUserId: UserId
     ): Result {
         val invitorId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
+        storage.getMeeting(meetingId) ?: return Result.MeetingNotFound
+        storage.getUser(invitedUserId) ?: return Result.UserNotFound
 
-            when {
-                !storage.doesExist(meetingId) -> return Result.MeetingNotFound
-                !(storage.doesExist(invitedUserId)) -> return Result.UserNotFound
+        when {
+            !storage.isSubscriberOf(invitedUserId, invitorId) -> return Result.NoPermissions
+            (expiryDate < DateTime.now()) -> return Result.InvalidExpiryDate
+            storage.getInvitationsFrom(invitorId)
+                .any { it.invitedUserId == invitedUserId && it.meeting == meetingId }
+            -> return Result.UserAlreadyInvited
 
-                !(storage.isSubscriberOf(invitedUserId, invitorId)) -> return Result.NoPermissions
-
-                (expiryDate < DateTime.now()) -> return Result.InvalidExpiryDate
-
-                else -> return Result.Success(
-                    invitation = storage.createInvitation(
-                        AccessHash(hashGenerator.generate()),
-                        invitedUserId,
-                        invitorId,
-                        expiryDate,
-                        meetingId
-                    ) ?: return Result.UserAlreadyInvited
+            else -> return Result.Success(
+                invitation = storage.createInvitation(
+                    AccessHash(hashGenerator.generate()),
+                    invitedUserId,
+                    invitorId,
+                    expiryDate,
+                    meetingId
                 )
-            }
+            )
+        }
     }
 
     interface Storage {
         suspend fun isSubscriberOf(subscriberId: UserId, authorId: UserId): Boolean
-        suspend fun doesExist(meetingId: MeetingId): Boolean
-        suspend fun doesExist(userId: UserId): Boolean
+        suspend fun getMeeting(meetingId: MeetingId): FullMeeting?
+        suspend fun getUser(id: UserId): FullUser?
+        suspend fun getInvitationsFrom(authorId: UserId): List<FullInvitation>
         suspend fun createInvitation(
             accessHash: AccessHash,
             invitedUserId: UserId,
             invitorUserId: UserId,
             expiryDate: DateTime,
             meetingId: MeetingId
-        ): InvitationId?
+        ): InvitationId
     }
 }
