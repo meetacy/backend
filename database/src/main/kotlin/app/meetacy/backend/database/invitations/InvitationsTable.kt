@@ -51,20 +51,6 @@ class InvitationsTable(private val db: Database) : Table() {
             return@newSuspendedTransaction InvitationId(invitationId)
         }
 
-    /**
-     * Returns list of invitations, which IDs are listed in [list]
-     */
-    suspend fun getInvitationsByInvitationIds(invitedUserId: UserId, list: List<InvitationId>): List<DatabaseInvitation> =
-        newSuspendedTransaction(db = db) {
-            val rawInvitationIds = list.map { it.long }
-
-            return@newSuspendedTransaction select {
-                (INVITATION_ID inList rawInvitationIds) and
-                    (INVITED_USER_ID eq invitedUserId.long)
-            }
-                .map { it.toInvitation() }
-        }
-
     suspend fun getInvitationsByInvitationIds(list: List<InvitationId>): List<DatabaseInvitation> =
         newSuspendedTransaction(db = db) {
             val rawInvitationIds = list.map { it.long }
@@ -112,13 +98,12 @@ class InvitationsTable(private val db: Database) : Table() {
         }
 
     suspend fun markAsAccepted(
-        userId: UserId,
         invitationId: InvitationId
     ): Boolean = newSuspendedTransaction(db = db) {
-        getInvitationsByInvitationIds(invitedUserId = userId, list = listOf(invitationId))
+        getInvitationsByInvitationIds(list = listOf(invitationId))
             .singleOrNull() ?: return@newSuspendedTransaction false
 
-        update(where = { (INVITATION_ID eq invitationId.long) and (INVITED_USER_ID eq userId.long) }) {
+        update(where = { (INVITATION_ID eq invitationId.long) }) {
             it[IS_ACCEPTED] = true
         } > 0
     }
