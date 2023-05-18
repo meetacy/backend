@@ -11,6 +11,7 @@ data class FullInvitation(
     val invitedUserId: UserId,
     val invitorUserId: UserId,
     val meeting: MeetingId,
+    val isAccepted: Boolean?
 ) {
     val id = identity.id
 }
@@ -23,7 +24,7 @@ data class InvitationView(
     val meetingView: MeetingView,
     val invitorIsSelf: Boolean,
     val invitedIsSelf: Boolean,
-
+    val isAccepted: Boolean?
 ) {
     val id = identity.id
 }

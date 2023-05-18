@@ -8,5 +8,6 @@ fun DatabaseInvitation.toUsecase() = FullInvitation(
     expiryDate,
     invitedUserId,
     invitorUserId,
-    meeting
+    meeting,
+    isAccepted
 )
