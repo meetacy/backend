@@ -39,7 +39,7 @@ class FriendsLocationStreamingUsecase(
             for (friendId in friendIds) launch {
                 storage
                     .locationFlow(friendId)
-                    .debounce(300.milliseconds)
+                    .sample(300.milliseconds)
                     .collect { location ->
                         val updatedFriend = usersViewsRepository.getUserView(userId, friendId)
                         channel.send(
