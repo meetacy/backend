@@ -22,7 +22,7 @@ class DatabaseUpdateInvitationStorage(db: Database): UpdateInvitationUsecase.Sto
     override suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =
         participantsTable.isParticipating(meetingId, userId)
 
-    override suspend fun getInvitationOrNull(id: InvitationId): Invitation? =
+    override suspend fun getInvitationOrNull(id: InvitationId): FullInvitation? =
         invitationsTable.getInvitationsByInvitationIds(listOf(id)).singleOrNull()?.toUsecase()
 
     override suspend fun update(

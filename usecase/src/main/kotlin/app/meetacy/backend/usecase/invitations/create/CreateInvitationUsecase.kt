@@ -1,7 +1,5 @@
 package app.meetacy.backend.usecase.invitations.create
 
-import app.meetacy.backend.types.DESCRIPTION_MAX_LIMIT
-import app.meetacy.backend.types.TITLE_MAX_LIMIT
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.DateTime

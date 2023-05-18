@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.datetime.DateSerializable
+import app.meetacy.backend.types.serialization.datetime.DateTimeSerializable
 import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
 import app.meetacy.backend.types.serialization.meeting.MeetingIdSerializable
 import io.ktor.server.application.*
@@ -34,6 +34,7 @@ fun Route.invitationUpdate(invitationUpdateRepository: InvitationUpdateRepositor
             InvitationsUpdateResponse.Unauthorized -> call.respondFailure(Failure.InvalidToken)
             InvitationsUpdateResponse.InvitationNotFound -> call.respondFailure(Failure.InvitationNotFound)
             InvitationsUpdateResponse.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
+            InvitationsUpdateResponse.InvalidDateTimeIdentity -> call.respondFailure(Failure.InvalidDateTimeIdentity)
         }
     }
 
@@ -46,4 +47,5 @@ sealed interface InvitationsUpdateResponse {
     object Unauthorized: InvitationsUpdateResponse
     object InvitationNotFound: InvitationsUpdateResponse
     object MeetingNotFound: InvitationsUpdateResponse
+    object InvalidDateTimeIdentity: InvitationsUpdateResponse
 }

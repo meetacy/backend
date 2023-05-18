@@ -2,7 +2,6 @@
 
 package app.meetacy.backend.endpoint.ktor
 
-import io.ktor.utils.io.*
 import kotlinx.serialization.Serializable
 
 @Serializable

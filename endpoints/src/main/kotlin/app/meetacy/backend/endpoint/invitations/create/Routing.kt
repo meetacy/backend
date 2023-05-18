@@ -44,6 +44,9 @@ fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationReposito
             InvitationsCreateResponse.UserAlreadyInvited -> {
                 call.respondFailure(Failure.FriendAlreadyInvited)
             }
+            InvitationsCreateResponse.InvalidExpiryDate -> {
+                call.respondFailure(Failure.InvalidDateTimeIdentity)
+            }
         }
     }
 }
@@ -59,4 +62,5 @@ sealed interface InvitationsCreateResponse {
     object UserAlreadyInvited: InvitationsCreateResponse
     object UserNotFound: InvitationsCreateResponse
     object MeetingNotFound: InvitationsCreateResponse
+    object InvalidExpiryDate : InvitationsCreateResponse
 }

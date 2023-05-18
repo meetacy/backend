@@ -40,7 +40,7 @@ class UsecaseReadInvitationRepository(
         ReadInvitationUsecase.Result.UsersNotFound -> InvitationsReadResponse.InvalidUserIds
     }
 
-    private fun app.meetacy.backend.usecase.types.Invitation.toEndpoint(): Invitation {
+    private fun app.meetacy.backend.usecase.types.FullInvitation.toEndpoint(): Invitation {
         return Invitation(
             id.toString(),
             expiryDate.serializable(),

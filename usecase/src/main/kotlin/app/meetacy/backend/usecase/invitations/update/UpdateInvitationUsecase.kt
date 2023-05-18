@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.invitations.update
 
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
@@ -42,7 +42,7 @@ class UpdateInvitationUsecase(
 
     interface Storage {
         suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean
-        suspend fun getInvitationOrNull(id: InvitationId): Invitation?
+        suspend fun getInvitationOrNull(id: InvitationId): FullInvitation?
         suspend fun getMeetingOrNull(id: MeetingId): FullMeeting?
         suspend fun update(
             invitationId: InvitationId,

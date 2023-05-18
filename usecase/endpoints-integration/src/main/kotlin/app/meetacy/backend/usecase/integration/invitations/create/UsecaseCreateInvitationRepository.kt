@@ -30,6 +30,8 @@ class UsecaseCreateInvitationRepository(
                     InvitationsCreateResponse.Unauthorized
                 is CreateInvitationUsecase.Result.Success ->
                     InvitationsCreateResponse.Success(response.invitation.serializable())
+
+                CreateInvitationUsecase.Result.InvalidExpiryDate -> InvitationsCreateResponse.InvalidExpiryDate
             }
         }
     }
