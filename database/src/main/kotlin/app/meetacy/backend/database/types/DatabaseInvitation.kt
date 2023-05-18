@@ -12,8 +12,6 @@ class DatabaseInvitation(
     val invitedUserId: UserId,
     val invitorUserId: UserId,
     val meeting: MeetingId,
-    val title: String,
-    val description: String,
     val isAccepted: Boolean?
 ) {
     val id = identity.id

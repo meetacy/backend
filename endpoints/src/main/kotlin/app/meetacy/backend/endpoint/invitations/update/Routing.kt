@@ -17,9 +17,7 @@ import kotlinx.serialization.Serializable
 data class InvitationUpdatingFormSerializable(
     val token: AccessIdentitySerializable,
     val id: InvitationIdSerializable,
-    val title: String?,
-    val description: String?,
-    val expiryDate: DateSerializable?,
+    val expiryDate: DateTimeSerializable?,
     val meetingId: MeetingIdSerializable
 )
 
@@ -27,7 +25,7 @@ fun Route.invitationUpdate(invitationUpdateRepository: InvitationUpdateRepositor
     post("/update") {
         val form: InvitationUpdatingFormSerializable = call.receive()
 
-        if (listOf(form.title, form.description, form.expiryDate, form.meetingId).all { it == null }) {
+        if (listOf(form.expiryDate, form.meetingId).all { it == null }) {
             call.respond(Failure.NullEditParams)
         }
 

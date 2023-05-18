@@ -549,11 +549,9 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
                         invitationId = InvitationId(42131151825),
                         accessHash = AccessHash(form.token.type().accessToken.string)
                     ),
-                    title = title ?: "",
-                    description = description ?: "",
+                    expiryDate = expiryDate.type(),
                     invitedUserId = invitedUser.type(),
                     invitorUserId = form.token.type().userId,
-                    expiryDate = expiryDate.type(),
                     meeting = meeting.type(),
                     isAccepted = null
                 )

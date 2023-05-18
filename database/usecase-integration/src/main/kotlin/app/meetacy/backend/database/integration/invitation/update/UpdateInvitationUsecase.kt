@@ -5,13 +5,13 @@ import app.meetacy.backend.database.integration.types.toUsecase
 import app.meetacy.backend.database.invitations.InvitationsTable
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.meetings.ParticipantsTable
-import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
+import app.meetacy.backend.usecase.types.FullInvitation
 import app.meetacy.backend.usecase.types.FullMeeting
-import app.meetacy.backend.usecase.types.Invitation
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseUpdateInvitationStorage(db: Database): UpdateInvitationUsecase.Storage {
@@ -27,12 +27,10 @@ class DatabaseUpdateInvitationStorage(db: Database): UpdateInvitationUsecase.Sto
 
     override suspend fun update(
         invitationId: InvitationId,
-        title: String?,
-        description: String?,
-        expiryDate: Date?,
+        expiryDate: DateTime?,
         meetingId: MeetingId?
     ): Boolean =
-        invitationsTable.update(invitationId, title, description, expiryDate, meetingId)
+        invitationsTable.update(invitationId, expiryDate, meetingId)
 
     override suspend fun getMeetingOrNull(id: MeetingId): FullMeeting? =
         meetingsTable.getMeetingOrNull(id)?.mapToUsecase()

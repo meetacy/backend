@@ -13,11 +13,9 @@ class UsecaseCreateInvitationRepository(
         with(form) {
             val response = usecase.createInvitation(
                 token = token.type(),
-                title = title ?: "",
-                description = description ?: "",
-                invitedUserId = invitedUser.type(),
                 expiryDate = expiryDate.type(),
-                meetingId = meeting.type()
+                meetingId = meeting.type(),
+                invitedUserId = invitedUser.type()
             )
             return when (response) {
                 CreateInvitationUsecase.Result.UserAlreadyInvited ->

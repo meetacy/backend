@@ -4,11 +4,8 @@ package app.meetacy.backend.database.invitations
 
 import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.types.DATE_TIME_MAX_LIMIT
-import app.meetacy.backend.types.DESCRIPTION_MAX_LIMIT
 import app.meetacy.backend.types.HASH_LENGTH
-import app.meetacy.backend.types.TITLE_MAX_LIMIT
 import app.meetacy.backend.types.access.AccessHash
-import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.invitation.InvitationIdentity
@@ -23,8 +20,6 @@ class InvitationsTable(private val db: Database) : Table() {
     private val EXPIRY_DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
     private val INVITED_USER_ID = long("INVITED_USER_ID")
     private val INVITOR_USER_ID = long("INVITOR_USER_ID")
-    private val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT)
-    private val TITLE = varchar("TITLE", length = TITLE_MAX_LIMIT)
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     private val MEETING_ID = long("MEETING_ID")
     private val IS_ACCEPTED = bool("IS_ACCEPTED").nullable().default(null)
@@ -39,8 +34,6 @@ class InvitationsTable(private val db: Database) : Table() {
 
     suspend fun addInvitation(
         accessHash: AccessHash,
-        title: String,
-        description: String,
         invitorUserId: UserId,
         invitedUserId: UserId,
         expiryDate: DateTime,
@@ -52,8 +45,6 @@ class InvitationsTable(private val db: Database) : Table() {
                 statement[EXPIRY_DATE] = expiryDate.iso8601
                 statement[INVITED_USER_ID] = invitedUserId.long
                 statement[INVITOR_USER_ID] = invitorUserId.long
-                statement[DESCRIPTION] = description
-                statement[TITLE] = title
                 statement[IS_ACCEPTED] = null
                 statement[MEETING_ID] = meetingId.long
             }[INVITATION_ID]
@@ -146,9 +137,7 @@ class InvitationsTable(private val db: Database) : Table() {
 
     suspend fun update(
         invitationId: InvitationId,
-        title: String? = null,
-        description: String? = null,
-        expiryDate: Date? = null,
+        expiryDate: DateTime? = null,
         meetingId: MeetingId? = null
     ): Boolean = newSuspendedTransaction(db = db) {
         val prevInvitation = getInvitationsByInvitationIds(
@@ -156,8 +145,6 @@ class InvitationsTable(private val db: Database) : Table() {
         ).singleOrNull() ?: return@newSuspendedTransaction false
 
         update(where = { INVITATION_ID eq invitationId.long }) {
-            it[TITLE] = title ?: prevInvitation.title
-            it[DESCRIPTION] = description ?: prevInvitation.description
             it[EXPIRY_DATE] = expiryDate?.iso8601 ?: prevInvitation.expiryDate.iso8601
             it[MEETING_ID] = meetingId?.long ?: prevInvitation.meeting.long
         } > 0
@@ -176,8 +163,6 @@ class InvitationsTable(private val db: Database) : Table() {
             accessHash = AccessHash(this[ACCESS_HASH]),
             invitationId = InvitationId(this[INVITATION_ID])
         ),
-        title = this[TITLE],
-        description = this[DESCRIPTION],
         invitedUserId = UserId(this[INVITED_USER_ID]),
         invitorUserId = UserId(this[INVITOR_USER_ID]),
         meeting = MeetingId(this[MEETING_ID]),

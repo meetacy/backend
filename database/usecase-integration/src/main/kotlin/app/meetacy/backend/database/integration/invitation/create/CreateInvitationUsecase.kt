@@ -34,8 +34,6 @@ class DatabaseCreateInvitationStorage(db: Database): CreateInvitationUsecase.Sto
         accessHash: AccessHash,
         invitedUserId: UserId,
         invitorUserId: UserId,
-        title: String,
-        description: String,
         expiryDate: DateTime,
         meetingId: MeetingId
     ): InvitationId? {
@@ -48,8 +46,6 @@ class DatabaseCreateInvitationStorage(db: Database): CreateInvitationUsecase.Sto
         } else {
             invitationTable.addInvitation(
                 accessHash,
-                title,
-                description,
                 invitorUserId,
                 invitedUserId,
                 expiryDate,

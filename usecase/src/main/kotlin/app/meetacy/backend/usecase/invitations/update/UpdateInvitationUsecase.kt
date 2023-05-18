@@ -6,8 +6,8 @@ import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
+import app.meetacy.backend.usecase.types.FullInvitation
 import app.meetacy.backend.usecase.types.FullMeeting
-import app.meetacy.backend.usecase.types.Invitation
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class UpdateInvitationUsecase(
@@ -24,9 +24,7 @@ class UpdateInvitationUsecase(
     suspend fun update(
         id: InvitationId,
         token: AccessIdentity,
-        title: String? = null,
-        description: String? = null,
-        expiryDate: Date? = null,
+        expiryDate: DateTime? = null,
         meetingId: MeetingId? = null
     ): Result {
         val authorId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
@@ -37,7 +35,8 @@ class UpdateInvitationUsecase(
             if (storage.getMeetingOrNull(meetingId) == null || !ableToInvite(meetingId, authorId, invitation.invitedUserId))
                 return Result.MeetingNotFound
         }
-        storage.update(id, title, description, expiryDate, meetingId)
+        if (expiryDate != null && expiryDate <= DateTime.now())
+        storage.update(id, expiryDate, meetingId)
         return Result.Success
     }
 
@@ -47,9 +46,7 @@ class UpdateInvitationUsecase(
         suspend fun getMeetingOrNull(id: MeetingId): FullMeeting?
         suspend fun update(
             invitationId: InvitationId,
-            title: String? = null,
-            description: String? = null,
-            expiryDate: Date? = null,
+            expiryDate: DateTime? = null,
             meetingId: MeetingId? = null
         ): Boolean
     }

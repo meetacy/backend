@@ -12,10 +12,8 @@ class UsecaseUpdateInvitationRepository(
         usecase.update(
             id = form.id.type(),
             token = form.token.type(),
-            title = form.title,
-            description = form.description,
-            meetingId = form.meetingId.type(),
-            expiryDate = form.expiryDate?.type()
+            expiryDate = form.expiryDate?.type(),
+            meetingId = form.meetingId.type()
         ).toEndpoint()
 
     private fun UpdateInvitationUsecase.Result.toEndpoint() = when (this) {

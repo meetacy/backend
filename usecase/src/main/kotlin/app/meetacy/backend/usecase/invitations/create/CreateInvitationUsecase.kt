@@ -24,12 +24,11 @@ class CreateInvitationUsecase (
         object UserNotFound: Result
         object MeetingNotFound: Result
         object UserAlreadyInvited: Result
+        object InvalidExpiryDate : Result
     }
 
     suspend fun createInvitation(
         token: AccessIdentity,
-        title: String,
-        description: String,
         expiryDate: DateTime,
         meetingId: MeetingId,
         invitedUserId: UserId
@@ -42,17 +41,13 @@ class CreateInvitationUsecase (
 
                 !(storage.isSubscriberOf(invitedUserId, invitorId)) -> return Result.NoPermissions
 
-                (expiryDate < DateTime.now() ||
-                        title.length > TITLE_MAX_LIMIT ||
-                        description.length > DESCRIPTION_MAX_LIMIT) -> throw IllegalArgumentException("Too long data")
+                (expiryDate < DateTime.now()) -> return Result.InvalidExpiryDate
 
                 else -> return Result.Success(
                     invitation = storage.createInvitation(
                         AccessHash(hashGenerator.generate()),
                         invitedUserId,
                         invitorId,
-                        title,
-                        description,
                         expiryDate,
                         meetingId
                     ) ?: return Result.UserAlreadyInvited
@@ -68,8 +63,6 @@ class CreateInvitationUsecase (
             accessHash: AccessHash,
             invitedUserId: UserId,
             invitorUserId: UserId,
-            title: String,
-            description: String,
             expiryDate: DateTime,
             meetingId: MeetingId
         ): InvitationId?

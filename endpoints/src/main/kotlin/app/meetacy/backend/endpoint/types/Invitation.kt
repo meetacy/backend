@@ -12,6 +12,4 @@ data class Invitation(
     val invitedUserId: UserIdSerializable,
     val invitorUserId: UserIdSerializable,
     val meeting: MeetingIdSerializable,
-    val title: String,
-    val description: String
 )

@@ -5,7 +5,7 @@ import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.Invitation
+import app.meetacy.backend.usecase.types.FullInvitation
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class DenyInvitationUsecase(
@@ -34,7 +34,7 @@ class DenyInvitationUsecase(
         storage.getInvitation(id)?.invitedUserId == userId
 
     interface Storage {
-        suspend fun getInvitation(id: InvitationId): Invitation?
+        suspend fun getInvitation(id: InvitationId): FullInvitation?
         suspend fun markAsDenied(id: InvitationId): Boolean
     }
 }

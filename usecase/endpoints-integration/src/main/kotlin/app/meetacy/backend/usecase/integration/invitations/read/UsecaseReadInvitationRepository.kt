@@ -46,9 +46,7 @@ class UsecaseReadInvitationRepository(
             expiryDate.serializable(),
             invitedUserId.serializable(),
             invitorUserId.serializable(),
-            meeting.serializable(),
-            title,
-            description
+            meeting.serializable()
         )
     }
 }

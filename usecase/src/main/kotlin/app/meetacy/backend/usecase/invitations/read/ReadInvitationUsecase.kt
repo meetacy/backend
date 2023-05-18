@@ -5,7 +5,7 @@ import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.FullUser
-import app.meetacy.backend.usecase.types.Invitation
+import app.meetacy.backend.usecase.types.FullInvitation
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class ReadInvitationUsecase(
@@ -13,7 +13,7 @@ class ReadInvitationUsecase(
     private val authRepository: AuthRepository
 ) {
     sealed interface Result {
-        data class Success(val invitations: List<Invitation>): Result
+        data class Success(val invitations: List<FullInvitation>): Result
         object UsersNotFound: Result
         object InvitationsNotFound: Result
         object Unauthorized: Result
@@ -43,10 +43,10 @@ class ReadInvitationUsecase(
     }
 
     interface Storage {
-        suspend fun getInvitations(invited: UserId): List<Invitation>
-        suspend fun getInvitations(from: List<UserId>, to: UserId): List<Invitation>
-        suspend fun getInvitationsByIds(ids: List<InvitationId>): List<Invitation>
+        suspend fun getInvitations(invited: UserId): List<FullInvitation>
+        suspend fun getInvitations(from: List<UserId>, to: UserId): List<FullInvitation>
+        suspend fun getInvitationsByIds(ids: List<InvitationId>): List<FullInvitation>
         suspend fun getFullUser(id: UserId): FullUser?
-        suspend fun getInvitation(id: InvitationId): Invitation?
+        suspend fun getInvitation(id: InvitationId): FullInvitation?
     }
 }
