@@ -3,17 +3,15 @@ package app.meetacy.backend.usecase.invitations.read
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.FullUser
-import app.meetacy.backend.usecase.types.FullInvitation
-import app.meetacy.backend.usecase.types.authorizeWithUserId
+import app.meetacy.backend.usecase.types.*
 
 class ReadInvitationUsecase(
     private val storage: Storage,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val getInvitationsViewsRepository: GetInvitationsViewsRepository
 ) {
     sealed interface Result {
-        data class Success(val invitations: List<FullInvitation>): Result
+        data class Success(val invitations: List<InvitationView>): Result
         object UsersNotFound: Result
         object InvitationsNotFound: Result
         object Unauthorized: Result
@@ -23,7 +21,9 @@ class ReadInvitationUsecase(
         val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
 
         val invitations = storage.getInvitations(userId)
-        return Result.Success(invitations)
+        return Result.Success(invitations.map {
+            getInvitationsViewsRepository.getInvitationView(userId, it)  ?: return Result.InvitationsNotFound
+        })
     }
 
     suspend fun getInvitations(from: List<UserId>, token: AccessIdentity): Result {
@@ -31,7 +31,9 @@ class ReadInvitationUsecase(
         if (from.any { storage.getFullUser(it) == null }) return Result.UsersNotFound
         val invitations = storage.getInvitations(from, userId)
 
-        return Result.Success(invitations)
+        return Result.Success(invitations.map {
+            getInvitationsViewsRepository.getInvitationView(userId, it)  ?: return Result.InvitationsNotFound
+        })
     }
 
     suspend fun getInvitationsByIds(ids: List<InvitationId>, token: AccessIdentity): Result {
@@ -39,7 +41,9 @@ class ReadInvitationUsecase(
         if (ids.any { storage.getInvitation(it) == null }) return Result.InvitationsNotFound
         val invitations = storage.getInvitationsByIds(ids).filter { it.invitedUserId == userId }
 
-        return Result.Success(invitations)
+        return Result.Success(invitations.map {
+            getInvitationsViewsRepository.getInvitationView(userId, it) ?: return Result.InvitationsNotFound
+        })
     }
 
     interface Storage {

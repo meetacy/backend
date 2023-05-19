@@ -29,10 +29,7 @@ import app.meetacy.backend.database.integration.meetings.participate.DatabasePar
 import app.meetacy.backend.database.integration.notifications.DatabaseGetNotificationStorage
 import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
 import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateTokenStorage
-import app.meetacy.backend.database.integration.types.DatabaseAuthRepository
-import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
-import app.meetacy.backend.database.integration.types.DatabaseGetMeetingsViewsRepository
-import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
+import app.meetacy.backend.database.integration.types.*
 import app.meetacy.backend.database.integration.users.edit.DatabaseEditUserStorage
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
@@ -118,6 +115,10 @@ fun startEndpoints(
     val getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
     val viewMeetingsRepository = DatabaseGetMeetingsViewsViewMeetingsRepository(db)
     val checkMeetingsRepository = DatabaseCheckMeetingsViewRepository(db)
+    val getInvitationsViewsRepository = DatabaseGetInvitationsViewsRepository(
+        getUsersViewsRepository,
+        getMeetingsViewsRepository
+    )
 
     startEndpoints(
         port = port,
@@ -323,6 +324,7 @@ fun startEndpoints(
             invitationsGetDependencies = UsecaseReadInvitationRepository(
                 usecase = ReadInvitationUsecase(
                     storage = DatabaseReadInvitationStorage(db),
+                    getInvitationsViewsRepository = getInvitationsViewsRepository,
                     authRepository = authRepository
                 )
             ),

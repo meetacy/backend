@@ -6,9 +6,9 @@ import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
 import app.meetacy.backend.endpoint.types.Invitation
 import app.meetacy.backend.types.serialization.datetime.serializable
 import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
-import app.meetacy.backend.types.serialization.meeting.serializable
+import app.meetacy.backend.types.serialization.invitation.serializable
 import app.meetacy.backend.types.serialization.user.UserIdSerializable
-import app.meetacy.backend.types.serialization.user.serializable
+import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
 
 class UsecaseReadInvitationRepository(
@@ -40,13 +40,10 @@ class UsecaseReadInvitationRepository(
         ReadInvitationUsecase.Result.UsersNotFound -> InvitationsReadResponse.InvalidUserIds
     }
 
-    private fun app.meetacy.backend.usecase.types.FullInvitation.toEndpoint(): Invitation {
+    private fun app.meetacy.backend.usecase.types.InvitationView.toEndpoint(): Invitation {
         return Invitation(
-            id.toString(),
-            expiryDate.serializable(),
-            invitedUserId.serializable(),
-            invitorUserId.serializable(),
-            meeting.serializable()
+            identity.serializable(), expiryDate.serializable(), invitedUserView.mapToEndpoint(),
+            invitorUserView.mapToEndpoint(), meetingView.mapToEndpoint(), isAccepted
         )
     }
 }
