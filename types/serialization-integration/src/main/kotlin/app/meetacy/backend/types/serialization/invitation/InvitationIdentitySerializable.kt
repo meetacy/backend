@@ -10,7 +10,7 @@ value class InvitationIdentitySerializable(val string: String) {
         type()
     }
 
-    fun type() = InvitationIdentity.parse(string)
+    fun type() = InvitationIdentity.parse(string)!!
 }
 
 fun InvitationIdentity.serializable() = InvitationIdentitySerializable(string)

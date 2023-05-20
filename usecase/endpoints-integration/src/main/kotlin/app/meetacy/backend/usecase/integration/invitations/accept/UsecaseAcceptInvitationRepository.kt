@@ -9,7 +9,7 @@ class UsecaseAcceptInvitationRepository(
     private val usecase: AcceptInvitationUsecase
 ): AcceptInvitationRepository {
     override suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse =
-        usecase.addToMeetingByInvitation(params.token.type(), params.invitationId.type()).toEndpoint()
+        usecase.addToMeetingByInvitation(params.token.type(), params.invitationIdentity.type()).toEndpoint()
 
 
     private fun AcceptInvitationUsecase.Result.toEndpoint(): InvitationAcceptResponse = when (this) {
