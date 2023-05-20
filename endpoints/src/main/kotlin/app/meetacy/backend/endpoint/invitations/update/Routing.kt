@@ -6,8 +6,8 @@ import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.Invitation
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.datetime.DateTimeSerializable
-import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
-import app.meetacy.backend.types.serialization.meeting.MeetingIdSerializable
+import app.meetacy.backend.types.serialization.invitation.InvitationIdentitySerializable
+import app.meetacy.backend.types.serialization.meeting.MeetingIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -17,9 +17,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class InvitationUpdatingFormSerializable(
     val token: AccessIdentitySerializable,
-    val id: InvitationIdSerializable,
+    val id: InvitationIdentitySerializable,
     val expiryDate: DateTimeSerializable?,
-    val meetingId: MeetingIdSerializable
+    val meetingId: MeetingIdentitySerializable
 )
 
 fun Route.invitationUpdate(invitationUpdateRepository: InvitationUpdateRepository) =

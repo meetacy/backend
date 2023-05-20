@@ -3,7 +3,9 @@ package app.meetacy.backend.usecase.invitations.update
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
+import app.meetacy.backend.types.invitation.InvitationIdentity
 import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 
@@ -20,21 +22,24 @@ class UpdateInvitationUsecase(
     }
 
     suspend fun update(
-        id: InvitationId,
+        invitationIdentity: InvitationIdentity,
         token: AccessIdentity,
         expiryDate: DateTime? = null,
-        meetingId: MeetingId? = null
+        meetingIdentity: MeetingIdentity? = null
     ): Result {
         val authorId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
-        val invitation = storage.getInvitationOrNull(id) ?: return Result.InvitationNotFound
+        val invitation = storage.getInvitationOrNull(invitationIdentity.id)
+            ?.apply { require(identity == invitationIdentity) } ?: return Result.InvitationNotFound
 
         if (invitation.invitorUserId != authorId) return Result.InvitationNotFound
-        if (meetingId != null) {
-            if (storage.getMeetingOrNull(meetingId) == null || !ableToInvite(meetingId, authorId, invitation.invitedUserId))
-                return Result.MeetingNotFound
+        if (meetingIdentity != null) {
+            if (!ableToInvite(meetingIdentity.id, authorId, invitation.invitedUserId)
+                || storage.getMeetingOrNull(meetingIdentity.id)?.identity != meetingIdentity) {
+                    return Result.MeetingNotFound
+                }
         }
         if (expiryDate != null && expiryDate <= DateTime.now())
-        storage.update(id, expiryDate, meetingId)
+        storage.update(invitationIdentity.id, expiryDate, meetingIdentity?.id)
         return Result.Success(invitation = getInvitationsViewsRepository.getInvitationView(authorId, invitation.id))
     }
 

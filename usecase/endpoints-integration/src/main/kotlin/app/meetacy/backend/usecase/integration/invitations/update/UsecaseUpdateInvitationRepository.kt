@@ -11,10 +11,10 @@ class UsecaseUpdateInvitationRepository(
 ): InvitationUpdateRepository {
     override suspend fun update(form: InvitationUpdatingFormSerializable): InvitationsUpdateResponse =
         usecase.update(
-            id = form.id.type(),
+            invitationIdentity = form.id.type(),
             token = form.token.type(),
             expiryDate = form.expiryDate?.type(),
-            meetingId = form.meetingId.type()
+            meetingIdentity = form.meetingId.type()
         ).toEndpoint()
 
     private fun UpdateInvitationUsecase.Result.toEndpoint() = when (this) {
