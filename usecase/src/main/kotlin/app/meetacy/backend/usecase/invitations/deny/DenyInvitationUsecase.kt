@@ -3,6 +3,7 @@ package app.meetacy.backend.usecase.invitations.deny
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
+import app.meetacy.backend.types.invitation.InvitationIdentity
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.FullInvitation
@@ -19,13 +20,14 @@ class DenyInvitationUsecase(
         object NotFound: Result
     }
 
-    suspend fun markAsDenied(token: AccessIdentity, id: InvitationId): Result {
+    suspend fun markAsDenied(token: AccessIdentity, invitationIdentity: InvitationIdentity): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
-        val invitation = storage.getInvitation(id) ?: return Result.NotFound
+        val invitation = storage.getInvitation(invitationIdentity.id)
+            ?.apply { require(this.identity == invitationIdentity) } ?: return Result.NotFound
 
         if (invitation.expiryDate <= DateTime.now()) return Result.NotFound
-        if (!isInvited(id, userId)) return Result.NoPermissions
-        storage.markAsDenied(id)
+        if (!isInvited(invitationIdentity.id, userId)) return Result.NoPermissions
+        storage.markAsDenied(invitationIdentity.id)
 
         return Result.Success
     }
