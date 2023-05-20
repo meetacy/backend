@@ -33,7 +33,9 @@ class DatabaseCreateInvitationStorage(db: Database): CreateInvitationUsecase.Sto
         usersTable.getUsersOrNull(listOf(id)).singleOrNull()?.mapToUsecase()
 
     override suspend fun getInvitationsFrom(authorId: UserId): List<FullInvitation> =
-        invitationTable.getInvitations(authorId).map { it.toUsecase() }
+        invitationTable.getInvitations(userIds = listOf(authorId))
+            .filter { it.invitorUserId == authorId }
+            .map { it.toUsecase() }
 
     override suspend fun createInvitation(
         accessHash: AccessHash,

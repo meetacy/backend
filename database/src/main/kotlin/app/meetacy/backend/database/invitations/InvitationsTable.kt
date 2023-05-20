@@ -61,40 +61,11 @@ class InvitationsTable(private val db: Database) : Table() {
                 .map { it.toInvitation() }
         }
 
-    /**
-     * Returns list of invitations sent by [invitedUserId], and [invitorUserIdsList] if specified
-     */
-    suspend fun getInvitations(
-        invitorUserIdsList: List<UserId> = emptyList(),
-        invitedUserId: UserId
-    ): List<DatabaseInvitation> =
-        newSuspendedTransaction(db = db) {
-            return@newSuspendedTransaction if (invitorUserIdsList.isEmpty()) {
-                select { INVITED_USER_ID eq invitedUserId.long }
-                    .map { it.toInvitation() }
-            } else {
-                select {
-                    (INVITED_USER_ID eq invitedUserId.long) and
-                            (INVITOR_USER_ID inList invitorUserIdsList.map { it.long })
-                }.map { it.toInvitation() }
-            }
-        }
-
-    suspend fun getInvitations(
-        invitorUserId: UserId,
-        invitedUserIdsList: List<UserId> = emptyList()
-    ): List<DatabaseInvitation> =
-        newSuspendedTransaction(db = db) {
-            return@newSuspendedTransaction if (invitedUserIdsList.isEmpty()) {
-                select { INVITOR_USER_ID eq invitorUserId.long }
-                    .map { it.toInvitation() }
-            } else {
-                select {
-                    (INVITOR_USER_ID eq invitorUserId.long) and
-                            (INVITED_USER_ID inList invitedUserIdsList.map { it.long })
-                }
-                    .map { it.toInvitation() }
-            }
+    suspend fun getInvitations(userIds: List<UserId>): List<DatabaseInvitation> =
+        newSuspendedTransaction(db = db)  {
+            val rawUserIds = userIds.map { it.long }
+            select { (INVITOR_USER_ID inList rawUserIds) or (INVITED_USER_ID inList rawUserIds) }
+                .map { it.toInvitation() }
         }
 
     suspend fun markAsAccepted(
