@@ -2,7 +2,9 @@ package app.meetacy.backend.usecase.invitations.read
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.invitation.InvitationId
+import app.meetacy.backend.types.invitation.InvitationIdentity
 import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.usecase.types.*
 
 class ReadInvitationUsecase(
@@ -26,20 +28,24 @@ class ReadInvitationUsecase(
         })
     }
 
-    suspend fun getInvitations(from: List<UserId>, token: AccessIdentity): Result {
+    suspend fun getInvitations(from: List<UserIdentity>, token: AccessIdentity): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
-        if (from.any { storage.getFullUser(it) == null }) return Result.UsersNotFound
-        val invitations = storage.getInvitations(from, userId)
+        if (from.any { storage.getFullUser(it.id) == null
+                    || storage.getFullUser(it.id)?.identity !in from }) return Result.UsersNotFound
+
+        val invitations = storage.getInvitations(from.map { it.id }, userId)
 
         return Result.Success(invitations.map {
             getInvitationsViewsRepository.getInvitationViewOrNull(userId, it)  ?: return Result.InvitationsNotFound
         })
     }
 
-    suspend fun getInvitationsByIds(ids: List<InvitationId>, token: AccessIdentity): Result {
+    suspend fun getInvitationsByIds(identities: List<InvitationIdentity>, token: AccessIdentity): Result {
         val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
-        if (ids.any { storage.getInvitation(it) == null }) return Result.InvitationsNotFound
-        val invitations = storage.getInvitationsByIds(ids).filter { it.invitedUserId == userId }
+        if (identities.any { storage.getInvitation(it.id) == null
+                    || storage.getInvitation(it.id)?.identity !in identities}) return Result.InvitationsNotFound
+
+        val invitations = storage.getInvitationsByIds(identities.map { it.id }).filter { it.invitedUserId == userId }
 
         return Result.Success(invitations.map {
             getInvitationsViewsRepository.getInvitationViewOrNull(userId, it) ?: return Result.InvitationsNotFound

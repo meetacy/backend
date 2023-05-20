@@ -5,8 +5,8 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.Invitation
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
-import app.meetacy.backend.types.serialization.user.UserIdSerializable
+import app.meetacy.backend.types.serialization.invitation.InvitationIdentitySerializable
+import app.meetacy.backend.types.serialization.user.UserIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -15,8 +15,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ReadInvitationParams(
     val token: AccessIdentitySerializable,
-    val invitorUserIds: List<UserIdSerializable>?,
-    val invitationIds: List<InvitationIdSerializable>?
+    val invitorUserIds: List<UserIdentitySerializable>?,
+    val invitationIds: List<InvitationIdentitySerializable>?
 )
 
 fun Route.readInvitation(readInvitationRepository: ReadInvitationRepository) {

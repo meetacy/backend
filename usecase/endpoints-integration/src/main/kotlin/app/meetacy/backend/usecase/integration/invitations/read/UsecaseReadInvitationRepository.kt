@@ -3,8 +3,8 @@ package app.meetacy.backend.usecase.integration.invitations.read
 import app.meetacy.backend.endpoint.invitations.read.InvitationsReadResponse
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationParams
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
-import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
-import app.meetacy.backend.types.serialization.user.UserIdSerializable
+import app.meetacy.backend.types.serialization.invitation.InvitationIdentitySerializable
+import app.meetacy.backend.types.serialization.user.UserIdentitySerializable
 import app.meetacy.backend.usecase.integration.types.toEndpoint
 import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
 
@@ -16,13 +16,13 @@ class UsecaseReadInvitationRepository(
         val userIdentity = readInvitationParams.token.type()
         if (readInvitationParams.invitationIds != null) {
             // retrieve invitations by invitation ids
-            val invitationIds = (readInvitationParams.invitationIds as List<InvitationIdSerializable>)
+            val invitationIds = (readInvitationParams.invitationIds as List<InvitationIdentitySerializable>)
                 .map { it.type() }
             return usecase.getInvitationsByIds(invitationIds, token = userIdentity).toReadResponse()
         }
         if (readInvitationParams.invitorUserIds != null) {
             // retrieve invitations by invitor ids
-            val userIds = (readInvitationParams.invitorUserIds as List<UserIdSerializable>)
+            val userIds = (readInvitationParams.invitorUserIds as List<UserIdentitySerializable>)
                 .map { it.type() }
             return usecase.getInvitations(from = userIds, token = userIdentity).toReadResponse()
         }
