@@ -49,11 +49,7 @@ data class Failure(
         val InvalidDateTimeIdentity = Failure(false, 23, "Enter valid date, please")
 
         fun UnhandledException(throwable: Throwable): Failure {
-            val error = buildString {
-                appendLine("Unhandled exception occurred. Stacktrace: ")
-                append(throwable.stackTraceToString())
-            }
-            println(error)
+            System.err.println(throwable.stackTraceToString())
             return Failure(
                 status = false,
                 errorCode = 15,
