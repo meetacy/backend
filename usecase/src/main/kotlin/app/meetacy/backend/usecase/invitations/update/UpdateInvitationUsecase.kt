@@ -5,20 +5,18 @@ import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.FullInvitation
-import app.meetacy.backend.usecase.types.FullMeeting
-import app.meetacy.backend.usecase.types.authorizeWithUserId
+import app.meetacy.backend.usecase.types.*
 
 class UpdateInvitationUsecase(
     private val storage: Storage,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val getInvitationsViewsRepository: GetInvitationsViewsRepository
 ) {
     sealed interface Result {
         object Unauthorized: Result
         object InvitationNotFound: Result
-        object Success: Result
         object MeetingNotFound: Result
+        data class Success(val invitation: InvitationView): Result
     }
 
     suspend fun update(
@@ -37,7 +35,7 @@ class UpdateInvitationUsecase(
         }
         if (expiryDate != null && expiryDate <= DateTime.now())
         storage.update(id, expiryDate, meetingId)
-        return Result.Success
+        return Result.Success(invitation = getInvitationsViewsRepository.getInvitationView(authorId, invitation.id))
     }
 
     interface Storage {

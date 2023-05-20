@@ -333,7 +333,8 @@ fun startEndpoints(
             invitationUpdateRepository = UsecaseUpdateInvitationRepository(
                 usecase = UpdateInvitationUsecase(
                     storage = DatabaseUpdateInvitationStorage(db),
-                    authRepository = authRepository
+                    authRepository = authRepository,
+                    getInvitationsViewsRepository = getInvitationsViewsRepository
                 )
             ),
             invitationCancelRepository = UsecaseCancelInvitationRepository(

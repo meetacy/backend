@@ -3,6 +3,7 @@ package app.meetacy.backend.usecase.integration.invitations.update
 import app.meetacy.backend.endpoint.invitations.update.InvitationUpdateRepository
 import app.meetacy.backend.endpoint.invitations.update.InvitationUpdatingFormSerializable
 import app.meetacy.backend.endpoint.invitations.update.InvitationsUpdateResponse
+import app.meetacy.backend.usecase.integration.types.toEndpoint
 import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
 
 class UsecaseUpdateInvitationRepository(
@@ -19,7 +20,7 @@ class UsecaseUpdateInvitationRepository(
     private fun UpdateInvitationUsecase.Result.toEndpoint() = when (this) {
         UpdateInvitationUsecase.Result.InvitationNotFound -> InvitationsUpdateResponse.InvitationNotFound
         UpdateInvitationUsecase.Result.MeetingNotFound -> InvitationsUpdateResponse.MeetingNotFound
-        UpdateInvitationUsecase.Result.Success -> InvitationsUpdateResponse.Success
+        is UpdateInvitationUsecase.Result.Success -> InvitationsUpdateResponse.Success(invitation.toEndpoint())
         UpdateInvitationUsecase.Result.Unauthorized -> InvitationsUpdateResponse.Unauthorized
     }
 }
