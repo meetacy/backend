@@ -5,7 +5,9 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.usecase.types.*
 
 class CreateInvitationUsecase (
@@ -27,27 +29,29 @@ class CreateInvitationUsecase (
     suspend fun createInvitation(
         token: AccessIdentity,
         expiryDate: DateTime,
-        meetingId: MeetingId,
-        invitedUserId: UserId
+        meetingIdentity: MeetingIdentity,
+        invitedUserIdentity: UserIdentity
     ): Result {
         val invitorId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
-        storage.getMeeting(meetingId) ?: return Result.MeetingNotFound
-        storage.getUser(invitedUserId) ?: return Result.UserNotFound
+        storage.getMeeting(meetingIdentity.id)
+            ?.apply { require(identity == meetingIdentity) } ?: return Result.MeetingNotFound
+        storage.getUser(invitedUserIdentity.id)
+            ?.apply { require(identity == invitedUserIdentity) } ?: return Result.UserNotFound
 
         when {
-            !storage.isSubscriberOf(invitedUserId, invitorId) -> return Result.NoPermissions
+            !storage.isSubscriberOf(invitedUserIdentity.id, invitorId) -> return Result.NoPermissions
             (expiryDate < DateTime.now()) -> return Result.InvalidExpiryDate
             storage.getInvitationsFrom(invitorId)
-                .any { it.invitedUserId == invitedUserId && it.meeting == meetingId }
+                .any { it.invitedUserId == invitedUserIdentity.id && it.meeting == meetingIdentity.id }
             -> return Result.UserAlreadyInvited
 
             else -> {
                 val id = storage.createInvitation(
                     AccessHash(hashGenerator.generate()),
-                    invitedUserId,
+                    invitedUserIdentity.id,
                     invitorId,
                     expiryDate,
-                    meetingId
+                    meetingIdentity.id
                 )
 
                 return Result.Success(invitation = getInvitationsViewsRepository.getInvitationView(invitorId, id))
