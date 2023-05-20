@@ -32,8 +32,6 @@ import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
-import app.meetacy.backend.types.invitation.InvitationId
-import app.meetacy.backend.types.invitation.InvitationIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.meeting.MeetingId
@@ -41,7 +39,6 @@ import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
-import app.meetacy.backend.types.serialization.invitation.serializable
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
@@ -542,22 +539,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     private val invitations: MutableList<DatabaseInvitation> = mutableListOf()
 
     override suspend fun createInvitation(form: InvitationCreatingFormSerializable): InvitationsCreateResponse {
-        invitations.add(
-            with(form) {
-                DatabaseInvitation(
-                    identity = InvitationIdentity(
-                        invitationId = InvitationId(42131151825),
-                        accessHash = AccessHash(form.token.type().accessToken.string)
-                    ),
-                    expiryDate = expiryDate.type(),
-                    invitedUserId = invitedUser.type(),
-                    invitorUserId = form.token.type().userId,
-                    meeting = meeting.type(),
-                    isAccepted = null
-                )
-            }
-        )
-        return InvitationsCreateResponse.Success(InvitationId(42131151825).serializable())
+        TODO("Not yet implemented")
     }
 
     override suspend fun readInvitation(readInvitationParams: ReadInvitationParams): InvitationsReadResponse {

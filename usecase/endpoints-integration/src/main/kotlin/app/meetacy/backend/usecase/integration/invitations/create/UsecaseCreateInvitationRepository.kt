@@ -3,7 +3,7 @@ package app.meetacy.backend.usecase.integration.invitations.create
 import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
 import app.meetacy.backend.endpoint.invitations.create.InvitationCreatingFormSerializable
 import app.meetacy.backend.endpoint.invitations.create.InvitationsCreateResponse
-import app.meetacy.backend.types.serialization.invitation.serializable
+import app.meetacy.backend.usecase.integration.types.toEndpoint
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 
 class UsecaseCreateInvitationRepository(
@@ -29,7 +29,7 @@ class UsecaseCreateInvitationRepository(
                 CreateInvitationUsecase.Result.Unauthorized ->
                     InvitationsCreateResponse.Unauthorized
                 is CreateInvitationUsecase.Result.Success ->
-                    InvitationsCreateResponse.Success(response.invitation.serializable())
+                    InvitationsCreateResponse.Success(response.invitation.toEndpoint())
 
                 CreateInvitationUsecase.Result.InvalidExpiryDate -> InvitationsCreateResponse.InvalidExpiryDate
             }

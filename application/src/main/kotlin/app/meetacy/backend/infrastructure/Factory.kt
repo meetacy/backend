@@ -117,7 +117,8 @@ fun startEndpoints(
     val checkMeetingsRepository = DatabaseCheckMeetingsViewRepository(db)
     val getInvitationsViewsRepository = DatabaseGetInvitationsViewsRepository(
         getUsersViewsRepository,
-        getMeetingsViewsRepository
+        getMeetingsViewsRepository,
+        db
     )
 
     startEndpoints(
@@ -306,7 +307,8 @@ fun startEndpoints(
                 usecase = CreateInvitationUsecase(
                     authRepository = authRepository,
                     storage = DatabaseCreateInvitationStorage(db),
-                    hashGenerator = DefaultHashGenerator
+                    hashGenerator = DefaultHashGenerator,
+                    getInvitationsViewsRepository = getInvitationsViewsRepository
                 )
             ),
             invitationsAcceptRepository = UsecaseAcceptInvitationRepository(

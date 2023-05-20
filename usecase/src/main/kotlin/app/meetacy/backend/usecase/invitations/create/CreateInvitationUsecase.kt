@@ -11,10 +11,11 @@ import app.meetacy.backend.usecase.types.*
 class CreateInvitationUsecase (
     private val authRepository: AuthRepository,
     private val storage: Storage,
-    private val hashGenerator: HashGenerator
+    private val hashGenerator: HashGenerator,
+    private val getInvitationsViewsRepository: GetInvitationsViewsRepository
 ) {
     sealed interface Result {
-        data class Success(val invitation: InvitationId): Result
+        data class Success(val invitation: InvitationView): Result
         object Unauthorized: Result
         object NoPermissions: Result
         object UserNotFound: Result
@@ -40,15 +41,17 @@ class CreateInvitationUsecase (
                 .any { it.invitedUserId == invitedUserId && it.meeting == meetingId }
             -> return Result.UserAlreadyInvited
 
-            else -> return Result.Success(
-                invitation = storage.createInvitation(
+            else -> {
+                val id = storage.createInvitation(
                     AccessHash(hashGenerator.generate()),
                     invitedUserId,
                     invitorId,
                     expiryDate,
                     meetingId
                 )
-            )
+
+                return Result.Success(invitation = getInvitationsViewsRepository.getInvitationView(invitorId, id))
+            }
         }
     }
 

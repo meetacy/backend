@@ -3,12 +3,9 @@ package app.meetacy.backend.usecase.integration.invitations.read
 import app.meetacy.backend.endpoint.invitations.read.InvitationsReadResponse
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationParams
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
-import app.meetacy.backend.endpoint.types.Invitation
-import app.meetacy.backend.types.serialization.datetime.serializable
 import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
-import app.meetacy.backend.types.serialization.invitation.serializable
 import app.meetacy.backend.types.serialization.user.UserIdSerializable
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.usecase.integration.types.toEndpoint
 import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
 
 class UsecaseReadInvitationRepository(
@@ -38,12 +35,5 @@ class UsecaseReadInvitationRepository(
         is ReadInvitationUsecase.Result.Success -> InvitationsReadResponse.Success(this.invitations.map { it.toEndpoint() })
         ReadInvitationUsecase.Result.Unauthorized -> InvitationsReadResponse.Unauthorized
         ReadInvitationUsecase.Result.UsersNotFound -> InvitationsReadResponse.InvalidUserIds
-    }
-
-    private fun app.meetacy.backend.usecase.types.InvitationView.toEndpoint(): Invitation {
-        return Invitation(
-            identity.serializable(), expiryDate.serializable(), invitedUserView.mapToEndpoint(),
-            invitorUserView.mapToEndpoint(), meetingView.mapToEndpoint(), isAccepted
-        )
     }
 }

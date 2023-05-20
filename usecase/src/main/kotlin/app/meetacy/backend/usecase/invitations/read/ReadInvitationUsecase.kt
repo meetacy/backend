@@ -22,7 +22,7 @@ class ReadInvitationUsecase(
 
         val invitations = storage.getInvitations(userId)
         return Result.Success(invitations.map {
-            getInvitationsViewsRepository.getInvitationView(userId, it)  ?: return Result.InvitationsNotFound
+            getInvitationsViewsRepository.getInvitationViewOrNull(userId, it)  ?: return Result.InvitationsNotFound
         })
     }
 
@@ -32,7 +32,7 @@ class ReadInvitationUsecase(
         val invitations = storage.getInvitations(from, userId)
 
         return Result.Success(invitations.map {
-            getInvitationsViewsRepository.getInvitationView(userId, it)  ?: return Result.InvitationsNotFound
+            getInvitationsViewsRepository.getInvitationViewOrNull(userId, it)  ?: return Result.InvitationsNotFound
         })
     }
 
@@ -42,7 +42,7 @@ class ReadInvitationUsecase(
         val invitations = storage.getInvitationsByIds(ids).filter { it.invitedUserId == userId }
 
         return Result.Success(invitations.map {
-            getInvitationsViewsRepository.getInvitationView(userId, it) ?: return Result.InvitationsNotFound
+            getInvitationsViewsRepository.getInvitationViewOrNull(userId, it) ?: return Result.InvitationsNotFound
         })
     }
 
