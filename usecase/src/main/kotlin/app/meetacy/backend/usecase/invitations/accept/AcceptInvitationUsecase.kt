@@ -22,8 +22,8 @@ class AcceptInvitationUsecase(
         object MeetingNotFound: Result
     }
 
-    suspend fun AccessIdentity.addToMeetingByInvitation(invitationId: InvitationId): Result {
-        val userId = authRepository.authorizeWithUserId(this) { return Result.Unauthorized }
+    suspend fun addToMeetingByInvitation(token: AccessIdentity, invitationId: InvitationId): Result {
+        val userId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
         val invitation = storage.getInvitationOrNull(invitationId) ?: return Result.NotFound
 
         return when {

@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.integration.invitations.accept
 
-import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptParams
 import app.meetacy.backend.endpoint.invitations.accept.AcceptInvitationRepository
+import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptParams
 import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptResponse
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 
@@ -9,9 +9,8 @@ class UsecaseAcceptInvitationRepository(
     private val usecase: AcceptInvitationUsecase
 ): AcceptInvitationRepository {
     override suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse =
-        with(usecase) {
-            params.token.type().addToMeetingByInvitation(params.invitationId.type()).toEndpoint()
-        }
+        usecase.addToMeetingByInvitation(params.token.type(), params.invitationId.type()).toEndpoint()
+
 
     private fun AcceptInvitationUsecase.Result.toEndpoint(): InvitationAcceptResponse = when (this) {
         AcceptInvitationUsecase.Result.NotFound -> InvitationAcceptResponse.NotFound
