@@ -11,7 +11,7 @@ import app.meetacy.backend.usecase.types.UserLocationSnapshot as UsecaseUserLoca
 
 fun UserView.mapToEndpoint() = User(
     isSelf = isSelf,
-    isFriend = isSubscriber,
+    isFriend = isFriend,
     id = identity.serializable(),
     nickname = nickname,
     email = email,
@@ -27,7 +27,7 @@ fun UsecaseUserLocationSnapshot.mapToEndpoint() = EndpointUserLocationSnapshot(
 
 fun User.mapToUsecase(): UserView = UserView(
     isSelf = isSelf,
-    isSubscriber = isFriend,
+    isFriend = isFriend,
     identity = id.type(),
     nickname = nickname,
     email = email,

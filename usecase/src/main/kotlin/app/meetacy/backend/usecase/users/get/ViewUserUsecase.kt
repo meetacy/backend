@@ -18,7 +18,7 @@ class ViewUserUsecase(
             with(user) {
                 UserView(
                     isSelf = viewerId == user.identity.id,
-                    isSubscriber = if (viewerId == user.identity.id) null else storage.isSubscriber(viewerId, user.identity.id),
+                    isFriend = if (viewerId == user.identity.id) null else storage.isSubscriber(viewerId, user.identity.id),
                     identity = identity,
                     nickname = nickname,
                     email = if (viewerId == user.identity.id) email else null,
