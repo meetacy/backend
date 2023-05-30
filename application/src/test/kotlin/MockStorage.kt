@@ -62,7 +62,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
     ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage, LocationFlowStorage.Underlying,
-    BaseFriendsLocationStreamingStorage.Storage {
+    BaseFriendsLocationStreamingStorage.Storage, ViewUserUsecase.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -148,7 +148,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         viewUserRepository = this
     )
     private val viewUserUsecase = ViewUserUsecase(
-        filesRepository = this
+        filesRepository = this,
+        storage = this
     )
 
     override suspend fun getUsersViewsOrNull(
@@ -515,4 +516,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         var size: FileSize? = null,
         val fileName: String
     )
+
+    override suspend fun isSubscriber(userId: UserId, subscriberId: UserId): Boolean =
+        getFriends(userId, Amount.parse(Int.MAX_VALUE)).contains(subscriberId)
 }

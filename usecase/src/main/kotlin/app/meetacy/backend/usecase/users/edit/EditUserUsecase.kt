@@ -52,6 +52,7 @@ class EditUserUsecase(
             with(fullUser) {
                 UserView(
                     true,
+                    null,
                     identity,
                     fullUser.nickname,
                     fullUser.email,
