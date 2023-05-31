@@ -3,6 +3,7 @@
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.paging.asFlow
 import app.meetacy.sdk.types.paging.flatten
+import app.meetacy.sdk.types.user.Relationship
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlin.test.Test
@@ -51,10 +52,14 @@ class TestFriends {
     fun `test isFriend property`() = runTestServer {
         val self = generateTestAccount()
         val friend = generateTestAccount()
-        assert(self.users.get(friend.id).isFriend == false)
+        assert(self.users.get(friend.id).isFriend == Relationship.None)
 
         self.friends.base.add(self.token, friend.id)
-        assert(self.users.get(friend.id).isFriend == true)
-        assert(friend.users.get(self.id).isFriend == false)
+        assert(self.users.get(friend.id).isFriend == Relationship.Subscription)
+        assert(friend.users.get(self.id).isFriend == Relationship.Subscriber)
+
+        friend.friends.add(self.id)
+        assert(self.users.get(friend.id).isFriend == Relationship.Friend)
+        assert(friend.users.get(self.id).isFriend == Relationship.Friend)
     }
 }
