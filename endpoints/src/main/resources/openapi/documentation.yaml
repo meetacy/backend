@@ -1271,6 +1271,9 @@ components:
         nickname:
           type: string
           example: Dmytro Koriukivka
+        username:
+          type: string
+          example: username
         email:
           type: string
           example: "*depending on the privacy settings of the user, his mail will be displayed*"

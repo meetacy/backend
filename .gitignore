@@ -3,3 +3,4 @@ build
 .gradle
 deploy.properties
 FilesStorage
+machinet.conf

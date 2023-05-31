@@ -106,6 +106,8 @@ object Deps {
                 const val Core = "io.ktor:ktor-server-core:$ktorVersion"
                 const val Cio = "io.ktor:ktor-server-cio:$ktorVersion"
                 const val SerializationJson = "io.ktor:ktor-serialization-kotlinx-json:$ktorVersion"
+                const val RequestValidation = "io.ktor:ktor-server-request-validation:$ktorVersion"
+                const val ServerStatusPage = "io.ktor:ktor-server-status-pages:$ktorVersion"
                 const val ContentNegotiation = "io.ktor:ktor-server-content-negotiation:$ktorVersion"
                 const val Testing = "io.ktor:ktor-server-test-host:$ktorVersion"
                 const val Netty = "io.ktor:ktor-server-netty:$ktorVersion"

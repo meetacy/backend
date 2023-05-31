@@ -31,6 +31,6 @@ fun Route.generateToken(tokenGenerateRepository: TokenGenerateRepository) = post
             result.accessIdentity.serializable()
         )
 
-        TokenGenerateResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidNickname)
+        TokenGenerateResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
     }
 }

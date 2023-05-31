@@ -1,23 +1,24 @@
 package app.meetacy.backend.types.user
 
-@JvmInline
-value class Username(val string: String) {
+import app.meetacy.backend.types.annotation.UnsafeConstructor
 
-    companion object {
-        fun parse(string: String): Username {
+@JvmInline
+public value class Username @UnsafeConstructor constructor(public val string: String) {
+    @OptIn(UnsafeConstructor::class)
+    public companion object {
+        public fun parse(string: String): Username {
+            require(checkUsername(string)) { "Username doesn't match the following pattern: [a-zA-Z][a-zA-Z0-9_]*" }
             return Username(string)
         }
-        fun parseOrNull(string: String): Username? {
+        public fun parseOrNull(string: String): Username? {
             if (!checkUsername(string)) return null
             return Username(string)
         }
     }
 }
-
-val String.username: Username get() = Username.parse(string = this)
-val String.usernameOrNull: Username? get() = Username.parseOrNull(string = this)
-
+public val String.username: Username get() = Username.parse(string = this)
+public val String.usernameOrNull: Username? get() = Username.parseOrNull(string = this)
 private fun checkUsername(username: String): Boolean {
-    val regex = Regex("^[a-zA-Z][a-zA-Z0-9_]*$")
+    val regex = Regex("[a-zA-Z][a-zA-Z0-9_]*")
     return regex.matches(username)
 }

@@ -32,6 +32,7 @@ class UsecaseCreateMeetingRepository(
                 CreateMeetingResult.InvalidUtf8String
             CreateMeetingUsecase.Result.InvalidFileIdentity ->
                 CreateMeetingResult.InvalidFileIdentity
+
         }
     }
 }
