@@ -32,7 +32,7 @@ object Deps {
     private const val kvisionVersion = "5.1.1"
     private const val shadowVer = "7.0.0"
 
-    private const val meetacySdkVersion = "0.0.34"
+    private const val meetacySdkVersion = "0.0.35"
     private const val kdsVer = "1.1.0"
     private const val scriptKtVer = "0.0.2"
 
