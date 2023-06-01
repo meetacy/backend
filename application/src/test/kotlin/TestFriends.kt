@@ -40,26 +40,26 @@ class TestFriends {
     }
 
     @Test
-    fun `test if self user does not have isFriend property`() = runTestServer {
+    fun `test if self user does not have relationship property`() = runTestServer {
         val self = generateTestAccount()
         val user = self.api.users.get(self.id)
 
         assertEquals(user.id, self.id)
-        assertNull(user.isFriend)
+        assertNull(user.relationship)
     }
 
     @Test
-    fun `test isFriend property`() = runTestServer {
+    fun `test relationship property`() = runTestServer {
         val self = generateTestAccount()
         val friend = generateTestAccount()
-        assert(self.users.get(friend.id).isFriend == Relationship.None)
+        assert(self.users.get(friend.id).relationship == Relationship.None)
 
         self.friends.base.add(self.token, friend.id)
-        assert(self.users.get(friend.id).isFriend == Relationship.Subscription)
-        assert(friend.users.get(self.id).isFriend == Relationship.Subscriber)
+        assert(self.users.get(friend.id).relationship == Relationship.Subscription)
+        assert(friend.users.get(self.id).relationship == Relationship.Subscriber)
 
         friend.friends.add(self.id)
-        assert(self.users.get(friend.id).isFriend == Relationship.Friend)
-        assert(friend.users.get(self.id).isFriend == Relationship.Friend)
+        assert(self.users.get(friend.id).relationship == Relationship.Friend)
+        assert(friend.users.get(self.id).relationship == Relationship.Friend)
     }
 }
