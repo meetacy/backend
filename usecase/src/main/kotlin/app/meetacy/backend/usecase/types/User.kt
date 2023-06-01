@@ -15,7 +15,7 @@ data class FullUser(
 
 data class UserView(
     val isSelf: Boolean,
-    val isFriend: UsecaseRelationship?,
+    val relationship: UsecaseRelationship?,
     val identity: UserIdentity,
     val nickname: String,
     val email: String?,

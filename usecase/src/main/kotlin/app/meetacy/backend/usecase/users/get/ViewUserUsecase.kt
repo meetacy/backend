@@ -19,7 +19,7 @@ class ViewUserUsecase(
             with(user) {
                 UserView(
                     isSelf = viewerId == user.identity.id,
-                    isFriend = getRelationship(viewerId),
+                    relationship = getRelationship(viewerId),
                     identity = identity,
                     nickname = nickname,
                     email = if (viewerId == user.identity.id) email else null,
