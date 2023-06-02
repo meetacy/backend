@@ -159,7 +159,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         viewUserRepository = this
     )
     private val viewUserUsecase = ViewUserUsecase(
-        filesRepository = this
+        filesRepository = this,
+        storage = this
     )
 
     override suspend fun getUsersViewsOrNull(
