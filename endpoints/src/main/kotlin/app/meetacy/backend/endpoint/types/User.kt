@@ -1,12 +1,14 @@
 package app.meetacy.backend.endpoint.types
 
 import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
+import app.meetacy.backend.types.serialization.user.RelationshipSerializable
 import app.meetacy.backend.types.serialization.user.UserIdentitySerializable
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
     val isSelf: Boolean,
+    val relationship: RelationshipSerializable?,
     val id: UserIdentitySerializable,
     val nickname: String,
     val email: String?,

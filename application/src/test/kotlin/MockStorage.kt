@@ -59,6 +59,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import java.io.File
+
 class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, AuthRepository,
     ConfirmEmailUsecase.Storage, GetUsersViewsRepository, GetUsersViewsUsecase.Storage,
     GetUsersViewsUsecase.ViewUserRepository, AddFriendUsecase.Storage, ListFriendsUsecase.Storage,
@@ -72,7 +73,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     LocationFlowStorage.Underlying, BaseFriendsLocationStreamingStorage.Storage,
     CreateInvitationUsecase.Storage, GetInvitationsViewsRepository, ReadInvitationUsecase.Storage,
     AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage, UpdateInvitationUsecase.Storage,
-    CancelInvitationUsecase.Storage {
+    CancelInvitationUsecase.Storage, ViewUserUsecase.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -633,5 +634,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun markAsDenied(id: InvitationId): Boolean {
         TODO("Not yet implemented")
     }
-}
 
+    override suspend fun isSubscriber(userId: UserId, subscriberId: UserId): Boolean =
+        getFriends(userId, Amount.parse(Int.MAX_VALUE)).contains(subscriberId)
+}

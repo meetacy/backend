@@ -7,10 +7,12 @@ import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class FriendsLocationStreamingUsecase(
     private val authRepository: AuthRepository,
@@ -19,6 +21,7 @@ class FriendsLocationStreamingUsecase(
     private val maxFriends: Amount = 5_000.amount
 ) {
 
+    @OptIn(FlowPreview::class)
     suspend fun stream(
         accessIdentity: AccessIdentity,
         selfLocation: Flow<Location>,
@@ -36,6 +39,7 @@ class FriendsLocationStreamingUsecase(
             for (friendId in friendIds) launch {
                 storage
                     .locationFlow(friendId)
+                    .sample(300.milliseconds)
                     .collect { location ->
                         val updatedFriend = usersViewsRepository.getUserView(userId, friendId)
                         channel.send(

@@ -46,7 +46,7 @@ class TestMeetings {
             .asFlow()
             .toList()
             .flatten()
-        
+
         require(meetingsList.size == meetingsAmount) {
             "Meetings size returned by first pagination differs from actual size"
         }
