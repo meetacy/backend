@@ -2,24 +2,6 @@
 import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
-import app.meetacy.backend.endpoint.invitations.accept.AcceptInvitationRepository
-import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptParams
-import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptResponse
-import app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationForm
-import app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationRepository
-import app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationResponse
-import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
-import app.meetacy.backend.endpoint.invitations.create.InvitationCreatingFormSerializable
-import app.meetacy.backend.endpoint.invitations.create.InvitationsCreateResponse
-import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationRepository
-import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationResponse
-import app.meetacy.backend.endpoint.invitations.deny.InvitationDenyingFormSerializable
-import app.meetacy.backend.endpoint.invitations.read.InvitationsReadResponse
-import app.meetacy.backend.endpoint.invitations.read.ReadInvitationParams
-import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
-import app.meetacy.backend.endpoint.invitations.update.InvitationUpdateRepository
-import app.meetacy.backend.endpoint.invitations.update.InvitationUpdatingFormSerializable
-import app.meetacy.backend.endpoint.invitations.update.InvitationsUpdateResponse
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
@@ -32,6 +14,7 @@ import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
+import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.meeting.MeetingId
@@ -48,6 +31,12 @@ import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
+import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
+import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
+import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
+import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
+import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
+import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
 import app.meetacy.backend.usecase.location.stream.BaseFriendsLocationStreamingStorage
 import app.meetacy.backend.usecase.location.stream.LocationFlowStorage
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
@@ -80,9 +69,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
     ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage,
-    CreateInvitationRepository, ReadInvitationRepository,
-    LocationFlowStorage.Underlying, BaseFriendsLocationStreamingStorage.Storage, InvitationUpdateRepository,
-    DenyInvitationRepository, AcceptInvitationRepository, CancelInvitationRepository {
+    LocationFlowStorage.Underlying, BaseFriendsLocationStreamingStorage.Storage,
+    CreateInvitationUsecase.Storage, GetInvitationsViewsRepository, ReadInvitationUsecase.Storage,
+    AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage, UpdateInvitationUsecase.Storage,
+    CancelInvitationUsecase.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -388,6 +378,27 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         participants += Triple(PagingId(participants.size.toLong()), participantId, meetingId)
     }
 
+    override suspend fun getMeetingOrNull(id: MeetingId): FullMeeting? =
+        getMeetings(listOf(id)).singleOrNull()
+
+    override suspend fun update(invitationId: InvitationId, expiryDate: DateTime?, meetingId: MeetingId?): Boolean {
+        if (invitations.indexOfFirst { it.id == invitationId } == -1) return false
+        val invitation = invitations[invitations.indexOfFirst { it.id == invitationId }]
+        invitations[invitations.indexOfFirst { it.id == invitationId }] = DatabaseInvitation(
+            invitation.identity,
+            expiryDate ?: invitation.expiryDate,
+            invitation.invitedUserId,
+            invitation.invitorUserId,
+            meetingId ?: invitation.meeting,
+            invitation.isAccepted
+        )
+        return true
+    }
+
+    override suspend fun getInvitationOrNull(id: InvitationId): FullInvitation? {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun isParticipating(
         meetingId: MeetingId,
         userId: UserId
@@ -396,6 +407,21 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             participantUserId == userId && participantMeetingId == meetingId
         }
     }
+
+    override suspend fun markAsAccepted(id: InvitationId) {
+        val invitation = invitations[invitations.indexOfFirst { it.id == id }]
+        invitations[invitations.indexOfFirst { it.id == id }] = DatabaseInvitation(
+            invitation.identity,
+            invitation.expiryDate,
+            invitation.invitedUserId,
+            invitation.invitorUserId,
+            invitation.meeting,
+            isAccepted = true
+        )
+    }
+
+    override suspend fun addToMeeting(id: MeetingId, userId: UserId) =
+        addParticipant(userId, id)
 
     override suspend fun getList(
         accessIdentity: AccessIdentity,
@@ -538,27 +564,73 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     private val invitations: MutableList<DatabaseInvitation> = mutableListOf()
 
-    override suspend fun createInvitation(form: InvitationCreatingFormSerializable): InvitationsCreateResponse {
+    override suspend fun isSubscriberOf(subscriberId: UserId, authorId: UserId): Boolean {
         TODO("Not yet implemented")
     }
 
-    override suspend fun readInvitation(readInvitationParams: ReadInvitationParams): InvitationsReadResponse {
+    override suspend fun getMeeting(meetingId: MeetingId): FullMeeting? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun update(form: InvitationUpdatingFormSerializable): InvitationsUpdateResponse {
+    override suspend fun getUser(id: UserId): FullUser? {
         TODO("Not yet implemented")
     }
 
-    override suspend fun denyInvitation(form: InvitationDenyingFormSerializable): DenyInvitationResponse {
+    override suspend fun getInvitationsFrom(authorId: UserId): List<FullInvitation> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse {
+    override suspend fun createInvitation(
+        accessHash: AccessHash,
+        invitedUserId: UserId,
+        invitorUserId: UserId,
+        expiryDate: DateTime,
+        meetingId: MeetingId
+    ): InvitationId {
         TODO("Not yet implemented")
     }
 
-    override suspend fun cancel(form: CancelInvitationForm): CancelInvitationResponse {
+    override suspend fun getInvitationViewOrNull(viewerId: UserId, invitation: FullInvitation): InvitationView? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getInvitationViewOrNull(viewerId: UserId, invitation: InvitationId): InvitationView? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getInvitationView(viewerId: UserId, invitation: FullInvitation): InvitationView {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getInvitationView(viewerId: UserId, invitation: InvitationId): InvitationView {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getInvitations(invited: UserId): List<FullInvitation> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getInvitations(from: List<UserId>, to: UserId): List<FullInvitation> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getInvitationsByIds(ids: List<InvitationId>): List<FullInvitation> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getFullUser(id: UserId): FullUser? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun cancel(id: InvitationId): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getInvitation(id: InvitationId): FullInvitation? {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun markAsDenied(id: InvitationId): Boolean {
         TODO("Not yet implemented")
     }
 }
