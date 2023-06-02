@@ -27,7 +27,7 @@ fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationReposito
 
         when (val response = invitationsCreateRepository.createInvitation(invitationCreatingForm)) {
             is InvitationsCreateResponse.Success -> {
-                call.respondSuccess(response)
+                call.respondSuccess(response.response)
             }
             InvitationsCreateResponse.UserNotFound -> {
                 call.respondFailure(Failure.FriendNotFound)
