@@ -1,8 +1,8 @@
 openapi: "3.0.3"
 info:
   title: "Meetacy Backend API"
-  description: "_Version 1.0.1 of the `Meetacy` API documentation_. It is recommended to fill in the request body on your own according to the sample provided below. The `Notifications` section is under development. "
-  version: "1.0.1"
+  description: "_Version 1.0.2 of the `Meetacy` API documentation_. It is recommended to fill in the request body on your own according to the sample provided below. The `Notifications` section is under development. "
+  version: "1.0.2"
 servers:
   - url: "https://api.meetacy.app"
   - url: "http://localhost:8080"
@@ -1380,3 +1380,24 @@ components:
           type: string
       required:
         - token
+    Invitation:
+      type: object
+      properties:
+        identity:
+          type: string
+        expiryDate:
+          type: string
+        invitedUser:
+          $ref: "#/components/schemas/User"
+        invitorUser:
+          $ref: "#/components/schemas/User"
+        meeting:
+          $ref: "#/components/schemas/Meeting"
+        isAccepted:
+          type: boolean
+      required:
+        - identity
+        - expiryDate
+        - invitedUser
+        - invitorUser
+        - meeting
