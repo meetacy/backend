@@ -7,7 +7,7 @@ import java.util.*
 import java.time.Instant as JavaInstant
 import java.util.Date as JavaDate
 
-private val iso8601DateTimeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").apply {
+private val iso8601DateTimeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").apply {
     timeZone = TimeZone.getTimeZone("UTC")
 }
 
