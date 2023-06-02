@@ -1,4 +1,5 @@
 
+import app.meetacy.backend.database.integration.types.toUsecase
 import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
@@ -15,6 +16,7 @@ import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.types.invitation.InvitationId
+import app.meetacy.backend.types.invitation.InvitationIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.meeting.MeetingId
@@ -71,9 +73,9 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
     ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage,
     LocationFlowStorage.Underlying, BaseFriendsLocationStreamingStorage.Storage,
-    CreateInvitationUsecase.Storage, GetInvitationsViewsRepository, ReadInvitationUsecase.Storage,
+    CreateInvitationUsecase.Storage, ReadInvitationUsecase.Storage,
     AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage, UpdateInvitationUsecase.Storage,
-    CancelInvitationUsecase.Storage, ViewUserUsecase.Storage {
+    CancelInvitationUsecase.Storage, ViewUserUsecase.Storage, GetInvitationsViewsRepository {
 
     private val users = mutableListOf<User>()
 
@@ -566,21 +568,19 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     private val invitations: MutableList<DatabaseInvitation> = mutableListOf()
 
-    override suspend fun isSubscriberOf(subscriberId: UserId, authorId: UserId): Boolean {
-        TODO("Not yet implemented")
-    }
+    override suspend fun isSubscriberOf(subscriberId: UserId, authorId: UserId): Boolean =
+        isSubscribed(subscriberId, authorId)
 
     override suspend fun getMeeting(meetingId: MeetingId): FullMeeting? {
-        TODO("Not yet implemented")
+        return getMeetingOrNull(meetingId)
     }
 
     override suspend fun getUser(id: UserId): FullUser? {
-        TODO("Not yet implemented")
+        return getUsers(listOf(id)).singleOrNull()
     }
 
-    override suspend fun getInvitationsFrom(authorId: UserId): List<FullInvitation> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getInvitationsFrom(authorId: UserId): List<FullInvitation> =
+        invitations.filter { it.invitorUserId == authorId }.map { it.toUsecase() }
 
     override suspend fun createInvitation(
         accessHash: AccessHash,
@@ -589,7 +589,18 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         expiryDate: DateTime,
         meetingId: MeetingId
     ): InvitationId {
-        TODO("Not yet implemented")
+        val lastId = invitations.maxOfOrNull { it.id.long }
+        invitations.add(
+            DatabaseInvitation(
+                identity = InvitationIdentity(InvitationId((lastId ?: -1) + 1), accessHash),
+                expiryDate,
+                invitedUserId,
+                invitorUserId,
+                meetingId,
+                isAccepted = null
+            )
+        )
+        return InvitationId((lastId ?: -1) + 1)
     }
 
     override suspend fun getInvitationViewOrNull(viewerId: UserId, invitation: FullInvitation): InvitationView? {
@@ -601,12 +612,22 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     }
 
     override suspend fun getInvitationView(viewerId: UserId, invitation: FullInvitation): InvitationView {
-        TODO("Not yet implemented")
+        val invitedUserView = viewUser(viewerId, getUser(invitation.invitedUserId) ?: error("User not found"))
+        val invitorUserView = viewUser(viewerId, getUser(invitation.invitorUserId) ?: error("User not found"))
+        val meetingView = viewMeeting(viewerId, getMeeting(invitation.meeting) ?: error("Meeting not found"))
+
+        return InvitationView(
+            identity = invitation.identity,
+            expiryDate = invitation.expiryDate,
+            invitedUserView = invitedUserView,
+            invitorUserView = invitorUserView,
+            meetingView = meetingView,
+            isAccepted = invitation.isAccepted,
+        )
     }
 
-    override suspend fun getInvitationView(viewerId: UserId, invitation: InvitationId): InvitationView {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getInvitationView(viewerId: UserId, invitation: InvitationId): InvitationView =
+        getInvitationView(viewerId, getInvitation(invitation))
 
     override suspend fun getInvitations(invited: UserId): List<FullInvitation> {
         TODO("Not yet implemented")
@@ -616,9 +637,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
-    override suspend fun getInvitationsByIds(ids: List<InvitationId>): List<FullInvitation> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getInvitationsByIds(ids: List<InvitationId>): List<FullInvitation> =
+        invitations.filter { it.id in ids }.map { it.toUsecase() }
 
     override suspend fun getFullUser(id: UserId): FullUser? {
         TODO("Not yet implemented")
@@ -628,9 +648,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
-    override suspend fun getInvitation(id: InvitationId): FullInvitation? {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getInvitation(id: InvitationId): FullInvitation =
+        getInvitationsByIds(listOf(id)).singleOrNull() ?: error("Invitations not found")
 
     override suspend fun markAsDenied(id: InvitationId): Boolean {
         TODO("Not yet implemented")
