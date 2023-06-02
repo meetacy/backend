@@ -19,6 +19,8 @@ tags:
     description: THIS PART IS NOT CONFIGURED YET
   - name: user
     description: Operations about user
+  - name: invitations
+    description: Operations about invitations
 
 paths:
   /auth/email/confirm:
@@ -320,6 +322,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
+  /invitations/create:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Create an invitation
+      tags:
+        - invitations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInvitationRequest"
+      responses:
+        "200":
+          description: Example of a successful created invitation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+        "400":
+          description: Example of failed invitation creation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResponse"
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidToken'
+                FriendNotFound:
+                  $ref: '#/components/examples/FriendNotFound'
   /meetings/edit:
     parameters:
       - name: Api-Version
@@ -1340,6 +1377,7 @@ components:
       properties:
         isSelf:
           type: boolean
+          example: false
         id:
           type: string
           example: "15:fzK6CgXqQihDqeXpVYqVpOIgH0s5HvBAaR2BN2PkCxsLe63fAwMrV4uDInfYgoKFXY5C18Rnu9I2x5d46qmGNPLTM9uDepdKPKo7ss1tPsMk5AbslGwQCjlBrscOJmxUFSt7iwsmbZdLdjgYecKoXrJBVGwkZC3HYBUCLtgkexYsOk1mmDRxk482k3fCuo2Nxnjy82INdkOTjVsnew6vGhtOOrOWdpR1Ci6v1d06SQ6aFqs5QasWiTEPXNyCjGGd"
@@ -1354,6 +1392,10 @@ components:
           example: true
         avatarId:
           type: string
+        relationship:
+          type: string
+          description: "Relationship field can be one of four types - subscription, subscriber, friend and none. In case if isSelf == true, relationship field is null"
+          example: "subscription"
       required:
         - id
         - nickname
@@ -1401,3 +1443,20 @@ components:
         - invitedUser
         - invitorUser
         - meeting
+    CreateInvitationRequest:
+      type: object
+      properties:
+        token:
+          type: string
+        meeting:
+          type: string
+          example: "6:EBnp2woyRmY4snRvZaiEtuOIfk4eEXgWdzy8psVPL60Mz92Ts8qIdaoAHVTpvl9hTygMpfUYjNHJpjwpK0txBKRWl7EqCgmnZjm57pIWnlRIo2WoH856AibK8xmCdgOlENPUsmBGLPa7EVOtd43rnGVdeC3wUfHSNV9PT3S0Q3mXCpHF0tOfssQTnKKbBSy9V19Euo7VzpjS4WXI82ILzPVfLqTaRGEUabXw9issiVZhK97zZhBXrV3CFO26pAZa"
+        invitedUser:
+          type: string
+        expiryDate:
+          type: string
+      required:
+        - token
+        - meeting
+        - invitedUser
+        - expiryDate
