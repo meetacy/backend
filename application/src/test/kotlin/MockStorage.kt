@@ -603,11 +603,24 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     }
 
     override suspend fun getInvitationViewOrNull(viewerId: UserId, invitation: FullInvitation): InvitationView? {
-        TODO("Not yet implemented")
+        val invitedUserView = viewUser(viewerId, getUser(invitation.invitedUserId) ?: return null)
+        val invitorUserView = viewUser(viewerId, getUser(invitation.invitorUserId) ?: return null)
+        val meetingView = viewMeeting(viewerId, getMeeting(invitation.meeting) ?: return null)
+
+        return InvitationView(
+            identity = invitation.identity,
+            expiryDate = invitation.expiryDate,
+            invitedUserView = invitedUserView,
+            invitorUserView = invitorUserView,
+            meetingView = meetingView,
+            isAccepted = invitation.isAccepted,
+        )
     }
 
     override suspend fun getInvitationViewOrNull(viewerId: UserId, invitation: InvitationId): InvitationView? {
-        TODO("Not yet implemented")
+        val fullInvitation = getInvitationOrNull(id = invitation) ?: return null
+
+        return getInvitationViewOrNull(viewerId, fullInvitation)
     }
 
     override suspend fun getInvitationView(viewerId: UserId, invitation: FullInvitation): InvitationView {
@@ -628,9 +641,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun getInvitationView(viewerId: UserId, invitation: InvitationId): InvitationView =
         getInvitationView(viewerId, getInvitation(invitation))
 
-    override suspend fun getInvitations(invited: UserId): List<FullInvitation> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getInvitations(invited: UserId): List<FullInvitation> =
+        invitations.filter { it.invitedUserId == invited }.map { it.toUsecase() }
 
     override suspend fun getInvitations(from: List<UserId>, to: UserId): List<FullInvitation> {
         TODO("Not yet implemented")
