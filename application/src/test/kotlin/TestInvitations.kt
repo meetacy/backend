@@ -40,6 +40,30 @@ class TestInvitations {
     }
 
     @Test
+    fun `test invitation getting`() = runTestServer {
+        val invitor = generateTestAccount()
+        val invited = generateTestAccount()
+        invited.friends.add(invitor.id)
+
+        val invitationsNumber = (2..15).random()
+        println("test with following invitations amount: $invitationsNumber")
+
+        var count = invitationsNumber
+        do {
+            val meeting = invitor.meetings.createTestMeeting()
+            invitor.invitations.create(
+                invitor.users.get(invited.id),
+                DateTime.parse("2080-06-05T18:00:00Z"),
+                meeting.id
+            )
+            count--
+        } while (count > 0)
+
+        val invitations = invited.invitations.read()
+        assertEquals(invitations.size, invitationsNumber)
+    }
+
+    @Test
     fun `test invitation acceptation`() = runTestServer {
         val invitor = generateTestAccount()
         val invited = generateTestAccount()
