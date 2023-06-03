@@ -399,9 +399,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         return true
     }
 
-    override suspend fun getInvitationOrNull(id: InvitationId): FullInvitation? {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getInvitationOrNull(id: InvitationId): FullInvitation? =
+        invitations.firstOrNull { it.id == id }?.toUsecase()
 
     override suspend fun isParticipating(
         meetingId: MeetingId,
