@@ -31,7 +31,7 @@ class AcceptInvitationUsecase(
         return when {
             invitation.invitedUserId != userId || storage.isParticipating(invitation.meeting, userId) -> Result.NotFound
             invitation.expiryDate < DateTime.now() -> Result.InvitationExpired
-            storage.getMeetingOrNull(invitation.meeting) != null -> Result.MeetingNotFound
+            storage.getMeetingOrNull(invitation.meeting) == null -> Result.MeetingNotFound
             else -> {
                 storage.markAsAccepted(invitationIdentity.id)
                 storage.addToMeeting(invitation.meeting, userId)
