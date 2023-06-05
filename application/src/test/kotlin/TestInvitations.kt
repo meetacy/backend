@@ -86,4 +86,37 @@ class TestInvitations {
         }
         assertEquals(Failure.InvitationNotFound.errorMessage, exception.message)
     }
+
+    @Test
+    fun `test invitation denying`() = runTestServer {
+        val invitor = generateTestAccount()
+        val invited = generateTestAccount()
+        val alice = generateTestAccount()
+        val meeting = invitor.meetings.createTestMeeting()
+        invited.friends.add(invitor.id)
+
+        val invitation = invitor.invitations.create(
+            invitor.users.get(invited.id),
+            DateTime.parse("2080-06-05T18:00:00Z"),
+            meeting.id
+        )
+
+        try {
+            alice.invitations.deny(invitation.id)
+        } catch (e: Throwable) {
+            assert(e is MeetacyInternalException)
+            assert(e.message == Failure.InvitationNotFound.errorMessage)
+            println("Alice failed to deny invitation, everything is OK now")
+        }
+
+        try {
+            invited.invitations.deny(invitation.id)
+            println("Invited user successfully denied the invitation")
+        } catch (e: Throwable) {
+            println("Invited user failed to deny invitation")
+            throw e
+        }
+        assert(!meeting.participants.paging(10.amount).asFlow().toList().flatten()
+            .map { it.data.id }.contains(invited.id))
+    }
 }
