@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CancelInvitationForm(
     val token: AccessIdentitySerializable,
-    val invitationIdentity: InvitationIdentitySerializable
+    val id: InvitationIdentitySerializable
 )
 
 fun Route.invitationCancel(invitationCancelRepository: CancelInvitationRepository) = post("/cancel") {
