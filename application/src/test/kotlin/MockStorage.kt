@@ -656,7 +656,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     }
 
     override suspend fun cancel(id: InvitationId): Boolean {
-        TODO("Not yet implemented")
+        return invitations.removeAll { it.id == id }
     }
 
     override suspend fun getInvitation(id: InvitationId): FullInvitation =
