@@ -19,7 +19,7 @@ data class InvitationUpdatingFormSerializable(
     val token: AccessIdentitySerializable,
     val id: InvitationIdentitySerializable,
     val expiryDate: DateTimeSerializable?,
-    val meetingId: MeetingIdentitySerializable
+    val meetingId: MeetingIdentitySerializable?
 )
 
 fun Route.invitationUpdate(invitationUpdateRepository: InvitationUpdateRepository) =
