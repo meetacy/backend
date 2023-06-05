@@ -663,7 +663,16 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         getInvitationsByIds(listOf(id)).singleOrNull() ?: error("Invitations not found")
 
     override suspend fun markAsDenied(id: InvitationId): Boolean {
-        TODO("Not yet implemented")
+        val invitation = invitations[invitations.indexOfFirst { it.id == id }]
+        invitations[invitations.indexOfFirst { it.id == id }] = DatabaseInvitation(
+            invitation.identity,
+            invitation.expiryDate,
+            invitation.invitedUserId,
+            invitation.invitorUserId,
+            invitation.meeting,
+            isAccepted = false
+        )
+        return true
     }
 
     override suspend fun isSubscriber(userId: UserId, subscriberId: UserId): Boolean =
