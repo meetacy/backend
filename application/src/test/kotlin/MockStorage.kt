@@ -386,9 +386,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         getMeetings(listOf(id)).singleOrNull()
 
     override suspend fun update(invitationId: InvitationId, expiryDate: DateTime?, meetingId: MeetingId?): Boolean {
-        if (invitations.indexOfFirst { it.id == invitationId } == -1) return false
-        val invitation = invitations[invitations.indexOfFirst { it.id == invitationId }]
-        invitations[invitations.indexOfFirst { it.id == invitationId }] = DatabaseInvitation(
+        val indexOfInvitation = invitations.indexOfFirst { it.id == invitationId }
+        if (indexOfInvitation == -1) return false
+        val invitation = invitations[indexOfInvitation]
+        invitations[indexOfInvitation] = DatabaseInvitation(
             invitation.identity,
             expiryDate ?: invitation.expiryDate,
             invitation.invitedUserId,
