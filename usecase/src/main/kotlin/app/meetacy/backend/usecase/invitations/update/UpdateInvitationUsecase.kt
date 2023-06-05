@@ -55,5 +55,5 @@ class UpdateInvitationUsecase(
     }
 
     private suspend fun ableToInvite(meetingId: MeetingId, invitorId: UserId, invitedId: UserId): Boolean =
-        storage.isParticipating(meetingId, invitorId) && storage.isParticipating(meetingId, invitedId)
+        storage.isParticipating(meetingId, invitorId) && !storage.isParticipating(meetingId, invitedId)
 }
