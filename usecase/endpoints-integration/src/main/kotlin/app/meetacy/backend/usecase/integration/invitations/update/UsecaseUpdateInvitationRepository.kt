@@ -22,5 +22,6 @@ class UsecaseUpdateInvitationRepository(
         UpdateInvitationUsecase.Result.MeetingNotFound -> InvitationsUpdateResponse.MeetingNotFound
         is UpdateInvitationUsecase.Result.Success -> InvitationsUpdateResponse.Success(invitation.toEndpoint())
         UpdateInvitationUsecase.Result.Unauthorized -> InvitationsUpdateResponse.Unauthorized
+        UpdateInvitationUsecase.Result.InvalidDateTime -> InvitationsUpdateResponse.InvalidDateTimeIdentity
     }
 }

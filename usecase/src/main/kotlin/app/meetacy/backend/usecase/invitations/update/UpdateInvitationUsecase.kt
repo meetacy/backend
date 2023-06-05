@@ -18,6 +18,7 @@ class UpdateInvitationUsecase(
         object Unauthorized: Result
         object InvitationNotFound: Result
         object MeetingNotFound: Result
+        object InvalidDateTime: Result
         data class Success(val invitation: InvitationView): Result
     }
 
@@ -38,7 +39,7 @@ class UpdateInvitationUsecase(
                     return Result.MeetingNotFound
                 }
         }
-        if (expiryDate != null && expiryDate <= DateTime.now())
+        if (expiryDate != null && expiryDate <= DateTime.now()) return Result.InvalidDateTime
         storage.update(invitationIdentity.id, expiryDate, meetingIdentity?.id)
         return Result.Success(invitation = getInvitationsViewsRepository.getInvitationView(authorId, invitation.id))
     }
