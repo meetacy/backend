@@ -45,7 +45,9 @@ class ReadInvitationUsecase(
         if (identities.any { storage.getInvitation(it.id) == null
                     || storage.getInvitation(it.id)?.identity !in identities}) return Result.InvitationsNotFound
 
-        val invitations = storage.getInvitationsByIds(identities.map { it.id }).filter { it.invitedUserId == userId }
+        val invitations = storage.getInvitationsByIds(identities.map { it.id }).filter {
+            it.invitedUserId == userId || it.invitorUserId == userId
+        }
 
         return Result.Success(invitations.map {
             getInvitationsViewsRepository.getInvitationViewOrNull(userId, it) ?: return Result.InvitationsNotFound
