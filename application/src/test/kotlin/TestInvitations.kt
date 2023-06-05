@@ -5,6 +5,7 @@ import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.DateTime
 import app.meetacy.sdk.types.paging.asFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
@@ -147,6 +148,52 @@ class TestInvitations {
             println("Invitor successfully denied the invitation")
         } catch (e: Throwable) {
             println("Invitor failed to cancel invitation")
+            throw e
+        }
+        assert(!meeting.participants.paging(10.amount).asFlow().toList().flatten()
+            .map { it.data.id }.contains(invited.id))
+    }
+
+    @Test
+    fun `test invitation updating`() = runTestServer {
+        val invitor = generateTestAccount()
+        val invited = generateTestAccount()
+        val alice = generateTestAccount()
+        val meeting = invitor.meetings.createTestMeeting()
+        val newMeeting = invitor.meetings.createTestMeeting("New meeting")
+        val aliceMeeting = alice.meetings.createTestMeeting("Malicious meeting")
+        invited.friends.add(invitor.id)
+
+        var invitation = invitor.invitations.create(
+            invitor.users.get(invited.id),
+            DateTime.parse("2080-06-05T18:00:00Z"),
+            meeting.id
+        )
+
+        try {
+            alice.invitations.update(
+                invitation.id,
+                DateTime.parse("2040-12-05T09:00:00Z"),
+                aliceMeeting.id
+            )
+        } catch (e: Throwable) {
+            assert(e is MeetacyInternalException)
+            assert(e.message == Failure.InvitationNotFound.errorMessage)
+            println("Alice failed to update an invitation, everything is OK now")
+        }
+
+        try {
+            invitation = invitor.invitations.update(
+                invitation.id,
+                DateTime.parse("2032-12-05T09:00:00Z"),
+                newMeeting.id
+            )
+            delay(100)
+            assert(invitation.expiryDate == DateTime.parse("2032-12-05T09:00:00Z"))
+            assert(invitation.meeting.id == newMeeting.id)
+            println("Invitor successfully updated the invitation")
+        } catch (e: Throwable) {
+            println("Invitor failed to update invitation")
             throw e
         }
         assert(!meeting.participants.paging(10.amount).asFlow().toList().flatten()
