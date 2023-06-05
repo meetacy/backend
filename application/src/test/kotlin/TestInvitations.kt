@@ -119,4 +119,37 @@ class TestInvitations {
         assert(!meeting.participants.paging(10.amount).asFlow().toList().flatten()
             .map { it.data.id }.contains(invited.id))
     }
+
+    @Test
+    fun `test invitation cancellation`() = runTestServer {
+        val invitor = generateTestAccount()
+        val invited = generateTestAccount()
+        val alice = generateTestAccount()
+        val meeting = invitor.meetings.createTestMeeting()
+        invited.friends.add(invitor.id)
+
+        val invitation = invitor.invitations.create(
+            invitor.users.get(invited.id),
+            DateTime.parse("2080-06-05T18:00:00Z"),
+            meeting.id
+        )
+
+        try {
+            alice.invitations.cancel(invitation.id)
+        } catch (e: Throwable) {
+            assert(e is MeetacyInternalException)
+            assert(e.message == Failure.InvitationNotFound.errorMessage)
+            println("Alice failed to cancel invitation, everything is OK now")
+        }
+
+        try {
+            invitor.invitations.cancel(invitation.id)
+            println("Invitor successfully denied the invitation")
+        } catch (e: Throwable) {
+            println("Invitor failed to cancel invitation")
+            throw e
+        }
+        assert(!meeting.participants.paging(10.amount).asFlow().toList().flatten()
+            .map { it.data.id }.contains(invited.id))
+    }
 }
