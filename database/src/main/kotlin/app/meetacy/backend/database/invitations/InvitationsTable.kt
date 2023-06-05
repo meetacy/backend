@@ -71,9 +71,6 @@ class InvitationsTable(private val db: Database) : Table() {
     suspend fun markAsAccepted(
         invitationId: InvitationId
     ): Boolean = newSuspendedTransaction(db = db) {
-        getInvitationsByInvitationIds(list = listOf(invitationId))
-            .singleOrNull() ?: return@newSuspendedTransaction false
-
         update(where = { (INVITATION_ID eq invitationId.long) }) {
             it[IS_ACCEPTED] = true
         } > 0
@@ -82,10 +79,6 @@ class InvitationsTable(private val db: Database) : Table() {
     suspend fun markAsDenied(
         invitationId: InvitationId
     ): Boolean = newSuspendedTransaction(db = db) {
-        getInvitationsByInvitationIds(
-            list = listOf(invitationId)
-        ).singleOrNull() ?: return@newSuspendedTransaction false
-
         update(where = { INVITATION_ID eq invitationId.long }) {
             it[IS_ACCEPTED] = false
         } > 0
@@ -107,10 +100,6 @@ class InvitationsTable(private val db: Database) : Table() {
     }
 
     suspend fun cancel(invitationId: InvitationId): Boolean = newSuspendedTransaction(db = db) {
-        getInvitationsByInvitationIds(
-            listOf(invitationId)
-        ).singleOrNull() ?: return@newSuspendedTransaction false
-
         deleteWhere { INVITATION_ID eq invitationId.long } > 0
     }
 
