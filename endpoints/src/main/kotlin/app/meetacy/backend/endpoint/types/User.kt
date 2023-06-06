@@ -10,7 +10,7 @@ data class User(
     val isSelf: Boolean,
     val id: UserIdentitySerializable,
     val nickname: String,
-    val username: UsernameSerializable,
+    val username: UsernameSerializable?,
     val email: String?,
     val emailVerified: Boolean?,
     val avatarIdentity: FileIdentitySerializable?

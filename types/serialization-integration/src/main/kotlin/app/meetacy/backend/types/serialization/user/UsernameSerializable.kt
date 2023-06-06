@@ -12,4 +12,4 @@ value class UsernameSerializable(val string: String) {
     fun type() = Username.parse(string)
 }
 
-fun UsernameSerializable.serializable() = UsernameSerializable(string)
+fun Username.serializable() = UsernameSerializable(string)

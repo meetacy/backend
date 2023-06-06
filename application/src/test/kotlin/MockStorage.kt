@@ -160,7 +160,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }.map { user ->
                 if (user == null) return@map null
                 with(user) {
-                    FullUser(identity, nickname, username?.string, email, emailVerified, avatarId)
+                    FullUser(identity, nickname, username, email, emailVerified, avatarId)
                 }
             }
         }

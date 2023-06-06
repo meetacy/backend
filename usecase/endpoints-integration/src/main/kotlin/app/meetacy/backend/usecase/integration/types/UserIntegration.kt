@@ -11,5 +11,6 @@ fun UserView.mapToEndpoint() = User(
     nickname = nickname,
     email = email,
     emailVerified = emailVerified,
+    username = username?.serializable(),
     avatarIdentity = avatarIdentity?.serializable()
 )
