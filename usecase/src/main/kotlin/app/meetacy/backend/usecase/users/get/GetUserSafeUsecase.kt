@@ -13,7 +13,7 @@ class GetUserSafeUsecase(
 
         val userId = when (params) {
             is Params.Self -> ownerId
-            is Params.User -> params.identity.userId
+            is Params.User -> params.identity.id
         }
 
         val user = usersViewsRepository.getUserViewOrNull(ownerId, userId)

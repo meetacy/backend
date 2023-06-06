@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LocationSerializable(
-    private val latitude: Double,
-    private val longitude: Double
+    val latitude: Double,
+    val longitude: Double
 ) {
     fun type() = Location(latitude, longitude)
 }

@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package app.meetacy.backend.endpoint.ktor
 
 import kotlinx.serialization.Serializable
@@ -9,14 +11,14 @@ data class Success<out T>(
 )
 
 @Serializable
-class Failure(
+data class Failure(
     val status: Boolean,
     val errorCode: Int,
     val errorMessage: String
 ) {
     // next errorCode -- 17
     companion object {
-        val InvalidAccessIdentity = Failure(false, 1, "Please provide a valid token")
+        val InvalidToken = Failure(false, 1, "Please provide a valid token")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingId")
         val InvalidFileIdentity = Failure(false, 3, "Please provide a valid fileId")
         val InvalidLink = Failure(false, 4, "This link is invalid. Please consider to create a new one")
@@ -36,6 +38,15 @@ class Failure(
         val ApiVersionIsNotSpecified = Failure(false, 14, "Please specify api version using header 'Api-Version'")
         val ValidationError = Failure(false, 15, "")
         val InvalidUtf8String = Failure(false, 16, "Please provide valid string")
+
+        fun UnhandledException(throwable: Throwable): Failure = Failure(
+            status = false,
+            errorCode = 15,
+            errorMessage = buildString {
+                appendLine("Unhandled exception occurred. Stacktrace: ")
+                append(throwable.stackTraceToString())
+            }
+        )
     }
 }
 

@@ -1,6 +1,7 @@
 import app.meetacy.backend.endpoint.versioning.ApiVersion
 import app.meetacy.backend.endpoint.versioning.versioning
 import io.ktor.client.*
+import io.ktor.client.plugins.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.content.*
@@ -13,12 +14,14 @@ import io.ktor.server.routing.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import io.ktor.client.engine.cio.CIO as CIOClient
+import io.ktor.server.cio.CIO as CIOBackend
 
 class TestVersioning {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `test versioning api`() = runTest {
-        val server = embeddedServer(CIO) {
+        val server = embeddedServer(CIOBackend, port = 8080) {
             install(Routing)
 
             routing {
@@ -37,10 +40,11 @@ class TestVersioning {
             }
         }.start(wait = false)
 
-        val client = HttpClient {
+        val client = HttpClient(CIOClient) {
             expectSuccess = true
-            Logging {
-                level = LogLevel.ALL
+
+            defaultRequest {
+                url(port = 8080)
             }
         }
 

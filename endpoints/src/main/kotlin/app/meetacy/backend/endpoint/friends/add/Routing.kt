@@ -31,7 +31,7 @@ fun Route.addFriend(provider: AddFriendRepository) = post("/add") {
     val params = call.receive<AddFriendParams>()
     when (provider.addFriend(params)) {
         AddFriendResult.Success -> call.respondSuccess()
-        AddFriendResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        AddFriendResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
         AddFriendResult.FriendNotFound -> call.respondFailure(Failure.FriendNotFound)
         AddFriendResult.FriendAlreadyAdded -> call.respondFailure(Failure.FriendAlreadyAdded)
     }

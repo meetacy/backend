@@ -1,4 +1,5 @@
 import app.meetacy.backend.hash.HashGenerator
+import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.sdk.exception.MeetacyInternalException
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.Date
@@ -7,11 +8,13 @@ import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.meeting.Meeting
 import app.meetacy.sdk.types.optional.Optional
 import app.meetacy.sdk.types.meeting.MeetingId
+import app.meetacy.sdk.types.paging.asFlow
+import app.meetacy.sdk.types.paging.flatten
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
-import org.junit.jupiter.api.Test
 import java.time.Duration
 import java.time.Instant
+import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TestMeetings {
@@ -41,9 +44,9 @@ class TestMeetings {
 
         val meetingsList = testApi
             .meetings.history
-            .flow(chunkSize = 2.amount)
-            .toList()
+            .paging(chunkSize = 2.amount)
             .flatten()
+            .asFlow().toList()
         
         require(meetingsList.size == meetingsAmount) {
             "Meetings size returned by first pagination differs from actual size"
@@ -51,9 +54,9 @@ class TestMeetings {
 
         val emptySecondList = secondTestApi
             .meetings.history
-            .flow(chunkSize = 2.amount)
-            .toList()
+            .paging(chunkSize = 2.amount)
             .flatten()
+            .asFlow().toList()
 
         require(emptySecondList.isEmpty()) { "Should be empty before participating" }
 
@@ -63,9 +66,9 @@ class TestMeetings {
 
         val secondMeetingsList = secondTestApi
             .meetings.history
-            .flow(chunkSize = 2.amount)
-            .toList()
+            .paging(chunkSize = 2.amount)
             .flatten()
+            .asFlow().toList()
 
         require(secondMeetingsList.all { meeting -> meeting.previewParticipants.size == 2 })
 
@@ -218,5 +221,58 @@ class TestMeetings {
         val updated = meeting.updated()
 
         require(updated.title == newTitle)
+    }
+
+    @Test
+    fun `test meeting with invalid identity`() = runTestServer {
+        val client = generateTestAccount()
+
+        val (meetingId) = client.meetings.createTestMeeting().id.string.split(":")
+
+        val crackedMeetingId = MeetingId(InvalidId(meetingId))
+
+        val exception = try {
+            client.meetings.get(crackedMeetingId)
+            null
+        } catch (exception: MeetacyInternalException) {
+            exception
+        }
+
+        require(exception is MeetacyInternalException)
+    }
+
+    @Test
+    fun `test participants list`() = runTestServer {
+        val participantsCount = (0..50).random()
+
+        println("Test with participants count: $participantsCount")
+
+        val client = generateTestAccount()
+
+        val participants = List(participantsCount) { i ->
+            generateTestAccount(postfix = " participant #$i")
+        }
+
+        val meeting = client.meetings.createTestMeeting()
+
+        val emptyParticipants = meeting.participants
+            .paging(10.amount)
+            .flatten()
+            .asFlow().toList()
+
+        require(emptyParticipants.size == 1)
+
+        for (participant in participants) {
+            meeting.base.participate(
+                token = participant.token
+            )
+        }
+
+        val actualParticipants = meeting.participants
+            .paging(10.amount)
+            .flatten()
+            .asFlow().toList()
+
+        require(actualParticipants.size == participantsCount + 1)
     }
 }

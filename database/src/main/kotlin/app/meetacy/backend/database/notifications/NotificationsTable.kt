@@ -16,7 +16,7 @@ class NotificationsTable(private val db: Database) : Table() {
     private val NOTIFICATION_ID = long("NOTIFICATION_ID")
     private val OWNER_ID = long("OWNER_ID")
     private val TYPE = enumeration("TYPE", DatabaseNotification.Type::class)
-    private val DATE = varchar("DATE", length = DATE_MAX_LIMIT)
+    private val DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
     private val INVITER_ID = long("INVITER_ID").nullable()
     private val SUBSCRIBED_ID = long("SUBSCRIBED_ID").nullable().default(null)
     private val INVITED_MEETING_ID = long("INVITED_MEETING_ID").nullable().default(null)

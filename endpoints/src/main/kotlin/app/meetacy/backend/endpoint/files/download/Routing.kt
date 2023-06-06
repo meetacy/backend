@@ -14,7 +14,7 @@ import java.io.File
 import java.io.FileInputStream
 
 sealed interface GetFileResult {
-    class Success(val file: File, val fileName: String, val fileSize: FileSize?) : GetFileResult
+    class Success(val file: File, val fileName: String, val fileSize: FileSize) : GetFileResult
     object InvalidFileIdentity : GetFileResult
 }
 
@@ -26,6 +26,7 @@ fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
     val fileIdentity = FileIdentity.parse(
         call.parameters["fileId"]!!
     )!!
+
     when (val result = getFileRepository.getFile(fileIdentity)) {
         GetFileResult.InvalidFileIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
 
@@ -33,7 +34,7 @@ fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
             call.response.header(
                 HttpHeaders.ContentDisposition,
                 ContentDisposition.Attachment.withParameter(
-                    ContentDisposition.Parameters.Size, "${result.fileSize ?: 0}"
+                    ContentDisposition.Parameters.Size, "${result.fileSize.bytesSize}"
                 ).withParameter(
                     ContentDisposition.Parameters.FileName, result.fileName
                 ).toString()
@@ -44,7 +45,7 @@ fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
 }
 
 suspend fun ApplicationCall.respondFile(file: File, contentType: ContentType = ContentType.defaultForFile(file)) {
-    respondOutputStream(contentType = contentType, contentLength = file.length()) {
+    respondOutputStream(contentType, contentLength = file.length()) {
         withContext(Dispatchers.IO) {
             FileInputStream(file).transferTo(this@respondOutputStream)
         }

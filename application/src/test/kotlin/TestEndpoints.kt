@@ -3,9 +3,11 @@ import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
+import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
+import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.users.UsersDependencies
@@ -13,32 +15,39 @@ import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
+import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
 import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
 import app.meetacy.backend.usecase.integration.email.confirm.UsecaseConfirmEmailRepository
 import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
+import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
+import app.meetacy.backend.usecase.integration.friends.location.stream.UsecaseStreamLocationRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.history.list.UsecaseListMeetingsHistoryRepository
 import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
+import app.meetacy.backend.usecase.integration.meetings.participants.list.UsecaseListMeetingParticipantsRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
+import app.meetacy.backend.usecase.location.stream.BaseFriendsLocationStreamingStorage
+import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
+import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
@@ -46,19 +55,25 @@ import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
+import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
+import app.meetacy.sdk.types.auth.Token
+import app.meetacy.sdk.types.datetime.Date
+import app.meetacy.sdk.types.location.Location
+import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import java.io.File
 
 val testApi = MeetacyApi(
-    baseUrl = "http://localhost:8080",
+    baseUrl = "http://localhost:8080".url,
     httpClient = HttpClient {
         Logging {
-//            level = LogLevel.NONE
-            level = LogLevel.ALL
+            level = LogLevel.NONE
+//            level = LogLevel.ALL
         }
         expectSuccess = true
         developmentMode = true
@@ -75,6 +90,17 @@ suspend fun generateTestAccount(
 
     return newClient.getMe()
 }
+
+val InvalidToken: Token = Token("1:_INVALID_TOKEN_qD3Z0uM0iqE7g1J8VxkuzGe0CAXXDyHdfUGmj2xBPhuMYGFcHVawNvrK1KB9F9rgoeLa8Go2lqPDnzKYJg4EFbJUyQ6qu6P3iGg5Ytl4w1tpO1nja1aFxNtneq07uFERxSSsR7jd5YAe1Y0urlx9KDKxoQdIdGVvWGuc7dv3IStQUCZQziSmzjuxrVrUF9ywvg1bM8GiR2TU5nUItRPDhDyebeMzQcC7vwRYTdbUIIh4dYX4y")
+
+fun InvalidId(id: String): String = "$id:_INVALID_ID_qD3qD3Z0uM0iqE7g1J8VxkuzGe0CAXXDyHdfUGmj2xBPhuMYGFcHVawNvrK1KB9F9rgoeLa8Go2lqPDnzKYJg4EFbJUyQ6qu6P3iGg5Ytl4w1tpO1nja1aFxNtneq07uFERxSSsR7jd5YAe1Y0urlx9KDKxoQdIdGVvWGuc7dv3IStQUCZQziSmzjuxrVrUF9ywvg1bM8GiR2TU5nUItRPDhDyebeMzQcC7vwRYTdbUIIh4dYX4y"
+
+suspend fun AuthorizedMeetingsApi.createTestMeeting(title: String = "Test Meeting") =
+    create(
+        title = title,
+        date = Date.today(),
+        location = Location.NullIsland
+    )
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun runTestServer(
@@ -115,6 +141,18 @@ fun runTestServer(
             )
         ),
         friendsDependencies = FriendsDependencies(
+            friendsLocationDependencies = FriendsLocationDependencies(
+                streamLocationRepository = UsecaseStreamLocationRepository(
+                    usecase = FriendsLocationStreamingUsecase(
+                        authRepository = mockStorage,
+                        storage = BaseFriendsLocationStreamingStorage(
+                            flowStorageUnderlying = mockStorage,
+                            friendsStorage = mockStorage
+                        ),
+                        usersViewsRepository = mockStorage
+                    )
+                )
+            ),
             addFriendRepository = UsecaseAddFriendRepository(
                 usecase = AddFriendUsecase(
                     authRepository = mockStorage,
@@ -154,6 +192,16 @@ fun runTestServer(
                         storage = mockStorage,
                         getMeetingsViewsRepository = mockStorage,
                         viewMeetingsRepository = mockStorage
+                    )
+                )
+            ),
+            meetingParticipantsDependencies = ParticipantsDependencies(
+                listMeetingParticipantsRepository = UsecaseListMeetingParticipantsRepository(
+                    usecase = ListMeetingParticipantsUsecase(
+                        authRepository = mockStorage,
+                        checkMeetingRepository = mockStorage,
+                        storage = mockStorage,
+                        getUsersViewsRepository = mockStorage
                     )
                 )
             ),
@@ -215,7 +263,22 @@ fun runTestServer(
             )
         ),
         filesDependencies = FilesDependencies(
-            saveFileRepository = mockStorage,
+            saveFileRepository = UsecaseUploadFileRepository(
+                basePath = File(
+                    /* parent = */ System.getenv("user.dir"),
+                    /* child = */ "files"
+                ).apply {
+                    mkdirs()
+                    deleteOnExit()
+                }.absolutePath,
+                usecase = UploadFileUsecase(
+                    authRepository = mockStorage,
+                    storage = mockStorage,
+                    hashGenerator = DefaultHashGenerator
+                ),
+                filesLimit = 100L * 1024 * 1024,
+                deleteFilesOnExit = true
+            ),
             getFileRepository = mockStorage
         ),
         usersDependencies = UsersDependencies(

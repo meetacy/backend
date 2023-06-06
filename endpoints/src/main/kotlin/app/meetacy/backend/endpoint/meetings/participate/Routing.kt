@@ -45,7 +45,7 @@ fun Route.participateMeeting(participateMeetingRepository: ParticipateMeetingRep
 
         ParticipateMeetingResult.Success -> call.respondSuccess()
 
-        ParticipateMeetingResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        ParticipateMeetingResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
         ParticipateMeetingResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
         ParticipateMeetingResult.MeetingAlreadyParticipate -> call.respondFailure(Failure.MeetingAlreadyParticipate)
     }

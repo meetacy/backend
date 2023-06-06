@@ -3,6 +3,7 @@ package app.meetacy.backend.endpoint
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.auth
 import app.meetacy.backend.endpoint.auth.generate.GenerateParam
+import app.meetacy.backend.endpoint.exceptions.installExceptionsHandler
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.files.files
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
@@ -18,6 +19,7 @@ import app.meetacy.backend.endpoint.notifications.notifications
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.endpoint.users.edit.EditUserParams
 import app.meetacy.backend.endpoint.users.users
+import app.meetacy.backend.endpoint.versioning.ApiVersion
 import app.meetacy.backend.types.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -29,10 +31,14 @@ import io.ktor.server.plugins.autohead.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.partialcontent.*
+import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.plugins.requestvalidation.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.plugins.swagger.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
+import io.rsocket.kotlin.ktor.server.RSocketSupport
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
@@ -48,24 +54,6 @@ fun startEndpoints(
     filesDependencies: FilesDependencies,
     usersDependencies: UsersDependencies
 ): ApplicationEngine = embeddedServer(CIO, host = "localhost", port = port) {
-
-    install(RequestValidation) {
-        validate<GenerateParam> { validateLength("nickname", it.nickname, NICKNAME_MAX_LIMIT) }
-        validate<CreateParam> {
-            validateLength("title", it.title, TITLE_MAX_LIMIT)
-            validateLength("description", it.description, DESCRIPTION_MAX_LIMIT)
-            validateLength("date", it.date.toString(), DATE_MAX_LIMIT)
-        }
-        validate<EditUserParams> {
-            validateLength("nickname", it.nickname, NICKNAME_MAX_LIMIT)
-            validateLength("username", if (it.username.value != null) it.username.value.toString() else null, USERNAME_MAX_LIMIT)
-        }
-        validate<EditMeetingParams> {
-            validateLength("title", it.title, TITLE_MAX_LIMIT)
-            validateLength("description", it.description, DESCRIPTION_MAX_LIMIT)
-            validateLength("date", it.date.toString(), DATE_MAX_LIMIT)
-        }
-    }
 
     install(StatusPages) {
         exception<RequestValidationException> { call, cause ->
@@ -87,13 +75,13 @@ fun startEndpoints(
         allowCredentials = true
         anyHost()
         allowHeader(HttpHeaders.ContentType)
+        allowHeader(ApiVersion.Header)
     }
+    install(PartialContent)
     install(AutoHeadResponse)
-    install(PartialContent) {
-        // Maximum number of ranges that will be accepted from an HTTP request.
-        // If the HTTP request specifies more ranges, they will all be merged into a single range.
-        maxRangeCount = 10
-    }
+    installExceptionsHandler()
+    install(WebSockets)
+    install(RSocketSupport)
 
     routing {
         static("/") {
@@ -108,11 +96,3 @@ fun startEndpoints(
         files(filesDependencies)
     }
 }.start(wait)
-
-private fun validateLength(valueName: String, value: String?, maxLength: Int): ValidationResult {
-    return if (value != null && value.length > maxLength) {
-        ValidationResult.Invalid("A $valueName should not exceed $maxLength")
-    } else {
-        ValidationResult.Valid
-    }
-}

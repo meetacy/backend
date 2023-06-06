@@ -40,7 +40,7 @@ fun Route.createMeeting(createMeetingRepository: CreateMeetingRepository) = post
 
     when (val result = createMeetingRepository.createMeeting(params)) {
         is CreateMeetingResult.Success -> call.respondSuccess(result.meeting)
-        CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
         CreateMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
         CreateMeetingResult.InvalidFileIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
     }

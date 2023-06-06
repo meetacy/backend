@@ -45,7 +45,7 @@ fun Route.editMeeting(editMeetingRepository: EditMeetingRepository) = post("/edi
 
     when (val result = editMeetingRepository.editMeeting(params)) {
         is EditMeetingResult.Success -> call.respondSuccess(result.meeting)
-        EditMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        EditMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
         EditMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
         EditMeetingResult.InvalidAvatarIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
         EditMeetingResult.InvalidMeetingId -> call.respondFailure(Failure.InvalidMeetingIdentity)

@@ -24,13 +24,11 @@ sealed interface TokenGenerateResult {
     object InvalidUtf8String : TokenGenerateResult
 }
 
-fun Route.generateToken(tokenGenerateRepository: TokenGenerateRepository) = post("/generate") {
+fun Route.generateToken(repository: TokenGenerateRepository) = post("/generate") {
     val generateParam = call.receive<GenerateParam>()
-    when (val result = tokenGenerateRepository.generateToken(generateParam.nickname)) {
-        is TokenGenerateResult.Success -> call.respondSuccess(
-            result.accessIdentity.serializable()
-        )
 
-        TokenGenerateResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
+    when (val result = repository.generateToken(generateParam.nickname)) {
+        is TokenGenerateResult.Success -> call.respondSuccess(result.accessIdentity.serializable())
+        is TokenGenerateResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
     }
 }

@@ -19,14 +19,14 @@ class DeleteFriendUsecase(
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidToken }
 
-        val friend = getUsersViewsRepository.getUsersViewsOrNull(userId, listOf(friendIdentity.userId))
+        val friend = getUsersViewsRepository.getUsersViewsOrNull(userId, listOf(friendIdentity.id))
             .first()
             ?: return Result.FriendNotFound
 
         if (friend.identity.accessHash.string != friendIdentity.accessHash.string) return Result.FriendNotFound
-        if (!storage.isSubscribed(userId, friendIdentity.userId)) return Result.FriendNotFound
+        if (!storage.isSubscribed(userId, friendIdentity.id)) return Result.FriendNotFound
 
-        storage.deleteFriend(userId, friendIdentity.userId)
+        storage.deleteFriend(userId, friendIdentity.id)
         return Result.Success
     }
     sealed interface Result {

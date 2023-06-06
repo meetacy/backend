@@ -8,7 +8,6 @@ import app.meetacy.backend.endpoint.types.User
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.amount.AmountSerializable
 import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
-import app.meetacy.backend.types.serialization.access.serializable
 import app.meetacy.backend.types.serialization.paging.serializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -36,6 +35,6 @@ fun Route.listFriends(getProvider: ListFriendsRepository) = post("/list") {
     val friendToken = call.receive<ListFriendsBody>()
     when (val result = getProvider.getFriends(friendToken)) {
         is ListFriendsResult.Success -> call.respondSuccess(result.paging.serializable())
-        is ListFriendsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        is ListFriendsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
     }
 }

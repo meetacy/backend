@@ -19,7 +19,7 @@ class AddFriendUsecase(
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidToken }
 
-        val friend = getUsersViewsRepository.getUsersViewsOrNull(userId, listOf(friendIdentity.userId))
+        val friend = getUsersViewsRepository.getUsersViewsOrNull(userId, listOf(friendIdentity.id))
             .first()
             ?: return Result.FriendNotFound
 
@@ -27,7 +27,7 @@ class AddFriendUsecase(
 
 
 
-        if (!storage.isSubscribed(userId, friendIdentity.userId)) storage.addFriend(userId, friendIdentity.userId)
+        if (!storage.isSubscribed(userId, friendIdentity.id)) storage.addFriend(userId, friendIdentity.id)
             else return Result.FriendAlreadyAdded
 
         return Result.Success

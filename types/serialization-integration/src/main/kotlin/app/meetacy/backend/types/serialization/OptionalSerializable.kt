@@ -7,6 +7,9 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
+/**
+ * Optional.Undefined is never being encoded in JSON
+ */
 @Serializable(with = OptionalSerializable.Serializer::class)
 sealed interface OptionalSerializable<out T> {
     val value: T? get() = null
@@ -22,17 +25,27 @@ sealed interface OptionalSerializable<out T> {
     class Serializer<T>(
         private val subSerializer: KSerializer<T>
     ) : KSerializer<OptionalSerializable<T>> {
-        override val descriptor = SerialDescriptor(
-            serialName = "EditParam" + subSerializer.descriptor.serialName,
-            original = subSerializer.descriptor
-        )
+
+        override val descriptor: SerialDescriptor = object : SerialDescriptor by subSerializer.descriptor {
+            override val serialName = "OptionalSerializer"
+            override val isNullable = true
+        }
 
         override fun deserialize(decoder: Decoder): OptionalSerializable<T> {
-            return Present(decoder.decodeSerializableValue(subSerializer))
+            val value = decoder.decodeSerializableValue(subSerializer)
+            return Present(value)
         }
 
         override fun serialize(encoder: Encoder, value: OptionalSerializable<T>) {
-            encoder.encodeNullableSerializableValue(subSerializer, value.value)
+            if (value !is Present) {
+                error(
+                    message = "Only 'Present' values can be encoded, " +
+                            "please consider to use 'Undefined' as default " +
+                            "value in order to prevent it from encoding"
+                )
+            }
+
+            encoder.encodeSerializableValue(subSerializer, value.value)
         }
     }
 }

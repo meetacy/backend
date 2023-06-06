@@ -45,6 +45,6 @@ fun Route.get(repository: GetNotificationsRepository) = post("/get") {
 
         is GetNotificationsRepository.Result.Success -> call.respondSuccess(result.notifications)
 
-        is GetNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(Failure.InvalidAccessIdentity)
+        is GetNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
     }
 }

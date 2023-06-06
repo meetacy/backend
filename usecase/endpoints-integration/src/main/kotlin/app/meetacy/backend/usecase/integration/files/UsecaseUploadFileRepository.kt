@@ -9,10 +9,11 @@ import java.io.InputStream
 class UsecaseUploadFileRepository(
     private val basePath: String,
     private val usecase: UploadFileUsecase,
-    private val filesLimit: Long
+    private val filesLimit: Long,
+    private val deleteFilesOnExit: Boolean
 ) : SaveFileRepository {
     override suspend fun saveFile(accessIdentity: AccessIdentity, fileName: String, inputProvider: () -> InputStream): UploadFileResult {
-        val uploader = UsecaseFileUploader(inputProvider(), basePath)
+        val uploader = UsecaseFileUploader(inputProvider(), basePath, deleteFilesOnExit)
         return when(val result = usecase.saveFile(accessIdentity, uploader, fileName, filesLimit)) {
             is UploadFileUsecase.Result.Success -> UploadFileResult.Success(result.fileIdentity)
             UploadFileUsecase.Result.InvalidIdentity -> UploadFileResult.InvalidIdentity

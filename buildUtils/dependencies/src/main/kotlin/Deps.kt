@@ -9,6 +9,7 @@ object Deps {
     private const val serializationVersion = "1.3.2"
     private const val nodejsExternalsVersion = "0.0.7"
     private const val ktorVersion = "2.2.3"
+    private const val rsocketVersion = "0.15.4"
     private const val ktorOpenapiVersion = "0.2-beta.20"
     private const val exposedVersion = "0.35.1"
     private const val datetimeVersion = "0.4.0"
@@ -113,8 +114,11 @@ object Deps {
                 const val Netty = "io.ktor:ktor-server-netty:$ktorVersion"
                 const val PartialContent = "io.ktor:ktor-server-partial-content:$ktorVersion"
                 const val AutoHead = "io.ktor:ktor-server-auto-head-response:$ktorVersion"
-                const val Cors = "io.ktor:ktor-server-cors:2.2.3"
-                const val Swagger = "io.ktor:ktor-server-swagger:2.2.3"
+                const val Cors = "io.ktor:ktor-server-cors:$ktorVersion"
+                const val Swagger = "io.ktor:ktor-server-swagger:$ktorVersion"
+                const val RSocket = "io.rsocket.kotlin:rsocket-ktor-server:$rsocketVersion"
+                const val WebSockets = "io.ktor:ktor-server-websockets:$ktorVersion"
+                const val StatusPages = "io.ktor:ktor-server-status-pages:$ktorVersion"
             }
         }
         object Exposed {
