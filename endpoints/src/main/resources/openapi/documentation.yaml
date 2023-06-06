@@ -357,6 +357,40 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 FriendNotFound:
                   $ref: '#/components/examples/FriendNotFound'
+  /invitations/update:
+    description: Update an invitation
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Update an invitation
+      tags:
+        - invitations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateInvitationRequest"
+      responses:
+        "200":
+          description: Example of a successful updated invitation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateInvitationResponse'
+        "400":
+          description: Example of failed invitation update
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidResponse"
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidToken'
   /invitations/accept:
     description: Accept an invitation
     parameters:
@@ -367,6 +401,7 @@ paths:
         schema:
           type: string
     post:
+      summary: Accept an invitation
       tags:
         - invitations
       requestBody:
@@ -393,6 +428,80 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+  /invitations/cancel:
+    description: Cancel an invitation
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Cancel an invitation
+      tags:
+        - invitations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelInvitationRequest'
+      responses:
+        "200":
+          description: Example of a successful invitation cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusTrueResponse'
+              examples:
+                Success:
+                  $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          description: Example of failed invitation cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidToken'
+  /invitations/deny:
+    description: Deny an invitation
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Deny an invitation
+      tags:
+        - invitations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DenyInvitationRequest'
+      responses:
+        "200":
+          description: Example of a successful invitation denying
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusTrueResponse'
+              examples:
+                Success:
+                  $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          description: Example of failed invitation denying
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidAccessIdentity:
+                  $ref: '#/components/examples/InvalidToken'
   /invitations/read:
     description: Read an invitation
     parameters:
@@ -403,6 +512,7 @@ paths:
         schema:
           type: string
     get:
+      summary: Read an invitation
       tags:
         - invitations
       requestBody:
@@ -1545,7 +1655,7 @@ components:
       properties:
         token:
           type: string
-        invitationIdentity:
+        id:
           type: string
       required:
         - token
@@ -1578,3 +1688,48 @@ components:
       required:
         - "status"
         - "result"
+    DenyInvitationRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        token:
+          type: string
+      required:
+        - "id"
+        - "token"
+    CancelInvitationRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        token:
+          type: string
+      required:
+        - "id"
+        - "token"
+    UpdateInvitationRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        token:
+          type: string
+        expiryDate:
+          type: string
+        meetingId:
+          type: string
+      required:
+        - id
+        - token
+    UpdateInvitationResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        result:
+          $ref: '#/components/schemas/Invitation'
+      required:
+        - status
+        - result
