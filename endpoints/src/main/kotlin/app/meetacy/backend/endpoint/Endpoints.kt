@@ -2,25 +2,18 @@ package app.meetacy.backend.endpoint
 
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.auth
-import app.meetacy.backend.endpoint.auth.generate.GenerateParam
 import app.meetacy.backend.endpoint.exceptions.installExceptionsHandler
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.files.files
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.friends
-import app.meetacy.backend.endpoint.ktor.Failure
-import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
-import app.meetacy.backend.endpoint.meetings.create.CreateParam
-import app.meetacy.backend.endpoint.meetings.edit.EditMeetingParams
 import app.meetacy.backend.endpoint.meetings.meetings
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.notifications.notifications
 import app.meetacy.backend.endpoint.users.UsersDependencies
-import app.meetacy.backend.endpoint.users.edit.EditUserParams
 import app.meetacy.backend.endpoint.users.users
 import app.meetacy.backend.endpoint.versioning.ApiVersion
-import app.meetacy.backend.types.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -31,11 +24,7 @@ import io.ktor.server.plugins.autohead.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.partialcontent.*
-import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.plugins.requestvalidation.*
-import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.plugins.swagger.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.rsocket.kotlin.ktor.server.RSocketSupport
@@ -54,15 +43,6 @@ fun startEndpoints(
     filesDependencies: FilesDependencies,
     usersDependencies: UsersDependencies
 ): ApplicationEngine = embeddedServer(CIO, host = "localhost", port = port) {
-
-    install(StatusPages) {
-        exception<RequestValidationException> { call, cause ->
-            call.respondFailure(Failure(
-                false,
-                Failure.ValidationError.errorCode,
-                cause.reasons.toString().replace("[", "").replace("]", "")))
-        }
-    }
 
     install(ContentNegotiation) {
         json(

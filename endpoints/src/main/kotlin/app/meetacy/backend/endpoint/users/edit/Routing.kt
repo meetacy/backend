@@ -7,6 +7,7 @@ import app.meetacy.backend.endpoint.types.User
 import app.meetacy.backend.types.serialization.OptionalSerializable
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
+import app.meetacy.backend.types.serialization.user.UsernameSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -15,8 +16,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class EditUserParams(
     val token: AccessIdentitySerializable,
-    val nickname: String?,
-    val username: OptionalSerializable<String?> = OptionalSerializable.Undefined,
+    val nickname: OptionalSerializable<String> = OptionalSerializable.Undefined,
+    val username: OptionalSerializable<UsernameSerializable?> = OptionalSerializable.Undefined,
     val avatarId: OptionalSerializable<FileIdentitySerializable?> = OptionalSerializable.Undefined,
 )
 
@@ -26,7 +27,7 @@ sealed interface EditUserResult {
     object InvalidUtf8String : EditUserResult
     object NullEditParameters : EditUserResult
     object InvalidAvatarIdentity : EditUserResult
-    object InvalidUsername : EditUserResult
+    object UsernameAlreadyOccupied : EditUserResult
 }
 
 interface EditUserRepository {
@@ -42,6 +43,6 @@ fun Route.editUser(editUserRepository: EditUserRepository) = post("/edit") {
         EditUserResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
         EditUserResult.InvalidAvatarIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
         EditUserResult.NullEditParameters -> call.respondFailure(Failure.NullEditParams)
-        EditUserResult.InvalidUsername -> call.respondFailure(Failure.InvalidUsername)
+        EditUserResult.UsernameAlreadyOccupied -> call.respondFailure(Failure.UsernameAlreadyOccupied)
     }
 }

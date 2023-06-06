@@ -24,7 +24,7 @@ data class Failure(
         val InvalidLink = Failure(false, 4, "This link is invalid. Please consider to create a new one")
         val LastNotificationIdInvalid = Failure(false, 5, "Please provide a valid notificationId")
 
-        val InvalidUsername = Failure(false, 6, "Please provide a valid username")
+        val UsernameAlreadyOccupied = Failure(false, 6, "This username is not a unique username")
 
         val FriendNotFound = Failure(false, 7, "Friend was not found")
         val UserNotFound = Failure(false, 8, "FullUser not found")

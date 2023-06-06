@@ -3,7 +3,7 @@ package app.meetacy.backend.types.user
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 
 @JvmInline
-value class Username @UnsafeConstructor constructor(public val string: String) {
+value class Username @UnsafeConstructor constructor(val string: String) {
     @OptIn(UnsafeConstructor::class)
     companion object {
         fun parse(string: String): Username {

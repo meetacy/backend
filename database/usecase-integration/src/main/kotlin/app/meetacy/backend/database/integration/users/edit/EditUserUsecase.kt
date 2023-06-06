@@ -14,12 +14,12 @@ class DatabaseEditUserStorage(db: Database) : EditUserUsecase.Storage {
     private val usersTable = UsersTable(db)
 
     override suspend fun editUser(
-        userId: UserId, nickname: String?,
+        userId: UserId, nickname: Optional<String>,
         username: Optional<Username?>,
         avatarId: Optional<FileId?>
     ): FullUser =
         usersTable.editUser(userId, nickname, username, avatarId).mapToUsecase()
 
-    override suspend fun checkUsername(username: String): Boolean = usersTable.checkUsername(username)
-
+    override suspend fun isOccupied(username: Username): Boolean =
+        usersTable.isUsernameOccupied(username)
 }

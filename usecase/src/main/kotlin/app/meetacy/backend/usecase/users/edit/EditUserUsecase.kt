@@ -8,7 +8,6 @@ import app.meetacy.backend.types.ifPresent
 import app.meetacy.backend.types.map
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.Username
-import app.meetacy.backend.types.user.usernameOrNull
 import app.meetacy.backend.usecase.types.*
 
 class EditUserUsecase(
@@ -24,24 +23,19 @@ class EditUserUsecase(
         object InvalidUtf8String : Result
         object NullEditParameters : Result
         object InvalidAvatarIdentity : Result
-        object InvalidUsername : Result
+        object UsernameAlreadyOccupied : Result
     }
 
     suspend fun editUser(
         token: AccessIdentity,
-        nickname: String?,
-        usernameOptionalString: Optional<String?>,
+        nickname: Optional<String>,
+        usernameOptional: Optional<Username?>,
         avatarIdentityOptional: Optional<FileIdentity?>,
     ): Result {
-        val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
-        if (nickname != null) if (!utf8Checker.checkString(nickname)) return Result.InvalidUtf8String
+        val nicknameValue = nickname.value
 
-        val usernameOptional = usernameOptionalString.map  { string ->
-            string ?: return@map null
-            val username = string.usernameOrNull
-            if (username != null) storage.check(username.string) { return Result.InvalidUsername }
-            string.usernameOrNull
-        }
+        val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
+        if (nicknameValue != null) if (!utf8Checker.checkString(nicknameValue)) return Result.InvalidUtf8String
 
         avatarIdentityOptional.ifPresent { identity ->
             if (identity != null) {
@@ -49,11 +43,15 @@ class EditUserUsecase(
             }
         }
 
-        if (listOf(nickname, avatarIdentityOptional).all { it == null }) {
-            return Result.NullEditParameters
+        val usernameValue = usernameOptional.value
+
+        if (usernameValue != null && storage.isOccupied(usernameValue)) {
+            return Result.UsernameAlreadyOccupied
         }
 
-
+        if (listOf(nickname, avatarIdentityOptional, usernameOptional).all { it is Optional.Undefined }) {
+            return Result.NullEditParameters
+        }
 
         val fullUser = storage.editUser(
             userId,
@@ -61,16 +59,17 @@ class EditUserUsecase(
             usernameOptional,
             avatarIdentityOptional.map { it?.id }
         )
+
         return Result.Success(
             with(fullUser) {
                 UserView(
-                    true,
-                    null,
-                    identity,
-                    fullUser.nickname,
-                    fullUser.username,
-                    fullUser.email,
-                    fullUser.emailVerified,
+                    isSelf = true,
+                    relationship = null,
+                    this.identity,
+                    this.nickname,
+                    this.username,
+                    this.email,
+                    this.emailVerified,
                     avatarIdentityOptional.value
                 )
             }
@@ -80,21 +79,11 @@ class EditUserUsecase(
     interface Storage {
         suspend fun editUser(
             userId: UserId,
-            nickname: String?,
+            nickname: Optional<String>,
             username: Optional<Username?>,
             avatarId: Optional<FileId?>
         ): FullUser
 
-        suspend fun checkUsername(
-            username: String
-        ): Boolean
-
-    }
-
-    private suspend inline fun Storage.check(
-        username: String,
-        fallback: () -> Nothing
-    ) {
-        if(!checkUsername(username)) fallback()
+        suspend fun isOccupied(username: Username): Boolean
     }
 }

@@ -101,12 +101,14 @@ class UsersTable(private val db: Database) : Table() {
 
     suspend fun editUser(
         userId: UserId,
-        nickname: String?,
+        nickname: Optional<String>,
         username: Optional<Username?>,
         avatarId: Optional<FileId?>,
     ): DatabaseUser = newSuspendedTransaction(db = db) {
         update({ USER_ID eq userId.long }) { statement ->
-            nickname?.let { statement[NICKNAME] = it }
+            nickname.ifPresent {
+                statement[NICKNAME] = it
+            }
             avatarId.ifPresent {
                 statement[AVATAR_ID] = it?.long
             }
@@ -119,7 +121,7 @@ class UsersTable(private val db: Database) : Table() {
             .toUser()
     }
 
-    suspend fun checkUsername(username: String): Boolean = newSuspendedTransaction(db = db) {
-        return@newSuspendedTransaction select { USERNAME eq username }.firstOrNull() == null
+    suspend fun isUsernameOccupied(username: Username): Boolean = newSuspendedTransaction(db = db) {
+        select { USERNAME eq username.string }.any()
     }
 }

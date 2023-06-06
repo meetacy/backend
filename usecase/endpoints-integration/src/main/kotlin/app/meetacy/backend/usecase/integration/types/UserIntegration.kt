@@ -5,6 +5,8 @@ import app.meetacy.backend.types.serialization.datetime.serializable
 import app.meetacy.backend.types.serialization.file.serializable
 import app.meetacy.backend.types.serialization.location.serializable
 import app.meetacy.backend.types.serialization.user.serializable
+import app.meetacy.backend.types.user.Relationship
+import app.meetacy.backend.usecase.types.UsecaseRelationship
 import app.meetacy.backend.usecase.types.UserView
 import app.meetacy.backend.endpoint.types.UserLocationSnapshot as EndpointUserLocationSnapshot
 import app.meetacy.backend.usecase.types.UserLocationSnapshot as UsecaseUserLocationSnapshot
@@ -17,7 +19,7 @@ fun UserView.mapToEndpoint() = User(
     email = email,
     emailVerified = emailVerified,
     username = username?.serializable(),
-    avatarIdentity = avatarIdentity?.serializable()
+    avatarId = avatarIdentity?.serializable()
 )
 
 fun UsecaseUserLocationSnapshot.mapToEndpoint() = EndpointUserLocationSnapshot(
@@ -33,6 +35,7 @@ fun User.mapToUsecase(): UserView = UserView(
     nickname = nickname,
     email = email,
     emailVerified = emailVerified,
+    username = username?.type(),
     avatarIdentity = avatarId?.type()
 )
 
