@@ -20,7 +20,7 @@ class ConfirmEmailUsecase(private val storage: Storage) {
 
     interface Storage {
         /**
-         * @return null if confirm hash invalid
+         * @return null if you confirm hash invalid
          */
         suspend fun getConfirmHashOwnerId(email: String, confirmHash: String): UserId?
         suspend fun deleteHashes(email: String)

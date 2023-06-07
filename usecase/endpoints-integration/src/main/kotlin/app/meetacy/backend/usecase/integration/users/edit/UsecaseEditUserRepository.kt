@@ -17,7 +17,8 @@ class UsecaseEditUserRepository(
         when (
             val result = usecase.editUser(
                 token.type(),
-                nickname,
+                nickname.type(),
+                username.type().map { it?.type() },
                 avatarId.type().map { fileIdentity -> fileIdentity?.type() },
             )
         ) {
@@ -29,6 +30,8 @@ class UsecaseEditUserRepository(
                 EditUserResult.InvalidUtf8String
             EditUserUsecase.Result.NullEditParameters ->
                 EditUserResult.NullEditParameters
+            EditUserUsecase.Result.UsernameAlreadyOccupied ->
+                EditUserResult.UsernameAlreadyOccupied
             is EditUserUsecase.Result.Success ->
                 EditUserResult.Success(result.user.mapToEndpoint())
         }

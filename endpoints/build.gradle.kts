@@ -20,4 +20,6 @@ dependencies {
     implementation(Deps.Libs.Ktor.Server.StatusPages)
     implementation(Deps.Libs.Kotlinx.Serialization)
     implementation(Deps.Libs.Slf4j.Simple)
+    implementation(Deps.Libs.Ktor.Server.RequestValidation)
+    implementation(Deps.Libs.Ktor.Server.ServerStatusPage)
 }

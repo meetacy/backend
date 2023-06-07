@@ -5,6 +5,7 @@ import app.meetacy.backend.types.access.AccessToken
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.HashGenerator
 import app.meetacy.backend.usecase.types.Utf8Checker
+import app.meetacy.backend.usecase.types.checkString
 
 
 class GenerateTokenUsecase(
@@ -14,7 +15,7 @@ class GenerateTokenUsecase(
 ) {
 
     suspend fun generateToken(nickname: String): Result {
-        if (!utf8Checker.checkString(nickname)) return Result.InvalidUtf8String
+        utf8Checker.checkString(nickname) { return Result.InvalidUtf8String }
         val newUserId = storage.createUser(nickname)
         val token = AccessIdentity(
             newUserId,

@@ -27,7 +27,7 @@ interface SaveFileRepository {
     ): UploadFileResult
 }
 
-fun Route.upload(provider: SaveFileRepository) = post("/upload") {
+fun Route.upload(saveFileRepository: SaveFileRepository) = post("/upload") {
     val multipartData = call.receiveMultipart()
 
     var token: AccessIdentity? = null
@@ -58,7 +58,7 @@ fun Route.upload(provider: SaveFileRepository) = post("/upload") {
     if (inputProvider == null) {
         error("Please provide file part")
     }
-    when (val result = provider.saveFile(token!!, fileName, inputProvider!!)) {
+    when (val result = saveFileRepository.saveFile(token!!, fileName, inputProvider!!)) {
         is UploadFileResult.Success -> call.respondSuccess(
             result.fileIdentity.serializable()
         )

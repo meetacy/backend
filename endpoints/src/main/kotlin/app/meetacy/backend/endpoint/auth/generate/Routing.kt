@@ -29,6 +29,6 @@ fun Route.generateToken(repository: TokenGenerateRepository) = post("/generate")
 
     when (val result = repository.generateToken(generateParam.nickname)) {
         is TokenGenerateResult.Success -> call.respondSuccess(result.accessIdentity.serializable())
-        is TokenGenerateResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidNickname)
+        is TokenGenerateResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
     }
 }

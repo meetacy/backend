@@ -22,6 +22,7 @@ import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
+import app.meetacy.backend.types.user.Username
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
@@ -88,6 +89,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     private data class User(
         val identity: UserIdentity,
         val nickname: String,
+        val username: Username? = null,
         val email: String? = null,
         val emailVerified: Boolean = false,
         val tokens: List<AccessIdentity> = emptyList(),
@@ -166,7 +168,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
             }.map { user ->
                 if (user == null) return@map null
                 with(user) {
-                    FullUser(identity, nickname, email, emailVerified, avatarId)
+                    FullUser(identity, nickname, username, email, emailVerified, avatarId)
                 }
             }
         }
@@ -422,9 +424,11 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         return getMeetings(listOf(meetingId)).first()!!
     }
 
+
     override suspend fun editUser(
         userId: UserId,
-        nickname: String?,
+        nickname: Optional<String>,
+        username: Optional<Username?>,
         avatarId: Optional<FileId?>
     ): FullUser {
         synchronized(this) {
@@ -432,13 +436,16 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
                 if (user.identity.id != userId) return@replaceAll user
 
                 user.copy(
-                    nickname = nickname ?: user.nickname,
+                    nickname = nickname.value ?: user.nickname,
+                    username = if (username is Optional.Present) username.value else user.username,
                     avatarId = if (avatarId is Optional.Present) avatarId.value else user.avatarId
                 )
             }
         }
         return getUsers(listOf(userId)).first()!!
     }
+
+    override suspend fun isOccupied(username: Username): Boolean = users.any { it.username == username }
 
     override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
         viewUserUsecase.viewUser(viewerId, user)
@@ -519,4 +526,5 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     override suspend fun isSubscriber(userId: UserId, subscriberId: UserId): Boolean =
         getFriends(userId, Amount.parse(Int.MAX_VALUE)).contains(subscriberId)
+
 }

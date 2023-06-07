@@ -8,6 +8,8 @@ import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
+import app.meetacy.backend.types.user.Username
+import app.meetacy.backend.types.user.username
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -16,6 +18,7 @@ class UsersTable(private val db: Database) : Table() {
     private val USER_ID = long("USER_ID").autoIncrement()
     private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     private val NICKNAME = varchar("NICKNAME", length = NICKNAME_MAX_LIMIT)
+    private val USERNAME = varchar("USERNAME", length = USERNAME_MAX_LIMIT).nullable()
     private val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT).nullable()
     private val EMAIL_VERIFIED = bool("EMAIL_VERIFIED").default(false)
     private val AVATAR_ID = long("AVATAR_ID").nullable()
@@ -43,6 +46,7 @@ class UsersTable(private val db: Database) : Table() {
                 AccessHash(result[ACCESS_HASH])
             ),
             result[NICKNAME],
+            result[USERNAME]?.username,
             result[EMAIL],
             result[EMAIL_VERIFIED],
             if (avatarId != null) FileId(avatarId) else null
@@ -59,7 +63,6 @@ class UsersTable(private val db: Database) : Table() {
         return@newSuspendedTransaction userIds.map { foundUsers[it] }
     }
 
-
     suspend fun isEmailOccupied(
         email: String
     ): Boolean = newSuspendedTransaction(db = db) {
@@ -75,6 +78,7 @@ class UsersTable(private val db: Database) : Table() {
                 AccessHash(this[ACCESS_HASH])
             ),
             this[NICKNAME],
+            this[USERNAME]?.username,
             this[EMAIL],
             this[EMAIL_VERIFIED],
             if (avatarId != null) FileId(avatarId) else null
@@ -97,17 +101,27 @@ class UsersTable(private val db: Database) : Table() {
 
     suspend fun editUser(
         userId: UserId,
-        nickname: String?,
+        nickname: Optional<String>,
+        username: Optional<Username?>,
         avatarId: Optional<FileId?>,
     ): DatabaseUser = newSuspendedTransaction(db = db) {
         update({ USER_ID eq userId.long }) { statement ->
-            nickname?.let { statement[NICKNAME] = it }
+            nickname.ifPresent {
+                statement[NICKNAME] = it
+            }
             avatarId.ifPresent {
                 statement[AVATAR_ID] = it?.long
+            }
+            username.ifPresent {
+                statement[USERNAME] = it?.string
             }
         }
         return@newSuspendedTransaction select { USER_ID eq userId.long }
             .first<ResultRow>()
             .toUser()
+    }
+
+    suspend fun isUsernameOccupied(username: Username): Boolean = newSuspendedTransaction(db = db) {
+        select { USERNAME eq username.string }.any()
     }
 }
