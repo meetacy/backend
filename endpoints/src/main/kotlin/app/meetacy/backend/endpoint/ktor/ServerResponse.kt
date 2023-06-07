@@ -36,7 +36,6 @@ data class Failure(
         val LinkMaxAttemptsReached = Failure(false, 13, "You have reached max attempts for today. Please try again later.")
 
         val ApiVersionIsNotSpecified = Failure(false, 14, "Please specify api version using header 'Api-Version'")
-        val ValidationError = Failure(false, 15, "")
         val InvalidUtf8String = Failure(false, 16, "Please provide valid string")
 
         fun UnhandledException(throwable: Throwable): Failure = Failure(
