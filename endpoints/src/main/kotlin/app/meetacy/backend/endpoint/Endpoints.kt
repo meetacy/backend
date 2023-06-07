@@ -7,6 +7,8 @@ import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.files.files
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.friends
+import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
+import app.meetacy.backend.endpoint.invitations.invitations
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.meetings
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
@@ -41,7 +43,8 @@ fun startEndpoints(
     meetingsDependencies: MeetingsDependencies,
     notificationsDependencies: NotificationsDependencies,
     filesDependencies: FilesDependencies,
-    usersDependencies: UsersDependencies
+    usersDependencies: UsersDependencies,
+    invitationsDependencies: InvitationsDependencies
 ): ApplicationEngine = embeddedServer(CIO, host = "localhost", port = port) {
 
     install(ContentNegotiation) {
@@ -74,5 +77,6 @@ fun startEndpoints(
         friends(friendsDependencies)
         notifications(notificationsDependencies)
         files(filesDependencies)
+        invitations(invitationsDependencies)
     }
 }.start(wait)

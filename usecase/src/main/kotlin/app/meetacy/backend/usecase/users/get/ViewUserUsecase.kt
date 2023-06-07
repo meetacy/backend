@@ -1,9 +1,9 @@
 package app.meetacy.backend.usecase.users.get
 
+import app.meetacy.backend.types.user.Relationship
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.FilesRepository
 import app.meetacy.backend.usecase.types.FullUser
-import app.meetacy.backend.usecase.types.UsecaseRelationship
 import app.meetacy.backend.usecase.types.UserView
 
 class ViewUserUsecase(
@@ -36,20 +36,20 @@ class ViewUserUsecase(
     /**
      * Returns relationship of 2 users
      * @param [userId] specifies ID of related user
-     * @return [UsecaseRelationship.Friend] if both users are subscribed on each other,
-     * [UsecaseRelationship.Subscribed] if related user is subscribed on FullUser,
-     * [UsecaseRelationship.Subscriber] if FullUser is subscribed on related user,
+     * @return [Relationship.Friend] if both users are subscribed on each other,
+     * [Relationship.Subscribed] if related user is subscribed on FullUser,
+     * [Relationship.Subscriber] if FullUser is subscribed on related user,
      * null if user tries to get relationship of themselves
      */
-    private suspend fun FullUser.getRelationship(userId: UserId): UsecaseRelationship? {
+    private suspend fun FullUser.getRelationship(userId: UserId): Relationship? {
         if (identity.id == userId) return null
         val isSubscriber = storage.isSubscriber(identity.id, userId)
         val isSubscribed = storage.isSubscriber(userId, identity.id)
         return when {
-            isSubscribed && isSubscriber -> UsecaseRelationship.Friend
-            isSubscribed -> UsecaseRelationship.Subscribed
-            isSubscriber -> UsecaseRelationship.Subscriber
-            else -> UsecaseRelationship.None
+            isSubscribed && isSubscriber -> Relationship.Friend
+            isSubscribed -> Relationship.Subscribed
+            isSubscriber -> Relationship.Subscriber
+            else -> Relationship.None
         }
     }
 

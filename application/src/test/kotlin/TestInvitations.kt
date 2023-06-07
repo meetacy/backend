@@ -1,0 +1,202 @@
+
+import app.meetacy.backend.endpoint.ktor.Failure
+import app.meetacy.sdk.exception.MeetacyInternalException
+import app.meetacy.sdk.types.amount.amount
+import app.meetacy.sdk.types.datetime.DateTime
+import app.meetacy.sdk.types.paging.asFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertContains
+import kotlin.test.assertEquals
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class TestInvitations {
+
+    @Test
+    fun `test invitation creation`() = runTestServer {
+        val invitor = generateTestAccount()
+        val invited = generateTestAccount()
+        val meeting = invitor.meetings.createTestMeeting()
+
+        assertThrows<MeetacyInternalException> {
+            runBlocking {
+                invitor.invitations.create(
+                    invitor.users.get(invited.id),
+                    DateTime.parse("2080-06-05T18:00:00Z"),
+                    meeting.id
+                )
+            }
+        }
+        invited.friends.add(invitor.id)
+        val invitation = invitor.invitations.create(
+            invitor.users.get(invited.id),
+            DateTime.parse("2080-06-05T18:00:00Z"),
+            meeting.id
+        )
+        assertEquals(invitation.meeting.id, meeting.id)
+    }
+
+    @Test
+    fun `test invitation getting`() = runTestServer {
+        val invitor = generateTestAccount()
+        val invited = generateTestAccount()
+        invited.friends.add(invitor.id)
+
+        val invitationsNumber = (2..15).random()
+        println("test with following invitations amount: $invitationsNumber")
+
+        var count = invitationsNumber
+        do {
+            val meeting = invitor.meetings.createTestMeeting()
+            invitor.invitations.create(
+                invitor.users.get(invited.id),
+                DateTime.parse("2080-06-05T18:00:00Z"),
+                meeting.id
+            )
+            count--
+        } while (count > 0)
+
+        val invitations = invited.invitations.read()
+        assertEquals(invitations.size, invitationsNumber)
+    }
+
+    @Test
+    fun `test invitation acceptation`() = runTestServer {
+        val invitor = generateTestAccount()
+        val invited = generateTestAccount()
+        val meeting = invitor.meetings.createTestMeeting()
+        invited.friends.add(invitor.id)
+        val invitation = invitor.invitations.create(
+            invitor.users.get(invited.id),
+            DateTime.parse("2080-06-05T18:00:00Z"),
+            meeting.id
+        )
+        invited.invitations.accept(invitation.id)
+        val participants = meeting.participants.paging(10.amount).asFlow().toList().flatten()
+
+        assertContains(participants.map { it.data.id }, invited.id)
+
+        val exception = assertThrows<MeetacyInternalException> {
+            runBlocking {
+                invited.invitations.accept(invitation.id)
+            }
+        }
+        assertEquals(Failure.InvitationNotFound.errorMessage, exception.message)
+    }
+
+    @Test
+    fun `test invitation denying`() = runTestServer {
+        val invitor = generateTestAccount()
+        val invited = generateTestAccount()
+        val alice = generateTestAccount()
+        val meeting = invitor.meetings.createTestMeeting()
+        invited.friends.add(invitor.id)
+
+        val invitation = invitor.invitations.create(
+            invitor.users.get(invited.id),
+            DateTime.parse("2080-06-05T18:00:00Z"),
+            meeting.id
+        )
+
+        try {
+            alice.invitations.deny(invitation.id)
+        } catch (e: Throwable) {
+            assert(e is MeetacyInternalException)
+            assert(e.message == Failure.InvitationNotFound.errorMessage)
+            println("Alice failed to deny invitation, everything is OK now")
+        }
+
+        try {
+            invited.invitations.deny(invitation.id)
+            println("Invited user successfully denied the invitation")
+        } catch (e: Throwable) {
+            println("Invited user failed to deny invitation")
+            throw e
+        }
+        assert(!meeting.participants.paging(10.amount).asFlow().toList().flatten()
+            .map { it.data.id }.contains(invited.id))
+    }
+
+    @Test
+    fun `test invitation cancellation`() = runTestServer {
+        val invitor = generateTestAccount()
+        val invited = generateTestAccount()
+        val alice = generateTestAccount()
+        val meeting = invitor.meetings.createTestMeeting()
+        invited.friends.add(invitor.id)
+
+        val invitation = invitor.invitations.create(
+            invitor.users.get(invited.id),
+            DateTime.parse("2080-06-05T18:00:00Z"),
+            meeting.id
+        )
+
+        try {
+            alice.invitations.cancel(invitation.id)
+        } catch (e: Throwable) {
+            assert(e is MeetacyInternalException)
+            assert(e.message == Failure.InvitationNotFound.errorMessage)
+            println("Alice failed to cancel invitation, everything is OK now")
+        }
+
+        try {
+            invitor.invitations.cancel(invitation.id)
+            println("Invitor successfully denied the invitation")
+        } catch (e: Throwable) {
+            println("Invitor failed to cancel invitation")
+            throw e
+        }
+        assert(!meeting.participants.paging(10.amount).asFlow().toList().flatten()
+            .map { it.data.id }.contains(invited.id))
+    }
+
+    @Test
+    fun `test invitation updating`() = runTestServer {
+        val invitor = generateTestAccount()
+        val invited = generateTestAccount()
+        val alice = generateTestAccount()
+        val meeting = invitor.meetings.createTestMeeting()
+        val newMeeting = invitor.meetings.createTestMeeting("New meeting")
+        val aliceMeeting = alice.meetings.createTestMeeting("Malicious meeting")
+        invited.friends.add(invitor.id)
+
+        var invitation = invitor.invitations.create(
+            invitor.users.get(invited.id),
+            DateTime.parse("2080-06-05T18:00:00Z"),
+            meeting.id
+        )
+
+        try {
+            alice.invitations.update(
+                invitation.id,
+                DateTime.parse("2040-12-05T09:00:00Z"),
+                aliceMeeting.id
+            )
+        } catch (e: Throwable) {
+            assert(e is MeetacyInternalException)
+            assert(e.message == Failure.InvitationNotFound.errorMessage)
+            println("Alice failed to update an invitation, everything is OK now")
+        }
+
+        try {
+            invitation = invitor.invitations.update(
+                invitation.id,
+                DateTime.parse("2032-12-05T09:00:00Z"),
+                newMeeting.id
+            )
+            delay(100)
+            assert(invitation.expiryDate == DateTime.parse("2032-12-05T09:00:00Z"))
+            assert(invitation.meeting.id == newMeeting.id)
+            println("Invitor successfully updated the invitation")
+        } catch (e: Throwable) {
+            println("Invitor failed to update invitation")
+            throw e
+        }
+        assert(!meeting.participants.paging(10.amount).asFlow().toList().flatten()
+            .map { it.data.id }.contains(invited.id))
+    }
+}

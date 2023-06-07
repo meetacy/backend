@@ -8,6 +8,12 @@ import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
 import app.meetacy.backend.database.integration.friends.add.DatabaseAddFriendStorage
 import app.meetacy.backend.database.integration.friends.delete.DatabaseDeleteFriendStorage
 import app.meetacy.backend.database.integration.friends.get.DatabaseGetFriendsStorage
+import app.meetacy.backend.database.integration.invitation.accept.DatabaseAcceptInvitationStorage
+import app.meetacy.backend.database.integration.invitation.cancel.DatabaseCancelInvitationStorage
+import app.meetacy.backend.database.integration.invitation.create.DatabaseCreateInvitationStorage
+import app.meetacy.backend.database.integration.invitation.deny.DatabaseDenyInvitationStorage
+import app.meetacy.backend.database.integration.invitation.read.DatabaseReadInvitationStorage
+import app.meetacy.backend.database.integration.invitation.update.DatabaseUpdateInvitationStorage
 import app.meetacy.backend.database.integration.location.stream.DatabaseFriendsLocationStreamingStorage
 import app.meetacy.backend.database.integration.location.stream.DatabaseLocationFlowStorageUnderlying
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
@@ -23,16 +29,14 @@ import app.meetacy.backend.database.integration.meetings.participate.DatabasePar
 import app.meetacy.backend.database.integration.notifications.DatabaseGetNotificationStorage
 import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
 import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateTokenStorage
-import app.meetacy.backend.database.integration.types.DatabaseAuthRepository
-import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
-import app.meetacy.backend.database.integration.types.DatabaseGetMeetingsViewsRepository
-import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
+import app.meetacy.backend.database.integration.types.*
 import app.meetacy.backend.database.integration.users.edit.DatabaseEditUserStorage
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
+import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
@@ -56,6 +60,12 @@ import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepos
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
 import app.meetacy.backend.usecase.integration.friends.location.stream.UsecaseStreamLocationRepository
+import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
+import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
+import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
+import app.meetacy.backend.usecase.integration.invitations.deny.UsecaseDenyInvitationRepository
+import app.meetacy.backend.usecase.integration.invitations.read.UsecaseReadInvitationRepository
+import app.meetacy.backend.usecase.integration.invitations.update.UsecaseUpdateInvitationRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
@@ -68,9 +78,14 @@ import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotif
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
+import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
+import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
+import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
+import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
+import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
+import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
 import app.meetacy.backend.usecase.location.stream.BaseFriendsLocationStreamingStorage
 import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
-import app.meetacy.backend.usecase.location.stream.LocationFlowStorage
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
@@ -100,6 +115,11 @@ fun startEndpoints(
     val getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
     val viewMeetingsRepository = DatabaseGetMeetingsViewsViewMeetingsRepository(db)
     val checkMeetingsRepository = DatabaseCheckMeetingsViewRepository(db)
+    val getInvitationsViewsRepository = DatabaseGetInvitationsViewsRepository(
+        getUsersViewsRepository,
+        getMeetingsViewsRepository,
+        db
+    )
 
     startEndpoints(
         port = port,
@@ -280,6 +300,48 @@ fun startEndpoints(
             getFileRepository = DatabaseGetFileRepository(
                 database = db,
                 basePath = filesBasePath
+            )
+        ),
+        invitationsDependencies = InvitationsDependencies(
+            invitationsCreateRepository = UsecaseCreateInvitationRepository(
+                usecase = CreateInvitationUsecase(
+                    authRepository = authRepository,
+                    storage = DatabaseCreateInvitationStorage(db),
+                    hashGenerator = DefaultHashGenerator,
+                    getInvitationsViewsRepository = getInvitationsViewsRepository
+                )
+            ),
+            invitationsAcceptRepository = UsecaseAcceptInvitationRepository(
+                usecase = AcceptInvitationUsecase(
+                    authRepository = authRepository,
+                    storage = DatabaseAcceptInvitationStorage(db)
+                )
+            ),
+            invitationsDenyRepository = UsecaseDenyInvitationRepository(
+                usecase = DenyInvitationUsecase(
+                    authRepository = authRepository,
+                    storage = DatabaseDenyInvitationStorage(db)
+                )
+            ),
+            invitationsGetRepository = UsecaseReadInvitationRepository(
+                usecase = ReadInvitationUsecase(
+                    storage = DatabaseReadInvitationStorage(db),
+                    getInvitationsViewsRepository = getInvitationsViewsRepository,
+                    authRepository = authRepository
+                )
+            ),
+            invitationUpdateRepository = UsecaseUpdateInvitationRepository(
+                usecase = UpdateInvitationUsecase(
+                    storage = DatabaseUpdateInvitationStorage(db),
+                    authRepository = authRepository,
+                    getInvitationsViewsRepository = getInvitationsViewsRepository
+                )
+            ),
+            invitationCancelRepository = UsecaseCancelInvitationRepository(
+                usecase = CancelInvitationUsecase(
+                    authRepository = authRepository,
+                    storage = DatabaseCancelInvitationStorage(db)
+                )
             )
         )
     )

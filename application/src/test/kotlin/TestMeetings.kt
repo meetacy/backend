@@ -1,15 +1,13 @@
 import app.meetacy.backend.hash.HashGenerator
-import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.sdk.exception.MeetacyInternalException
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.datetime.meetacyDate
 import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.meeting.Meeting
-import app.meetacy.sdk.types.optional.Optional
 import app.meetacy.sdk.types.meeting.MeetingId
+import app.meetacy.sdk.types.optional.Optional
 import app.meetacy.sdk.types.paging.asFlow
-import app.meetacy.sdk.types.paging.flatten
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import java.time.Duration
@@ -45,9 +43,10 @@ class TestMeetings {
         val meetingsList = testApi
             .meetings.history
             .paging(chunkSize = 2.amount)
+            .asFlow()
+            .toList()
             .flatten()
-            .asFlow().toList()
-        
+
         require(meetingsList.size == meetingsAmount) {
             "Meetings size returned by first pagination differs from actual size"
         }
@@ -55,8 +54,9 @@ class TestMeetings {
         val emptySecondList = secondTestApi
             .meetings.history
             .paging(chunkSize = 2.amount)
+            .asFlow()
+            .toList()
             .flatten()
-            .asFlow().toList()
 
         require(emptySecondList.isEmpty()) { "Should be empty before participating" }
 
@@ -67,8 +67,9 @@ class TestMeetings {
         val secondMeetingsList = secondTestApi
             .meetings.history
             .paging(chunkSize = 2.amount)
+            .asFlow()
+            .toList()
             .flatten()
-            .asFlow().toList()
 
         require(secondMeetingsList.all { meeting -> meeting.previewParticipants.size == 2 })
 
@@ -255,10 +256,7 @@ class TestMeetings {
 
         val meeting = client.meetings.createTestMeeting()
 
-        val emptyParticipants = meeting.participants
-            .paging(10.amount)
-            .flatten()
-            .asFlow().toList()
+        val emptyParticipants = meeting.participants.paging(10.amount).asFlow().toList().flatten()
 
         require(emptyParticipants.size == 1)
 
@@ -268,10 +266,7 @@ class TestMeetings {
             )
         }
 
-        val actualParticipants = meeting.participants
-            .paging(10.amount)
-            .flatten()
-            .asFlow().toList()
+        val actualParticipants = meeting.participants.paging(10.amount).asFlow().toList().flatten()
 
         require(actualParticipants.size == participantsCount + 1)
     }

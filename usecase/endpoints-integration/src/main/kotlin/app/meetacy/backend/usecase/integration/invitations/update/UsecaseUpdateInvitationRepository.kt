@@ -1,0 +1,27 @@
+package app.meetacy.backend.usecase.integration.invitations.update
+
+import app.meetacy.backend.endpoint.invitations.update.InvitationUpdateRepository
+import app.meetacy.backend.endpoint.invitations.update.InvitationUpdatingFormSerializable
+import app.meetacy.backend.endpoint.invitations.update.InvitationsUpdateResponse
+import app.meetacy.backend.usecase.integration.types.toEndpoint
+import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
+
+class UsecaseUpdateInvitationRepository(
+    private val usecase: UpdateInvitationUsecase
+): InvitationUpdateRepository {
+    override suspend fun update(form: InvitationUpdatingFormSerializable): InvitationsUpdateResponse =
+        usecase.update(
+            invitationIdentity = form.id.type(),
+            token = form.token.type(),
+            expiryDate = form.expiryDate?.type(),
+            meetingIdentity = form.meetingId?.type()
+        ).toEndpoint()
+
+    private fun UpdateInvitationUsecase.Result.toEndpoint() = when (this) {
+        UpdateInvitationUsecase.Result.InvitationNotFound -> InvitationsUpdateResponse.InvitationNotFound
+        UpdateInvitationUsecase.Result.MeetingNotFound -> InvitationsUpdateResponse.MeetingNotFound
+        is UpdateInvitationUsecase.Result.Success -> InvitationsUpdateResponse.Success(invitation.toEndpoint())
+        UpdateInvitationUsecase.Result.Unauthorized -> InvitationsUpdateResponse.Unauthorized
+        UpdateInvitationUsecase.Result.InvalidDateTime -> InvitationsUpdateResponse.InvalidDateTimeIdentity
+    }
+}

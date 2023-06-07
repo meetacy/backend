@@ -1,0 +1,49 @@
+package app.meetacy.backend.endpoint.invitations.deny
+
+import app.meetacy.backend.endpoint.ktor.Failure
+import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
+import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.invitation.InvitationIdentitySerializable
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class InvitationDenyingFormSerializable(
+    val id: InvitationIdentitySerializable,
+    val token: AccessIdentitySerializable
+)
+
+fun Route.invitationDeny(invitationsDenyRepository: DenyInvitationRepository) {
+    post("/deny") {
+        val form: InvitationDenyingFormSerializable = call.receive()
+
+        when (invitationsDenyRepository.denyInvitation(form)) {
+            DenyInvitationResponse.Success -> {
+                call.respondSuccess()
+            }
+            DenyInvitationResponse.Unauthorized -> {
+                call.respondFailure(Failure.InvalidToken)
+            }
+            DenyInvitationResponse.NoPermissions -> {
+                call.respondFailure(Failure.InvitationNotFound)
+            }
+            DenyInvitationResponse.NotFound -> {
+                call.respondFailure(Failure.InvitationNotFound)
+            }
+        }
+    }
+}
+
+interface DenyInvitationRepository{
+    suspend fun denyInvitation(form: InvitationDenyingFormSerializable): DenyInvitationResponse
+}
+
+sealed interface DenyInvitationResponse {
+    object Success: DenyInvitationResponse
+    object Unauthorized: DenyInvitationResponse
+    object NoPermissions: DenyInvitationResponse
+    object NotFound: DenyInvitationResponse
+}

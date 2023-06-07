@@ -16,7 +16,7 @@ data class Failure(
     val errorCode: Int,
     val errorMessage: String
 ) {
-    // next errorCode -- 17
+    // next errorCode -- 25
     companion object {
         val InvalidToken = Failure(false, 1, "Please provide a valid token")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingId")
@@ -38,14 +38,26 @@ data class Failure(
         val ApiVersionIsNotSpecified = Failure(false, 14, "Please specify api version using header 'Api-Version'")
         val InvalidUtf8String = Failure(false, 16, "Please provide valid string")
 
-        fun UnhandledException(throwable: Throwable): Failure = Failure(
-            status = false,
-            errorCode = 15,
-            errorMessage = buildString {
-                appendLine("Unhandled exception occurred. Stacktrace: ")
-                append(throwable.stackTraceToString())
-            }
-        )
+        val UnableToInvite = Failure(false, 17, "You are unable to invite this user. Probably, you are not admin of event, or this person is not your subscriber or friend")
+        val FriendAlreadyInvited = Failure(false, 18, "You have already invited this friend. Try another one")
+        val InvalidInvitationIds = Failure(false, 19, "One of your invitation IDs you sent is invalid")
+        val InvalidUserIds = Failure(false, 20, "One of your user IDs you sent is invalid")
+        val OnlyUserIdsOrInvitationIdsAreAllowed = Failure(false, 21, "Only user IDs or invitation IDs are allowed. You have specified both ones")
+        val InvitationNotFound = Failure(false, 22, "Invitation you are requested for is not found ¬_¬")
+        val InvitationExpired = Failure(false, 23, "Your invitation was expired! +_+")
+        val InvalidDateTimeIdentity = Failure(false, 24, "Enter valid date, please")
+
+        fun UnhandledException(throwable: Throwable): Failure {
+            System.err.println(throwable.stackTraceToString())
+            return Failure(
+                status = false,
+                errorCode = 15,
+                errorMessage = buildString {
+                    appendLine("Unhandled exception occurred. Stacktrace: ")
+                    append(throwable.stackTraceToString())
+                }
+            )
+        }
     }
 }
 

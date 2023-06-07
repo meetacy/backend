@@ -1,0 +1,37 @@
+package app.meetacy.backend.usecase.integration.invitations.read
+
+import app.meetacy.backend.endpoint.invitations.read.InvitationsReadResponse
+import app.meetacy.backend.endpoint.invitations.read.ReadInvitationParams
+import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
+import app.meetacy.backend.usecase.integration.types.toEndpoint
+import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
+
+class UsecaseReadInvitationRepository(
+    private val usecase: ReadInvitationUsecase
+): ReadInvitationRepository {
+    override suspend fun readInvitation(readInvitationParams: ReadInvitationParams): InvitationsReadResponse {
+        val userIdentity = readInvitationParams.token.type()
+        val paramInvitationIds = readInvitationParams.invitationIds
+        val paramInvitorIds = readInvitationParams.invitorUserIds
+
+        if (paramInvitationIds != null) {
+            // retrieve invitations by invitation ids
+            val invitationIds = paramInvitationIds.map { it.type() }
+            return usecase.getInvitationsByIds(invitationIds, token = userIdentity).toReadResponse()
+        }
+        if (paramInvitorIds != null) {
+            // retrieve invitations by invitor ids
+            val userIds = paramInvitorIds.map { it.type() }
+            return usecase.getInvitations(from = userIds, token = userIdentity).toReadResponse()
+        }
+        return usecase.getInvitations(userIdentity).toReadResponse()
+
+    }
+
+    private fun ReadInvitationUsecase.Result.toReadResponse(): InvitationsReadResponse = when (this) {
+        ReadInvitationUsecase.Result.InvitationsNotFound -> InvitationsReadResponse.InvalidInvitationIds
+        is ReadInvitationUsecase.Result.Success -> InvitationsReadResponse.Success(this.invitations.map { it.toEndpoint() })
+        ReadInvitationUsecase.Result.Unauthorized -> InvitationsReadResponse.Unauthorized
+        ReadInvitationUsecase.Result.UsersNotFound -> InvitationsReadResponse.InvalidUserIds
+    }
+}

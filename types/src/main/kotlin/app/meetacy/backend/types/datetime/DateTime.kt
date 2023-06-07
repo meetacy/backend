@@ -7,12 +7,15 @@ import java.util.*
 import java.time.Instant as JavaInstant
 import java.util.Date as JavaDate
 
-private val iso8601DateTimeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").apply {
+private val iso8601DateTimeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").apply {
     timeZone = TimeZone.getTimeZone("UTC")
 }
 
 @JvmInline
 value class DateTime @UnsafeConstructor constructor(val iso8601: String) {
+    operator fun compareTo(now: DateTime): Int =
+        this.epochMillis.compareTo(now.epochMillis)
+
     val date: Date get() = javaDate.meetacyDate
 
     val javaInstant: JavaInstant get() = javaDate.toInstant()
