@@ -3,8 +3,6 @@ package app.meetacy.backend.usecase.integration.invitations.read
 import app.meetacy.backend.endpoint.invitations.read.InvitationsReadResponse
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationParams
 import app.meetacy.backend.endpoint.invitations.read.ReadInvitationRepository
-import app.meetacy.backend.types.serialization.invitation.InvitationIdentitySerializable
-import app.meetacy.backend.types.serialization.user.UserIdentitySerializable
 import app.meetacy.backend.usecase.integration.types.toEndpoint
 import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
 
@@ -12,18 +10,18 @@ class UsecaseReadInvitationRepository(
     private val usecase: ReadInvitationUsecase
 ): ReadInvitationRepository {
     override suspend fun readInvitation(readInvitationParams: ReadInvitationParams): InvitationsReadResponse {
-
         val userIdentity = readInvitationParams.token.type()
-        if (readInvitationParams.invitationIds != null) {
+        val paramInvitationIds = readInvitationParams.invitationIds
+        val paramInvitorIds = readInvitationParams.invitorUserIds
+
+        if (paramInvitationIds != null) {
             // retrieve invitations by invitation ids
-            val invitationIds = (readInvitationParams.invitationIds as List<InvitationIdentitySerializable>)
-                .map { it.type() }
+            val invitationIds = paramInvitationIds.map { it.type() }
             return usecase.getInvitationsByIds(invitationIds, token = userIdentity).toReadResponse()
         }
-        if (readInvitationParams.invitorUserIds != null) {
+        if (paramInvitorIds != null) {
             // retrieve invitations by invitor ids
-            val userIds = (readInvitationParams.invitorUserIds as List<UserIdentitySerializable>)
-                .map { it.type() }
+            val userIds = paramInvitorIds.map { it.type() }
             return usecase.getInvitations(from = userIds, token = userIdentity).toReadResponse()
         }
         return usecase.getInvitations(userIdentity).toReadResponse()
