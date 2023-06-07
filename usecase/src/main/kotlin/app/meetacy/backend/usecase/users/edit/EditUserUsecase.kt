@@ -51,8 +51,8 @@ class EditUserUsecase(
         return Result.Success(
             with(fullUser) {
                 UserView(
-                    true,
-                    null,
+                    isSelf = true,
+                    relationship = null,
                     identity,
                     fullUser.nickname,
                     fullUser.email,
