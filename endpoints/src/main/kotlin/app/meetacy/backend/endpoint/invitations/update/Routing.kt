@@ -28,9 +28,10 @@ fun Route.invitationUpdate(invitationUpdateRepository: InvitationUpdateRepositor
 
         if (listOf(form.expiryDate, form.meetingId).all { it == null }) {
             call.respond(Failure.NullEditParams)
+            return@post
         }
 
-        when (val response = invitationUpdateRepository.update(form = form)) {
+        when (val response = invitationUpdateRepository.update(form)) {
             is InvitationsUpdateResponse.Success -> call.respondSuccess(response.invitation)
             InvitationsUpdateResponse.Unauthorized -> call.respondFailure(Failure.InvalidToken)
             InvitationsUpdateResponse.InvitationNotFound -> call.respondFailure(Failure.InvitationNotFound)

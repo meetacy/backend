@@ -303,7 +303,7 @@ fun startEndpoints(
             )
         ),
         invitationsDependencies = InvitationsDependencies(
-            invitationsCreateDependencies = UsecaseCreateInvitationRepository(
+            invitationsCreateRepository = UsecaseCreateInvitationRepository(
                 usecase = CreateInvitationUsecase(
                     authRepository = authRepository,
                     storage = DatabaseCreateInvitationStorage(db),
@@ -323,7 +323,7 @@ fun startEndpoints(
                     storage = DatabaseDenyInvitationStorage(db)
                 )
             ),
-            invitationsGetDependencies = UsecaseReadInvitationRepository(
+            invitationsGetRepository = UsecaseReadInvitationRepository(
                 usecase = ReadInvitationUsecase(
                     storage = DatabaseReadInvitationStorage(db),
                     getInvitationsViewsRepository = getInvitationsViewsRepository,

@@ -19,7 +19,7 @@ data class ReadInvitationParams(
     val invitationIds: List<InvitationIdentitySerializable>?
 )
 
-fun Route.readInvitation(readInvitationRepository: ReadInvitationRepository) {
+fun Route.invitationRead(invitationsReadRepository: ReadInvitationRepository) {
     get("/read") {
         val invitationParams: ReadInvitationParams = call.receive()
 
@@ -28,7 +28,7 @@ fun Route.readInvitation(readInvitationRepository: ReadInvitationRepository) {
             return@get
         }
 
-        when (val response = readInvitationRepository.readInvitation(invitationParams)) {
+        when (val response = invitationsReadRepository.readInvitation(invitationParams)) {
             is InvitationsReadResponse.Success -> {
                 call.respondSuccess(response.response)
             }

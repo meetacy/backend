@@ -25,7 +25,7 @@ class DatabaseGetInvitationsViewsRepository(
 
     override suspend fun getInvitationViewOrNull(viewerId: UserId, invitation: InvitationId): InvitationView? {
         val fullInvitation = invitationsTable.getInvitationsByInvitationIds(listOf(invitation))
-            .singleOrNull()?.toUsecase() ?: return null
+            .singleOrNull()?.mapToUsecase() ?: return null
 
         return getInvitationViewOrNull(viewerId, fullInvitation)
     }
@@ -43,7 +43,7 @@ class DatabaseGetInvitationsViewsRepository(
     override suspend fun getInvitationView(viewerId: UserId, invitation: InvitationId): InvitationView {
         val fullInvitation = invitationsTable.getInvitationsByInvitationIds(listOf(invitation)).apply {
             require(size == 1) { "Couldn't find invitation. Consider use getInvitationViewOrNull instead" }
-        }.single().toUsecase()
+        }.single().mapToUsecase()
 
         return getInvitationView(viewerId, fullInvitation)
     }

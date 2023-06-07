@@ -1,7 +1,6 @@
 package app.meetacy.backend.database.integration.invitation.update
 
 import app.meetacy.backend.database.integration.types.mapToUsecase
-import app.meetacy.backend.database.integration.types.toUsecase
 import app.meetacy.backend.database.invitations.InvitationsTable
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.meetings.ParticipantsTable
@@ -23,7 +22,7 @@ class DatabaseUpdateInvitationStorage(db: Database): UpdateInvitationUsecase.Sto
         participantsTable.isParticipating(meetingId, userId)
 
     override suspend fun getInvitationOrNull(id: InvitationId): FullInvitation? =
-        invitationsTable.getInvitationsByInvitationIds(listOf(id)).singleOrNull()?.toUsecase()
+        invitationsTable.getInvitationsByInvitationIds(listOf(id)).singleOrNull()?.mapToUsecase()
 
     override suspend fun update(
         invitationId: InvitationId,

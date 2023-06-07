@@ -312,7 +312,7 @@ fun runTestServer(
             )
         ),
         invitationsDependencies = InvitationsDependencies(
-            invitationsCreateDependencies = UsecaseCreateInvitationRepository(
+            invitationsCreateRepository = UsecaseCreateInvitationRepository(
                 usecase = CreateInvitationUsecase(
                     authRepository = mockStorage,
                     storage = mockStorage,
@@ -320,7 +320,7 @@ fun runTestServer(
                     getInvitationsViewsRepository = mockStorage
                 )
             ),
-            invitationsGetDependencies = UsecaseReadInvitationRepository(
+            invitationsGetRepository = UsecaseReadInvitationRepository(
                 usecase = ReadInvitationUsecase(
                     storage = mockStorage,
                     authRepository = mockStorage,

@@ -2,7 +2,6 @@ package app.meetacy.backend.database.integration.invitation.create
 
 import app.meetacy.backend.database.friends.FriendsTable
 import app.meetacy.backend.database.integration.types.mapToUsecase
-import app.meetacy.backend.database.integration.types.toUsecase
 import app.meetacy.backend.database.invitations.InvitationsTable
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.users.UsersTable
@@ -35,7 +34,7 @@ class DatabaseCreateInvitationStorage(db: Database): CreateInvitationUsecase.Sto
     override suspend fun getInvitationsFrom(authorId: UserId): List<FullInvitation> =
         invitationTable.getInvitations(userIds = listOf(authorId))
             .filter { it.invitorUserId == authorId }
-            .map { it.toUsecase() }
+            .map { it.mapToUsecase() }
 
     override suspend fun createInvitation(
         accessHash: AccessHash,

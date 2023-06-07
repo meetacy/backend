@@ -1,5 +1,5 @@
 
-import app.meetacy.backend.database.integration.types.toUsecase
+import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
@@ -401,7 +401,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     }
 
     override suspend fun getInvitationOrNull(id: InvitationId): FullInvitation? =
-        invitations.firstOrNull { it.id == id }?.toUsecase()
+        invitations.firstOrNull { it.id == id }?.mapToUsecase()
 
     override suspend fun isParticipating(
         meetingId: MeetingId,
@@ -580,7 +580,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     }
 
     override suspend fun getInvitationsFrom(authorId: UserId): List<FullInvitation> =
-        invitations.filter { it.invitorUserId == authorId }.map { it.toUsecase() }
+        invitations.filter { it.invitorUserId == authorId }.map { it.mapToUsecase() }
 
     override suspend fun createInvitation(
         accessHash: AccessHash,
@@ -643,14 +643,14 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         getInvitationView(viewerId, getInvitation(invitation))
 
     override suspend fun getInvitations(invited: UserId): List<FullInvitation> =
-        invitations.filter { it.invitedUserId == invited }.map { it.toUsecase() }
+        invitations.filter { it.invitedUserId == invited }.map { it.mapToUsecase() }
 
     override suspend fun getInvitations(from: List<UserId>, to: UserId): List<FullInvitation> {
         TODO("Not yet implemented")
     }
 
     override suspend fun getInvitationsByIds(ids: List<InvitationId>): List<FullInvitation> =
-        invitations.filter { it.id in ids }.map { it.toUsecase() }
+        invitations.filter { it.id in ids }.map { it.mapToUsecase() }
 
     override suspend fun getFullUser(id: UserId): FullUser? {
         TODO("Not yet implemented")

@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.integration.invitation.deny
 
-import app.meetacy.backend.database.integration.types.toUsecase
+import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.invitations.InvitationsTable
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
@@ -11,7 +11,7 @@ class DatabaseDenyInvitationStorage(db: Database): DenyInvitationUsecase.Storage
     private val invitationsTable = InvitationsTable(db)
 
     override suspend fun getInvitation(id: InvitationId): FullInvitation? =
-        invitationsTable.getInvitationsByInvitationIds(listOf(id)).singleOrNull()?.toUsecase()
+        invitationsTable.getInvitationsByInvitationIds(listOf(id)).singleOrNull()?.mapToUsecase()
 
     override suspend fun markAsDenied(id: InvitationId): Boolean =
         invitationsTable.markAsDenied(id)
