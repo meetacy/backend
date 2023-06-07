@@ -22,6 +22,7 @@ class ViewUserUsecase(
                     relationship = getRelationship(viewerId),
                     identity = identity,
                     nickname = nickname,
+                    username = username,
                     email = if (viewerId == user.identity.id) email else null,
                     emailVerified = if (viewerId == user.identity.id) emailVerified else null,
                     avatarIdentity = if (avatarId != null) avatarIds.next() else null

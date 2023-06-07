@@ -16,7 +16,7 @@ data class Failure(
     val errorCode: Int,
     val errorMessage: String
 ) {
-    // Last errorCode: 24
+    // next errorCode -- 25
     companion object {
         val InvalidToken = Failure(false, 1, "Please provide a valid token")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingId")
@@ -24,29 +24,28 @@ data class Failure(
         val InvalidLink = Failure(false, 4, "This link is invalid. Please consider to create a new one")
         val LastNotificationIdInvalid = Failure(false, 5, "Please provide a valid notificationId")
 
-        val InvalidNickname = Failure(false, 6, "Please provide a valid nickname")
-        val InvalidTitleOrDescription = Failure(false, 7, "Please provide a valid title or description")
+        val UsernameAlreadyOccupied = Failure(false, 6, "This username is not a unique username")
 
-        val FriendNotFound = Failure(false, 8, "Friend was not found")
-        val UserNotFound = Failure(false, 9, "FullUser not found")
-
-        val MeetingAlreadyParticipate = Failure(false, 10, "You are already participating in this meeting")
-        val NullEditParams = Failure(false, 14, "Specify at least one edit parameter")
+        val FriendNotFound = Failure(false, 7, "Friend was not found")
+        val UserNotFound = Failure(false, 8, "FullUser not found")
+        val MeetingAlreadyParticipate = Failure(false, 9, "You are already participating in this meeting")
+        val NullEditParams = Failure(false, 10, "Specify at least one edit parameter")
         val FriendAlreadyAdded = Failure(false, 11, "Friend already added")
 
         val ExpiredLink = Failure(false, 12, "This link was expired. Please consider to create a new one")
         val LinkMaxAttemptsReached = Failure(false, 13, "You have reached max attempts for today. Please try again later.")
 
         val ApiVersionIsNotSpecified = Failure(false, 14, "Please specify api version using header 'Api-Version'")
+        val InvalidUtf8String = Failure(false, 16, "Please provide valid string")
 
-        val UnableToInvite = Failure(false, 16, "You are unable to invite this user. Probably, you are not admin of event, or this person is not your subscriber or friend")
-        val FriendAlreadyInvited = Failure(false, 17, "You have already invited this friend. Try another one")
-        val InvalidInvitationIds = Failure(false, 18, "One of your invitation IDs you sent is invalid")
-        val InvalidUserIds = Failure(false, 19, "One of your user IDs you sent is invalid")
-        val OnlyUserIdsOrInvitationIdsAreAllowed = Failure(false, 20, "Only user IDs or invitation IDs are allowed. You have specified both ones")
-        val InvitationNotFound = Failure(false, 21, "Invitation you are requested for is not found ¬_¬")
-        val InvitationExpired = Failure(false, 22, "Your invitation was expired! +_+")
-        val InvalidDateTimeIdentity = Failure(false, 23, "Enter valid date, please")
+        val UnableToInvite = Failure(false, 17, "You are unable to invite this user. Probably, you are not admin of event, or this person is not your subscriber or friend")
+        val FriendAlreadyInvited = Failure(false, 18, "You have already invited this friend. Try another one")
+        val InvalidInvitationIds = Failure(false, 19, "One of your invitation IDs you sent is invalid")
+        val InvalidUserIds = Failure(false, 20, "One of your user IDs you sent is invalid")
+        val OnlyUserIdsOrInvitationIdsAreAllowed = Failure(false, 21, "Only user IDs or invitation IDs are allowed. You have specified both ones")
+        val InvitationNotFound = Failure(false, 22, "Invitation you are requested for is not found ¬_¬")
+        val InvitationExpired = Failure(false, 23, "Your invitation was expired! +_+")
+        val InvalidDateTimeIdentity = Failure(false, 24, "Enter valid date, please")
 
         fun UnhandledException(throwable: Throwable): Failure {
             System.err.println(throwable.stackTraceToString())

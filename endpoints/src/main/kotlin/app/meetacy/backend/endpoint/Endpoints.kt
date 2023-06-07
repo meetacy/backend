@@ -55,6 +55,7 @@ fun startEndpoints(
         )
     }
     install(CORS) {
+        allowCredentials = true
         anyHost()
         allowHeader(HttpHeaders.ContentType)
         allowHeader(ApiVersion.Header)

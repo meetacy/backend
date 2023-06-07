@@ -16,6 +16,7 @@ fun UserView.mapToEndpoint() = User(
     nickname = nickname,
     email = email,
     emailVerified = emailVerified,
+    username = username?.serializable(),
     avatarId = avatarIdentity?.serializable()
 )
 
@@ -32,6 +33,7 @@ fun User.mapToUsecase(): UserView = UserView(
     nickname = nickname,
     email = email,
     emailVerified = emailVerified,
+    username = username?.type(),
     avatarIdentity = avatarId?.type()
 )
 
