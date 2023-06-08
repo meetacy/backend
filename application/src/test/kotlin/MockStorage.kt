@@ -49,6 +49,7 @@ import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
 import app.meetacy.backend.usecase.meetings.history.active.ListMeetingsActiveUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
+import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
@@ -78,7 +79,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     CreateInvitationUsecase.Storage, ReadInvitationUsecase.Storage,
     AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage, UpdateInvitationUsecase.Storage,
     CancelInvitationUsecase.Storage, ViewUserUsecase.Storage, GetInvitationsViewsRepository,
-    ListMeetingsActiveUsecase.Storage {
+    ListMeetingsActiveUsecase.Storage, ListMeetingsPastUsecase.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -689,6 +690,14 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         getFriends(userId, Amount.parse(Int.MAX_VALUE)).contains(subscriberId)
 
     override suspend fun getActiveMeetings(
+        memberId: UserId,
+        amount: Amount,
+        pagingId: PagingId?
+    ): PagingResult<List<MeetingId>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getPastMeetings(
         memberId: UserId,
         amount: Amount,
         pagingId: PagingId?
