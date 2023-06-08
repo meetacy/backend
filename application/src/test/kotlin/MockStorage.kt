@@ -336,7 +336,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         userId: UserId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<UserId>> = synchronized(this) {
+    ): PagingResult<UserId> = synchronized(this) {
         val result = friendRelations
             .reversed().asSequence()
             .filter { (paging, user, friend) ->
@@ -362,7 +362,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         memberId: UserId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<MeetingId>> = synchronized(this) {
+    ): PagingResult<MeetingId> = synchronized(this) {
         val result = participants
             .reversed().asSequence()
             .filter { (id, userId) ->
@@ -509,7 +509,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         meetingId: MeetingId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<UserId>> = synchronized(this) {
+    ): PagingResult<UserId> = synchronized(this) {
         val participants = participants
             .reversed()
             .filter { (_, _, id) -> id == meetingId }
@@ -693,7 +693,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         memberId: UserId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<MeetingId>> {
+    ): PagingResult<MeetingId> {
         TODO("Not yet implemented")
     }
 
@@ -701,7 +701,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         memberId: UserId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<MeetingId>> {
+    ): PagingResult<MeetingId> {
         TODO("Not yet implemented")
     }
 

@@ -1,27 +1,21 @@
 package app.meetacy.backend.database.integration.meetings.history.past
 
-import app.meetacy.backend.database.integration.meetings.history.filtered.DatabaseListFilteredMeetingsStorage
-import app.meetacy.backend.database.meetings.MeetingsTable
-import app.meetacy.backend.types.amount.Amount
-import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.database.meetings.ParticipantsStorage
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.paging.PagingId
-import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.paging.PagingValue
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
+import kotlinx.coroutines.flow.Flow
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseListPastMeetingsStorage(
-    private val listFilteredMeetingsStorage: DatabaseListFilteredMeetingsStorage,
     db: Database
 ) : ListMeetingsPastUsecase.Storage {
-    private val meetingsTable = MeetingsTable(db)
-    private val filter: suspend (MeetingId) -> Boolean = { meetingsTable.getMeeting(it).date < Date.today() }
+    private val participantsTable = ParticipantsStorage(db)
 
-    override suspend fun getPastMeetings(
-        memberId: UserId,
-        amount: Amount,
-        pagingId: PagingId?
-    ): PagingResult<List<MeetingId>> = listFilteredMeetingsStorage
-        .getFilteredMeetings(memberId, amount, pagingId, filter)
+    override suspend fun getJoinHistoryFlow(
+        userId: UserId,
+        startPagingId: PagingId?
+    ): Flow<PagingValue<MeetingId>> = participantsTable.getJoinHistoryFlow(userId, startPagingId)
 }

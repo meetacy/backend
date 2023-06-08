@@ -1,26 +1,26 @@
 package app.meetacy.backend.database.integration.email
 
-import app.meetacy.backend.database.email.ConfirmationTable
+import app.meetacy.backend.database.email.ConfirmationStorage
 import app.meetacy.backend.database.email.DatabaseEmailSender
 import app.meetacy.backend.database.email.DatabaseEmailText
-import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.database.users.UsersStorage
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseLinkEmailStorage(db: Database) : LinkEmailUsecase.Storage {
-    private val confirmationTable = ConfirmationTable(db)
-    private val usersTable = UsersTable(db)
+    private val confirmationStorage = ConfirmationStorage(db)
+    private val usersStorage = UsersStorage(db)
 
     override suspend fun isEmailOccupied(email: String): Boolean =
-        usersTable.isEmailOccupied(email)
+        usersStorage.isEmailOccupied(email)
 
     override suspend fun updateEmail(userId: UserId, email: String) {
-        usersTable.updateEmail(userId, email)
+        usersStorage.updateEmail(userId, email)
     }
 
     override suspend fun addConfirmationHash(userId: UserId, email: String, confirmationHash: String) {
-        confirmationTable.addHash(userId, email, confirmationHash)
+        confirmationStorage.addHash(userId, email, confirmationHash)
     }
 }
 

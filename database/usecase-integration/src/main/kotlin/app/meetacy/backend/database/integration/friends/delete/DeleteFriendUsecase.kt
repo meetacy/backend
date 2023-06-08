@@ -1,17 +1,17 @@
 package app.meetacy.backend.database.integration.friends.delete
 
-import app.meetacy.backend.database.friends.FriendsTable
+import app.meetacy.backend.database.friends.FriendsStorage
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseDeleteFriendStorage(db: Database) : DeleteFriendUsecase.Storage {
-    private val friendsTable = FriendsTable(db)
+    private val friendsStorage = FriendsStorage(db)
 
     override suspend fun deleteFriend(userId: UserId, friendId: UserId) {
-        friendsTable.deleteFriend(userId, friendId)
+        friendsStorage.deleteFriend(userId, friendId)
     }
 
     override suspend fun isSubscribed(userId: UserId, friendId: UserId): Boolean =
-        friendsTable.isSubscribed(userId, friendId)
+        friendsStorage.isSubscribed(userId, friendId)
 }

@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.integration.files
 
-import app.meetacy.backend.database.files.FilesTable
+import app.meetacy.backend.database.files.FilesStorage
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
@@ -10,15 +10,15 @@ import app.meetacy.backend.usecase.files.UploadFileUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseUploadFileStorage(db: Database) : UploadFileUsecase.Storage {
-    private val filesTable = FilesTable(db)
+    private val filesStorage = FilesStorage(db)
     override suspend fun saveFileDescription(userId: UserId, accessHash: AccessHash, fileName: String): FileIdentity =
-        filesTable.saveFileDescription(userId, accessHash, fileName)
+        filesStorage.saveFileDescription(userId, accessHash, fileName)
 
     override suspend fun uploadFileSize(fileId: FileId, fileSize: FileSize) {
-        filesTable.updateFileSize(fileId, fileSize)
+        filesStorage.updateFileSize(fileId, fileSize)
     }
 
     override suspend fun getUserWastedSize(userId: UserId): FileSize =
-        filesTable.getUserFullSize(userId)
+        filesStorage.getUserFullSize(userId)
 
 }

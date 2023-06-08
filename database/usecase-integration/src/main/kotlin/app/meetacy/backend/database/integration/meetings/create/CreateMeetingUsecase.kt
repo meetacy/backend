@@ -4,8 +4,8 @@ import app.meetacy.backend.database.integration.meetings.participate.DatabaseVie
 import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.database.integration.types.mapToDatabase
-import app.meetacy.backend.database.meetings.MeetingsTable
-import app.meetacy.backend.database.meetings.ParticipantsTable
+import app.meetacy.backend.database.meetings.MeetingsStorage
+import app.meetacy.backend.database.meetings.ParticipantsStorage
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
@@ -20,8 +20,8 @@ import app.meetacy.backend.usecase.types.MeetingView
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseCreateMeetingStorage(db: Database) : CreateMeetingUsecase.Storage {
-    private val meetingsTable = MeetingsTable(db)
-    private val participantsTable = ParticipantsTable(db)
+    private val meetingsStorage = MeetingsStorage(db)
+    private val participantsStorage = ParticipantsStorage(db)
     override suspend fun addMeeting(
         accessHash: AccessHash,
         creatorId: UserId,
@@ -32,7 +32,7 @@ class DatabaseCreateMeetingStorage(db: Database) : CreateMeetingUsecase.Storage 
         visibility: FullMeeting.Visibility,
         avatarId: FileId?
     ): FullMeeting {
-        val meetingId = meetingsTable.addMeeting(
+        val meetingId = meetingsStorage.addMeeting(
             accessHash = accessHash,
             creatorId = creatorId,
             date = date,
@@ -55,7 +55,7 @@ class DatabaseCreateMeetingStorage(db: Database) : CreateMeetingUsecase.Storage 
     }
 
     override suspend fun addParticipant(participantId: UserId, meetingId: MeetingId) {
-        participantsTable.addParticipant(participantId, meetingId)
+        participantsStorage.addParticipant(participantId, meetingId)
     }
 }
 
