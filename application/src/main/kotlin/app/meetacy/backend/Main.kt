@@ -1,10 +1,12 @@
 package app.meetacy.backend
 
+import app.meetacy.backend.database.initDatabase
+import app.meetacy.backend.database.migrations.runMigrations
 import app.meetacy.backend.infrastructure.startEndpoints
 import org.jetbrains.exposed.sql.Database
 import java.io.File
 
-fun main() {
+suspend fun main() {
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
     val databaseUrl = System.getenv("DATABASE_URL") ?: error("Please provide a database url")
     val databaseUser = System.getenv("DATABASE_USER") ?: ""
@@ -22,5 +24,6 @@ fun main() {
         password = databasePassword
     )
 
+    initDatabase(database)
     startEndpoints(filesBasePath, filesSizeLimit, port, database, wait = true)
 }

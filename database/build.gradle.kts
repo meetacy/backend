@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.Types))
+    api(project(Deps.Projects.Wdater))
     api(Deps.Libs.Exposed.Core)
     implementation(Deps.Libs.Exposed.Jdbc)
     implementation(Deps.Libs.Postgres.Jdbc)

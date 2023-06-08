@@ -2,56 +2,57 @@
 
 package app.meetacy.backend.database.meetings
 
+import app.meetacy.backend.database.meetings.ParticipantsTable.ID
+import app.meetacy.backend.database.meetings.ParticipantsTable.MEETING_ID
+import app.meetacy.backend.database.meetings.ParticipantsTable.USER_ID
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class ParticipantsTable(private val db: Database) : Table() {
-    private val ID = long("ID").autoIncrement()
-    private val MEETING_ID = long("MEETING_ID")
-    private val USER_ID = long("USER_ID")
+object ParticipantsTable : Table() {
+    val ID = long("ID").autoIncrement()
+    val MEETING_ID = long("MEETING_ID")
+    val USER_ID = long("USER_ID")
 
     override val primaryKey = PrimaryKey(ID)
+}
 
-    init {
-        transaction(db) {
-            SchemaUtils.create(this@ParticipantsTable)
-        }
-    }
+class ParticipantsStorage(private val db: Database) {
 
     suspend fun addParticipant(participantId: UserId, meetingId: MeetingId) =
-        newSuspendedTransaction(db = db) {
-            insert { statement ->
+        newSuspendedTransaction(Dispatchers.IO, db) {
+            ParticipantsTable.insert { statement ->
                 statement[MEETING_ID] = meetingId.long
                 statement[USER_ID] = participantId.long
             }
         }
 
     suspend fun participantsCount(meetingId: MeetingId): Int =
-        newSuspendedTransaction(db = db) {
-            select { (MEETING_ID eq meetingId.long) }
+        newSuspendedTransaction(Dispatchers.IO, db) {
+            ParticipantsTable.select { (MEETING_ID eq meetingId.long) }
                 .count()
                 .toInt()
         }
 
     suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =
-        newSuspendedTransaction(db = db) {
-            select { (MEETING_ID eq meetingId.long) and (USER_ID eq userId.long) }.any()
+        newSuspendedTransaction(Dispatchers.IO, db) {
+            ParticipantsTable.select { (MEETING_ID eq meetingId.long) and (USER_ID eq userId.long) }.any()
         }
 
     suspend fun getJoinHistory(
         userId: UserId,
         amount: Amount,
         pagingId: PagingId?,
-    ): PagingResult<List<MeetingId>> = newSuspendedTransaction(db = db) {
-       val results = select {
+    ): PagingResult<List<MeetingId>> = newSuspendedTransaction(Dispatchers.IO, db) {
+       val results = ParticipantsTable.select {
            (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE))
        }.orderBy(ID, SortOrder.DESC).take(amount.int)
 
@@ -67,8 +68,8 @@ class ParticipantsTable(private val db: Database) : Table() {
         meetingId: MeetingId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<UserId>> = newSuspendedTransaction(db = db) {
-        val results = select { (MEETING_ID eq meetingId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
+    ): PagingResult<List<UserId>> = newSuspendedTransaction(Dispatchers.IO, db) {
+        val results = ParticipantsTable.select { (MEETING_ID eq meetingId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
             .orderBy(ID, SortOrder.DESC)
             .take(amount.int)
 
@@ -80,13 +81,12 @@ class ParticipantsTable(private val db: Database) : Table() {
         )
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun getJoinHistoryFlow(
         userId: UserId,
         pagingId: PagingId?,
     ): Flow<PagingResult<MeetingId>> = channelFlow {
-        newSuspendedTransaction(db = db) {
-            select { (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
+        newSuspendedTransaction(Dispatchers.IO, db) {
+            ParticipantsTable.select { (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
                 .orderBy(ID, SortOrder.DESC)
                 .asFlow()
                 .map { row ->

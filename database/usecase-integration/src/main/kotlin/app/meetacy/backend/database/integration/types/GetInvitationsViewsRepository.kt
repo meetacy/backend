@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.integration.types
 
-import app.meetacy.backend.database.invitations.InvitationsTable
+import app.meetacy.backend.database.invitations.InvitationsStorage
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
@@ -11,7 +11,7 @@ class DatabaseGetInvitationsViewsRepository(
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository,
     db: Database
 ): GetInvitationsViewsRepository {
-    private val invitationsTable = InvitationsTable(db)
+    private val invitationsStorage = InvitationsStorage(db)
 
     override suspend fun getInvitationViewOrNull(viewerId: UserId, invitation: FullInvitation): InvitationView? {
         with(invitation) {
@@ -24,7 +24,7 @@ class DatabaseGetInvitationsViewsRepository(
     }
 
     override suspend fun getInvitationViewOrNull(viewerId: UserId, invitation: InvitationId): InvitationView? {
-        val fullInvitation = invitationsTable.getInvitationsByInvitationIds(listOf(invitation))
+        val fullInvitation = invitationsStorage.getInvitationsByInvitationIds(listOf(invitation))
             .singleOrNull()?.mapToUsecase() ?: return null
 
         return getInvitationViewOrNull(viewerId, fullInvitation)
@@ -41,7 +41,7 @@ class DatabaseGetInvitationsViewsRepository(
     }
 
     override suspend fun getInvitationView(viewerId: UserId, invitation: InvitationId): InvitationView {
-        val fullInvitation = invitationsTable.getInvitationsByInvitationIds(listOf(invitation)).apply {
+        val fullInvitation = invitationsStorage.getInvitationsByInvitationIds(listOf(invitation)).apply {
             require(size == 1) { "Couldn't find invitation. Consider use getInvitationViewOrNull instead" }
         }.single().mapToUsecase()
 

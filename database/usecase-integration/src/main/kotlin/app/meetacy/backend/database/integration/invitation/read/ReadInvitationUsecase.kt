@@ -1,8 +1,8 @@
 package app.meetacy.backend.database.integration.invitation.read
 
 import app.meetacy.backend.database.integration.types.mapToUsecase
-import app.meetacy.backend.database.invitations.InvitationsTable
-import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.database.invitations.InvitationsStorage
+import app.meetacy.backend.database.users.UsersStorage
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
@@ -12,17 +12,17 @@ import org.jetbrains.exposed.sql.Database
 
 
 class DatabaseReadInvitationStorage(db: Database): ReadInvitationUsecase.Storage {
-    private val invitationsTable = InvitationsTable(db)
-    private val usersTable = UsersTable(db)
+    private val invitationsStorage = InvitationsStorage(db)
+    private val usersStorage = UsersStorage(db)
 
     override suspend fun getInvitations(invited: UserId): List<FullInvitation> {
-        val invitations = invitationsTable.getInvitations(userIds = listOf(invited))
+        val invitations = invitationsStorage.getInvitations(userIds = listOf(invited))
             .filter { it.invitedUserId == invited }
         return invitations.map { it.mapToUsecase() }
     }
 
     override suspend fun getInvitations(from: List<UserId>, to: UserId): List<FullInvitation> {
-        val invitations = invitationsTable
+        val invitations = invitationsStorage
             .getInvitations(userIds = from + to)
             .filter { it.invitorUserId in from && it.invitedUserId == to }
 
@@ -30,16 +30,16 @@ class DatabaseReadInvitationStorage(db: Database): ReadInvitationUsecase.Storage
     }
 
     override suspend fun getInvitationsByIds(ids: List<InvitationId>): List<FullInvitation> {
-        return invitationsTable
+        return invitationsStorage
             .getInvitationsByInvitationIds(ids)
             .map { it.mapToUsecase() }
     }
 
     override suspend fun getFullUser(id: UserId): FullUser? =
-        usersTable.getUsersOrNull(listOf(id)).singleOrNull()?.mapToUsecase()
+        usersStorage.getUsersOrNull(listOf(id)).singleOrNull()?.mapToUsecase()
 
     override suspend fun getInvitation(id: InvitationId): FullInvitation? =
-        invitationsTable
+        invitationsStorage
             .getInvitationsByInvitationIds(listOf(id))
             .singleOrNull()?.mapToUsecase()
 }

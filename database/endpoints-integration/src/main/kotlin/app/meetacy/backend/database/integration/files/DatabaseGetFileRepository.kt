@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.integration.files
 
-import app.meetacy.backend.database.files.FilesTable
+import app.meetacy.backend.database.files.FilesStorage
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
 import app.meetacy.backend.types.file.FileIdentity
@@ -11,9 +11,9 @@ class DatabaseGetFileRepository(
     database: Database,
     private val basePath: String
 ) : GetFileRepository {
-    private val filesTable = FilesTable(database)
+    private val filesStorage = FilesStorage(database)
     override suspend fun getFile(fileId: FileIdentity): GetFileResult {
-        return when(val description = filesTable.getFileDescription(fileId.id)) {
+        return when(val description = filesStorage.getFileDescription(fileId.id)) {
             null -> GetFileResult.InvalidFileIdentity
             else -> {
                 if (description.fileIdentity.accessHash == fileId.accessHash) {

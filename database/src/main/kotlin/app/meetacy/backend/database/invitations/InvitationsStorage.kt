@@ -2,6 +2,13 @@
 
 package app.meetacy.backend.database.invitations
 
+import app.meetacy.backend.database.invitations.InvitationsTable.ACCESS_HASH
+import app.meetacy.backend.database.invitations.InvitationsTable.EXPIRY_DATE
+import app.meetacy.backend.database.invitations.InvitationsTable.INVITATION_ID
+import app.meetacy.backend.database.invitations.InvitationsTable.INVITED_USER_ID
+import app.meetacy.backend.database.invitations.InvitationsTable.INVITOR_USER_ID
+import app.meetacy.backend.database.invitations.InvitationsTable.IS_ACCEPTED
+import app.meetacy.backend.database.invitations.InvitationsTable.MEETING_ID
 import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.types.DATE_TIME_MAX_LIMIT
 import app.meetacy.backend.types.HASH_LENGTH
@@ -11,26 +18,25 @@ import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.invitation.InvitationIdentity
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class InvitationsTable(private val db: Database) : Table() {
-    private val INVITATION_ID = long("INVITATION_ID").autoIncrement()
-    private val EXPIRY_DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
-    private val INVITED_USER_ID = long("INVITED_USER_ID")
-    private val INVITOR_USER_ID = long("INVITOR_USER_ID")
-    private val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
-    private val MEETING_ID = long("MEETING_ID")
-    private val IS_ACCEPTED = bool("IS_ACCEPTED").nullable().default(null)
+object InvitationsTable : Table() {
+    val INVITATION_ID = long("INVITATION_ID").autoIncrement()
+    val EXPIRY_DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
+    val INVITED_USER_ID = long("INVITED_USER_ID")
+    val INVITOR_USER_ID = long("INVITOR_USER_ID")
+    val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
+    val MEETING_ID = long("MEETING_ID")
+    val IS_ACCEPTED = bool("IS_ACCEPTED").nullable().default(null)
 
     override val primaryKey = PrimaryKey(INVITATION_ID)
+}
 
-    init {
-        transaction(db) {
-            SchemaUtils.create(this@InvitationsTable)
-        }
-    }
+class InvitationsStorage(private val db: Database) {
 
     suspend fun addInvitation(
         accessHash: AccessHash,
@@ -39,8 +45,8 @@ class InvitationsTable(private val db: Database) : Table() {
         expiryDate: DateTime,
         meetingId: MeetingId
     ): InvitationId =
-        newSuspendedTransaction(db = db) {
-            val invitationId = insert { statement ->
+        newSuspendedTransaction(Dispatchers.IO, db) {
+            val invitationId = InvitationsTable.insert { statement ->
                 statement[ACCESS_HASH] = accessHash.string
                 statement[EXPIRY_DATE] = expiryDate.iso8601
                 statement[INVITED_USER_ID] = invitedUserId.long
@@ -52,34 +58,34 @@ class InvitationsTable(private val db: Database) : Table() {
         }
 
     suspend fun getInvitationsByInvitationIds(list: List<InvitationId>): List<DatabaseInvitation> =
-        newSuspendedTransaction(db = db) {
+        newSuspendedTransaction(Dispatchers.IO, db) {
             val rawInvitationIds = list.map { it.long }
 
-            return@newSuspendedTransaction select {
+            return@newSuspendedTransaction InvitationsTable.select {
                 (INVITATION_ID inList rawInvitationIds)
             }
                 .map { it.toInvitation() }
         }
 
     suspend fun getInvitations(userIds: List<UserId>): List<DatabaseInvitation> =
-        newSuspendedTransaction(db = db)  {
+        newSuspendedTransaction(Dispatchers.IO, db)  {
             val rawUserIds = userIds.map { it.long }
-            select { (INVITOR_USER_ID inList rawUserIds) or (INVITED_USER_ID inList rawUserIds) }
+            InvitationsTable.select { (INVITOR_USER_ID inList rawUserIds) or (INVITED_USER_ID inList rawUserIds) }
                 .map { it.toInvitation() }
         }
 
     suspend fun markAsAccepted(
         invitationId: InvitationId
-    ): Boolean = newSuspendedTransaction(db = db) {
-        update(where = { (INVITATION_ID eq invitationId.long) }) {
+    ): Boolean = newSuspendedTransaction(Dispatchers.IO, db) {
+        InvitationsTable.update(where = { (INVITATION_ID eq invitationId.long) }) {
             it[IS_ACCEPTED] = true
         } > 0
     }
 
     suspend fun markAsDenied(
         invitationId: InvitationId
-    ): Boolean = newSuspendedTransaction(db = db) {
-        update(where = { INVITATION_ID eq invitationId.long }) {
+    ): Boolean = newSuspendedTransaction(Dispatchers.IO, db) {
+        InvitationsTable.update(where = { INVITATION_ID eq invitationId.long }) {
             it[IS_ACCEPTED] = false
         } > 0
     }
@@ -88,19 +94,19 @@ class InvitationsTable(private val db: Database) : Table() {
         invitationId: InvitationId,
         expiryDate: DateTime? = null,
         meetingId: MeetingId? = null
-    ): Boolean = newSuspendedTransaction(db = db) {
+    ): Boolean = newSuspendedTransaction(Dispatchers.IO, db) {
         val prevInvitation = getInvitationsByInvitationIds(
             listOf(invitationId)
         ).singleOrNull() ?: return@newSuspendedTransaction false
 
-        update(where = { INVITATION_ID eq invitationId.long }) {
+        InvitationsTable.update(where = { INVITATION_ID eq invitationId.long }) {
             it[EXPIRY_DATE] = expiryDate?.iso8601 ?: prevInvitation.expiryDate.iso8601
             it[MEETING_ID] = meetingId?.long ?: prevInvitation.meeting.long
         } > 0
     }
 
-    suspend fun cancel(invitationId: InvitationId): Boolean = newSuspendedTransaction(db = db) {
-        deleteWhere { INVITATION_ID eq invitationId.long } > 0
+    suspend fun cancel(invitationId: InvitationId): Boolean = newSuspendedTransaction(Dispatchers.IO, db) {
+        InvitationsTable.deleteWhere { INVITATION_ID eq invitationId.long } > 0
     }
 
     private fun ResultRow.toInvitation() = DatabaseInvitation(

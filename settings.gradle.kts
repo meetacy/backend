@@ -23,14 +23,15 @@ include(
     "endpoints",
     "usecase",
     "usecase:endpoints-integration",
-    "types",
-    "types:serialization-integration",
-    "hash-generator",
-    "hash-generator:usecase-integration",
     "database",
     "database:usecase-integration",
     "database:endpoints-integration",
-    "utf8-checker",
-    "utf8-checker:usecase-integration",
-    "stdlib-extensions"
+    "types",
+    "types:serialization-integration",
+    "libs:hash-generator",
+    "libs:hash-generator:usecase-integration",
+    "libs:utf8-checker",
+    "libs:utf8-checker:usecase-integration",
+    "libs:stdlib-extensions",
+    "libs:wdater"
 )
