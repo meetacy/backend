@@ -1,4 +1,4 @@
-package app.meetacy.backend.usecase.meetings.history.active
+package app.meetacy.backend.usecase.meetings.history.past
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
@@ -8,7 +8,7 @@ import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 
-class ListMeetingsActiveUsecase(
+class ListMeetingsPastUsecase(
     private val authRepository: AuthRepository,
     private val storage: Storage,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository
@@ -18,14 +18,14 @@ class ListMeetingsActiveUsecase(
         object InvalidAccessIdentity : Result
     }
 
-    suspend fun getActiveMeetingsList(
+    suspend fun getPastMeetingsList(
         accessIdentity: AccessIdentity,
         amount: Amount,
         pagingId: PagingId?
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidAccessIdentity }
 
-        val paging = storage.getActiveMeetings(
+        val paging = storage.getPastMeetings(
             memberId = userId,
             amount = amount,
             pagingId = pagingId
@@ -37,7 +37,7 @@ class ListMeetingsActiveUsecase(
     }
 
     interface Storage {
-        suspend fun getActiveMeetings(
+        suspend fun getPastMeetings(
             memberId: UserId,
             amount: Amount,
             pagingId: PagingId?
