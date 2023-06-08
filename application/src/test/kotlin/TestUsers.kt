@@ -1,7 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 import app.meetacy.backend.hash.HashGenerator
-import app.meetacy.sdk.exception.MeetacyInternalException
 import app.meetacy.sdk.exception.MeetacyUsernameAlreadyOccupiedException
 import app.meetacy.sdk.types.user.username
 import app.meetacy.sdk.types.optional.Optional

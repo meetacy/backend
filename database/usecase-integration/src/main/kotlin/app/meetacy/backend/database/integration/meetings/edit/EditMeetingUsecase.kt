@@ -2,7 +2,7 @@ package app.meetacy.backend.database.integration.meetings.edit
 
 import app.meetacy.backend.database.integration.types.mapToDatabase
 import app.meetacy.backend.database.integration.types.mapToUsecase
-import app.meetacy.backend.database.meetings.MeetingsTable
+import app.meetacy.backend.database.meetings.MeetingsStorage
 import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
@@ -13,7 +13,7 @@ import app.meetacy.backend.usecase.types.FullMeeting
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseEditMeetingStorage(db: Database) : EditMeetingUsecase.Storage {
-    private val meetingsTable = MeetingsTable(db)
+    private val meetingsStorage = MeetingsStorage(db)
 
     override suspend fun editMeeting(
         meetingId: MeetingId,
@@ -24,7 +24,7 @@ class DatabaseEditMeetingStorage(db: Database) : EditMeetingUsecase.Storage {
         date: Date?,
         visibility: FullMeeting.Visibility?
     ): FullMeeting {
-         return meetingsTable.editMeeting(
+         return meetingsStorage.editMeeting(
             meetingId,
             avatarId,
             title,
