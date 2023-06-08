@@ -47,6 +47,7 @@ import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
+import app.meetacy.backend.usecase.meetings.history.active.ListMeetingsActiveUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
@@ -76,7 +77,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     LocationFlowStorage.Underlying, BaseFriendsLocationStreamingStorage.Storage,
     CreateInvitationUsecase.Storage, ReadInvitationUsecase.Storage,
     AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage, UpdateInvitationUsecase.Storage,
-    CancelInvitationUsecase.Storage, ViewUserUsecase.Storage, GetInvitationsViewsRepository {
+    CancelInvitationUsecase.Storage, ViewUserUsecase.Storage, GetInvitationsViewsRepository,
+    ListMeetingsActiveUsecase.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -685,5 +687,13 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     override suspend fun isSubscriber(userId: UserId, subscriberId: UserId): Boolean =
         getFriends(userId, Amount.parse(Int.MAX_VALUE)).contains(subscriberId)
+
+    override suspend fun getActiveMeetings(
+        memberId: UserId,
+        amount: Amount,
+        pagingId: PagingId?
+    ): PagingResult<List<MeetingId>> {
+        TODO("Not yet implemented")
+    }
 
 }
