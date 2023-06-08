@@ -1,0 +1,46 @@
+package app.meetacy.backend.usecase.meetings.history.active
+
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.paging.PagingId
+import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.usecase.types.*
+
+class ListMeetingsActiveUsecase(
+    private val authRepository: AuthRepository,
+    private val storage: Storage,
+    private val getMeetingsViewsRepository: GetMeetingsViewsRepository
+) {
+    sealed interface Result {
+        class Success(val paging: PagingResult<List<MeetingView>>) : Result
+        object InvalidAccessIdentity : Result
+    }
+
+    suspend fun getActiveMeetingsList(
+        accessIdentity: AccessIdentity,
+        amount: Amount,
+        pagingId: PagingId?
+    ): Result {
+        val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidAccessIdentity }
+
+        val paging = storage.getActiveMeetings(
+            memberId = userId,
+            amount = amount,
+            pagingId = pagingId
+        ).map { meetingIds ->
+            getMeetingsViewsRepository.getMeetingsViews(userId, meetingIds)
+        }
+
+        return Result.Success(paging)
+    }
+
+    interface Storage {
+        suspend fun getActiveMeetings(
+            memberId: UserId,
+            amount: Amount,
+            pagingId: PagingId?
+        ): PagingResult<List<MeetingId>>
+    }
+}
