@@ -16,5 +16,5 @@ class DatabaseListMeetingParticipantsStorage(db: Database) : ListMeetingParticip
         meetingId: MeetingId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<UserId>> = participantsStorage.getParticipants(meetingId, amount, pagingId)
+    ): PagingResult<UserId> = participantsStorage.getParticipants(meetingId, amount, pagingId)
 }
