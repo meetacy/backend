@@ -23,7 +23,9 @@ import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMe
 import app.meetacy.backend.database.integration.meetings.edit.DatabaseEditMeetingStorage
 import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
 import app.meetacy.backend.database.integration.meetings.history.active.DatabaseListActiveMeetingsStorage
+import app.meetacy.backend.database.integration.meetings.history.filtered.DatabaseListFilteredMeetingsStorage
 import app.meetacy.backend.database.integration.meetings.history.list.DatabaseListMeetingsHistoryListStorage
+import app.meetacy.backend.database.integration.meetings.history.past.DatabaseListPastMeetingsStorage
 import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
 import app.meetacy.backend.database.integration.meetings.participants.list.DatabaseListMeetingParticipantsStorage
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
@@ -73,6 +75,7 @@ import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingR
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.history.active.UsecaseListActiveMeetingsRepository
 import app.meetacy.backend.usecase.integration.meetings.history.list.UsecaseListMeetingsHistoryRepository
+import app.meetacy.backend.usecase.integration.meetings.history.past.UsecaseListPastMeetingsRepository
 import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
 import app.meetacy.backend.usecase.integration.meetings.participants.list.UsecaseListMeetingParticipantsRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
@@ -94,6 +97,7 @@ import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
 import app.meetacy.backend.usecase.meetings.history.active.ListMeetingsActiveUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
+import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
@@ -214,10 +218,23 @@ fun startEndpoints(
                 meetingsActiveRepository = UsecaseListActiveMeetingsRepository(
                     usecase = ListMeetingsActiveUsecase(
                         authRepository,
-                        storage = DatabaseListActiveMeetingsStorage(db),
+                        storage = DatabaseListActiveMeetingsStorage(
+                            DatabaseListFilteredMeetingsStorage(db),
+                            db
+                        ),
                         getMeetingsViewsRepository = getMeetingsViewsRepository
                     )
-                )
+                ),
+                meetingsPastRepository = UsecaseListPastMeetingsRepository(
+                    usecase = ListMeetingsPastUsecase(
+                        authRepository,
+                        storage = DatabaseListPastMeetingsStorage(
+                            DatabaseListFilteredMeetingsStorage(db),
+                            db
+                        ),
+                        getMeetingsViewsRepository = getMeetingsViewsRepository
+                    )
+                ),
             ),
             meetingsMapDependencies = MeetingsMapDependencies(
                 listMeetingsMapRepository = UsecaseListMeetingsMapRepository(
