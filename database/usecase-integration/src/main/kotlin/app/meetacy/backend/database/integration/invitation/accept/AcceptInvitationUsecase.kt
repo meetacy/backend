@@ -1,9 +1,9 @@
 package app.meetacy.backend.database.integration.invitation.accept
 
 import app.meetacy.backend.database.integration.types.mapToUsecase
-import app.meetacy.backend.database.invitations.InvitationsTable
-import app.meetacy.backend.database.meetings.MeetingsTable
-import app.meetacy.backend.database.meetings.ParticipantsTable
+import app.meetacy.backend.database.invitations.InvitationsStorage
+import app.meetacy.backend.database.meetings.MeetingsStorage
+import app.meetacy.backend.database.meetings.ParticipantsStorage
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
@@ -13,24 +13,24 @@ import app.meetacy.backend.usecase.types.FullMeeting
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseAcceptInvitationStorage(db: Database): Storage {
-    private val invitationsTable = InvitationsTable(db)
-    private val participantsTable = ParticipantsTable(db)
-    private val meetingsTable = MeetingsTable(db)
+    private val invitationsStorage = InvitationsStorage(db)
+    private val participantsStorage = ParticipantsStorage(db)
+    private val meetingsStorage = MeetingsStorage(db)
 
     override suspend fun getMeetingOrNull(id: MeetingId): FullMeeting? =
-        meetingsTable.getMeetingOrNull(id)?.mapToUsecase()
+        meetingsStorage.getMeetingOrNull(id)?.mapToUsecase()
 
     override suspend fun getInvitationOrNull(id: InvitationId): FullInvitation? =
-        invitationsTable.getInvitationsByInvitationIds(listOf(id)).singleOrNull()?.mapToUsecase()
+        invitationsStorage.getInvitationsByInvitationIds(listOf(id)).singleOrNull()?.mapToUsecase()
 
     override suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =
-        participantsTable.isParticipating(meetingId, userId)
+        participantsStorage.isParticipating(meetingId, userId)
 
     override suspend fun markAsAccepted(id: InvitationId) {
-        invitationsTable.markAsAccepted(id)
+        invitationsStorage.markAsAccepted(id)
     }
 
     override suspend fun addToMeeting(id: MeetingId, userId: UserId) {
-        participantsTable.addParticipant(userId, id)
+        participantsStorage.addParticipant(userId, id)
     }
 }
