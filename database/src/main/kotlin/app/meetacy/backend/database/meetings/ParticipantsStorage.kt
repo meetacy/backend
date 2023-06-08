@@ -5,22 +5,24 @@ package app.meetacy.backend.database.meetings
 import app.meetacy.backend.database.meetings.ParticipantsTable.ID
 import app.meetacy.backend.database.meetings.ParticipantsTable.MEETING_ID
 import app.meetacy.backend.database.meetings.ParticipantsTable.USER_ID
+import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.map
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object ParticipantsTable : Table() {
     val ID = long("ID").autoIncrement()
-    val MEETING_ID = long("MEETING_ID")
-    val USER_ID = long("USER_ID")
+    val MEETING_ID = reference("MEETING_ID", MeetingsTable.MEETING_ID)
+    val USER_ID = reference("USER_ID", UsersTable.USER_ID)
 
     override val primaryKey = PrimaryKey(ID)
 }

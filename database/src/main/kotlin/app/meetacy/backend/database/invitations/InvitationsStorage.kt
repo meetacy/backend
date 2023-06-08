@@ -9,7 +9,9 @@ import app.meetacy.backend.database.invitations.InvitationsTable.INVITED_USER_ID
 import app.meetacy.backend.database.invitations.InvitationsTable.INVITOR_USER_ID
 import app.meetacy.backend.database.invitations.InvitationsTable.IS_ACCEPTED
 import app.meetacy.backend.database.invitations.InvitationsTable.MEETING_ID
+import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.types.DatabaseInvitation
+import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.DATE_TIME_MAX_LIMIT
 import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.access.AccessHash
@@ -22,15 +24,14 @@ import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object InvitationsTable : Table() {
     val INVITATION_ID = long("INVITATION_ID").autoIncrement()
     val EXPIRY_DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
-    val INVITED_USER_ID = long("INVITED_USER_ID")
-    val INVITOR_USER_ID = long("INVITOR_USER_ID")
+    val INVITED_USER_ID = reference("INVITED_USER_ID", UsersTable.USER_ID)
+    val INVITOR_USER_ID = reference("INVITOR_USER_ID", UsersTable.USER_ID)
     val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
-    val MEETING_ID = long("MEETING_ID")
+    val MEETING_ID = reference("MEETING_ID", MeetingsTable.MEETING_ID)
     val IS_ACCEPTED = bool("IS_ACCEPTED").nullable().default(null)
 
     override val primaryKey = PrimaryKey(INVITATION_ID)

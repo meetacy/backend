@@ -2,31 +2,36 @@
 
 package app.meetacy.backend.database.notifications
 
+import app.meetacy.backend.database.meetings.MeetingsTable
+import app.meetacy.backend.database.notifications.NotificationsTable.DATE
+import app.meetacy.backend.database.notifications.NotificationsTable.INVITED_MEETING_ID
+import app.meetacy.backend.database.notifications.NotificationsTable.INVITER_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.NOTIFICATION_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.OWNER_ID
-import app.meetacy.backend.database.notifications.NotificationsTable.TYPE
-import app.meetacy.backend.database.notifications.NotificationsTable.DATE
-import app.meetacy.backend.database.notifications.NotificationsTable.INVITER_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.SUBSCRIBED_ID
-import app.meetacy.backend.database.notifications.NotificationsTable.INVITED_MEETING_ID
+import app.meetacy.backend.database.notifications.NotificationsTable.TYPE
 import app.meetacy.backend.database.types.DatabaseNotification
-import app.meetacy.backend.types.*
+import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.types.DATE_TIME_MAX_LIMIT
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 object NotificationsTable : Table() {
     val NOTIFICATION_ID = long("NOTIFICATION_ID")
-    val OWNER_ID = long("OWNER_ID")
+    val OWNER_ID = reference("OWNER_ID", UsersTable.USER_ID)
     val TYPE = enumeration("TYPE", DatabaseNotification.Type::class)
     val DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
-    val INVITER_ID = long("INVITER_ID").nullable()
-    val SUBSCRIBED_ID = long("SUBSCRIBED_ID").nullable().default(null)
-    val INVITED_MEETING_ID = long("INVITED_MEETING_ID").nullable().default(null)
+    val INVITER_ID = reference("INVITER_ID", UsersTable.USER_ID).nullable()
+    val SUBSCRIBED_ID = reference("SUBSCRIBED_ID", UsersTable.USER_ID).nullable().default(null)
+    val INVITED_MEETING_ID = reference("INVITED_MEETING_ID", MeetingsTable.MEETING_ID).nullable().default(null)
 }
 
 class NotificationsStorage(private val db: Database) {
