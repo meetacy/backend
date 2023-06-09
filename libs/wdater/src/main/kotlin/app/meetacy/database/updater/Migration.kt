@@ -6,7 +6,5 @@ public interface Migration {
 
     public val toVersion: Int get() = fromVersion + 1
 
-    public suspend fun MigrationContext.migrate() {
-
-    }
+    public suspend fun MigrationContext.migrate()
 }
