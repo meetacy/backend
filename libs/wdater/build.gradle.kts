@@ -4,6 +4,11 @@ plugins {
 
 kotlin {
     explicitApi()
+    sourceSets.all {
+        languageSettings {
+            enableLanguageFeature("ContextReceivers")
+        }
+    }
 }
 
 dependencies {

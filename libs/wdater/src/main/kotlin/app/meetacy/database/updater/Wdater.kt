@@ -1,5 +1,6 @@
 package app.meetacy.database.updater
 
+import app.meetacy.database.updater.context.MigrationContext
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
@@ -21,11 +22,20 @@ public class Wdater(private val config: WdaterConfig = WdaterConfig()) {
 
         // skip migrations if there is no version
         if (fromVersion == null) {
-            val maxVersion = migrations.maxOfOrNull { it.toVersion } ?: config.defaultSchemaVersion
-            storage.setSchemaVersion(maxVersion)
+            initializeDatabase(migrations)
         } else {
             val migratedVersion = migrate(fromVersion, migrations)
             storage.setSchemaVersion(migratedVersion)
+        }
+    }
+
+    private suspend fun initializeDatabase(migrations: List<Migration>) {
+        val maxVersion = migrations.maxOfOrNull { it.toVersion } ?: config.defaultSchemaVersion
+        storage.setSchemaVersion(maxVersion)
+        newSuspendedTransaction(Dispatchers.IO, db) {
+            with(config.initializer) {
+                MigrationContext(transaction = this@newSuspendedTransaction).initialize()
+            }
         }
     }
 
