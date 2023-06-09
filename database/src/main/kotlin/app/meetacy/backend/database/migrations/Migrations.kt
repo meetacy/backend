@@ -11,14 +11,13 @@ import app.meetacy.backend.database.meetings.ParticipantsTable
 import app.meetacy.backend.database.notifications.LastReadNotificationsTable
 import app.meetacy.backend.database.notifications.NotificationsTable
 import app.meetacy.backend.database.users.UsersTable
-import app.meetacy.database.updater.Migration
 import app.meetacy.database.updater.Wdater
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
-private val migrations = listOf<Migration>(`Migration 0-1`)
+private val migrations = listOf(`Migration 0-1`)
 
 suspend fun runMigrations(db: Database) {
     val wdater = Wdater {
