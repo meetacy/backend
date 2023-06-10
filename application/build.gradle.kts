@@ -14,7 +14,7 @@ dependencies {
     implementation(project(Deps.Projects.HashGeneratorUsecase))
     implementation(project(Deps.Projects.Utf8CheckerUsecase))
 
-    testImplementation(Deps.Libs.MeetacySdk.ApiKtor)
+    testImplementation(Deps.Libs.Meetacy.Sdk.ApiKtor)
     testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
     testImplementation(Deps.Libs.Ktor.Client.Core)
     testImplementation(Deps.Libs.Ktor.Client.Cio)

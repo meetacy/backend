@@ -33,6 +33,7 @@ object Deps {
     private const val shadowVer = "7.0.0"
 
     private const val meetacySdkVersion = "0.0.42"
+    private const val wdaterVersion = "0.0.1"
     private const val kdsVer = "1.1.0"
     private const val scriptKtVer = "0.0.2"
 
@@ -126,6 +127,15 @@ object Deps {
             const val Jdbc = "org.jetbrains.exposed:exposed-jdbc:$exposedVersion"
             const val Time = "org.jetbrains.exposed:exposed-java-time:$exposedVersion"
         }
+        object Meetacy {
+            object Wdater {
+                const val Core = "app.meetacy.wdater:wdater:$wdaterVersion"
+            }
+            object Sdk {
+                const val Api = "app.meetacy.sdk:api:$meetacySdkVersion"
+                const val ApiKtor = "app.meetacy.sdk:api-ktor:$meetacySdkVersion"
+            }
+        }
         object Postgres {
             const val Jdbc = "org.postgresql:postgresql:$postgresqlVersion"
         }
@@ -134,10 +144,6 @@ object Deps {
         }
         object Slf4j {
             const val Simple = "org.slf4j:slf4j-simple:$slf4jJVersion"
-        }
-        object MeetacySdk {
-            const val Api = "app.meetacy.sdk:api:$meetacySdkVersion"
-            const val ApiKtor = "app.meetacy.sdk:api-ktor:$meetacySdkVersion"
         }
         object Androidx {
             const val AppCompat =
@@ -189,7 +195,6 @@ object Deps {
                 }
             }
         }
-
         object Deploy {
             const val Id = "deploy"
         }
@@ -249,6 +254,5 @@ object Deps {
         const val Utf8Checker = ":libs:utf8-checker"
         const val Utf8CheckerUsecase = ":libs:utf8-checker:usecase-integration"
         const val StdlibExtensions = ":libs:stdlib-extensions"
-        const val Wdater = ":libs:wdater"
     }
 }
