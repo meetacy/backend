@@ -31,7 +31,7 @@ interface ListMeetingParticipantsRepository {
 sealed interface ListParticipantsResult {
     object MeetingNotFound : ListParticipantsResult
     object TokenInvalid : ListParticipantsResult
-    class Success(val paging: PagingResultSerializable<List<User>>) : ListParticipantsResult
+    class Success(val paging: PagingResultSerializable<User>) : ListParticipantsResult
 }
 
 fun Route.listMeetingParticipants(

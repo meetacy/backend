@@ -23,7 +23,6 @@ import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMe
 import app.meetacy.backend.database.integration.meetings.edit.DatabaseEditMeetingStorage
 import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
 import app.meetacy.backend.database.integration.meetings.history.active.DatabaseListActiveMeetingsStorage
-import app.meetacy.backend.database.integration.meetings.history.filtered.DatabaseListFilteredMeetingsStorage
 import app.meetacy.backend.database.integration.meetings.history.list.DatabaseListMeetingsHistoryListStorage
 import app.meetacy.backend.database.integration.meetings.history.past.DatabaseListPastMeetingsStorage
 import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
@@ -218,20 +217,14 @@ fun startEndpoints(
                 meetingsActiveRepository = UsecaseListActiveMeetingsRepository(
                     usecase = ListMeetingsActiveUsecase(
                         authRepository,
-                        storage = DatabaseListActiveMeetingsStorage(
-                            DatabaseListFilteredMeetingsStorage(db),
-                            db
-                        ),
+                        storage = DatabaseListActiveMeetingsStorage(db),
                         getMeetingsViewsRepository = getMeetingsViewsRepository
                     )
                 ),
                 meetingsPastRepository = UsecaseListPastMeetingsRepository(
                     usecase = ListMeetingsPastUsecase(
                         authRepository,
-                        storage = DatabaseListPastMeetingsStorage(
-                            DatabaseListFilteredMeetingsStorage(db),
-                            db
-                        ),
+                        storage = DatabaseListPastMeetingsStorage(db),
                         getMeetingsViewsRepository = getMeetingsViewsRepository
                     )
                 ),
