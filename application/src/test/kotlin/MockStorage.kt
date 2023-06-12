@@ -24,6 +24,7 @@ import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.paging.PagingValue
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.types.user.Username
@@ -689,20 +690,14 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun isSubscriber(userId: UserId, subscriberId: UserId): Boolean =
         getFriends(userId, Amount.parse(Int.MAX_VALUE)).contains(subscriberId)
 
-    override suspend fun getActiveMeetings(
-        memberId: UserId,
-        amount: Amount,
-        pagingId: PagingId?
-    ): PagingResult<MeetingId> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getPastMeetings(
-        memberId: UserId,
-        amount: Amount,
-        pagingId: PagingId?
-    ): PagingResult<MeetingId> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getJoinHistoryFlow(userId: UserId, startPagingId: PagingId?): Flow<PagingValue<MeetingId>> =
+        participants.asFlow()
+            .filter { (pagingId, memberId) -> memberId == userId
+                    && pagingId.long < (startPagingId?.long ?: Long.MAX_VALUE) }
+            .map { (pagingId, _, meetingId) -> PagingValue(
+                    value = meetingId,
+                    nextPagingId = pagingId
+                )
+            }
 
 }
