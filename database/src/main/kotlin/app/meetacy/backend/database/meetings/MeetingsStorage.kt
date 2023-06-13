@@ -2,6 +2,7 @@
 
 package app.meetacy.backend.database.meetings
 
+import app.meetacy.backend.database.files.FilesTable
 import app.meetacy.backend.database.meetings.MeetingsTable.ACCESS_HASH
 import app.meetacy.backend.database.meetings.MeetingsTable.AVATAR_ID
 import app.meetacy.backend.database.meetings.MeetingsTable.CREATOR_ID
@@ -13,6 +14,7 @@ import app.meetacy.backend.database.meetings.MeetingsTable.MEETING_ID
 import app.meetacy.backend.database.meetings.MeetingsTable.TITLE
 import app.meetacy.backend.database.meetings.MeetingsTable.VISIBILITY
 import app.meetacy.backend.database.types.DatabaseMeeting
+import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.*
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.annotation.UnsafeConstructor
@@ -24,22 +26,24 @@ import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.map
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object MeetingsTable : Table() {
     val MEETING_ID = long("MEETING_ID").autoIncrement()
     val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
-    val CREATOR_ID = long("CREATOR_ID")
+    val CREATOR_ID = reference("CREATOR_ID", UsersTable.USER_ID)
     val DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
     val LATITUDE = double("LATITUDE")
     val LONGITUDE = double("LONGITUDE")
     val TITLE = varchar("TITLE", length = TITLE_MAX_LIMIT).nullable()
     val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT).nullable()
-    val AVATAR_ID = long("AVATAR_ID").nullable()
+    val AVATAR_ID = reference("AVATAR_ID", FilesTable.FILE_ID).nullable()
     val VISIBILITY = enumeration("VISIBILITY", klass = DatabaseMeeting.Visibility::class)
 
     override val primaryKey = PrimaryKey(MEETING_ID)

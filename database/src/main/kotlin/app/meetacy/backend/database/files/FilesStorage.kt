@@ -8,6 +8,7 @@ import app.meetacy.backend.database.files.FilesTable.FILE_SIZE
 import app.meetacy.backend.database.files.FilesTable.ORIGINAL_FILE_NAME
 import app.meetacy.backend.database.files.FilesTable.USER_ID
 import app.meetacy.backend.database.types.DatabaseFileDescription
+import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
@@ -16,11 +17,10 @@ import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object FilesTable : Table() {
-    val USER_ID = long("USER_ID")
     val FILE_ID = long("FILE_ID").autoIncrement()
+    val USER_ID = reference("USER_ID", UsersTable.USER_ID)
     val ACCESS_HASH = varchar("ACCESS_HASH", 256)
     val FILE_SIZE = long("FILE_SIZE").nullable()
     val ORIGINAL_FILE_NAME = varchar("ORIGINAL_FILE_NAME", 1024)

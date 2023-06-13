@@ -5,6 +5,7 @@ package app.meetacy.backend.database.meetings
 import app.meetacy.backend.database.meetings.ParticipantsTable.ID
 import app.meetacy.backend.database.meetings.ParticipantsTable.MEETING_ID
 import app.meetacy.backend.database.meetings.ParticipantsTable.USER_ID
+import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.database.transaction.wrapTransactionAsFlow
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meeting.MeetingId
@@ -19,8 +20,8 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 
 object ParticipantsTable : Table() {
     val ID = long("ID").autoIncrement()
-    val MEETING_ID = long("MEETING_ID")
-    val USER_ID = long("USER_ID")
+    val MEETING_ID = reference("MEETING_ID", MeetingsTable.MEETING_ID)
+    val USER_ID = reference("USER_ID", UsersTable.USER_ID)
 
     override val primaryKey = PrimaryKey(ID)
 }
