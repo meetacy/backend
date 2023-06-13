@@ -130,6 +130,7 @@ object Deps {
         object Meetacy {
             object Wdater {
                 const val Core = "app.meetacy.wdater:wdater:$wdaterVersion"
+                const val AutoMigrations = "app.meetacy.wdater:auto-migrations:$wdaterVersion"
             }
             object Sdk {
                 const val Api = "app.meetacy.sdk:api:$meetacySdkVersion"
