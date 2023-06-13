@@ -30,7 +30,7 @@ class ListFriendsUsecase(
 
     sealed interface Result {
         object InvalidToken : Result
-        class Success(val paging: PagingResult<List<UserView>>) : Result
+        class Success(val paging: PagingResult<UserView>) : Result
     }
 
     interface Storage {
@@ -38,6 +38,6 @@ class ListFriendsUsecase(
             userId: UserId,
             amount: Amount,
             pagingId: PagingId?
-        ): PagingResult<List<UserId>>
+        ): PagingResult<UserId>
     }
 }

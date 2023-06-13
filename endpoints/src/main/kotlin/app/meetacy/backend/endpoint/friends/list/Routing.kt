@@ -28,7 +28,7 @@ interface ListFriendsRepository {
 sealed interface ListFriendsResult {
     object InvalidIdentity : ListFriendsResult
 
-    class Success(val paging: PagingResult<List<User>>) : ListFriendsResult
+    class Success(val paging: PagingResult<User>) : ListFriendsResult
 }
 
 fun Route.listFriends(getProvider: ListFriendsRepository) = post("/list") {

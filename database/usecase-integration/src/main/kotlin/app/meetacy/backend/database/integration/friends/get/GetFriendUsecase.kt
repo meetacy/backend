@@ -15,5 +15,5 @@ class DatabaseGetFriendsStorage(db: Database) : ListFriendsUsecase.Storage {
         userId: UserId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<UserId>> = friendsStorage.getFriends(userId, amount, pagingId)
+    ): PagingResult<UserId> = friendsStorage.getFriends(userId, amount, pagingId)
 }

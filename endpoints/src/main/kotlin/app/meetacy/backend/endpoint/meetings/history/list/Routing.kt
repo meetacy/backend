@@ -25,7 +25,7 @@ data class ListParam(
 )
 
 sealed interface ListMeetingsResult {
-    class Success(val meetings: PagingResult<List<Meeting>>) : ListMeetingsResult
+    class Success(val meetings: PagingResult<Meeting>) : ListMeetingsResult
     object InvalidIdentity : ListMeetingsResult
 }
 
