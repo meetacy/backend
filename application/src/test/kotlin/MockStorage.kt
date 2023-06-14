@@ -686,4 +686,5 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun isSubscriber(userId: UserId, subscriberId: UserId): Boolean =
         getFriends(userId, Amount.parse(Int.MAX_VALUE)).contains(subscriberId)
 
+
 }
