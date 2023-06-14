@@ -15,6 +15,8 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.notifications.notifications
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.endpoint.users.users
+import app.meetacy.backend.endpoint.validate.ValidateUsernameRepository
+import app.meetacy.backend.endpoint.validate.validateUsername
 import app.meetacy.backend.endpoint.versioning.ApiVersion
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -44,7 +46,8 @@ fun startEndpoints(
     notificationsDependencies: NotificationsDependencies,
     filesDependencies: FilesDependencies,
     usersDependencies: UsersDependencies,
-    invitationsDependencies: InvitationsDependencies
+    invitationsDependencies: InvitationsDependencies,
+    validateUsernameRepository: ValidateUsernameRepository
 ): ApplicationEngine = embeddedServer(CIO, host = "localhost", port = port) {
 
     install(ContentNegotiation) {
@@ -78,5 +81,6 @@ fun startEndpoints(
         notifications(notificationsDependencies)
         files(filesDependencies)
         invitations(invitationsDependencies)
+        validateUsername(validateUsernameRepository)
     }
 }.start(wait)

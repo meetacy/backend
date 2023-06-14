@@ -78,6 +78,7 @@ import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotif
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
+import app.meetacy.backend.usecase.integration.users.validate.UsecaseValidateUsernameRepository
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
@@ -98,6 +99,7 @@ import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
+import app.meetacy.backend.usecase.validate.ValidateUsernameUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import org.jetbrains.exposed.sql.Database
 
@@ -342,6 +344,11 @@ fun startEndpoints(
                     authRepository = authRepository,
                     storage = DatabaseCancelInvitationStorage(db)
                 )
+            )
+        ),
+        validateUsernameRepository = UsecaseValidateUsernameRepository(
+            usecase = ValidateUsernameUsecase(
+                validateRepository = DatabaseValidateRepository(db)
             )
         )
     )
