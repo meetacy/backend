@@ -5,22 +5,23 @@ package app.meetacy.backend.database.meetings
 import app.meetacy.backend.database.meetings.ParticipantsTable.ID
 import app.meetacy.backend.database.meetings.ParticipantsTable.MEETING_ID
 import app.meetacy.backend.database.meetings.ParticipantsTable.USER_ID
+import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.database.transaction.wrapTransactionAsFlow
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.paging.PagingId
+import app.meetacy.backend.types.paging.PagingValue
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object ParticipantsTable : Table() {
     val ID = long("ID").autoIncrement()
-    val MEETING_ID = long("MEETING_ID")
-    val USER_ID = long("USER_ID")
+    val MEETING_ID = reference("MEETING_ID", MeetingsTable.MEETING_ID)
+    val USER_ID = reference("USER_ID", UsersTable.USER_ID)
 
     override val primaryKey = PrimaryKey(ID)
 }
@@ -51,7 +52,7 @@ class ParticipantsStorage(private val db: Database) {
         userId: UserId,
         amount: Amount,
         pagingId: PagingId?,
-    ): PagingResult<List<MeetingId>> = newSuspendedTransaction(Dispatchers.IO, db) {
+    ): PagingResult<MeetingId> = newSuspendedTransaction(Dispatchers.IO, db) {
        val results = ParticipantsTable.select {
            (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE))
        }.orderBy(ID, SortOrder.DESC).take(amount.int)
@@ -68,7 +69,7 @@ class ParticipantsStorage(private val db: Database) {
         meetingId: MeetingId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<UserId>> = newSuspendedTransaction(Dispatchers.IO, db) {
+    ): PagingResult<UserId> = newSuspendedTransaction(Dispatchers.IO, db) {
         val results = ParticipantsTable.select { (MEETING_ID eq meetingId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
             .orderBy(ID, SortOrder.DESC)
             .take(amount.int)
@@ -84,17 +85,14 @@ class ParticipantsStorage(private val db: Database) {
     fun getJoinHistoryFlow(
         userId: UserId,
         pagingId: PagingId?,
-    ): Flow<PagingResult<MeetingId>> = channelFlow {
-        newSuspendedTransaction(Dispatchers.IO, db) {
-            ParticipantsTable.select { (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
-                .orderBy(ID, SortOrder.DESC)
-                .asFlow()
-                .map { row ->
-                    PagingResult(
-                        data = MeetingId(row[MEETING_ID]),
-                        nextPagingId = PagingId(row[ID])
-                    )
-                }.collect(::send)
+    ): Flow<PagingValue<MeetingId>> = ParticipantsTable
+        .select { (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
+        .orderBy(ID, SortOrder.DESC)
+        .wrapTransactionAsFlow(db)
+        .map { row ->
+            PagingValue(
+                value = MeetingId(row[MEETING_ID]),
+                nextPagingId = PagingId(row[ID])
+            )
         }
-    }
 }

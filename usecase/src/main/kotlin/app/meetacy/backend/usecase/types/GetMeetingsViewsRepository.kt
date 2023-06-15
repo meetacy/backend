@@ -38,3 +38,13 @@ suspend fun GetMeetingsViewsRepository.getMeetingViewOrNull(
     viewerId: UserId,
     meetingId: MeetingId
 ): MeetingView? = getMeetingsViewsOrNull(viewerId, listOf(meetingId)).first()
+
+suspend fun GetMeetingsViewsRepository.getMeetingView(
+    viewerId: UserId,
+    meetingId: MeetingIdentity
+): MeetingView = getMeetingView(viewerId, meetingId.id)
+
+suspend fun GetMeetingsViewsRepository.getMeetingView(
+    viewerId: UserId,
+    meetingId: MeetingId
+): MeetingView = getMeetingsViews(viewerId, listOf(meetingId)).first()

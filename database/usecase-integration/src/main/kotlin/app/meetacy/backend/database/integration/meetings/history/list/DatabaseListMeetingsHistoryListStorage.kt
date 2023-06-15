@@ -16,6 +16,6 @@ class DatabaseListMeetingsHistoryListStorage(db: Database) : ListMeetingsHistory
         memberId: UserId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<MeetingId>> = participantsStorage
+    ): PagingResult<MeetingId> = participantsStorage
         .getJoinHistory(memberId, amount, pagingId)
 }

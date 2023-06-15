@@ -45,7 +45,7 @@ class ListMeetingParticipantsUsecase(
     }
 
     sealed interface Result {
-        class Success(val paging: PagingResult<List<UserView>>) : Result
+        class Success(val paging: PagingResult<UserView>) : Result
         object MeetingNotFound : Result
         object TokenInvalid : Result
     }
@@ -55,6 +55,6 @@ class ListMeetingParticipantsUsecase(
             meetingId: MeetingId,
             amount: Amount,
             pagingId: PagingId?
-        ): PagingResult<List<UserId>>
+        ): PagingResult<UserId>
     }
 }
