@@ -18,7 +18,7 @@ class DatabaseListMeetingsMapListStorage(db: Database) : ListMeetingsMapUsecase.
     override suspend fun getMeetingsHistoryFlow(userId: UserId): Flow<MeetingId> =
         participantsStorage
             .getJoinHistoryFlow(userId, pagingId = null)
-            .map { it.data }
+            .map { it.value }
 
     override suspend fun getPublicMeetingsFlow(): Flow<FullMeeting> =
         meetingsStorage

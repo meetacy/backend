@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PagingResultSerializable<T>(
     val nextPagingId: PagingIdSerializable?,
-    val data: T
+    val data: List<T>
 ) {
     fun type() = PagingResult(data, nextPagingId?.type())
 }

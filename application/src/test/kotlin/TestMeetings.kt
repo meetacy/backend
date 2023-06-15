@@ -1,5 +1,6 @@
 import app.meetacy.backend.hash.HashGenerator
 import app.meetacy.sdk.exception.MeetacyInternalException
+import app.meetacy.sdk.types.amount.Amount
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.datetime.meetacyDate
@@ -8,6 +9,7 @@ import app.meetacy.sdk.types.meeting.Meeting
 import app.meetacy.sdk.types.meeting.MeetingId
 import app.meetacy.sdk.types.optional.Optional
 import app.meetacy.sdk.types.paging.asFlow
+import app.meetacy.sdk.types.paging.data
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import java.time.Duration
@@ -269,5 +271,15 @@ class TestMeetings {
         val actualParticipants = meeting.participants.paging(10.amount).asFlow().toList().flatten()
 
         require(actualParticipants.size == participantsCount + 1)
+    }
+
+    @Test
+    fun `test active meetings`() = runTestServer {
+        val user1 = generateTestAccount()
+        val user2 = generateTestAccount()
+        val meeting = user1.meetings.createTestMeeting()
+        user2.meetings.participate(meeting.id)
+
+        assert(user2.meetings.history.active(10.amount).data.all { it.data.id == meeting.id })
     }
 }

@@ -48,7 +48,7 @@ class FriendsStorage(private val db: Database) {
         userId: UserId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<UserId>> {
+    ): PagingResult<UserId> {
         val results = newSuspendedTransaction(Dispatchers.IO, db) {
             FriendsTable.select { (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
                 .orderBy(ID, SortOrder.DESC)

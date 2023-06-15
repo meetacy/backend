@@ -24,6 +24,7 @@ import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.paging.PagingValue
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.types.user.Username
@@ -47,7 +48,9 @@ import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
+import app.meetacy.backend.usecase.meetings.history.active.ListMeetingsActiveUsecase
 import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
+import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
@@ -76,7 +79,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     LocationFlowStorage.Underlying, BaseFriendsLocationStreamingStorage.Storage,
     CreateInvitationUsecase.Storage, ReadInvitationUsecase.Storage,
     AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage, UpdateInvitationUsecase.Storage,
-    CancelInvitationUsecase.Storage, ViewUserUsecase.Storage, GetInvitationsViewsRepository, ValidateRepository {
+    CancelInvitationUsecase.Storage, ViewUserUsecase.Storage, GetInvitationsViewsRepository,
+    ListMeetingsActiveUsecase.Storage, ListMeetingsPastUsecase.Storage, ValidateRepository {
 
     private val users = mutableListOf<User>()
 
@@ -333,7 +337,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         userId: UserId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<UserId>> = synchronized(this) {
+    ): PagingResult<UserId> = synchronized(this) {
         val result = friendRelations
             .reversed().asSequence()
             .filter { (paging, user, friend) ->
@@ -359,7 +363,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         memberId: UserId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<MeetingId>> = synchronized(this) {
+    ): PagingResult<MeetingId> = synchronized(this) {
         val result = participants
             .reversed().asSequence()
             .filter { (id, userId) ->
@@ -506,7 +510,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         meetingId: MeetingId,
         amount: Amount,
         pagingId: PagingId?
-    ): PagingResult<List<UserId>> = synchronized(this) {
+    ): PagingResult<UserId> = synchronized(this) {
         val participants = participants
             .reversed()
             .filter { (_, _, id) -> id == meetingId }
@@ -686,5 +690,14 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun isSubscriber(userId: UserId, subscriberId: UserId): Boolean =
         getFriends(userId, Amount.parse(Int.MAX_VALUE)).contains(subscriberId)
 
+    override suspend fun getJoinHistoryFlow(userId: UserId, startPagingId: PagingId?): Flow<PagingValue<MeetingId>> =
+        participants.asFlow()
+            .filter { (pagingId, memberId) -> memberId == userId
+                    && pagingId.long < (startPagingId?.long ?: Long.MAX_VALUE) }
+            .map { (pagingId, _, meetingId) -> PagingValue(
+                    value = meetingId,
+                    nextPagingId = pagingId
+                )
+            }
 
 }

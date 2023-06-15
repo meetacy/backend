@@ -33,7 +33,7 @@ class ListMeetingsHistoryUsecase(
     }
 
     sealed interface Result {
-        class Success(val paging: PagingResult<List<MeetingView>>) : Result
+        class Success(val paging: PagingResult<MeetingView>) : Result
         object InvalidAccessIdentity : Result
     }
 
@@ -42,6 +42,6 @@ class ListMeetingsHistoryUsecase(
             memberId: UserId,
             amount: Amount,
             pagingId: PagingId?
-        ): PagingResult<List<MeetingId>>
+        ): PagingResult<MeetingId>
     }
 }
