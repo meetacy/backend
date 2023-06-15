@@ -76,7 +76,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     LocationFlowStorage.Underlying, BaseFriendsLocationStreamingStorage.Storage,
     CreateInvitationUsecase.Storage, ReadInvitationUsecase.Storage,
     AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage, UpdateInvitationUsecase.Storage,
-    CancelInvitationUsecase.Storage, ValidateRepository, ViewUserUsecase.Storage, GetInvitationsViewsRepository {
+    CancelInvitationUsecase.Storage, ViewUserUsecase.Storage, GetInvitationsViewsRepository, ValidateRepository {
 
     private val users = mutableListOf<User>()
 
