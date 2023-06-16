@@ -1,5 +1,6 @@
-package app.meetacy.backend.endpoint.types
+package app.meetacy.backend.endpoint.types.meeting
 
+import app.meetacy.backend.endpoint.types.user.User
 import app.meetacy.backend.types.serialization.datetime.DateSerializable
 import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
 import app.meetacy.backend.types.serialization.location.LocationSerializable

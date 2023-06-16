@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.integration.friends.location.stream
 
 import app.meetacy.backend.endpoint.friends.location.stream.StreamLocationRepository
-import app.meetacy.backend.endpoint.types.UserLocationSnapshot
+import app.meetacy.backend.endpoint.types.user.UserLocationSnapshot
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint

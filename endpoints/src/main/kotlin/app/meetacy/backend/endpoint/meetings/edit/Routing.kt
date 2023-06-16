@@ -3,7 +3,7 @@ package app.meetacy.backend.endpoint.meetings.edit
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.endpoint.types.Meeting
+import app.meetacy.backend.endpoint.types.meeting.Meeting
 import app.meetacy.backend.types.serialization.OptionalSerializable
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.datetime.DateSerializable
