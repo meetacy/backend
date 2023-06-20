@@ -34,7 +34,7 @@ interface EditUserRepository {
     suspend fun editUser(editUserParams: EditUserParams): EditUserResult
 }
 
-fun Route.editUser(editUserRepository: EditUserRepository) = post("/edit") {
+fun Route.editUser(editUserRepository: EditUserRepository) = patch("/edit") {
     val params = call.receive<EditUserParams>()
 
     when (val result = editUserRepository.editUser(params)) {

@@ -23,12 +23,12 @@ data class InvitationUpdatingFormSerializable(
 )
 
 fun Route.invitationUpdate(invitationUpdateRepository: InvitationUpdateRepository) =
-    post("/update") {
+    patch("/update") {
         val form: InvitationUpdatingFormSerializable = call.receive()
 
         if (listOf(form.expiryDate, form.meetingId).all { it == null }) {
             call.respond(Failure.NullEditParams)
-            return@post
+            return@patch
         }
 
         when (val response = invitationUpdateRepository.update(form)) {

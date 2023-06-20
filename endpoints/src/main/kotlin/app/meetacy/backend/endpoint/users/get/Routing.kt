@@ -27,7 +27,7 @@ sealed interface GetUserResult {
     class Success(val user: User) : GetUserResult
 }
 
-fun Route.getUser(provider: UserRepository) = post("/get") {
+fun Route.getUser(provider: UserRepository) = get("/get") {
     val params = call.receive<GetUserParams>()
 
     when (val result = provider.getUser(params)) {

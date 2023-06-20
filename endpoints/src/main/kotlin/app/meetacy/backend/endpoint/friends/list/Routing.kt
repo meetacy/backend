@@ -31,7 +31,7 @@ sealed interface ListFriendsResult {
     class Success(val paging: PagingResult<User>) : ListFriendsResult
 }
 
-fun Route.listFriends(getProvider: ListFriendsRepository) = post("/list") {
+fun Route.listFriends(getProvider: ListFriendsRepository) = get("/list") {
     val friendToken = call.receive<ListFriendsBody>()
     when (val result = getProvider.getFriends(friendToken)) {
         is ListFriendsResult.Success -> call.respondSuccess(result.paging.serializable())
