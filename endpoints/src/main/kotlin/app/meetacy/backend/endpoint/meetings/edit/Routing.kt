@@ -40,7 +40,7 @@ interface EditMeetingRepository {
     suspend fun editMeeting(editMeetingParams: EditMeetingParams): EditMeetingResult
 }
 
-fun Route.editMeeting(editMeetingRepository: EditMeetingRepository) = post("/edit") {
+fun Route.editMeeting(editMeetingRepository: EditMeetingRepository) = patch("/edit") {
     val params = call.receive<EditMeetingParams>()
 
     when (val result = editMeetingRepository.editMeeting(params)) {

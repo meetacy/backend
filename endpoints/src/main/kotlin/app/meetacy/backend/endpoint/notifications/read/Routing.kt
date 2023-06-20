@@ -28,7 +28,7 @@ interface ReadNotificationsRepository {
     }
 }
 
-fun Route.read(repository: ReadNotificationsRepository) = post("/read") {
+fun Route.read(repository: ReadNotificationsRepository) = get("/read") {
     val requestBody = call.receive<RequestBody>()
     when (repository.read(requestBody.token.type(), requestBody.lastNotificationId.type())) {
 

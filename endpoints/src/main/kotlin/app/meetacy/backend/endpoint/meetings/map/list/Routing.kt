@@ -32,7 +32,7 @@ private data class ListMeetingsMapParams(
 
 fun Route.listMeetingsMap(
     listMeetingsMapRepository: ListMeetingsMapRepository
-) = post("/list") {
+) = get("/list") {
     val params = call.receive<ListMeetingsMapParams>()
 
     when (

@@ -31,7 +31,7 @@ interface GetNotificationsRepository {
     }
 }
 
-fun Route.get(repository: GetNotificationsRepository) = post("/get") {
+fun Route.get(repository: GetNotificationsRepository) = get("/get") {
     val requestBody = call.receive<RequestBody>()
 
     when (

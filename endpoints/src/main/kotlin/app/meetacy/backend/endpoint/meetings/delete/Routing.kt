@@ -26,7 +26,7 @@ interface DeleteMeetingRepository {
     suspend fun deleteMeeting(deleteMeetingParams: DeleteMeetingParams): DeleteMeetingResult
 }
 
-fun Route.deleteMeeting(deleteMeetingRepository: DeleteMeetingRepository) = post("/delete") {
+fun Route.deleteMeeting(deleteMeetingRepository: DeleteMeetingRepository) = delete("/delete") {
     val params = call.receive<DeleteMeetingParams>()
 
     when (deleteMeetingRepository.deleteMeeting(params)) {

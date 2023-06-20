@@ -37,7 +37,7 @@ interface ListMeetingsHistoryRepository {
     ): ListMeetingsResult
 }
 
-fun Route.listMeetingsHistory(listMeetingsHistoryRepository: ListMeetingsHistoryRepository) = post("/list") {
+fun Route.listMeetingsHistory(listMeetingsHistoryRepository: ListMeetingsHistoryRepository) = get("/list") {
     val params = call.receive<ListParam>()
     when (
         val result = listMeetingsHistoryRepository.getList(
