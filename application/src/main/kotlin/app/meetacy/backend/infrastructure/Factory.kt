@@ -15,7 +15,7 @@ import app.meetacy.backend.database.integration.invitation.deny.DatabaseDenyInvi
 import app.meetacy.backend.database.integration.invitation.read.DatabaseReadInvitationStorage
 import app.meetacy.backend.database.integration.invitation.update.DatabaseUpdateInvitationStorage
 import app.meetacy.backend.database.integration.location.stream.DatabaseFriendsLocationStreamingStorage
-import app.meetacy.backend.database.integration.location.stream.DatabaseLocationFlowStorageUnderlying
+import app.meetacy.backend.database.integration.location.stream.DatabaseLocationsMiddlewareStorage
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
@@ -175,10 +175,7 @@ fun startEndpoints(
                 streamLocationRepository = UsecaseStreamLocationRepository(
                     usecase = FriendsLocationStreamingUsecase(
                         authRepository = authRepository,
-                        storage = BaseFriendsLocationStreamingStorage(
-                            flowStorageUnderlying = DatabaseLocationFlowStorageUnderlying(db),
-                            friendsStorage = DatabaseFriendsLocationStreamingStorage(db)
-                        ),
+                        storage = DatabaseFriendsLocationStreamingStorage(db),
                         usersViewsRepository = getUsersViewsRepository
                     )
                 )
