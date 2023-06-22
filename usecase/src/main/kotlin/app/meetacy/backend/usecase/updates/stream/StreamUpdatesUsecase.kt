@@ -7,7 +7,6 @@ import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 
 class StreamUpdatesUsecase(
@@ -43,6 +42,6 @@ class StreamUpdatesUsecase(
 
     interface Storage {
         suspend fun updatesFlow(userId: UserId, fromId: UpdateId?): Flow<FullUpdate>
-        suspend fun getNotification(notificationId: NotificationId): Notification
+        suspend fun getNotification(notificationId: NotificationId): NotificationView
     }
 }

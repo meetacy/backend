@@ -9,6 +9,8 @@ import app.meetacy.backend.database.files.FilesTable.ORIGINAL_FILE_NAME
 import app.meetacy.backend.database.files.FilesTable.USER_ID
 import app.meetacy.backend.database.types.DatabaseFileDescription
 import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.types.FILE_NAME_MAX_LIMIT
+import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
@@ -21,9 +23,9 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 object FilesTable : Table() {
     val FILE_ID = long("FILE_ID").autoIncrement()
     val USER_ID = reference("USER_ID", UsersTable.USER_ID)
-    val ACCESS_HASH = varchar("ACCESS_HASH", 256)
+    val ACCESS_HASH = varchar("ACCESS_HASH", HASH_LENGTH)
     val FILE_SIZE = long("FILE_SIZE").nullable()
-    val ORIGINAL_FILE_NAME = varchar("ORIGINAL_FILE_NAME", 1024)
+    val ORIGINAL_FILE_NAME = varchar("ORIGINAL_FILE_NAME", FILE_NAME_MAX_LIMIT)
 }
 
 class FilesStorage(private val db: Database) {

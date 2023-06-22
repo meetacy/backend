@@ -9,11 +9,10 @@ import app.meetacy.backend.types.access.AccessIdentity
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object TokensTable : Table() {
     val OWNER_ID = long("OWNER_ID")
-    val ACCESS_TOKEN = varchar("ACCESS_TOKEN", length = HASH_LENGTH)
+    val ACCESS_TOKEN = varchar("ACCESS_TOKEN", HASH_LENGTH)
 }
 
 class TokensStorage(private val db: Database) {

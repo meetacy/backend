@@ -15,7 +15,6 @@ import app.meetacy.backend.database.integration.invitation.deny.DatabaseDenyInvi
 import app.meetacy.backend.database.integration.invitation.read.DatabaseReadInvitationStorage
 import app.meetacy.backend.database.integration.invitation.update.DatabaseUpdateInvitationStorage
 import app.meetacy.backend.database.integration.location.stream.DatabaseFriendsLocationStreamingStorage
-import app.meetacy.backend.database.integration.location.stream.DatabaseLocationsMiddlewareStorage
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
@@ -88,7 +87,6 @@ import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
 import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
 import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
-import app.meetacy.backend.usecase.location.stream.BaseFriendsLocationStreamingStorage
 import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase

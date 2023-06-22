@@ -13,16 +13,15 @@ import app.meetacy.backend.database.notifications.NotificationsTable.TYPE
 import app.meetacy.backend.database.types.DatabaseNotification
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.DATE_TIME_MAX_LIMIT
+import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import javax.xml.crypto.Data
 
 object NotificationsTable : Table() {
     val NOTIFICATION_ID = long("NOTIFICATION_ID")
@@ -64,16 +63,27 @@ class NotificationsStorage(private val db: Database) {
         newSuspendedTransaction(Dispatchers.IO, db) {
             NotificationsTable.select { (OWNER_ID eq ownerId.long) }
                 .limit(amount, offset)
-                .map { it ->
-                    DatabaseNotification(
-                        NotificationId(it[NOTIFICATION_ID]),
-                        UserId(it[OWNER_ID]),
-                        it[TYPE],
-                        Date(it[DATE]),
-                        it[INVITER_ID]?.let { UserId(it) },
-                        it[SUBSCRIBED_ID]?.let { UserId(it) },
-                        it[INVITED_MEETING_ID]?.let { MeetingId(it) }
-                    )
-                }
+                .map { it.toNotification() }
         }
+
+    suspend fun getNotification(id: NotificationId): DatabaseNotification {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
+            NotificationsTable
+                .select { (NOTIFICATION_ID eq id.long) }
+                .first()
+                .toNotification()
+        }
+    }
+
+    @OptIn(UnsafeConstructor::class)
+    private fun ResultRow.toNotification(): DatabaseNotification =
+        DatabaseNotification(
+            NotificationId(this[NOTIFICATION_ID]),
+            UserId(this[OWNER_ID]),
+            this[TYPE],
+            Date(this[DATE]),
+            this[INVITER_ID]?.let(::UserId),
+            this[SUBSCRIBED_ID]?.let(::UserId),
+            this[INVITED_MEETING_ID]?.let(::MeetingId)
+        )
 }

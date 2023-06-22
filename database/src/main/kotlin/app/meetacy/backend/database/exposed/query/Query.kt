@@ -1,4 +1,4 @@
-package app.meetacy.backend.database.transaction
+package app.meetacy.backend.database.exposed.query
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
