@@ -10,18 +10,22 @@ import app.meetacy.backend.database.notifications.NotificationsTable.NOTIFICATIO
 import app.meetacy.backend.database.notifications.NotificationsTable.OWNER_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.SUBSCRIBED_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.TYPE
+import app.meetacy.backend.database.paging
 import app.meetacy.backend.database.types.DatabaseNotification
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.DATE_TIME_MAX_LIMIT
+import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.notification.NotificationId
+import app.meetacy.backend.types.paging.PagingId
+import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.paging.pagingResultLong
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import javax.xml.crypto.Data
 
 object NotificationsTable : Table() {
     val NOTIFICATION_ID = long("NOTIFICATION_ID")
@@ -59,21 +63,44 @@ class NotificationsStorage(private val db: Database) {
 
     }
 
-    suspend fun getNotifications(ownerId: UserId, offset: Long, amount: Int): List<DatabaseNotification> =
-        newSuspendedTransaction(Dispatchers.IO, db) {
-            NotificationsTable.select { (OWNER_ID eq ownerId.long) }
-                .limit(amount, offset)
-                .map { it.toNotification() }
+    suspend fun getNotifications(
+        ownerId: UserId,
+        pagingId: PagingId?,
+        amount: Amount
+    ): PagingResult<DatabaseNotification> = newSuspendedTransaction(Dispatchers.IO, db) {
+        NotificationsTable.select {
+            (OWNER_ID eq ownerId.long) and (NOTIFICATION_ID paging pagingId)
         }
-
-    suspend fun getNotification(id: NotificationId): DatabaseNotification {
-        return newSuspendedTransaction(Dispatchers.IO, db) {
-            NotificationsTable
-                .select { (NOTIFICATION_ID eq id.long) }
-                .first()
-                .toNotification()
-        }
+            .limit(amount.int)
+            .map { it.toNotification() }
+            .pagingResultLong(amount) { it.id.long }
     }
+
+    suspend fun getNotificationsOrNull(
+        notificationIds: List<NotificationId>
+    ): List<DatabaseNotification?> = newSuspendedTransaction(Dispatchers.IO, db) {
+        val ids = notificationIds.map { it.long }
+
+        val foundNotifications = NotificationsTable.select { (NOTIFICATION_ID inList ids) }
+            .map { it.toNotification() }
+            .associateBy { notification -> notification.id }
+
+        notificationIds.map { notificationId -> foundNotifications[notificationId] }
+    }
+
+    suspend fun getNotifications(
+        notificationIds: List<NotificationId>
+    ): List<DatabaseNotification> {
+        val notifications = getNotificationsOrNull(notificationIds).filterNotNull()
+        require(notifications.size == notificationIds.size) { "Cannot find all notifications from list $notificationIds" }
+        return notifications
+    }
+
+    suspend fun getNotificationOrNull(id: NotificationId): DatabaseNotification? =
+        getNotificationsOrNull(listOf(id)).first()
+
+    suspend fun getNotification(id: NotificationId): DatabaseNotification =
+        getNotificationOrNull(id) ?: error("Notification with id $id not found")
 
     @OptIn(UnsafeConstructor::class)
     private fun ResultRow.toNotification(): DatabaseNotification =

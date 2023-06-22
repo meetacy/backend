@@ -29,14 +29,16 @@ class UpdatesStorage(private val db: Database) {
         userId: UserId,
         updateType: DatabaseUpdate.Type,
         underlyingId: Long
-    ) {
-        newSuspendedTransaction(Dispatchers.IO, db) {
+    ): UpdateId {
+        val long = newSuspendedTransaction(Dispatchers.IO, db) {
             UpdatesTable.insert { statement ->
                 statement[USER_ID] = userId.long
                 statement[UPDATE_TYPE] = updateType
                 statement[UNDERLYING_ID] = underlyingId
-            }
+            }[UPDATE_ID]
         }
+
+        return UpdateId(long)
     }
 
     fun getPastUpdatesFlow(userId: UserId, fromId: UpdateId): Flow<DatabaseUpdate> =

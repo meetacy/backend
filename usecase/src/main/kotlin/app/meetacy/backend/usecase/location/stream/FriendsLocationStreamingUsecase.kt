@@ -9,6 +9,7 @@ import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -25,7 +26,7 @@ class FriendsLocationStreamingUsecase(
     suspend fun stream(
         accessIdentity: AccessIdentity,
         selfLocation: Flow<Location>,
-        channel: Channel<UserLocationSnapshot>
+        channel: SendChannel<UserLocationSnapshot>
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 

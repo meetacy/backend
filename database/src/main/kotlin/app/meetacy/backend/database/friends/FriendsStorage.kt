@@ -8,6 +8,7 @@ import app.meetacy.backend.database.friends.FriendsTable.USER_ID
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.paging.pagingIdLong
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.asFlow
@@ -17,7 +18,6 @@ import kotlinx.coroutines.flow.toList
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object FriendsTable : Table() {
     val ID = long("PAGING_ID").autoIncrement()
@@ -58,11 +58,9 @@ class FriendsStorage(private val db: Database) {
                 .toList()
         }
 
-        val nextPagingId = if (results.size == amount.int) PagingId(results.last()[ID]) else null
-
         return PagingResult(
             data = results.map { result -> UserId(result[FRIEND_ID]) },
-            nextPagingId = nextPagingId
+            nextPagingId = results.pagingIdLong(amount) { it[ID] }
         )
     }
 

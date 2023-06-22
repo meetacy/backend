@@ -7,18 +7,15 @@ import app.meetacy.backend.types.user.UserId
 
 sealed interface FullNotification {
     val id: NotificationId
-    val isNew: Boolean
 
     class Subscription(
         override val id: NotificationId,
-        override val isNew: Boolean,
         val subscriberId: UserId,
         val date: Date
     ) : FullNotification
 
     class Invitation(
         override val id: NotificationId,
-        override val isNew: Boolean,
         val meetingId: MeetingId,
         val inviterId: UserId,
         val date: Date

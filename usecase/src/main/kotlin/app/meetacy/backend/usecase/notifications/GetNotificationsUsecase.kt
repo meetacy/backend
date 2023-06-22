@@ -1,6 +1,7 @@
-package app.meetacy.backend.usecase.notification
+package app.meetacy.backend.usecase.notifications
 
 import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
@@ -14,10 +15,11 @@ class GetNotificationsUsecase(
 ) {
     suspend fun getNotifications(
         accessIdentity: AccessIdentity,
-        pagingId: PagingId?
+        pagingId: PagingId?,
+        amount: Amount
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
-        val fullNotifications = storage.getNotifications(userId, pagingId)
+        val fullNotifications = storage.getNotifications(userId, pagingId, amount)
         val notificationsViews = viewNotificationsRepository.viewNotifications(userId, fullNotifications.data)
         val result = fullNotifications.map { notificationsViews }
         return Result.Success(result)
@@ -30,6 +32,6 @@ class GetNotificationsUsecase(
 
     interface Storage {
         suspend fun getLastReadNotification(userId: UserId): NotificationId
-        suspend fun getNotifications(userId: UserId, pagingId: PagingId?): PagingResult<FullNotification>
+        suspend fun getNotifications(userId: UserId, pagingId: PagingId?, amount: Amount): PagingResult<FullNotification>
     }
 }

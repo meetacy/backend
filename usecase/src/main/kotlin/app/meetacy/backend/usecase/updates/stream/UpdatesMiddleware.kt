@@ -1,5 +1,6 @@
 package app.meetacy.backend.usecase.updates.stream
 
+import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.FullUpdate
@@ -8,10 +9,17 @@ import kotlinx.coroutines.flow.*
 class UpdatesMiddleware(private val storage: Storage) {
     private val allUpdatesFlow = MutableSharedFlow<UserUpdate>()
 
-    suspend fun addUpdate(userId: UserId, update: FullUpdate) {
-        storage.addUpdate(userId, update)
+    suspend fun addNotificationUpdate(userId: UserId, notificationId: NotificationId) {
+        val updateId = storage.addNotificationUpdate(userId, notificationId)
+
         allUpdatesFlow.emit(
-            value = UserUpdate(userId, update)
+            value = UserUpdate(
+                userId,
+                update = FullUpdate.Notification(
+                    id = updateId,
+                    notificationId = notificationId
+                )
+            )
         )
     }
 
@@ -27,7 +35,7 @@ class UpdatesMiddleware(private val storage: Storage) {
     }
 
     interface Storage {
-        suspend fun addUpdate(userId: UserId, update: FullUpdate)
+        suspend fun addNotificationUpdate(userId: UserId, notificationId: NotificationId): UpdateId
         fun pastUpdatesFlow(userId: UserId, fromId: UpdateId): Flow<FullUpdate>
     }
 

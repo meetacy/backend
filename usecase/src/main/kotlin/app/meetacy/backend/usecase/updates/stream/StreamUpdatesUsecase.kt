@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.map
 
 class StreamUpdatesUsecase(
     private val auth: AuthRepository,
-    private val storage: Storage
+    private val storage: Storage,
+    private val notificationsRepository: GetNotificationsViewsRepository
 ) {
     suspend fun stream(
         accessIdentity: AccessIdentity,
@@ -22,17 +23,19 @@ class StreamUpdatesUsecase(
 
         storage
             .updatesFlow(userId, fromId)
-            .map { update -> update.mapToView() }
+            .map { update -> update.mapToView(userId) }
             .collect(channel::send)
 
         return Result.LocationStreamed
     }
 
-    private suspend fun FullUpdate.mapToView(): UpdateView = when (this) {
-        is FullUpdate.Notification -> UpdateView.Notification(
-            id = id,
-            notification = storage.getNotification(notificationId)
-        )
+    private suspend fun FullUpdate.mapToView(viewerId: UserId): UpdateView = when (this) {
+        is FullUpdate.Notification -> {
+            UpdateView.Notification(
+                id = id,
+                notification = notificationsRepository.getNotificationView(viewerId, notificationId)
+            )
+        }
     }
 
     sealed interface Result {
@@ -42,6 +45,5 @@ class StreamUpdatesUsecase(
 
     interface Storage {
         suspend fun updatesFlow(userId: UserId, fromId: UpdateId?): Flow<FullUpdate>
-        suspend fun getNotification(notificationId: NotificationId): NotificationView
     }
 }

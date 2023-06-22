@@ -7,6 +7,7 @@ import app.meetacy.backend.database.meetings.ParticipantsTable.MEETING_ID
 import app.meetacy.backend.database.meetings.ParticipantsTable.USER_ID
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.database.exposed.query.wrapTransactionAsFlow
+import app.meetacy.backend.database.pagingIdLong
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.paging.PagingId
@@ -57,11 +58,9 @@ class ParticipantsStorage(private val db: Database) {
            (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE))
        }.orderBy(ID, SortOrder.DESC).take(amount.int)
 
-        val nextPagingId = if (results.size == amount.int) PagingId(results.last()[ID]) else null
-
         PagingResult(
             data = results.map { result -> MeetingId(result[MEETING_ID]) },
-            nextPagingId = nextPagingId
+            nextPagingId = results.pagingIdLong(amount) { it[ID] }
         )
     }
 

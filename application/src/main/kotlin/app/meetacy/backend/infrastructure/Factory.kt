@@ -27,10 +27,11 @@ import app.meetacy.backend.database.integration.meetings.history.past.DatabaseLi
 import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
 import app.meetacy.backend.database.integration.meetings.participants.list.DatabaseListMeetingParticipantsStorage
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
-import app.meetacy.backend.database.integration.notifications.DatabaseGetNotificationStorage
 import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
+import app.meetacy.backend.database.integration.notifications.GetNotificationsUsecase
 import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateTokenStorage
 import app.meetacy.backend.database.integration.types.*
+import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.database.integration.users.edit.DatabaseEditUserStorage
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
@@ -44,6 +45,7 @@ import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
+import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
@@ -79,6 +81,7 @@ import app.meetacy.backend.usecase.integration.meetings.participants.list.Usecas
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
+import app.meetacy.backend.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
 import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
@@ -98,8 +101,7 @@ import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
-import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
-import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
+import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
@@ -123,6 +125,11 @@ fun startEndpoints(
         getUsersViewsRepository,
         getMeetingsViewsRepository,
         db
+    )
+    val getNotificationsViewsRepository = GetNotificationsViewsRepository(
+        db = db,
+        getMeetingsViewsRepository = getMeetingsViewsRepository,
+        getUsersViewsRepository = getUsersViewsRepository
     )
 
     startEndpoints(
@@ -288,10 +295,10 @@ fun startEndpoints(
         notificationsDependencies = NotificationsDependencies(
             getNotificationsRepository = UsecaseGetNotificationsRepository(
                 usecase = GetNotificationsUsecase(
+                    db = db,
                     authRepository = authRepository,
-                    usersRepository = getUsersViewsRepository,
                     meetingsRepository = getMeetingsViewsRepository,
-                    storage = DatabaseGetNotificationStorage(db)
+                    usersRepository = getUsersViewsRepository
                 )
             ),
             readNotificationsRepository = UsecaseReadNotificationsRepository(
@@ -356,6 +363,15 @@ fun startEndpoints(
                 usecase = CancelInvitationUsecase(
                     authRepository = authRepository,
                     storage = DatabaseCancelInvitationStorage(db)
+                )
+            )
+        ),
+        updatesDependencies = UpdatesDependencies(
+            streamUpdatesRepository = UsecaseStreamUpdatesRepository(
+                usecase = StreamUpdatesUsecase(
+                    db = db,
+                    auth = authRepository,
+                    notificationsRepository = getNotificationsViewsRepository
                 )
             )
         )
