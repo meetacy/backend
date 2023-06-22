@@ -2,6 +2,8 @@ package app.meetacy.backend.usecase.integration.notifications.get
 
 import app.meetacy.backend.endpoint.notifications.get.GetNotificationsRepository
 import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.notifications.GetNotificationsUsecase
 
@@ -10,18 +12,18 @@ class UsecaseGetNotificationsRepository(
 ) : GetNotificationsRepository {
     override suspend fun getNotifications(
         accessIdentity: AccessIdentity,
-        offset: Long,
-        amount: Int
+        pagingId: PagingId?,
+        amount: Amount
     ): GetNotificationsRepository.Result = when (
         val result = usecase.getNotifications(
             accessIdentity = accessIdentity,
-            offset = offset,
-            count = amount
+            pagingId = pagingId,
+            amount = amount
         )
     ) {
         is GetNotificationsUsecase.Result.Success ->
             GetNotificationsRepository.Result.Success(
-                notifications = result.notifications.map { notification ->
+                notifications = result.notifications.mapItems { notification ->
                     notification.mapToEndpoint()
                 }
             )
