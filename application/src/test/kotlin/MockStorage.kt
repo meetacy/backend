@@ -5,6 +5,7 @@ import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
+import app.meetacy.backend.endpoint.updates.stream.StreamUpdatesRepository
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.access.AccessHash
@@ -22,9 +23,8 @@ import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.notification.NotificationId
-import app.meetacy.backend.types.paging.PagingId
-import app.meetacy.backend.types.paging.PagingResult
-import app.meetacy.backend.types.paging.PagingValue
+import app.meetacy.backend.types.paging.*
+import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.types.user.Username
@@ -41,7 +41,7 @@ import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
 import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
 import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
-import app.meetacy.backend.usecase.location.stream.BaseFriendsLocationStreamingStorage
+import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.usecase.location.stream.LocationsMiddleware
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
@@ -55,8 +55,12 @@ import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notifications.GetNotificationsUsecase
+import app.meetacy.backend.usecase.notifications.GetNotificationsViewsUsecase
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
+import app.meetacy.backend.usecase.notifications.ViewNotificationsUsecase
 import app.meetacy.backend.usecase.types.*
+import app.meetacy.backend.usecase.updates.stream.StreamUpdatesUsecase
+import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
 import app.meetacy.backend.usecase.users.get.ViewUserUsecase
@@ -75,12 +79,13 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ReadNotificationsUsecase.Storage, GetFileRepository, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
-    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage,
-    LocationsMiddleware.Storage, BaseFriendsLocationStreamingStorage.Storage,
+    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage, FriendsLocationStreamingUsecase.Storage,
     CreateInvitationUsecase.Storage, ReadInvitationUsecase.Storage,
     AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage, UpdateInvitationUsecase.Storage,
     CancelInvitationUsecase.Storage, ViewUserUsecase.Storage, GetInvitationsViewsRepository,
-    ListMeetingsActiveUsecase.Storage, ListMeetingsPastUsecase.Storage {
+    ListMeetingsActiveUsecase.Storage, ListMeetingsPastUsecase.Storage, ViewNotificationsRepository,
+    ViewNotificationsUsecase.Storage, StreamUpdatesUsecase.Storage, GetNotificationsViewsRepository,
+    GetNotificationsViewsUsecase.Storage, UpdatesMiddleware.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -285,24 +290,73 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         TODO("Not yet implemented")
     }
 
-    override suspend fun getLastReadNotification(userId: UserId): NotificationId {
-        TODO("Not yet implemented")
-    }
+    private val lastReadNotificationId: MutableMap<UserId, NotificationId> = mutableMapOf()
 
-    override suspend fun getNotifications(
-        userId: UserId,
-        offset: Long,
-        count: Int
-    ): List<GetNotificationsUsecase.NotificationFromStorage> {
-        TODO("Not yet implemented")
+    override suspend fun getLastReadNotification(userId: UserId): NotificationId {
+        return synchronized(this) {
+            lastReadNotificationId[userId] ?: NotificationId(long = 0)
+        }
     }
 
     override suspend fun markAsRead(userId: UserId, lastNotificationId: NotificationId) {
-        TODO("Not yet implemented")
+        synchronized(this) {
+            lastReadNotificationId[userId] = lastNotificationId
+        }
+    }
+
+    private val notifications: MutableList<Pair<UserId, FullNotification>> = mutableListOf()
+
+    override suspend fun getNotifications(
+        userId: UserId,
+        pagingId: PagingId?,
+        amount: Amount
+    ): PagingResult<FullNotification> {
+        return notifications.filter { (currentUserId, notification) ->
+            userId == currentUserId && notification.id.long < (pagingId?.long ?: Long.MAX_VALUE)
+        }.take(amount.int)
+            .map { it.second }
+            .pagingResultLong(amount) { it.id.long }
+    }
+
+    private val notificationsUsecase = GetNotificationsViewsUsecase(
+        storage = this,
+        viewRepository = this
+    )
+
+    override suspend fun getNotificationsViewsOrNull(
+        viewerId: UserId,
+        notificationIds: List<NotificationId>
+    ): List<NotificationView?> {
+        return notificationsUsecase.getNotificationsViewsOrNull(viewerId, notificationIds)
+    }
+
+    override suspend fun getNotifications(notificationIds: List<NotificationId>): List<FullNotification?> {
+        return notificationIds.map { id -> notifications.firstOrNull { it.second.id == id }?.second }
+    }
+
+    private val viewNotificationsUsecase = ViewNotificationsUsecase(
+        storage = this,
+        meetingsRepository = this,
+        usersRepository = this
+    )
+
+    override suspend fun viewNotifications(
+        viewerId: UserId,
+        notifications: List<FullNotification>
+    ): List<NotificationView> {
+        return viewNotificationsUsecase.viewNotifications(viewerId, notifications)
+    }
+
+    override suspend fun getLastReadNotificationId(userId: UserId): NotificationId {
+        return getLastReadNotification(userId)
     }
 
     override suspend fun notificationExists(notificationId: NotificationId): Boolean {
-        TODO("Not yet implemented")
+        return notifications.any { (_, notification)  -> notification.id == notificationId }
+    }
+
+    override fun locationFlow(userId: UserId): Flow<LocationSnapshot> {
+        return locationsMiddleware.locationFlow(userId)
     }
 
     override suspend fun getFileIdentities(fileIdList: List<FileId>): List<FileIdentity?> =
@@ -521,14 +575,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         )
     }
 
-    private val locations = mutableMapOf<UserId, LocationSnapshot>()
+    private val locationsMiddleware = LocationsMiddleware(LocationsMiddlewareStorage)
 
-    override suspend fun setLocation(userId: UserId, location: Location) = synchronized(location) {
-        locations[userId] = LocationSnapshot(location, DateTime.now())
-    }
-
-    override suspend fun getLocation(userId: UserId): LocationSnapshot? = synchronized(locations) {
-        return locations[userId]
+    override suspend fun setLocation(userId: UserId, location: Location) {
+        locationsMiddleware.setLocation(userId, location)
     }
 
     override suspend fun getFriends(userId: UserId, maxAmount: Amount): List<UserId> {
@@ -664,7 +714,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         invitations.filter { it.id in ids }.map { it.mapToUsecase() }
 
     override suspend fun getFullUser(id: UserId): FullUser? {
-        TODO("Not yet implemented")
+        return getUser(id)
     }
 
     override suspend fun cancel(id: InvitationId): Boolean {
@@ -700,4 +750,35 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
                 )
             }
 
+    private val updates: MutableList<Pair<UserId, FullUpdate>> = mutableListOf()
+
+    override suspend fun addNotificationUpdate(userId: UserId, notificationId: NotificationId): UpdateId {
+        val updateId = UpdateId(updates.size.toLong())
+        updates.add(userId to FullUpdate.Notification(updateId, notificationId))
+        return updateId
+    }
+
+    override fun pastUpdatesFlow(userId: UserId, fromId: UpdateId): Flow<FullUpdate> {
+        return updates.asFlow()
+            .filter { (currentUserId, update) -> currentUserId == userId && update.id.long > fromId.long }
+            .map { (_, update) -> update }
+    }
+
+    private val updatesMiddleware = UpdatesMiddleware(storage = this)
+
+    override suspend fun updatesFlow(userId: UserId, fromId: UpdateId?): Flow<FullUpdate> {
+        return updatesMiddleware.updatesFlow(userId, fromId)
+    }
+
+    object LocationsMiddlewareStorage : LocationsMiddleware.Storage {
+        private val locations = mutableMapOf<UserId, LocationSnapshot>()
+
+        override suspend fun setLocation(userId: UserId, location: Location) = synchronized(locations) {
+            locations[userId] = LocationSnapshot(location, DateTime.now())
+        }
+
+        override suspend fun getLocation(userId: UserId): LocationSnapshot? = synchronized(locations) {
+            return locations[userId]
+        }
+    }
 }

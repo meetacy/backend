@@ -904,7 +904,7 @@ paths:
                   $ref: '#/components/examples/InvalidMeetingId'
                 MeetingAlreadyParticipate:
                   $ref: '#/components/examples/MeetingAlreadyParticipate'
-  /notifications/get:
+  /notifications/list:
     parameters:
       - name: Api-Version
         in: header

@@ -24,7 +24,7 @@ private data class RequestBody(
     val amount: AmountSerializable
 )
 
-interface GetNotificationsRepository {
+interface ListNotificationsRepository {
     suspend fun getNotifications(
         accessIdentity: AccessIdentity,
         pagingId: PagingId?,
@@ -37,7 +37,7 @@ interface GetNotificationsRepository {
     }
 }
 
-fun Route.get(repository: GetNotificationsRepository) = post("/get") {
+fun Route.list(repository: ListNotificationsRepository) = post("/list") {
     val requestBody = call.receive<RequestBody>()
 
     when (
@@ -48,7 +48,7 @@ fun Route.get(repository: GetNotificationsRepository) = post("/get") {
         )
     ) {
 
-        is GetNotificationsRepository.Result.Success -> call.respondSuccess(result.notifications.serializable())
-        is GetNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
+        is ListNotificationsRepository.Result.Success -> call.respondSuccess(result.notifications.serializable())
+        is ListNotificationsRepository.Result.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
     }
 }

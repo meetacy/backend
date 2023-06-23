@@ -79,7 +79,7 @@ import app.meetacy.backend.usecase.integration.meetings.history.past.UsecaseList
 import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
 import app.meetacy.backend.usecase.integration.meetings.participants.list.UsecaseListMeetingParticipantsRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
-import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
+import app.meetacy.backend.usecase.integration.notifications.get.UsecaseListNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
 import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
@@ -293,7 +293,7 @@ fun startEndpoints(
             )
         ),
         notificationsDependencies = NotificationsDependencies(
-            getNotificationsRepository = UsecaseGetNotificationsRepository(
+            listNotificationsRepository = UsecaseListNotificationsRepository(
                 usecase = GetNotificationsUsecase(
                     db = db,
                     authRepository = authRepository,
