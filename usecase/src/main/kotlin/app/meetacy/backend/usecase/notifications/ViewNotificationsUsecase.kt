@@ -42,15 +42,15 @@ class ViewNotificationsUsecase(
                     is FullNotification.Invitation ->
                         NotificationView.Invitation(
                             notification.id, isNew,
+                            notification.date,
                             meetingsIterator.next(),
-                            usersIterator.next(),
-                            notification.date
+                            usersIterator.next()
                         )
 
                     is FullNotification.Subscription ->
                         NotificationView.Subscription(
                             notification.id, isNew,
-                            usersIterator.next(), notification.date
+                            notification.date, usersIterator.next()
                         )
                 }
             }
