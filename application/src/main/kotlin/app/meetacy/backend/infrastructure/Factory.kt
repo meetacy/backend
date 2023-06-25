@@ -21,11 +21,12 @@ import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMe
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
 import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMeetingStorage
 import app.meetacy.backend.database.integration.meetings.edit.DatabaseEditMeetingStorage
+import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsRepository
 import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
 import app.meetacy.backend.database.integration.meetings.history.active.DatabaseListActiveMeetingsStorage
 import app.meetacy.backend.database.integration.meetings.history.list.DatabaseListMeetingsHistoryListStorage
 import app.meetacy.backend.database.integration.meetings.history.past.DatabaseListPastMeetingsStorage
-import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
+import app.meetacy.backend.database.integration.meetings.list.DatabaseListMeetingsMapListStorage
 import app.meetacy.backend.database.integration.meetings.participants.list.DatabaseListMeetingParticipantsStorage
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
 import app.meetacy.backend.database.integration.notifications.DatabaseGetNotificationStorage
@@ -33,6 +34,7 @@ import app.meetacy.backend.database.integration.notifications.DatabaseReadNotifi
 import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateTokenStorage
 import app.meetacy.backend.database.integration.types.*
 import app.meetacy.backend.database.integration.users.edit.DatabaseEditUserStorage
+import app.meetacy.backend.database.integration.users.get.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies

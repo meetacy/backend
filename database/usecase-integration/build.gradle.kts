@@ -5,4 +5,6 @@ plugins {
 dependencies {
     api(project(Deps.Projects.Usecase))
     api(project(Deps.Projects.Database))
+    api(project(Deps.Projects.DatabaseTypesIntegrations))
+    api(project(Deps.Projects.DatabaseUsersIntegrations))
 }

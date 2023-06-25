@@ -1,7 +1,6 @@
 package app.meetacy.backend
 
-import app.meetacy.backend.database.initDatabase
-import app.meetacy.backend.database.migrations.runMigrations
+import app.meetacy.backend.database.init.initDatabase
 import app.meetacy.backend.infrastructure.startEndpoints
 import org.jetbrains.exposed.sql.Database
 import java.io.File
