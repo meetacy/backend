@@ -9,6 +9,8 @@ jobs:
   production-deploy:
     runs-on: ubuntu-latest
     env:
+      GITHUB_USERNAME: "meetacy-robot"
+      GITHUB_TOKEN: ${{ secrets.ROBOT_TOKEN }}
       IS_RUNNER: "true"
       DEPLOY_DESTINATION: ${{ secrets.DEPLOY_DESTINATION }}
       DEPLOY_SERVICE_NAME: ${{ secrets.DEPLOY_SERVICE_NAME }}
