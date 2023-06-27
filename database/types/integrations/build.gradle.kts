@@ -4,6 +4,6 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.Usecase))
-    api(project(Deps.Projects.Database))
     api(project(Deps.Projects.DatabaseInvitations))
+    api(project(Deps.Projects.DatabaseAuth))
 }

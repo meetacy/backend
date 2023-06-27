@@ -17,8 +17,6 @@ include(
     "usecase",
     "usecase:endpoints-integration",
     "database",
-    "database:usecase-integration",
-    "database:endpoints-integration",
     "types",
     "types:serialization-integration",
     "libs:hash-generator",
@@ -53,3 +51,25 @@ include("database:files")
 findProject(":database:files")?.name = "files"
 include("database:transactions")
 findProject(":database:transactions")?.name = "transactions"
+include("database:files:integrations")
+findProject(":database:files:integrations")?.name = "integrations"
+include("database:friends")
+findProject(":database:friends")?.name = "friends"
+include("database:friends:integrations")
+findProject(":database:friends:integrations")?.name = "integrations"
+include("database:auth")
+findProject(":database:auth")?.name = "auth"
+include("database:auth:integrations")
+findProject(":database:auth:integrations")?.name = "integrations"
+include("database:email")
+findProject(":database:email")?.name = "email"
+include("database:email:integrations")
+findProject(":database:email:integrations")?.name = "integrations"
+include("database:notifications")
+findProject(":database:notifications")?.name = "notifications"
+include("database:notifications:integrations")
+findProject(":database:notifications:integrations")?.name = "integrations"
+include("database:location")
+findProject(":database:location")?.name = "location"
+include("database:location:integrations")
+findProject(":database:location:integrations")?.name = "integrations"

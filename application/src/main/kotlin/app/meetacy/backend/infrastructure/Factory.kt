@@ -1,5 +1,6 @@
 package app.meetacy.backend.infrastructure
 
+import app.meetacy.backend.database.integration.auth.DatabaseGenerateTokenStorage
 import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailMailer
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage
@@ -31,8 +32,9 @@ import app.meetacy.backend.database.integration.meetings.participants.list.Datab
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
 import app.meetacy.backend.database.integration.notifications.DatabaseGetNotificationStorage
 import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
-import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateTokenStorage
-import app.meetacy.backend.database.integration.types.*
+import app.meetacy.backend.database.integration.types.DatabaseAuthRepository
+import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
+import app.meetacy.backend.database.integration.types.DatabaseGetInvitationsViewsRepository
 import app.meetacy.backend.database.integration.users.edit.DatabaseEditUserStorage
 import app.meetacy.backend.database.integration.users.get.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.endpoint.auth.AuthDependencies
