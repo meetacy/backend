@@ -1,8 +1,5 @@
 package app.meetacy.backend.infrastructure
 
-import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
-import app.meetacy.backend.database.integration.email.DatabaseLinkEmailMailer
-import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage
 import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository
 import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
 import app.meetacy.backend.database.integration.friends.add.DatabaseAddFriendStorage
@@ -28,13 +25,10 @@ import app.meetacy.backend.database.integration.meetings.participate.DatabasePar
 import app.meetacy.backend.database.integration.notifications.AddNotificationUsecase
 import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
 import app.meetacy.backend.database.integration.notifications.GetNotificationsUsecase
-import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateTokenStorage
 import app.meetacy.backend.database.integration.types.*
 import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.database.integration.users.edit.DatabaseEditUserStorage
-import app.meetacy.backend.endpoint.auth.AuthDependencies
-import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
@@ -48,16 +42,10 @@ import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
-import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
-import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
-import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
-import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
-import app.meetacy.backend.usecase.integration.email.confirm.UsecaseConfirmEmailRepository
-import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
 import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
@@ -136,30 +124,7 @@ fun startEndpoints(
     startEndpoints(
         port = port,
         wait = wait,
-        authDependencies = AuthDependencies(
-            emailDependencies = EmailDependencies(
-                linkEmailRepository = UsecaseLinkEmailRepository(
-                    usecase = LinkEmailUsecase(
-                        storage = DatabaseLinkEmailStorage(db),
-                        mailer = DatabaseLinkEmailMailer,
-                        hashGenerator = DefaultHashGenerator,
-                        authRepository = authRepository
-                    )
-                ),
-                confirmEmailRepository = UsecaseConfirmEmailRepository(
-                    usecase = ConfirmEmailUsecase(
-                        storage = DatabaseConfirmEmailStorage(db)
-                    )
-                )
-            ),
-            tokenGenerateRepository = UsecaseTokenGenerateRepository(
-                usecase = GenerateTokenUsecase(
-                    storage = DatabaseGenerateTokenStorage(DefaultHashGenerator, db),
-                    tokenGenerator = DefaultHashGenerator,
-                    utf8Checker = DefaultUtf8Checker
-                )
-            )
-        ),
+        authDependencies = authDependenciesFactory(db, authRepository),
         usersDependencies = UsersDependencies(
             getUserRepository = UsecaseUserRepository(
                 usecase = GetUserSafeUsecase(
