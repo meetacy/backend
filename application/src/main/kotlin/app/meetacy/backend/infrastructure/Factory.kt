@@ -31,7 +31,6 @@ import app.meetacy.backend.database.integration.notifications.DatabaseReadNotifi
 import app.meetacy.backend.database.integration.types.DatabaseAuthRepository
 import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetInvitationsViewsRepository
-import app.meetacy.backend.database.integration.users.edit.DatabaseEditUserStorage
 import app.meetacy.backend.database.integration.users.get.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
@@ -43,8 +42,9 @@ import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
-import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
+import app.meetacy.backend.infrastructure.factories.authDependenciesFactory
+import app.meetacy.backend.infrastructure.factories.userDependenciesFactory
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
@@ -72,8 +72,6 @@ import app.meetacy.backend.usecase.integration.meetings.participants.list.Usecas
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
-import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
-import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
@@ -94,8 +92,6 @@ import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingPartici
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
-import app.meetacy.backend.usecase.users.edit.EditUserUsecase
-import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import org.jetbrains.exposed.sql.Database
 
@@ -123,22 +119,7 @@ fun startEndpoints(
         port = port,
         wait = wait,
         authDependencies = authDependenciesFactory(db, authRepository),
-        usersDependencies = UsersDependencies(
-            getUserRepository = UsecaseUserRepository(
-                usecase = GetUserSafeUsecase(
-                    authRepository = authRepository,
-                    usersViewsRepository = getUsersViewsRepository
-                )
-            ),
-            editUserRepository = UsecaseEditUserRepository(
-                usecase = EditUserUsecase(
-                    storage = DatabaseEditUserStorage(db),
-                    authRepository = authRepository,
-                    filesRepository = filesRepository,
-                    utf8Checker = DefaultUtf8Checker
-                )
-            )
-        ),
+        usersDependencies = userDependenciesFactory(db, authRepository, filesRepository, getUsersViewsRepository),
         friendsDependencies = FriendsDependencies(
             friendsLocationDependencies = FriendsLocationDependencies(
                 streamLocationRepository = UsecaseStreamLocationRepository(
