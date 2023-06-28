@@ -9,35 +9,26 @@ import app.meetacy.backend.database.integration.invitations.deny.DatabaseDenyInv
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
 import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
 import app.meetacy.backend.database.integration.notifications.AddNotificationUsecase
-import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
-import app.meetacy.backend.database.integration.notifications.GetNotificationsUsecase
 import app.meetacy.backend.database.integration.types.*
 import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
-import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
-import app.meetacy.backend.infrastructure.factories.authDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.friendDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.meetingsDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.userDependenciesFactory
+import app.meetacy.backend.infrastructure.factories.*
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.deny.UsecaseDenyInvitationRepository
-import app.meetacy.backend.usecase.integration.notifications.get.UsecaseListNotificationsRepository
-import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
-import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import org.jetbrains.exposed.sql.Database
 
 fun startEndpoints(
@@ -80,21 +71,10 @@ fun startEndpoints(
             db, authRepository, filesRepository, checkMeetingsRepository,
             getMeetingsViewsRepository, getUsersViewsRepository, viewMeetingsRepository
         ),
-        notificationsDependencies = NotificationsDependencies(
-            listNotificationsRepository = UsecaseListNotificationsRepository(
-                usecase = GetNotificationsUsecase(
-                    db = db,
-                    authRepository = authRepository,
-                    meetingsRepository = getMeetingsViewsRepository,
-                    usersRepository = getUsersViewsRepository
-                )
-            ),
-            readNotificationsRepository = UsecaseReadNotificationsRepository(
-                usecase = ReadNotificationsUsecase(
-                    authRepository = authRepository,
-                    storage = DatabaseReadNotificationsStorage(db)
-                )
-            )
+        notificationsDependencies = notificationDependenciesFactory(
+            db, authRepository,
+            getMeetingsViewsRepository,
+            getUsersViewsRepository
         ),
         filesDependencies = FilesDependencies(
             saveFileRepository = UsecaseUploadFileRepository(
