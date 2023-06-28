@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.invitation.InvitationIdentitySerializable
+import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class InvitationAcceptParams(
     val token: AccessIdentitySerializable,
-    val id: InvitationIdentitySerializable,
+    val id: InvitationIdSerializable,
 )
 
 fun Route.invitationAccept(invitationsAcceptRepository: AcceptInvitationRepository) {
@@ -29,9 +29,6 @@ fun Route.invitationAccept(invitationsAcceptRepository: AcceptInvitationReposito
             }
             InvitationAcceptResponse.NotFound -> {
                 call.respondFailure(Failure.InvitationNotFound)
-            }
-            InvitationAcceptResponse.InvitationExpired -> {
-                call.respondFailure(Failure.InvitationExpired)
             }
             InvitationAcceptResponse.MeetingNotFound -> {
                 call.respondFailure(Failure.InvalidMeetingIdentity)
@@ -49,6 +46,5 @@ sealed interface InvitationAcceptResponse {
     object Success: InvitationAcceptResponse
     object NotFound: InvitationAcceptResponse
     object Unauthorized: InvitationAcceptResponse
-    object InvitationExpired : InvitationAcceptResponse
     object MeetingNotFound : InvitationAcceptResponse
 }

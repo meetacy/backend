@@ -7,7 +7,7 @@ import app.meetacy.backend.usecase.types.InvitationView
 
 fun InvitationView.toEndpoint(): Invitation {
     return Invitation(
-        identity.serializable(), expiryDate.serializable(), invitedUserView.mapToEndpoint(),
-        invitorUserView.mapToEndpoint(), meetingView.mapToEndpoint(), isAccepted
+        id.serializable(), invitedUser.mapToEndpoint(),
+        inviterUser.mapToEndpoint(), meeting.mapToEndpoint(), isAccepted
     )
 }

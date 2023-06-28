@@ -1,4 +1,4 @@
-package app.meetacy.backend.database.integration.invitation.cancel
+package app.meetacy.backend.database.integration.invitations.cancel
 
 import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.invitations.InvitationsStorage
@@ -14,5 +14,5 @@ class DatabaseCancelInvitationStorage(db: Database): CancelInvitationUsecase.Sto
         invitationsStorage.cancel(id)
 
     override suspend fun getInvitation(id: InvitationId): FullInvitation? =
-        invitationsStorage.getInvitationsByInvitationIds(listOf(id)).singleOrNull()?.mapToUsecase()
+        invitationsStorage.getInvitationsOrNull(listOf(id)).singleOrNull()?.mapToUsecase()
 }

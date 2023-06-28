@@ -25,7 +25,7 @@ class TestLocationStreaming {
         friend.friends.add(self.id)
 
         val job = launch {
-            friend.friends.location.stream(
+            friend.friends.location.flow(
                 selfLocation = flow {
                     while (true) {
                         emit(expectedLocation)
@@ -34,7 +34,7 @@ class TestLocationStreaming {
             ).collect()
         }
 
-        val streamedLocation = self.friends.location.stream(emptyFlow()).first()
+        val streamedLocation = self.friends.location.flow(emptyFlow()).first()
         job.cancelAndJoin()
 
         require(streamedLocation.location == expectedLocation)

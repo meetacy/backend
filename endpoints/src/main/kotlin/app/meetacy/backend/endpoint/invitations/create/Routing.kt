@@ -5,7 +5,6 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.invitation.Invitation
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.datetime.DateTimeSerializable
 import app.meetacy.backend.types.serialization.meeting.MeetingIdentitySerializable
 import app.meetacy.backend.types.serialization.user.UserIdentitySerializable
 import io.ktor.server.application.*
@@ -16,9 +15,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class InvitationCreatingFormSerializable(
     val token: AccessIdentitySerializable,
-    val meeting: MeetingIdentitySerializable,
-    val invitedUser: UserIdentitySerializable,
-    val expiryDate: DateTimeSerializable,
+    val meetingId: MeetingIdentitySerializable,
+    val userId: UserIdentitySerializable
 )
 
 fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationRepository) {
@@ -42,10 +40,7 @@ fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationReposito
                 call.respondFailure(Failure.InvalidToken)
             }
             InvitationsCreateResponse.UserAlreadyInvited -> {
-                call.respondFailure(Failure.FriendAlreadyInvited)
-            }
-            InvitationsCreateResponse.InvalidExpiryDate -> {
-                call.respondFailure(Failure.InvalidDateTimeIdentity)
+                call.respondFailure(Failure.UserAlreadyInvited)
             }
         }
     }
@@ -56,11 +51,10 @@ interface CreateInvitationRepository {
 }
 
 sealed interface InvitationsCreateResponse {
-    @Serializable data class Success(val response: Invitation): InvitationsCreateResponse
-    object Unauthorized: InvitationsCreateResponse
-    object NoPermissions: InvitationsCreateResponse
-    object UserAlreadyInvited: InvitationsCreateResponse
-    object UserNotFound: InvitationsCreateResponse
-    object MeetingNotFound: InvitationsCreateResponse
-    object InvalidExpiryDate : InvitationsCreateResponse
+    @Serializable data class Success(val response: Invitation) : InvitationsCreateResponse
+    object Unauthorized : InvitationsCreateResponse
+    object NoPermissions : InvitationsCreateResponse
+    object UserAlreadyInvited : InvitationsCreateResponse
+    object UserNotFound : InvitationsCreateResponse
+    object MeetingNotFound : InvitationsCreateResponse
 }

@@ -4,10 +4,9 @@ import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.usecase.types.FullInvitation
 
 fun DatabaseInvitation.mapToUsecase() = FullInvitation(
-    identity,
-    expiryDate,
-    invitedUserId,
-    invitorUserId,
-    meeting,
-    isAccepted
+    id = id,
+    invitedUserId = invitedUserId,
+    inviterUserId = inviterUserId,
+    meetingId = meetingId,
+    isAccepted = isAccepted
 )

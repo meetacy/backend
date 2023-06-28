@@ -1,9 +1,10 @@
-package app.meetacy.backend.database.integration.invitation.create
+package app.meetacy.backend.database.integration.invitations.create
 
 import app.meetacy.backend.database.friends.FriendsStorage
 import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.invitations.InvitationsStorage
 import app.meetacy.backend.database.meetings.MeetingsStorage
+import app.meetacy.backend.database.notifications.NotificationsStorage
 import app.meetacy.backend.database.users.UsersStorage
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.datetime.DateTime
@@ -21,6 +22,7 @@ class DatabaseCreateInvitationStorage(db: Database): CreateInvitationUsecase.Sto
     private val invitationTable = InvitationsStorage(db)
     private val meetingsStorage = MeetingsStorage(db)
     private val usersStorage = UsersStorage(db)
+    private val notificationsStorage = NotificationsStorage(db)
 
     override suspend fun isSubscriberOf(subscriberId: UserId, authorId: UserId): Boolean =
         friendsStorage.isSubscribed(authorId, subscriberId)
@@ -32,17 +34,24 @@ class DatabaseCreateInvitationStorage(db: Database): CreateInvitationUsecase.Sto
         usersStorage.getUsersOrNull(listOf(id)).singleOrNull()?.mapToUsecase()
 
     override suspend fun getInvitationsFrom(authorId: UserId): List<FullInvitation> =
-        invitationTable.getInvitations(userIds = listOf(authorId))
-            .filter { it.invitorUserId == authorId }
+        invitationTable.getInvitationsFrom(authorId)
             .map { it.mapToUsecase() }
 
     override suspend fun createInvitation(
         accessHash: AccessHash,
         invitedUserId: UserId,
-        invitorUserId: UserId,
-        expiryDate: DateTime,
+        inviterUserId: UserId,
         meetingId: MeetingId
     ): InvitationId =
-        invitationTable.addInvitation(accessHash, invitorUserId, invitedUserId, expiryDate, meetingId)
+        invitationTable.addInvitation(accessHash, inviterUserId, invitedUserId, meetingId)
+
+    override suspend fun addNotification(userId: UserId, inviterId: UserId, meetingId: MeetingId) {
+        notificationsStorage.addInvitationNotification(
+            userId = userId,
+            inviterId = inviterId,
+            meetingId = meetingId,
+            date = DateTime.now()
+        )
+    }
 
 }

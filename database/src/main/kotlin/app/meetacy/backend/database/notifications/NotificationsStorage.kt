@@ -1,22 +1,23 @@
-@file:Suppress("PrivatePropertyName")
+@file:Suppress("PrivatePropertyName", "OPT_IN_USAGE")
 
 package app.meetacy.backend.database.notifications
 
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.notifications.NotificationsTable.DATE
-import app.meetacy.backend.database.notifications.NotificationsTable.INVITED_MEETING_ID
+import app.meetacy.backend.database.notifications.NotificationsTable.MEETING_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.INVITER_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.NOTIFICATION_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.OWNER_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.SUBSCRIBED_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.TYPE
+import app.meetacy.backend.database.notifications.NotificationsTable.Type
 import app.meetacy.backend.database.paging
 import app.meetacy.backend.database.types.DatabaseNotification
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.DATE_TIME_MAX_LIMIT
 import app.meetacy.backend.types.amount.Amount
-import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.paging.PagingId
@@ -28,31 +29,54 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 object NotificationsTable : Table() {
-    val NOTIFICATION_ID = long("NOTIFICATION_ID")
+    val NOTIFICATION_ID = long("NOTIFICATION_ID").autoIncrement()
     val OWNER_ID = reference("OWNER_ID", UsersTable.USER_ID)
-    val TYPE = enumeration("TYPE", DatabaseNotification.Type::class)
+    val TYPE = enumeration("TYPE", Type::class)
     val DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
     val INVITER_ID = reference("INVITER_ID", UsersTable.USER_ID).nullable()
     val SUBSCRIBED_ID = reference("SUBSCRIBED_ID", UsersTable.USER_ID).nullable().default(null)
-    val INVITED_MEETING_ID = reference("INVITED_MEETING_ID", MeetingsTable.MEETING_ID).nullable().default(null)
+    val MEETING_ID = reference("INVITED_MEETING_ID", MeetingsTable.MEETING_ID).nullable().default(null)
+
+    override val primaryKey = PrimaryKey(NOTIFICATION_ID)
+
+    enum class Type {
+        Subscription, Invitation
+    }
 }
 
 class NotificationsStorage(private val db: Database) {
 
-    suspend fun addNotification(notification: DatabaseNotification) =
+    suspend fun addSubscriptionNotification(
+        userId: UserId,
+        subscriberId: UserId,
+        date: DateTime
+    ) {
         newSuspendedTransaction(Dispatchers.IO, db) {
-            with(notification) {
-                NotificationsTable.insert { statement ->
-                    statement[NOTIFICATION_ID] = id.long
-                    statement[OWNER_ID] = ownerId.long
-                    statement[TYPE] = type
-                    statement[DATE] = date.iso8601
-                    statement[INVITER_ID] = inviterId?.long
-                    statement[SUBSCRIBED_ID] = subscriberId?.long
-                    statement[INVITED_MEETING_ID] = invitedMeetingId?.long
-                }
+            NotificationsTable.insert { statement ->
+                statement[TYPE] = Type.Subscription
+                statement[OWNER_ID] = userId.long
+                statement[DATE] = date.iso8601
+                statement[SUBSCRIBED_ID] = subscriberId.long
             }
         }
+    }
+
+    suspend fun addInvitationNotification(
+        userId: UserId,
+        inviterId: UserId,
+        meetingId: MeetingId,
+        date: DateTime
+    ) {
+        newSuspendedTransaction(Dispatchers.IO, db) {
+            NotificationsTable.insert { statement ->
+                statement[TYPE] = Type.Invitation
+                statement[OWNER_ID] = userId.long
+                statement[DATE] = date.iso8601
+                statement[INVITER_ID] = inviterId.long
+                statement[MEETING_ID] = meetingId.long
+            }
+        }
+    }
 
     suspend fun isNotificationExists(notificationId: NotificationId): Boolean {
         val result = newSuspendedTransaction(Dispatchers.IO, db) {
@@ -60,7 +84,6 @@ class NotificationsStorage(private val db: Database) {
                 .firstOrNull()
         }
         return result != null
-
     }
 
     suspend fun getNotifications(
@@ -102,15 +125,20 @@ class NotificationsStorage(private val db: Database) {
     suspend fun getNotification(id: NotificationId): DatabaseNotification =
         getNotificationOrNull(id) ?: error("Notification with id $id not found")
 
-    @OptIn(UnsafeConstructor::class)
     private fun ResultRow.toNotification(): DatabaseNotification =
-        DatabaseNotification(
-            NotificationId(this[NOTIFICATION_ID]),
-            UserId(this[OWNER_ID]),
-            this[TYPE],
-            Date(this[DATE]),
-            this[INVITER_ID]?.let(::UserId),
-            this[SUBSCRIBED_ID]?.let(::UserId),
-            this[INVITED_MEETING_ID]?.let(::MeetingId)
-        )
+        when (this[TYPE]) {
+            Type.Subscription -> DatabaseNotification.Subscription(
+                id = NotificationId(this[NOTIFICATION_ID]),
+                ownerId = UserId(this[OWNER_ID]),
+                date = DateTime(this[DATE]),
+                subscriberId = UserId(this[SUBSCRIBED_ID]!!)
+            )
+            Type.Invitation -> DatabaseNotification.Invitation(
+                id = NotificationId(this[NOTIFICATION_ID]),
+                ownerId = UserId(this[OWNER_ID]),
+                date = DateTime(this[DATE]),
+                inviterId = UserId(this[INVITER_ID]!!),
+                meetingId = MeetingId(this[MEETING_ID]!!)
+            )
+        }
 }

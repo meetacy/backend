@@ -13,9 +13,8 @@ class UsecaseCreateInvitationRepository(
         with(form) {
             val response = usecase.createInvitation(
                 token = token.type(),
-                expiryDate = expiryDate.type(),
-                meetingIdentity = meeting.type(),
-                invitedUserIdentity = invitedUser.type()
+                meetingIdentity = meetingId.type(),
+                userIdentity = userId.type()
             )
             return when (response) {
                 CreateInvitationUsecase.Result.UserAlreadyInvited ->
@@ -30,8 +29,6 @@ class UsecaseCreateInvitationRepository(
                     InvitationsCreateResponse.Unauthorized
                 is CreateInvitationUsecase.Result.Success ->
                     InvitationsCreateResponse.Success(response.invitation.toEndpoint())
-
-                CreateInvitationUsecase.Result.InvalidExpiryDate -> InvitationsCreateResponse.InvalidExpiryDate
             }
         }
     }

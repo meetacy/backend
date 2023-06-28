@@ -8,12 +8,10 @@ import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
 import app.meetacy.backend.database.integration.friends.add.DatabaseAddFriendStorage
 import app.meetacy.backend.database.integration.friends.delete.DatabaseDeleteFriendStorage
 import app.meetacy.backend.database.integration.friends.get.DatabaseGetFriendsStorage
-import app.meetacy.backend.database.integration.invitation.accept.DatabaseAcceptInvitationStorage
-import app.meetacy.backend.database.integration.invitation.cancel.DatabaseCancelInvitationStorage
-import app.meetacy.backend.database.integration.invitation.create.DatabaseCreateInvitationStorage
-import app.meetacy.backend.database.integration.invitation.deny.DatabaseDenyInvitationStorage
-import app.meetacy.backend.database.integration.invitation.read.DatabaseReadInvitationStorage
-import app.meetacy.backend.database.integration.invitation.update.DatabaseUpdateInvitationStorage
+import app.meetacy.backend.database.integration.invitations.accept.DatabaseAcceptInvitationStorage
+import app.meetacy.backend.database.integration.invitations.cancel.DatabaseCancelInvitationStorage
+import app.meetacy.backend.database.integration.invitations.create.DatabaseCreateInvitationStorage
+import app.meetacy.backend.database.integration.invitations.deny.DatabaseDenyInvitationStorage
 import app.meetacy.backend.database.integration.location.stream.DatabaseFriendsLocationStreamingStorage
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
@@ -67,8 +65,6 @@ import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptI
 import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.deny.UsecaseDenyInvitationRepository
-import app.meetacy.backend.usecase.integration.invitations.read.UsecaseReadInvitationRepository
-import app.meetacy.backend.usecase.integration.invitations.update.UsecaseUpdateInvitationRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
@@ -88,8 +84,6 @@ import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
-import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
-import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
 import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
@@ -121,10 +115,12 @@ fun startEndpoints(
     val getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
     val viewMeetingsRepository = DatabaseGetMeetingsViewsViewMeetingsRepository(db)
     val checkMeetingsRepository = DatabaseCheckMeetingsViewRepository(db)
-    val getInvitationsViewsRepository = DatabaseGetInvitationsViewsRepository(
-        getUsersViewsRepository,
-        getMeetingsViewsRepository,
-        db
+    val getInvitationsViewsRepository = GetInvitationsViewsRepository(
+        db,
+        viewInvitationsRepository = ViewInvitationsRepository(
+            usersRepository = getUsersViewsRepository,
+            meetingsRepository = getMeetingsViewsRepository
+        )
     )
     val getNotificationsViewsRepository = GetNotificationsViewsRepository(
         db = db,
@@ -330,7 +326,7 @@ fun startEndpoints(
                     authRepository = authRepository,
                     storage = DatabaseCreateInvitationStorage(db),
                     hashGenerator = DefaultHashGenerator,
-                    getInvitationsViewsRepository = getInvitationsViewsRepository
+                    invitationsRepository = getInvitationsViewsRepository
                 )
             ),
             invitationsAcceptRepository = UsecaseAcceptInvitationRepository(
@@ -343,20 +339,6 @@ fun startEndpoints(
                 usecase = DenyInvitationUsecase(
                     authRepository = authRepository,
                     storage = DatabaseDenyInvitationStorage(db)
-                )
-            ),
-            invitationsGetRepository = UsecaseReadInvitationRepository(
-                usecase = ReadInvitationUsecase(
-                    storage = DatabaseReadInvitationStorage(db),
-                    getInvitationsViewsRepository = getInvitationsViewsRepository,
-                    authRepository = authRepository
-                )
-            ),
-            invitationUpdateRepository = UsecaseUpdateInvitationRepository(
-                usecase = UpdateInvitationUsecase(
-                    storage = DatabaseUpdateInvitationStorage(db),
-                    authRepository = authRepository,
-                    getInvitationsViewsRepository = getInvitationsViewsRepository
                 )
             ),
             invitationCancelRepository = UsecaseCancelInvitationRepository(

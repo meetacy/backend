@@ -20,5 +20,6 @@ val tables: List<Table> = listOf(
     InvitationsTable, UsersLocationsTable,
     MeetingsTable, ParticipantsTable,
     LastReadNotificationsTable, NotificationsTable,
-    FriendsTable, UpdatesTable
+    InvitationsTable, FriendsTable,
+    UpdatesTable
 )

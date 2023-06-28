@@ -1,11 +1,8 @@
 
-import app.meetacy.backend.database.integration.types.mapToUsecase
-import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
-import app.meetacy.backend.endpoint.updates.stream.StreamUpdatesRepository
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.access.AccessHash
@@ -17,7 +14,6 @@ import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.types.invitation.InvitationId
-import app.meetacy.backend.types.invitation.InvitationIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.meeting.MeetingId
@@ -39,8 +35,8 @@ import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
-import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
-import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
+import app.meetacy.backend.usecase.invitations.get.GetInvitationsViewsUsecase
+import app.meetacy.backend.usecase.invitations.get.ViewInvitationsUsecase
 import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.usecase.location.stream.LocationsMiddleware
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
@@ -80,12 +76,12 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
     ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage, FriendsLocationStreamingUsecase.Storage,
-    CreateInvitationUsecase.Storage, ReadInvitationUsecase.Storage,
-    AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage, UpdateInvitationUsecase.Storage,
+    CreateInvitationUsecase.Storage, AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage,
     CancelInvitationUsecase.Storage, ViewUserUsecase.Storage, GetInvitationsViewsRepository,
     ListMeetingsActiveUsecase.Storage, ListMeetingsPastUsecase.Storage, ViewNotificationsRepository,
     ViewNotificationsUsecase.Storage, StreamUpdatesUsecase.Storage, GetNotificationsViewsRepository,
-    GetNotificationsViewsUsecase.Storage, UpdatesMiddleware.Storage {
+    GetNotificationsViewsUsecase.Storage, UpdatesMiddleware.Storage, ViewInvitationsRepository,
+    GetInvitationsViewsUsecase.InvitationsProvider {
 
     private val users = mutableListOf<User>()
 
@@ -201,6 +197,16 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         synchronized(lock = this) {
             friendRelations += Triple(PagingId(friendRelations.size.toLong()), userId, friendId)
         }
+    }
+
+    override suspend fun addNotification(userId: UserId, friendId: UserId) {
+        notifications.add(
+            userId to FullNotification.Subscription(
+                id = NotificationId(notifications.size.toLong()),
+                date = DateTime.now(),
+                subscriberId = friendId
+            )
+        )
     }
 
     override suspend fun deleteFriend(userId: UserId, friendId: UserId) {
@@ -445,23 +451,8 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun getMeetingOrNull(id: MeetingId): FullMeeting? =
         getMeetings(listOf(id)).singleOrNull()
 
-    override suspend fun update(invitationId: InvitationId, expiryDate: DateTime?, meetingId: MeetingId?): Boolean {
-        val indexOfInvitation = invitations.indexOfFirst { it.id == invitationId }
-        if (indexOfInvitation == -1) return false
-        val invitation = invitations[indexOfInvitation]
-        invitations[indexOfInvitation] = DatabaseInvitation(
-            invitation.identity,
-            expiryDate ?: invitation.expiryDate,
-            invitation.invitedUserId,
-            invitation.invitorUserId,
-            meetingId ?: invitation.meeting,
-            invitation.isAccepted
-        )
-        return true
-    }
-
     override suspend fun getInvitationOrNull(id: InvitationId): FullInvitation? =
-        invitations.firstOrNull { it.id == id }?.mapToUsecase()
+        invitations.firstOrNull { it.id == id }
 
     override suspend fun isParticipating(
         meetingId: MeetingId,
@@ -474,17 +465,16 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
 
     override suspend fun markAsAccepted(id: InvitationId) {
         val invitation = invitations[invitations.indexOfFirst { it.id == id }]
-        invitations[invitations.indexOfFirst { it.id == id }] = DatabaseInvitation(
-            invitation.identity,
-            invitation.expiryDate,
+        invitations[invitations.indexOfFirst { it.id == id }] = FullInvitation(
+            invitation.id,
             invitation.invitedUserId,
-            invitation.invitorUserId,
-            invitation.meeting,
+            invitation.inviterUserId,
+            invitation.meetingId,
             isAccepted = true
         )
     }
 
-    override suspend fun addToMeeting(id: MeetingId, userId: UserId) =
+    override suspend fun addParticipant(id: MeetingId, userId: UserId) =
         addParticipant(userId, id)
 
     override suspend fun getList(
@@ -627,7 +617,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         val fileName: String
     )
 
-    private val invitations: MutableList<DatabaseInvitation> = mutableListOf()
+    private val invitations: MutableList<FullInvitation> = mutableListOf()
 
     override suspend fun isSubscriberOf(subscriberId: UserId, authorId: UserId): Boolean =
         isSubscribed(subscriberId, authorId)
@@ -641,97 +631,55 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     }
 
     override suspend fun getInvitationsFrom(authorId: UserId): List<FullInvitation> =
-        invitations.filter { it.invitorUserId == authorId }.map { it.mapToUsecase() }
+        invitations.filter { it.inviterUserId == authorId }
 
     override suspend fun createInvitation(
         accessHash: AccessHash,
         invitedUserId: UserId,
-        invitorUserId: UserId,
-        expiryDate: DateTime,
+        inviterUserId: UserId,
         meetingId: MeetingId
     ): InvitationId {
-        val lastId = invitations.maxOfOrNull { it.id.long }
+        val lastId = InvitationId(invitations.size.toLong())
+
         invitations.add(
-            DatabaseInvitation(
-                identity = InvitationIdentity(InvitationId((lastId ?: -1) + 1), accessHash),
-                expiryDate,
+            FullInvitation(
+                id = lastId,
                 invitedUserId,
-                invitorUserId,
+                inviterUserId,
                 meetingId,
                 isAccepted = null
             )
         )
-        return InvitationId((lastId ?: -1) + 1)
+
+        return lastId
     }
 
-    override suspend fun getInvitationViewOrNull(viewerId: UserId, invitation: FullInvitation): InvitationView? {
-        val invitedUserView = viewUser(viewerId, getUser(invitation.invitedUserId) ?: return null)
-        val invitorUserView = viewUser(viewerId, getUser(invitation.invitorUserId) ?: return null)
-        val meetingView = viewMeeting(viewerId, getMeeting(invitation.meeting) ?: return null)
-
-        return InvitationView(
-            identity = invitation.identity,
-            expiryDate = invitation.expiryDate,
-            invitedUserView = invitedUserView,
-            invitorUserView = invitorUserView,
-            meetingView = meetingView,
-            isAccepted = invitation.isAccepted,
+    override suspend fun addNotification(userId: UserId, inviterId: UserId, meetingId: MeetingId) {
+        notifications.add(
+            userId to FullNotification.Invitation(
+                id = NotificationId(notifications.size.toLong()),
+                date = DateTime.now(),
+                meetingId = meetingId,
+                inviterId = inviterId
+            )
         )
-    }
-
-    override suspend fun getInvitationViewOrNull(viewerId: UserId, invitation: InvitationId): InvitationView? {
-        val fullInvitation = getInvitationOrNull(id = invitation) ?: return null
-
-        return getInvitationViewOrNull(viewerId, fullInvitation)
-    }
-
-    override suspend fun getInvitationView(viewerId: UserId, invitation: FullInvitation): InvitationView {
-        val invitedUserView = viewUser(viewerId, getUser(invitation.invitedUserId) ?: error("User not found"))
-        val invitorUserView = viewUser(viewerId, getUser(invitation.invitorUserId) ?: error("User not found"))
-        val meetingView = viewMeeting(viewerId, getMeeting(invitation.meeting) ?: error("Meeting not found"))
-
-        return InvitationView(
-            identity = invitation.identity,
-            expiryDate = invitation.expiryDate,
-            invitedUserView = invitedUserView,
-            invitorUserView = invitorUserView,
-            meetingView = meetingView,
-            isAccepted = invitation.isAccepted,
-        )
-    }
-
-    override suspend fun getInvitationView(viewerId: UserId, invitation: InvitationId): InvitationView =
-        getInvitationView(viewerId, getInvitation(invitation))
-
-    override suspend fun getInvitations(invited: UserId): List<FullInvitation> =
-        invitations.filter { it.invitedUserId == invited }.map { it.mapToUsecase() }
-
-    override suspend fun getInvitations(from: List<UserId>, to: UserId): List<FullInvitation> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getInvitationsByIds(ids: List<InvitationId>): List<FullInvitation> =
-        invitations.filter { it.id in ids }.map { it.mapToUsecase() }
-
-    override suspend fun getFullUser(id: UserId): FullUser? {
-        return getUser(id)
     }
 
     override suspend fun cancel(id: InvitationId): Boolean {
         return invitations.removeAll { it.id == id }
     }
 
-    override suspend fun getInvitation(id: InvitationId): FullInvitation =
-        getInvitationsByIds(listOf(id)).singleOrNull() ?: error("Invitations not found")
+    override suspend fun getInvitation(id: InvitationId): FullInvitation? {
+        return getInvitationOrNull(id)
+    }
 
     override suspend fun markAsDenied(id: InvitationId): Boolean {
         val invitation = invitations[invitations.indexOfFirst { it.id == id }]
-        invitations[invitations.indexOfFirst { it.id == id }] = DatabaseInvitation(
-            invitation.identity,
-            invitation.expiryDate,
+        invitations[invitations.indexOfFirst { it.id == id }] = FullInvitation(
+            invitation.id,
             invitation.invitedUserId,
-            invitation.invitorUserId,
-            invitation.meeting,
+            invitation.inviterUserId,
+            invitation.meetingId,
             isAccepted = false
         )
         return true
@@ -780,5 +728,35 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         override suspend fun getLocation(userId: UserId): LocationSnapshot? = synchronized(locations) {
             return locations[userId]
         }
+    }
+
+    private val getInvitationsViewsUsecase = GetInvitationsViewsUsecase(
+        viewInvitationsRepository = this,
+        invitationsProvider = this
+    )
+
+    override suspend fun getInvitationsViewsOrNull(
+        viewerId: UserId,
+        invitationIds: List<InvitationId>
+    ): List<InvitationView?> {
+        return getInvitationsViewsUsecase.getInvitationsViewsOrNull(viewerId, invitationIds)
+    }
+
+    private val viewInvitationsUsecase = ViewInvitationsUsecase(
+        usersRepository = this,
+        meetingsRepository = this
+    )
+
+    override suspend fun viewInvitations(
+        viewerId: UserId,
+        invitations: List<FullInvitation>
+    ): List<InvitationView> {
+        return viewInvitationsUsecase.viewInvitations(viewerId, invitations)
+    }
+
+    override suspend fun getInvitationsOrNull(
+        invitationIds: List<InvitationId>
+    ): List<FullInvitation?> {
+        return invitationIds.map { id -> getInvitationOrNull(id) }
     }
 }

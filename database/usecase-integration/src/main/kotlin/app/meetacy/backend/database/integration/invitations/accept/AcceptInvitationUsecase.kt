@@ -1,4 +1,4 @@
-package app.meetacy.backend.database.integration.invitation.accept
+package app.meetacy.backend.database.integration.invitations.accept
 
 import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.invitations.InvitationsStorage
@@ -21,7 +21,7 @@ class DatabaseAcceptInvitationStorage(db: Database): Storage {
         meetingsStorage.getMeetingOrNull(id)?.mapToUsecase()
 
     override suspend fun getInvitationOrNull(id: InvitationId): FullInvitation? =
-        invitationsStorage.getInvitationsByInvitationIds(listOf(id)).singleOrNull()?.mapToUsecase()
+        invitationsStorage.getInvitationsOrNull(listOf(id)).singleOrNull()?.mapToUsecase()
 
     override suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =
         participantsStorage.isParticipating(meetingId, userId)
@@ -30,7 +30,7 @@ class DatabaseAcceptInvitationStorage(db: Database): Storage {
         invitationsStorage.markAsAccepted(id)
     }
 
-    override suspend fun addToMeeting(id: MeetingId, userId: UserId) {
-        participantsStorage.addParticipant(userId, id)
+    override suspend fun addParticipant(meetingId: MeetingId, userId: UserId) {
+        participantsStorage.addParticipant(userId, meetingId)
     }
 }

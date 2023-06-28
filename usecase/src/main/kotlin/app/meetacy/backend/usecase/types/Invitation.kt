@@ -1,28 +1,21 @@
 package app.meetacy.backend.usecase.types
 
-import app.meetacy.backend.types.datetime.DateTime
-import app.meetacy.backend.types.invitation.InvitationIdentity
+import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
 
 data class FullInvitation(
-    val identity: InvitationIdentity,
-    val expiryDate: DateTime,
+    val id: InvitationId,
     val invitedUserId: UserId,
-    val invitorUserId: UserId,
-    val meeting: MeetingId,
+    val inviterUserId: UserId,
+    val meetingId: MeetingId,
     val isAccepted: Boolean?
-) {
-    val id = identity.id
-}
+)
 
 data class InvitationView(
-    val identity: InvitationIdentity,
-    val expiryDate: DateTime,
-    val invitedUserView: UserView,
-    val invitorUserView: UserView,
-    val meetingView: MeetingView,
+    val id: InvitationId,
+    val invitedUser: UserView,
+    val inviterUser: UserView,
+    val meeting: MeetingView,
     val isAccepted: Boolean?
-) {
-    val id = identity.id
-}
+)
