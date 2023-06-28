@@ -2,14 +2,10 @@ package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository
 import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
-import app.meetacy.backend.database.integration.friends.add.DatabaseAddFriendStorage
-import app.meetacy.backend.database.integration.friends.delete.DatabaseDeleteFriendStorage
-import app.meetacy.backend.database.integration.friends.get.DatabaseGetFriendsStorage
 import app.meetacy.backend.database.integration.invitations.accept.DatabaseAcceptInvitationStorage
 import app.meetacy.backend.database.integration.invitations.cancel.DatabaseCancelInvitationStorage
 import app.meetacy.backend.database.integration.invitations.create.DatabaseCreateInvitationStorage
 import app.meetacy.backend.database.integration.invitations.deny.DatabaseDenyInvitationStorage
-import app.meetacy.backend.database.integration.location.stream.DatabaseFriendsLocationStreamingStorage
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
@@ -29,8 +25,6 @@ import app.meetacy.backend.database.integration.types.*
 import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.endpoint.files.FilesDependencies
-import app.meetacy.backend.endpoint.friends.FriendsDependencies
-import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
@@ -41,16 +35,10 @@ import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.infrastructure.factories.authDependenciesFactory
+import app.meetacy.backend.infrastructure.factories.friendDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.userDependenciesFactory
 import app.meetacy.backend.usecase.files.UploadFileUsecase
-import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
-import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
-import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
 import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
-import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
-import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
-import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
-import app.meetacy.backend.usecase.integration.friends.location.stream.UsecaseStreamLocationRepository
 import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
@@ -72,7 +60,6 @@ import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
-import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
@@ -122,38 +109,7 @@ fun startEndpoints(
         wait = wait,
         authDependencies = authDependenciesFactory(db, authRepository),
         usersDependencies = userDependenciesFactory(db, authRepository, filesRepository, getUsersViewsRepository),
-        friendsDependencies = FriendsDependencies(
-            friendsLocationDependencies = FriendsLocationDependencies(
-                streamLocationRepository = UsecaseStreamLocationRepository(
-                    usecase = FriendsLocationStreamingUsecase(
-                        authRepository = authRepository,
-                        storage = DatabaseFriendsLocationStreamingStorage(db),
-                        usersViewsRepository = getUsersViewsRepository
-                    )
-                )
-            ),
-            addFriendRepository = UsecaseAddFriendRepository(
-                usecase = AddFriendUsecase(
-                    authRepository = authRepository,
-                    getUsersViewsRepository = getUsersViewsRepository,
-                    storage = DatabaseAddFriendStorage(db, addNotificationUsecase)
-                )
-            ),
-            listFriendsRepository = UsecaseListFriendsRepository(
-                usecase = ListFriendsUsecase(
-                    authRepository = authRepository,
-                    getUsersViewsRepository = getUsersViewsRepository,
-                    storage = DatabaseGetFriendsStorage(db)
-                )
-            ),
-            deleteFriendRepository = UsecaseDeleteFriendRepository(
-                usecase = DeleteFriendUsecase(
-                    authRepository = authRepository,
-                    getUsersViewsRepository = getUsersViewsRepository,
-                    storage = DatabaseDeleteFriendStorage(db)
-                )
-            )
-        ),
+        friendsDependencies = friendDependenciesFactory(db, addNotificationUsecase, authRepository, getUsersViewsRepository),
         meetingsDependencies = MeetingsDependencies(
             meetingsHistoryDependencies = MeetingsHistoryDependencies(
                 listMeetingsHistoryRepository = UsecaseListMeetingsHistoryRepository(
