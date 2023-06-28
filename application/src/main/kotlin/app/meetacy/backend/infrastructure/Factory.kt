@@ -2,17 +2,12 @@ package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository
 import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
-import app.meetacy.backend.database.integration.friends.add.DatabaseAddFriendStorage
-import app.meetacy.backend.database.integration.friends.delete.DatabaseDeleteFriendStorage
-import app.meetacy.backend.database.integration.friends.get.DatabaseGetFriendsStorage
 import app.meetacy.backend.database.integration.invitation.accept.DatabaseAcceptInvitationStorage
 import app.meetacy.backend.database.integration.invitation.cancel.DatabaseCancelInvitationStorage
 import app.meetacy.backend.database.integration.invitation.create.DatabaseCreateInvitationStorage
 import app.meetacy.backend.database.integration.invitation.deny.DatabaseDenyInvitationStorage
 import app.meetacy.backend.database.integration.invitation.read.DatabaseReadInvitationStorage
 import app.meetacy.backend.database.integration.invitation.update.DatabaseUpdateInvitationStorage
-import app.meetacy.backend.database.integration.location.stream.DatabaseFriendsLocationStreamingStorage
-import app.meetacy.backend.database.integration.location.stream.DatabaseLocationFlowStorageUnderlying
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
@@ -33,8 +28,6 @@ import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetInvitationsViewsRepository
 import app.meetacy.backend.database.integration.users.get.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.endpoint.files.FilesDependencies
-import app.meetacy.backend.endpoint.friends.FriendsDependencies
-import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
@@ -44,16 +37,10 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.infrastructure.factories.authDependenciesFactory
+import app.meetacy.backend.infrastructure.factories.friendDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.userDependenciesFactory
 import app.meetacy.backend.usecase.files.UploadFileUsecase
-import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
-import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
-import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
 import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
-import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
-import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
-import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
-import app.meetacy.backend.usecase.integration.friends.location.stream.UsecaseStreamLocationRepository
 import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
@@ -78,8 +65,6 @@ import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
 import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
 import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
-import app.meetacy.backend.usecase.location.stream.BaseFriendsLocationStreamingStorage
-import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
@@ -120,41 +105,7 @@ fun startEndpoints(
         wait = wait,
         authDependencies = authDependenciesFactory(db, authRepository),
         usersDependencies = userDependenciesFactory(db, authRepository, filesRepository, getUsersViewsRepository),
-        friendsDependencies = FriendsDependencies(
-            friendsLocationDependencies = FriendsLocationDependencies(
-                streamLocationRepository = UsecaseStreamLocationRepository(
-                    usecase = FriendsLocationStreamingUsecase(
-                        authRepository = authRepository,
-                        storage = BaseFriendsLocationStreamingStorage(
-                            flowStorageUnderlying = DatabaseLocationFlowStorageUnderlying(db),
-                            friendsStorage = DatabaseFriendsLocationStreamingStorage(db)
-                        ),
-                        usersViewsRepository = getUsersViewsRepository
-                    )
-                )
-            ),
-            addFriendRepository = UsecaseAddFriendRepository(
-                usecase = AddFriendUsecase(
-                    authRepository = authRepository,
-                    getUsersViewsRepository = getUsersViewsRepository,
-                    storage = DatabaseAddFriendStorage(db)
-                )
-            ),
-            listFriendsRepository = UsecaseListFriendsRepository(
-                usecase = ListFriendsUsecase(
-                    authRepository = authRepository,
-                    getUsersViewsRepository = getUsersViewsRepository,
-                    storage = DatabaseGetFriendsStorage(db)
-                )
-            ),
-            deleteFriendRepository = UsecaseDeleteFriendRepository(
-                usecase = DeleteFriendUsecase(
-                    authRepository = authRepository,
-                    getUsersViewsRepository = getUsersViewsRepository,
-                    storage = DatabaseDeleteFriendStorage(db)
-                )
-            )
-        ),
+        friendsDependencies = friendDependenciesFactory(db, authRepository, getUsersViewsRepository),
         meetingsDependencies = MeetingsDependencies(
             meetingsHistoryDependencies = MeetingsHistoryDependencies(
                 listMeetingsHistoryRepository = UsecaseListMeetingsHistoryRepository(
