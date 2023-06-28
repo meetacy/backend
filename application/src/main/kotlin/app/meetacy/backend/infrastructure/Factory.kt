@@ -7,17 +7,7 @@ import app.meetacy.backend.database.integration.invitations.cancel.DatabaseCance
 import app.meetacy.backend.database.integration.invitations.create.DatabaseCreateInvitationStorage
 import app.meetacy.backend.database.integration.invitations.deny.DatabaseDenyInvitationStorage
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
-import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
-import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
-import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMeetingStorage
-import app.meetacy.backend.database.integration.meetings.edit.DatabaseEditMeetingStorage
 import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
-import app.meetacy.backend.database.integration.meetings.history.active.DatabaseListActiveMeetingsStorage
-import app.meetacy.backend.database.integration.meetings.history.list.DatabaseListMeetingsHistoryListStorage
-import app.meetacy.backend.database.integration.meetings.history.past.DatabaseListPastMeetingsStorage
-import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
-import app.meetacy.backend.database.integration.meetings.participants.list.DatabaseListMeetingParticipantsStorage
-import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
 import app.meetacy.backend.database.integration.notifications.AddNotificationUsecase
 import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
 import app.meetacy.backend.database.integration.notifications.GetNotificationsUsecase
@@ -26,16 +16,13 @@ import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsec
 import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
-import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
-import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
-import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
-import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.infrastructure.factories.authDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.friendDependenciesFactory
+import app.meetacy.backend.infrastructure.factories.meetingsDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.userDependenciesFactory
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
@@ -43,16 +30,6 @@ import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptI
 import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.deny.UsecaseDenyInvitationRepository
-import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.history.active.UsecaseListActiveMeetingsRepository
-import app.meetacy.backend.usecase.integration.meetings.history.list.UsecaseListMeetingsHistoryRepository
-import app.meetacy.backend.usecase.integration.meetings.history.past.UsecaseListPastMeetingsRepository
-import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
-import app.meetacy.backend.usecase.integration.meetings.participants.list.UsecaseListMeetingParticipantsRepository
-import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseListNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
@@ -60,18 +37,7 @@ import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
-import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
-import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
-import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
-import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
-import app.meetacy.backend.usecase.meetings.history.active.ListMeetingsActiveUsecase
-import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
-import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
-import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
-import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
-import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
-import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import org.jetbrains.exposed.sql.Database
 
 fun startEndpoints(
@@ -110,90 +76,9 @@ fun startEndpoints(
         authDependencies = authDependenciesFactory(db, authRepository),
         usersDependencies = userDependenciesFactory(db, authRepository, filesRepository, getUsersViewsRepository),
         friendsDependencies = friendDependenciesFactory(db, addNotificationUsecase, authRepository, getUsersViewsRepository),
-        meetingsDependencies = MeetingsDependencies(
-            meetingsHistoryDependencies = MeetingsHistoryDependencies(
-                listMeetingsHistoryRepository = UsecaseListMeetingsHistoryRepository(
-                    usecase = ListMeetingsHistoryUsecase(
-                        authRepository = authRepository,
-                        storage = DatabaseListMeetingsHistoryListStorage(db),
-                        getMeetingsViewsRepository = getMeetingsViewsRepository
-                    )
-                ),
-                meetingsActiveRepository = UsecaseListActiveMeetingsRepository(
-                    usecase = ListMeetingsActiveUsecase(
-                        authRepository,
-                        storage = DatabaseListActiveMeetingsStorage(db),
-                        getMeetingsViewsRepository = getMeetingsViewsRepository
-                    )
-                ),
-                meetingsPastRepository = UsecaseListPastMeetingsRepository(
-                    usecase = ListMeetingsPastUsecase(
-                        authRepository,
-                        storage = DatabaseListPastMeetingsStorage(db),
-                        getMeetingsViewsRepository = getMeetingsViewsRepository
-                    )
-                ),
-            ),
-            meetingsMapDependencies = MeetingsMapDependencies(
-                listMeetingsMapRepository = UsecaseListMeetingsMapRepository(
-                    usecase = ListMeetingsMapUsecase(
-                        authRepository = authRepository,
-                        storage = DatabaseListMeetingsMapListStorage(db),
-                        getMeetingsViewsRepository = getMeetingsViewsRepository,
-                        viewMeetingsRepository = viewMeetingsRepository
-                    )
-                )
-            ),
-            meetingParticipantsDependencies = ParticipantsDependencies(
-                listMeetingParticipantsRepository = UsecaseListMeetingParticipantsRepository(
-                    usecase = ListMeetingParticipantsUsecase(
-                        authRepository = authRepository,
-                        checkMeetingRepository = checkMeetingsRepository,
-                        storage = DatabaseListMeetingParticipantsStorage(db),
-                        getUsersViewsRepository = getUsersViewsRepository
-                    )
-                )
-            ),
-            createMeetingRepository = UsecaseCreateMeetingRepository(
-                usecase = CreateMeetingUsecase(
-                    hashGenerator = DefaultHashGenerator,
-                    storage = DatabaseCreateMeetingStorage(db),
-                    authRepository = authRepository,
-                    viewMeetingRepository = DatabaseCreateMeetingViewMeetingRepository(db),
-                    utf8Checker = DefaultUtf8Checker,
-                    filesRepository = filesRepository
-                )
-            ),
-            getMeetingRepository = UsecaseGetMeetingRepository(
-                usecase = GetMeetingUsecase(
-                    authRepository = authRepository,
-                    getMeetingsViewsRepository = getMeetingsViewsRepository
-                )
-            ),
-            participateMeetingRepository = UsecaseParticipateMeetingRepository(
-                usecase = ParticipateMeetingUsecase(
-                    authRepository = authRepository,
-                    storage = DatabaseParticipateMeetingStorage(db),
-                    getMeetingsViewsRepository = getMeetingsViewsRepository
-                )
-            ),
-            deleteMeetingRepository = UsecaseDeleteMeetingRepository(
-                usecase = DeleteMeetingUsecase(
-                    authRepository = authRepository,
-                    getMeetingsViewsRepository = getMeetingsViewsRepository,
-                    storage = DatabaseDeleteMeetingStorage(db)
-                )
-            ),
-            editMeetingRepository = UsecaseEditMeetingRepository(
-                usecase = EditMeetingUsecase(
-                    storage = DatabaseEditMeetingStorage(db),
-                    authRepository = authRepository,
-                    getMeetingsViewsRepository = getMeetingsViewsRepository,
-                    viewMeetingsRepository = viewMeetingsRepository,
-                    filesRepository = filesRepository,
-                    utf8Checker = DefaultUtf8Checker
-                )
-            )
+        meetingsDependencies = meetingsDependenciesFactory(
+            db, authRepository, filesRepository, checkMeetingsRepository,
+            getMeetingsViewsRepository, getUsersViewsRepository, viewMeetingsRepository
         ),
         notificationsDependencies = NotificationsDependencies(
             listNotificationsRepository = UsecaseListNotificationsRepository(
