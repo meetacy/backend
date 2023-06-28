@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure
+package app.meetacy.backend.infrastructure.factories
 
 import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailMailer
