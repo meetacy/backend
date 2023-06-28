@@ -1,7 +1,5 @@
 package app.meetacy.backend.infrastructure
 
-import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository
-import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
 import app.meetacy.backend.database.integration.invitations.accept.DatabaseAcceptInvitationStorage
 import app.meetacy.backend.database.integration.invitations.cancel.DatabaseCancelInvitationStorage
 import app.meetacy.backend.database.integration.invitations.create.DatabaseCreateInvitationStorage
@@ -12,14 +10,11 @@ import app.meetacy.backend.database.integration.notifications.AddNotificationUse
 import app.meetacy.backend.database.integration.types.*
 import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware
-import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.infrastructure.factories.*
-import app.meetacy.backend.usecase.files.UploadFileUsecase
-import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
@@ -76,22 +71,7 @@ fun startEndpoints(
             getMeetingsViewsRepository,
             getUsersViewsRepository
         ),
-        filesDependencies = FilesDependencies(
-            saveFileRepository = UsecaseUploadFileRepository(
-                usecase = UploadFileUsecase(
-                    authRepository = authRepository,
-                    storage = DatabaseUploadFileStorage(db),
-                    hashGenerator = DefaultHashGenerator
-                ),
-                basePath = filesBasePath,
-                filesLimit = filesLimit,
-                deleteFilesOnExit = false
-            ),
-            getFileRepository = DatabaseGetFileRepository(
-                database = db,
-                basePath = filesBasePath
-            )
-        ),
+        filesDependencies = fileDependenciesFactory(db, authRepository, filesBasePath, filesLimit),
         invitationsDependencies = InvitationsDependencies(
             invitationsCreateRepository = UsecaseCreateInvitationRepository(
                 usecase = CreateInvitationUsecase(
