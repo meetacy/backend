@@ -24,7 +24,7 @@ class ReadInvitationUsecase(
 
         val invitations = storage.getInvitations(userId)
         return Result.Success(invitations.map {
-            getInvitationsViewsRepository.getInvitationViewOrNull(userId, it)  ?: return Result.InvitationsNotFound
+            getInvitationsViewsRepository.getInvitationViewOrNull(userId, it) ?: return Result.InvitationsNotFound
         })
     }
 
@@ -36,7 +36,7 @@ class ReadInvitationUsecase(
         val invitations = storage.getInvitations(from.map { it.id }, userId)
 
         return Result.Success(invitations.map {
-            getInvitationsViewsRepository.getInvitationViewOrNull(userId, it)  ?: return Result.InvitationsNotFound
+            getInvitationsViewsRepository.getInvitationViewOrNull(userId, it) ?: return Result.InvitationsNotFound
         })
     }
 

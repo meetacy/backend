@@ -77,3 +77,7 @@ include("usecase:auth")
 findProject(":usecase:auth")?.name = "auth"
 include("usecase:auth:integrations")
 findProject(":usecase:auth:integrations")?.name = "integrations"
+include("usecase:invitations")
+findProject(":usecase:invitations")?.name = "invitations"
+include("usecase:invitations:integrations")
+findProject(":usecase:invitations:integrations")?.name = "integrations"

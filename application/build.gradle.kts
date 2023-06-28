@@ -10,6 +10,7 @@ dependencies {
     implementation(project(Deps.Projects.Endpoints))
     implementation(project(Deps.Projects.UsecaseEndpoints))
     implementation(project(Deps.Projects.UsecaseAuthIntegrations))
+    implementation(project(Deps.Projects.UsecaseInvitationsIntegrations))
 
     implementation(project(Deps.Projects.DatabaseInit))
     implementation(project(Deps.Projects.DatabaseInvitationsIntegration))
