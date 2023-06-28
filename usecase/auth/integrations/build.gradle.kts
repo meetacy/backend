@@ -1,0 +1,8 @@
+plugins {
+    id(Deps.Plugins.Configuration.Kotlin.Jvm)
+}
+
+dependencies {
+    api(project(Deps.Projects.UsecaseAuth))
+    api(project(Deps.Projects.Endpoints))
+}

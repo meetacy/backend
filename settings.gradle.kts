@@ -73,3 +73,7 @@ include("database:location")
 findProject(":database:location")?.name = "location"
 include("database:location:integrations")
 findProject(":database:location:integrations")?.name = "integrations"
+include("usecase:auth")
+findProject(":usecase:auth")?.name = "auth"
+include("usecase:auth:integrations")
+findProject(":usecase:auth:integrations")?.name = "integrations"
