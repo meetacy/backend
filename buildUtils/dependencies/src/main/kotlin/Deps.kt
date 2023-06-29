@@ -254,6 +254,8 @@ object Deps {
         const val UsecaseEndpoints = ":usecase:endpoints-integration"
         const val UsecaseEmail = ":usecase:email"
         const val UsecaseEmailIntegrations = ":usecase:email:integrations"
+        const val UsecaseFiles = ":usecase:files"
+        const val UsecaseFilesIntegrations = ":usecase:files:integrations"
         const val Types = ":types"
         const val TypesSerialization = ":types:serialization-integration"
         const val HashGenerator = ":libs:hash-generator"
