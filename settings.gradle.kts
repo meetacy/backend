@@ -33,8 +33,6 @@ include("database:users")
 findProject(":database:users")?.name = "users"
 include("database:types")
 findProject(":database:types")?.name = "types"
-include("database:init")
-findProject(":database:init")?.name = "init"
 include("database:migrations")
 findProject(":database:migrations")?.name = "migrations"
 include("database:types:integrations")

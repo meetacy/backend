@@ -12,17 +12,8 @@ dependencies {
     implementation(project(Deps.Projects.UsecaseAuthIntegrations))
     implementation(project(Deps.Projects.UsecaseInvitationsIntegrations))
 
-    implementation(project(Deps.Projects.DatabaseInit))
-    implementation(project(Deps.Projects.DatabaseInvitationsIntegration))
-    implementation(project(Deps.Projects.DatabaseTypesIntegrations))
-    implementation(project(Deps.Projects.DatabaseUsersIntegrations))
-    implementation(project(Deps.Projects.DatabaseMeetingsIntegrations))
-    implementation(project(Deps.Projects.DatabaseFilesIntegrations))
-    implementation(project(Deps.Projects.DatabaseFriendsIntegrations))
-    implementation(project(Deps.Projects.DatabaseAuthIntegrations))
-    implementation(project(Deps.Projects.DatabaseEmailIntegrations))
-    implementation(project(Deps.Projects.DatabaseNotificationsIntegrations))
-    implementation(project(Deps.Projects.DatabaseLocationIntegrations))
+    implementation(project(Deps.Projects.Database))
+
     implementation(project(Deps.Projects.HashGeneratorUsecase))
     implementation(project(Deps.Projects.Utf8CheckerUsecase))
 
