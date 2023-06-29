@@ -2,7 +2,6 @@ package app.meetacy.backend.usecase.invitations.create
 
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
@@ -10,11 +9,11 @@ import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.usecase.types.*
 
-class CreateInvitationUsecase (
+class CreateInvitationUsecase(
     private val authRepository: AuthRepository,
     private val storage: Storage,
     private val hashGenerator: HashGenerator,
-    private val getInvitationsViewsRepository: GetInvitationsViewsRepository
+    private val invitationsRepository: GetInvitationsViewsRepository
 ) {
     sealed interface Result {
         data class Success(val invitation: InvitationView): Result
@@ -23,38 +22,40 @@ class CreateInvitationUsecase (
         object UserNotFound: Result
         object MeetingNotFound: Result
         object UserAlreadyInvited: Result
-        object InvalidExpiryDate : Result
     }
 
     suspend fun createInvitation(
         token: AccessIdentity,
-        expiryDate: DateTime,
         meetingIdentity: MeetingIdentity,
-        invitedUserIdentity: UserIdentity
+        userIdentity: UserIdentity
     ): Result {
-        val invitorId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
+        val inviterId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
+
         storage.getMeeting(meetingIdentity.id)
             ?.apply { require(identity == meetingIdentity) } ?: return Result.MeetingNotFound
-        storage.getUser(invitedUserIdentity.id)
-            ?.apply { require(identity == invitedUserIdentity) } ?: return Result.UserNotFound
+        storage.getUser(userIdentity.id)
+            ?.apply { require(identity == userIdentity) } ?: return Result.UserNotFound
 
         when {
-            !storage.isSubscriberOf(invitedUserIdentity.id, invitorId) -> return Result.NoPermissions
-            (expiryDate < DateTime.now()) -> return Result.InvalidExpiryDate
-            storage.getInvitationsFrom(invitorId)
-                .any { it.invitedUserId == invitedUserIdentity.id && it.meeting == meetingIdentity.id }
+            !storage.isSubscriberOf(userIdentity.id, inviterId) -> return Result.NoPermissions
+            storage.getInvitationsFrom(inviterId)
+                .any { it.invitedUserId == userIdentity.id && it.meetingId == meetingIdentity.id }
             -> return Result.UserAlreadyInvited
 
             else -> {
                 val id = storage.createInvitation(
                     AccessHash(hashGenerator.generate()),
-                    invitedUserIdentity.id,
-                    invitorId,
-                    expiryDate,
+                    userIdentity.id,
+                    inviterId,
                     meetingIdentity.id
                 )
+                storage.addNotification(
+                    userId = userIdentity.id,
+                    inviterId = inviterId,
+                    meetingId = meetingIdentity.id
+                )
 
-                return Result.Success(invitation = getInvitationsViewsRepository.getInvitationView(invitorId, id))
+                return Result.Success(invitation = invitationsRepository.getInvitationView(inviterId, id))
             }
         }
     }
@@ -67,9 +68,13 @@ class CreateInvitationUsecase (
         suspend fun createInvitation(
             accessHash: AccessHash,
             invitedUserId: UserId,
-            invitorUserId: UserId,
-            expiryDate: DateTime,
+            inviterUserId: UserId,
             meetingId: MeetingId
         ): InvitationId
+        suspend fun addNotification(
+            userId: UserId,
+            inviterId: UserId,
+            meetingId: MeetingId
+        )
     }
 }

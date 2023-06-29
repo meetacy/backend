@@ -12,12 +12,11 @@ import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object ConfirmationTable : Table() {
     val OWNER_ID = long("OWNER_ID")
-    val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT)
-    val CONFIRM_HASH = varchar("CONFIRM_HASH", length = HASH_LENGTH)
+    val EMAIL = varchar("EMAIL", EMAIL_MAX_LIMIT)
+    val CONFIRM_HASH = varchar("CONFIRM_HASH", HASH_LENGTH)
 }
 
 class ConfirmationStorage(private val db: Database) {

@@ -1,23 +1,45 @@
 package app.meetacy.backend.usecase.types
 
-import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.DateTime
+import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.notification.NotificationId
+import app.meetacy.backend.types.user.UserId
 
-sealed interface Notification {
+sealed interface FullNotification {
+    val id: NotificationId
+    val date: DateTime
+
+    data class Subscription(
+        override val id: NotificationId,
+        override val date: DateTime,
+        val subscriberId: UserId
+    ) : FullNotification
+
+    data class Invitation(
+        override val id: NotificationId,
+        override val date: DateTime,
+        val meetingId: MeetingId,
+        val inviterId: UserId
+    ) : FullNotification
+}
+
+sealed interface NotificationView {
     val id: NotificationId
     val isNew: Boolean
-    class Subscription(
-        override val id: NotificationId,
-        override val isNew: Boolean,
-        val subscriber: UserView,
-        val date: Date
-    ) : Notification
+    val date: DateTime
 
-    class Invitation(
+    data class Subscription(
         override val id: NotificationId,
         override val isNew: Boolean,
+        override val date: DateTime,
+        val subscriber: UserView
+    ) : NotificationView
+
+    data class Invitation(
+        override val id: NotificationId,
+        override val isNew: Boolean,
+        override val date: DateTime,
         val meeting: MeetingView,
         val inviter: UserView,
-        val date: Date
-    ) : Notification
+    ) : NotificationView
 }

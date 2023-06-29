@@ -25,10 +25,12 @@ class AddFriendUsecase(
 
         if (friend.identity.accessHash.string != friendIdentity.accessHash.string) return Result.FriendNotFound
 
+        if (storage.isSubscribed(userId, friendIdentity.id)) {
+            return Result.FriendAlreadyAdded
+        }
 
-
-        if (!storage.isSubscribed(userId, friendIdentity.id)) storage.addFriend(userId, friendIdentity.id)
-            else return Result.FriendAlreadyAdded
+        storage.addFriend(userId, friendIdentity.id)
+        storage.addNotification(friendIdentity.id, userId)
 
         return Result.Success
     }
@@ -42,6 +44,10 @@ class AddFriendUsecase(
         suspend fun addFriend(
             userId: UserId,
             friendId: UserId
+        )
+        suspend fun addNotification(
+            userId: UserId,
+            subscriberId: UserId
         )
         suspend fun isSubscribed(userId: UserId, friendId: UserId): Boolean
     }

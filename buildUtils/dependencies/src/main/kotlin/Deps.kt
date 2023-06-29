@@ -33,7 +33,7 @@ object Deps {
     private const val shadowVer = "7.0.0"
 
     private const val wdaterVersion = "0.0.2"
-    private const val meetacySdkVersion = "0.0.43-alpha02"
+    private const val meetacySdkVersion = "0.0.50-builde320a3f"
     private const val kdsVer = "1.1.0"
     private const val scriptKtVer = "0.0.2"
 

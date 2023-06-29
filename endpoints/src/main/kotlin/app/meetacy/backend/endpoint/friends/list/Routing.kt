@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.paging.PagingResult
-import app.meetacy.backend.endpoint.types.User
+import app.meetacy.backend.endpoint.types.user.User
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.amount.AmountSerializable
 import app.meetacy.backend.types.serialization.paging.PagingIdSerializable

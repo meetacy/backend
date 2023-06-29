@@ -41,7 +41,7 @@ object MeetingsTable : Table() {
     val DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
     val LATITUDE = double("LATITUDE")
     val LONGITUDE = double("LONGITUDE")
-    val TITLE = varchar("TITLE", length = TITLE_MAX_LIMIT).nullable()
+    val TITLE = varchar("TITLE", length = MEETING_TITLE_MAX_LIMIT).nullable()
     val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT).nullable()
     val AVATAR_ID = reference("AVATAR_ID", FilesTable.FILE_ID).nullable()
     val VISIBILITY = enumeration("VISIBILITY", klass = DatabaseMeeting.Visibility::class)
@@ -132,7 +132,6 @@ class MeetingsStorage(private val db: Database) {
             .toDatabaseMeeting()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun getPublicMeetingsFlow(): Flow<DatabaseMeeting> = channelFlow {
         newSuspendedTransaction(Dispatchers.IO, db) {
             MeetingsTable.select { VISIBILITY eq DatabaseMeeting.Visibility.Public }

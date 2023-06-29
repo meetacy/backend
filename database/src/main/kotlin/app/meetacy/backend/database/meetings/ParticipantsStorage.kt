@@ -2,19 +2,21 @@
 
 package app.meetacy.backend.database.meetings
 
+import app.meetacy.backend.database.exposed.query.wrapTransactionAsFlow
 import app.meetacy.backend.database.meetings.ParticipantsTable.ID
 import app.meetacy.backend.database.meetings.ParticipantsTable.MEETING_ID
 import app.meetacy.backend.database.meetings.ParticipantsTable.USER_ID
 import app.meetacy.backend.database.users.UsersTable
-import app.meetacy.backend.database.transaction.wrapTransactionAsFlow
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.paging.PagingId
-import app.meetacy.backend.types.paging.PagingValue
 import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.paging.PagingValue
+import app.meetacy.backend.types.paging.pagingIdLong
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
@@ -57,11 +59,9 @@ class ParticipantsStorage(private val db: Database) {
            (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE))
        }.orderBy(ID, SortOrder.DESC).take(amount.int)
 
-        val nextPagingId = if (results.size == amount.int) PagingId(results.last()[ID]) else null
-
         PagingResult(
             data = results.map { result -> MeetingId(result[MEETING_ID]) },
-            nextPagingId = nextPagingId
+            nextPagingId = results.pagingIdLong(amount) { it[ID] }
         )
     }
 

@@ -10,6 +10,7 @@ import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.meetings.ParticipantsTable
 import app.meetacy.backend.database.notifications.LastReadNotificationsTable
 import app.meetacy.backend.database.notifications.NotificationsTable
+import app.meetacy.backend.database.updates.UpdatesTable
 import app.meetacy.backend.database.users.UsersTable
 import org.jetbrains.exposed.sql.Table
 
@@ -19,5 +20,6 @@ val tables: List<Table> = listOf(
     InvitationsTable, UsersLocationsTable,
     MeetingsTable, ParticipantsTable,
     LastReadNotificationsTable, NotificationsTable,
-    FriendsTable
+    InvitationsTable, FriendsTable,
+    UpdatesTable
 )
