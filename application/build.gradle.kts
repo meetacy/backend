@@ -14,6 +14,7 @@ dependencies {
     implementation(project(Deps.Projects.UsecaseFriendsIntegrations))
     implementation(project(Deps.Projects.UsecaseEmailIntegrations))
     implementation(project(Deps.Projects.UsecaseFilesIntegrations))
+    implementation(project(Deps.Projects.UsecaseNotificationIntegrations))
 
     implementation(project(Deps.Projects.Database))
 

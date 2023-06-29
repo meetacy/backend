@@ -93,3 +93,9 @@ include("usecase:files")
 findProject(":usecase:files")?.name = "files"
 include("usecase:files:integrations")
 findProject(":usecase:files:integrations")?.name = "integrations"
+include("usecase:motification")
+findProject(":usecase:motification")?.name = "motification"
+include("usecase:notification")
+findProject(":usecase:notification")?.name = "notification"
+include("usecase:notification:integrations")
+findProject(":usecase:notification:integrations")?.name = "integrations"

@@ -242,6 +242,9 @@ object Deps {
         }
     }
     object Projects {
+        const val Endpoints = ":endpoints"
+
+        const val Usecase = ":usecase"
         const val UsecaseAuth = ":usecase:auth"
         const val UsecaseAuthIntegrations = ":usecase:auth:integrations"
         const val UsecaseFriends = ":usecase:friends"
@@ -249,17 +252,19 @@ object Deps {
         const val UsecaseInvitations = ":usecase:invitations"
         const val UsecaseInvitationsIntegrations = ":usecase:invitations:integrations"
         const val UsecaseLocation = ":usecase:location"
-        const val Endpoints = ":endpoints"
-        const val Usecase = ":usecase"
+        const val UsecaseNotification = ":usecase:notification"
+        const val UsecaseNotificationIntegrations = ":usecase:notification:integrations"
         const val UsecaseEndpoints = ":usecase:endpoints-integration"
         const val UsecaseEmail = ":usecase:email"
         const val UsecaseEmailIntegrations = ":usecase:email:integrations"
         const val UsecaseFiles = ":usecase:files"
         const val UsecaseFilesIntegrations = ":usecase:files:integrations"
+
         const val Types = ":types"
         const val TypesSerialization = ":types:serialization-integration"
         const val HashGenerator = ":libs:hash-generator"
         const val HashGeneratorUsecase = ":libs:hash-generator:usecase-integration"
+
         const val Database = ":database"
         const val DatabaseMeetings = ":database:meetings"
         const val DatabaseMeetingsIntegrations = ":database:meetings:integrations"
@@ -285,6 +290,7 @@ object Deps {
         const val DatabaseTransactions = ":database:transactions"
         const val DatabaseUsecase = ":database:usecase-integration"
         const val DatabaseEndpoints = ":database:endpoints-integration"
+
         const val Utf8Checker = ":libs:utf8-checker"
         const val Utf8CheckerUsecase = ":libs:utf8-checker:usecase-integration"
         const val StdlibExtensions = ":libs:stdlib-extensions"
