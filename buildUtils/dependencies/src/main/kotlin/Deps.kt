@@ -243,8 +243,8 @@ object Deps {
     }
     object Projects {
         const val Endpoints = ":endpoints"
-
         const val Usecase = ":usecase"
+
         const val UsecaseAuth = ":usecase:auth"
         const val UsecaseAuthIntegrations = ":usecase:auth:integrations"
         const val UsecaseFriends = ":usecase:friends"
@@ -252,6 +252,8 @@ object Deps {
         const val UsecaseInvitations = ":usecase:invitations"
         const val UsecaseInvitationsIntegrations = ":usecase:invitations:integrations"
         const val UsecaseLocation = ":usecase:location"
+        const val UsecaseMeeting = ":usecase:meeting"
+        const val UsecaseMeetingIntegrations = ":usecase:meeting:integrations"
         const val UsecaseNotification = ":usecase:notification"
         const val UsecaseNotificationIntegrations = ":usecase:notification:integrations"
         const val UsecaseEndpoints = ":usecase:endpoints-integration"

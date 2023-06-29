@@ -99,3 +99,7 @@ include("usecase:notification")
 findProject(":usecase:notification")?.name = "notification"
 include("usecase:notification:integrations")
 findProject(":usecase:notification:integrations")?.name = "integrations"
+include("usecase:meeting")
+findProject(":usecase:meeting")?.name = "meeting"
+include("usecase:meeting:integrations")
+findProject(":usecase:meeting:integrations")?.name = "integrations"
