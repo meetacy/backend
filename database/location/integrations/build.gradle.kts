@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Usecase))
+    api(project(Deps.Projects.UsecaseLocation))
     api(project(Deps.Projects.DatabaseLocation))
     api(project(Deps.Projects.DatabaseFriends))
 }

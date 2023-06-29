@@ -87,3 +87,5 @@ include("usecase:email")
 findProject(":usecase:email")?.name = "email"
 include("usecase:email:integrations")
 findProject(":usecase:email:integrations")?.name = "integrations"
+include("usecase:location")
+findProject(":usecase:location")?.name = "location"

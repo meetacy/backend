@@ -248,6 +248,7 @@ object Deps {
         const val UsecaseFriendsIntegrations = ":usecase:friends:integrations"
         const val UsecaseInvitations = ":usecase:invitations"
         const val UsecaseInvitationsIntegrations = ":usecase:invitations:integrations"
+        const val UsecaseLocation = ":usecase:location"
         const val Endpoints = ":endpoints"
         const val Usecase = ":usecase"
         const val UsecaseEndpoints = ":usecase:endpoints-integration"
