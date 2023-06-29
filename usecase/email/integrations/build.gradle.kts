@@ -4,5 +4,6 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.UsecaseEmail))
-    api(project(Deps.Projects.DatabaseEmail))
+    api(project(Deps.Projects.UsecaseEndpoints))
+    api(project(Deps.Projects.Endpoints))
 }
