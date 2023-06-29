@@ -1,8 +1,8 @@
 package app.meetacy.backend.usecase.integration.friends.get
 
+import app.meetacy.backend.endpoint.friends.list.ListFriendsBody
 import app.meetacy.backend.endpoint.friends.list.ListFriendsRepository
 import app.meetacy.backend.endpoint.friends.list.ListFriendsResult
-import app.meetacy.backend.endpoint.friends.list.ListFriendsBody
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 

@@ -79,3 +79,7 @@ include("usecase:invitations")
 findProject(":usecase:invitations")?.name = "invitations"
 include("usecase:invitations:integrations")
 findProject(":usecase:invitations:integrations")?.name = "integrations"
+include("usecase:friends")
+findProject(":usecase:friends")?.name = "friends"
+include("usecase:friends:integrations")
+findProject(":usecase:friends:integrations")?.name = "integrations"

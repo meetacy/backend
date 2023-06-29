@@ -244,6 +244,8 @@ object Deps {
     object Projects {
         const val UsecaseAuth = ":usecase:auth"
         const val UsecaseAuthIntegrations = ":usecase:auth:integrations"
+        const val UsecaseFriends = ":usecase:friends"
+        const val UsecaseFriendsIntegrations = ":usecase:friends:integrations"
         const val UsecaseInvitations = ":usecase:invitations"
         const val UsecaseInvitationsIntegrations = ":usecase:invitations:integrations"
         const val Endpoints = ":endpoints"

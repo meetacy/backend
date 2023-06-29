@@ -10,7 +10,10 @@ import app.meetacy.backend.usecase.types.GetUsersViewsRepository
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 import app.meetacy.backend.usecase.types.getUserView
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class FriendsLocationStreamingUsecase(

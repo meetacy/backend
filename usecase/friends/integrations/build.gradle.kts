@@ -4,5 +4,6 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.UsecaseFriends))
-    api(project(Deps.Projects.DatabaseFriends))
+    api(project(Deps.Projects.UsecaseEndpoints))
+    api(project(Deps.Projects.Endpoints))
 }
