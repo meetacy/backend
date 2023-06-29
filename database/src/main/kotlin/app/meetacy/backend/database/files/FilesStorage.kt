@@ -26,6 +26,8 @@ object FilesTable : Table() {
     val ACCESS_HASH = varchar("ACCESS_HASH", HASH_LENGTH)
     val FILE_SIZE = long("FILE_SIZE").nullable()
     val ORIGINAL_FILE_NAME = varchar("ORIGINAL_FILE_NAME", FILE_NAME_MAX_LIMIT)
+
+    override val primaryKey: PrimaryKey = PrimaryKey(FILE_ID)
 }
 
 class FilesStorage(private val db: Database) {

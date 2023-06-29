@@ -11,14 +11,12 @@ import kotlinx.coroutines.flow.Flow
 import org.jetbrains.exposed.sql.Database
 
 fun StreamUpdatesUsecase(
-    db: Database,
     auth: AuthRepository,
-    notificationsRepository: GetNotificationsViewsRepository
+    notificationsRepository: GetNotificationsViewsRepository,
+    updatesMiddleware: UpdatesMiddleware
 ): StreamUpdatesUsecase = StreamUpdatesUsecase(
     auth = auth,
-    storage = DatabaseStreamUpdatesUsecaseStorage(
-        middleware = UpdatesMiddleware(db)
-    ),
+    storage = DatabaseStreamUpdatesUsecaseStorage(updatesMiddleware),
     notificationsRepository = notificationsRepository
 )
 

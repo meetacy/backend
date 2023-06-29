@@ -1,38 +1,45 @@
 package app.meetacy.backend.endpoint.updates.stream
 
+import app.meetacy.backend.endpoint.ktor.EmptySuccess
+import app.meetacy.backend.endpoint.ktor.Failure
+import app.meetacy.backend.endpoint.rsocket.failRSocket
 import app.meetacy.backend.endpoint.types.updates.Update
+import app.meetacy.backend.endpoint.updates.stream.StreamUpdatesRepository.Result
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.update.UpdateId
+import app.meetacy.backend.types.serialization.update.UpdateIdSerializable
 import io.ktor.server.routing.*
+import io.rsocket.kotlin.RSocketError
 import io.rsocket.kotlin.RSocketRequestHandler
 import io.rsocket.kotlin.ktor.server.rSocket
 import io.rsocket.kotlin.payload.Payload
 import io.rsocket.kotlin.payload.buildPayload
 import io.rsocket.kotlin.payload.data
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.produce
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+@Serializable
 data class InitStreamUpdates(
     val token: AccessIdentitySerializable,
-    val fromId: UpdateId?,
+    val fromId: UpdateIdSerializable?,
     val apiVersion: Int
 )
 
 interface StreamUpdatesRepository {
-    suspend fun stream(
+    suspend fun flow(
         token: AccessIdentitySerializable,
-        fromId: UpdateId?,
-        channel: SendChannel<Update>
-    )
+        fromId: UpdateIdSerializable?
+    ): Result
+
+    sealed interface Result {
+        object TokenInvalid : Result
+        class Ready(val flow: Flow<Update>) : Result
+    }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun Route.streamUpdates(
     repository: StreamUpdatesRepository
 ) = rSocket("/stream") {
@@ -40,14 +47,14 @@ fun Route.streamUpdates(
         requestStream { payload ->
             val initial = payload.decodeToInit()
 
-            produce {
-                repository.stream(
-                    token = initial.token,
-                    fromId = initial.fromId,
-                    channel = channel
-                )
-            }.consumeAsFlow()
-                .map { update -> update.encodeToPayload() }
+            val result = with(initial) {
+                repository.flow(token, fromId)
+            }
+
+            when (result) {
+                is Result.Ready -> result.flow.map { update -> update.encodeToPayload() }
+                is Result.TokenInvalid -> failRSocket(Failure.InvalidToken)
+            }
         }
     }
 }

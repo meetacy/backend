@@ -8,7 +8,6 @@ import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
@@ -23,14 +22,13 @@ class FriendsLocationStreamingUsecase(
 ) {
 
     @OptIn(FlowPreview::class)
-    suspend fun stream(
+    suspend fun flow(
         accessIdentity: AccessIdentity,
-        selfLocation: Flow<Location>,
-        channel: SendChannel<UserLocationSnapshot>
+        selfLocation: Flow<Location>
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
-        coroutineScope {
+        val flow = channelFlow {
             selfLocation.onEach { location ->
                 storage.setLocation(userId, location)
             }.launchIn(scope = this)
@@ -53,12 +51,12 @@ class FriendsLocationStreamingUsecase(
             }
         }
 
-        return Result.LocationStreamed
+        return Result.Ready(flow)
     }
 
     sealed interface Result {
         object TokenInvalid : Result
-        object LocationStreamed : Result
+        class Ready(val flow: Flow<UserLocationSnapshot>) : Result
     }
 
     interface Storage {

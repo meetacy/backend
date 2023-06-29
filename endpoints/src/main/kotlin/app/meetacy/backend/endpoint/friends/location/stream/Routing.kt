@@ -1,5 +1,8 @@
 package app.meetacy.backend.endpoint.friends.location.stream
 
+import app.meetacy.backend.endpoint.friends.location.stream.StreamLocationRepository.Result
+import app.meetacy.backend.endpoint.ktor.Failure
+import app.meetacy.backend.endpoint.rsocket.failRSocket
 import app.meetacy.backend.endpoint.types.user.UserLocationSnapshot
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.location.Location
@@ -11,9 +14,8 @@ import io.rsocket.kotlin.ktor.server.rSocket
 import io.rsocket.kotlin.payload.Payload
 import io.rsocket.kotlin.payload.buildPayload
 import io.rsocket.kotlin.payload.data
-import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -32,11 +34,15 @@ data class ProvideSelfLocation(
 )
 
 interface StreamLocationRepository {
-    suspend fun stream(
+    suspend fun flow(
         accessIdentity: AccessIdentity,
-        selfLocation: Flow<Location>,
-        channel: SendChannel<UserLocationSnapshot>
-    )
+        selfLocation: Flow<Location>
+    ): Result
+
+    sealed interface Result {
+        object TokenInvalid : Result
+        class Ready(val flow: Flow<UserLocationSnapshot>) : Result
+    }
 }
 
 fun Route.streamFriendsLocation(
@@ -50,14 +56,14 @@ fun Route.streamFriendsLocation(
                 payload.decodeToSelfLocation().location.type()
             }
 
-            channelFlow {
-                repository.stream(
-                    accessIdentity = initial.token.type(),
-                    selfLocation = selfLocation,
-                    channel = channel
-                )
-            }.map { user ->
-                user.encodeToPayload()
+            val result = repository.flow(
+                accessIdentity = initial.token.type(),
+                selfLocation = selfLocation
+            )
+
+            when (result) {
+                is Result.Ready -> result.flow.map { user -> user.encodeToPayload() }
+                is Result.TokenInvalid -> failRSocket(Failure.InvalidToken)
             }
         }
     }

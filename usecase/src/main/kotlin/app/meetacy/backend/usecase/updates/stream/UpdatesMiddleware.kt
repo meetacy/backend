@@ -4,6 +4,7 @@ import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.FullUpdate
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
 
 class UpdatesMiddleware(private val storage: Storage) {

@@ -1,17 +1,15 @@
 package app.meetacy.backend.usecase.integration.updates.stream
 
-import app.meetacy.backend.endpoint.types.updates.Update
 import app.meetacy.backend.endpoint.updates.stream.StreamUpdatesRepository
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.update.UpdateId
+import app.meetacy.backend.types.serialization.update.UpdateIdSerializable
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository
+import app.meetacy.backend.usecase.types.UpdateView
 import app.meetacy.backend.usecase.updates.stream.StreamUpdatesUsecase
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.SendChannel
-import kotlinx.coroutines.channels.produce
-import kotlinx.coroutines.coroutineScope
+import app.meetacy.backend.usecase.updates.stream.StreamUpdatesUsecase.Result
+import kotlinx.coroutines.flow.map
 
 fun StreamUpdatesRepository(
     auth: AuthRepository,
@@ -24,19 +22,18 @@ fun StreamUpdatesRepository(
 class UsecaseStreamUpdatesRepository(
     private val usecase: StreamUpdatesUsecase
 ) : StreamUpdatesRepository {
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun stream(
+
+    override suspend fun flow(
         token: AccessIdentitySerializable,
-        fromId: UpdateId?,
-        channel: SendChannel<Update>
-    ) {
-        coroutineScope {
-            val usecaseChannel = produce {
-                usecase.stream(token.type(), fromId, this.channel)
-            }
-            for (element in usecaseChannel) {
-                channel.send(element.mapToEndpoint())
-            }
+        fromId: UpdateIdSerializable?
+    ): StreamUpdatesRepository.Result {
+        return when (
+            val result = usecase.flow(token.type(), fromId?.type())
+        ) {
+            is Result.Ready -> StreamUpdatesRepository.Result.Ready(
+                flow = result.flow.map(UpdateView::mapToEndpoint)
+            )
+            is Result.TokenInvalid -> StreamUpdatesRepository.Result.TokenInvalid
         }
     }
 }

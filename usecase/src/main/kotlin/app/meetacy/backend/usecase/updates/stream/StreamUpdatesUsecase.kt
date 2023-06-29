@@ -1,32 +1,29 @@
 package app.meetacy.backend.usecase.updates.stream
 
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
-import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 
 class StreamUpdatesUsecase(
     private val auth: AuthRepository,
     private val storage: Storage,
     private val notificationsRepository: GetNotificationsViewsRepository
 ) {
-    suspend fun stream(
+    suspend fun flow(
         accessIdentity: AccessIdentity,
-        fromId: UpdateId?,
-        channel: SendChannel<UpdateView>
+        fromId: UpdateId?
     ): Result {
         val userId = auth.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
-        storage
+        val flow = storage
             .updatesFlow(userId, fromId)
             .map { update -> update.mapToView(userId) }
-            .collect(channel::send)
 
-        return Result.LocationStreamed
+        return Result.Ready(flow)
     }
 
     private suspend fun FullUpdate.mapToView(viewerId: UserId): UpdateView = when (this) {
@@ -40,7 +37,7 @@ class StreamUpdatesUsecase(
 
     sealed interface Result {
         object TokenInvalid : Result
-        object LocationStreamed : Result
+        class Ready(val flow: Flow<UpdateView>) : Result
     }
 
     interface Storage {

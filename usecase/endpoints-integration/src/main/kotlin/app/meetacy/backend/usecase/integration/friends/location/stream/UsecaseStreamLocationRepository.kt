@@ -6,35 +6,32 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
+import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
-import app.meetacy.backend.usecase.types.UserLocationSnapshot as UsecaseUserLocationSnapshot
+import kotlinx.coroutines.flow.map
 
 class UsecaseStreamLocationRepository(
     private val usecase: FriendsLocationStreamingUsecase
 ) : StreamLocationRepository {
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun stream(
-        accessIdentity: AccessIdentity,
-        selfLocation: Flow<Location>,
-        channel: SendChannel<UserLocationSnapshot>
-    ) = coroutineScope {
-        val usecaseChannel = produce {
-            usecase.stream(
-                accessIdentity,
-                selfLocation,
-                channel = this.channel
-            )
-        }
 
-        for (element in usecaseChannel) {
-            channel.send(element.mapToEndpoint())
+    override suspend fun flow(
+        accessIdentity: AccessIdentity,
+        selfLocation: Flow<Location>
+    ): StreamLocationRepository.Result {
+        val result = usecase.flow(
+            accessIdentity,
+            selfLocation
+        )
+
+        return when (result) {
+            is Result.Ready -> StreamLocationRepository.Result.Ready(
+                flow = result.flow.map { user -> user.mapToEndpoint() }
+            )
+            is Result.TokenInvalid -> StreamLocationRepository.Result.TokenInvalid
         }
     }
 }

@@ -32,6 +32,7 @@ import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
+import app.meetacy.backend.usecase.invitations.add.AddNotificationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
@@ -60,10 +61,7 @@ import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
 import app.meetacy.backend.usecase.users.get.ViewUserUsecase
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import java.io.File
 
 class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, AuthRepository,
@@ -81,7 +79,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ListMeetingsActiveUsecase.Storage, ListMeetingsPastUsecase.Storage, ViewNotificationsRepository,
     ViewNotificationsUsecase.Storage, StreamUpdatesUsecase.Storage, GetNotificationsViewsRepository,
     GetNotificationsViewsUsecase.Storage, UpdatesMiddleware.Storage, ViewInvitationsRepository,
-    GetInvitationsViewsUsecase.InvitationsProvider {
+    GetInvitationsViewsUsecase.InvitationsProvider, AddNotificationUsecase.Storage {
 
     private val users = mutableListOf<User>()
 
@@ -199,14 +197,39 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         }
     }
 
-    override suspend fun addNotification(userId: UserId, friendId: UserId) {
+    override suspend fun addInvitation(
+        userId: UserId,
+        inviterId: UserId,
+        meetingId: MeetingId,
+        date: DateTime
+    ): NotificationId {
+        val id = NotificationId(notifications.size.toLong())
         notifications.add(
-            userId to FullNotification.Subscription(
-                id = NotificationId(notifications.size.toLong()),
-                date = DateTime.now(),
-                subscriberId = friendId
-            )
+            userId to FullNotification.Invitation(id, date, meetingId, inviterId)
         )
+        return id
+    }
+
+    override suspend fun addSubscription(
+        userId: UserId,
+        subscriberId: UserId,
+        date: DateTime
+    ): NotificationId {
+        val id = NotificationId(notifications.size.toLong())
+        notifications.add(
+            userId to FullNotification.Subscription(id, date, subscriberId)
+        )
+        return id
+    }
+
+    override suspend fun addUpdate(userId: UserId, notificationId: NotificationId) {
+        updatesMiddleware.addNotificationUpdate(userId, notificationId)
+    }
+
+    private val addNotificationUsecase = AddNotificationUsecase(storage = this)
+
+    override suspend fun addNotification(userId: UserId, subscriberId: UserId) {
+        addNotificationUsecase.addSubscription(userId, subscriberId, date = DateTime.now())
     }
 
     override suspend fun deleteFriend(userId: UserId, friendId: UserId) {

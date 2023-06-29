@@ -8,6 +8,6 @@ class UpdatesDependencies(
     val streamUpdatesRepository: StreamUpdatesRepository
 )
 
-fun Route.updates(dependencies: UpdatesDependencies) {
+fun Route.updates(dependencies: UpdatesDependencies) = route("/updates") {
     streamUpdates(dependencies.streamUpdatesRepository)
 }

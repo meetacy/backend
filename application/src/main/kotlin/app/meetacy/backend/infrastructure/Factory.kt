@@ -25,11 +25,13 @@ import app.meetacy.backend.database.integration.meetings.history.past.DatabaseLi
 import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
 import app.meetacy.backend.database.integration.meetings.participants.list.DatabaseListMeetingParticipantsStorage
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
+import app.meetacy.backend.database.integration.notifications.AddNotificationUsecase
 import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
 import app.meetacy.backend.database.integration.notifications.GetNotificationsUsecase
 import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateTokenStorage
 import app.meetacy.backend.database.integration.types.*
 import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
+import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.database.integration.users.edit.DatabaseEditUserStorage
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
@@ -128,6 +130,9 @@ fun startEndpoints(
         getUsersViewsRepository = getUsersViewsRepository
     )
 
+    val updatesMiddleware = UpdatesMiddleware(db)
+    val addNotificationUsecase = AddNotificationUsecase(db, updatesMiddleware)
+
     startEndpoints(
         port = port,
         wait = wait,
@@ -185,7 +190,7 @@ fun startEndpoints(
                 usecase = AddFriendUsecase(
                     authRepository = authRepository,
                     getUsersViewsRepository = getUsersViewsRepository,
-                    storage = DatabaseAddFriendStorage(db)
+                    storage = DatabaseAddFriendStorage(db, addNotificationUsecase)
                 )
             ),
             listFriendsRepository = UsecaseListFriendsRepository(
@@ -324,7 +329,7 @@ fun startEndpoints(
             invitationsCreateRepository = UsecaseCreateInvitationRepository(
                 usecase = CreateInvitationUsecase(
                     authRepository = authRepository,
-                    storage = DatabaseCreateInvitationStorage(db),
+                    storage = DatabaseCreateInvitationStorage(db, addNotificationUsecase),
                     hashGenerator = DefaultHashGenerator,
                     invitationsRepository = getInvitationsViewsRepository
                 )
@@ -351,9 +356,9 @@ fun startEndpoints(
         updatesDependencies = UpdatesDependencies(
             streamUpdatesRepository = UsecaseStreamUpdatesRepository(
                 usecase = StreamUpdatesUsecase(
-                    db = db,
                     auth = authRepository,
-                    notificationsRepository = getNotificationsViewsRepository
+                    notificationsRepository = getNotificationsViewsRepository,
+                    updatesMiddleware = updatesMiddleware
                 )
             )
         )

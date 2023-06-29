@@ -2,7 +2,11 @@
 
 package app.meetacy.backend.endpoint.ktor
 
+import io.rsocket.kotlin.payload.buildPayload
+import io.rsocket.kotlin.payload.data
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Serializable
 data class Success<out T>(
@@ -54,9 +58,19 @@ data class Failure(
             )
         }
     }
+
+    fun encodeToPayload() = buildPayload {
+        data(Json.encodeToString(this@Failure))
+    }
 }
 
 @Serializable
 data class EmptySuccess(
     val status: Boolean
-)
+) {
+    constructor() : this(status = true)
+
+    fun encodeToPayload() = buildPayload {
+        data(Json.encodeToString(this@EmptySuccess))
+    }
+}

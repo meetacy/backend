@@ -50,14 +50,14 @@ class NotificationsStorage(private val db: Database) {
         userId: UserId,
         subscriberId: UserId,
         date: DateTime
-    ) {
-        newSuspendedTransaction(Dispatchers.IO, db) {
+    ): NotificationId {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             NotificationsTable.insert { statement ->
                 statement[TYPE] = Type.Subscription
                 statement[OWNER_ID] = userId.long
                 statement[DATE] = date.iso8601
                 statement[SUBSCRIBED_ID] = subscriberId.long
-            }
+            }[NOTIFICATION_ID].let(::NotificationId)
         }
     }
 
@@ -66,15 +66,15 @@ class NotificationsStorage(private val db: Database) {
         inviterId: UserId,
         meetingId: MeetingId,
         date: DateTime
-    ) {
-        newSuspendedTransaction(Dispatchers.IO, db) {
+    ): NotificationId {
+        return newSuspendedTransaction(Dispatchers.IO, db) {
             NotificationsTable.insert { statement ->
                 statement[TYPE] = Type.Invitation
                 statement[OWNER_ID] = userId.long
                 statement[DATE] = date.iso8601
                 statement[INVITER_ID] = inviterId.long
                 statement[MEETING_ID] = meetingId.long
-            }
+            }[NOTIFICATION_ID].let(::NotificationId)
         }
     }
 
