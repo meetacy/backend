@@ -6,8 +6,8 @@ import app.meetacy.backend.database.integration.notifications.AddNotificationUse
 import app.meetacy.backend.database.integration.types.*
 import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.endpoint.startEndpoints
-import org.jetbrains.exposed.sql.Database
 import app.meetacy.backend.infrastructure.factories.*
+import org.jetbrains.exposed.sql.Database
 
 fun startEndpoints(
     filesBasePath: String,
@@ -55,6 +55,7 @@ fun startEndpoints(
         ),
         filesDependencies = fileDependenciesFactory(db, authRepository, filesBasePath, filesLimit),
         invitationsDependencies = invitationDependenciesFactory(db, addNotificationUsecase, authRepository, getInvitationsViewsRepository),
-        updatesDependencies = updatesDependenciesFactory(authRepository, getNotificationsViewsRepository, updatesMiddleware)
+        updatesDependencies = updatesDependenciesFactory(authRepository, getNotificationsViewsRepository, updatesMiddleware),
+        validateUsernameRepository = usernameValidationDependencies(db)
     )
 }
