@@ -4,12 +4,9 @@ import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsVi
 import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
 import app.meetacy.backend.database.integration.notifications.AddNotificationUsecase
 import app.meetacy.backend.database.integration.types.*
-import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.endpoint.startEndpoints
-import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.infrastructure.factories.*
-import app.meetacy.backend.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
 import org.jetbrains.exposed.sql.Database
 
 fun startEndpoints(
@@ -58,14 +55,6 @@ fun startEndpoints(
         ),
         filesDependencies = fileDependenciesFactory(db, authRepository, filesBasePath, filesLimit),
         invitationsDependencies = invitationDependenciesFactory(db, addNotificationUsecase, authRepository, getInvitationsViewsRepository),
-        updatesDependencies = UpdatesDependencies(
-            streamUpdatesRepository = UsecaseStreamUpdatesRepository(
-                usecase = StreamUpdatesUsecase(
-                    auth = authRepository,
-                    notificationsRepository = getNotificationsViewsRepository,
-                    updatesMiddleware = updatesMiddleware
-                )
-            )
-        )
+        updatesDependencies = updatesDependenciesFactory(authRepository, getNotificationsViewsRepository, updatesMiddleware)
     )
 }
