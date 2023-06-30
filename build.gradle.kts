@@ -16,6 +16,13 @@ allprojects {
                 password = System.getenv("GITHUB_TOKEN")
             }
         }
+        maven {
+            url = uri("https://maven.pkg.github.com/meetacy/wdater")
+            credentials {
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 
     tasks.withType<KotlinCompile<*>> {

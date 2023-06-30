@@ -2,7 +2,11 @@
 
 package app.meetacy.backend.endpoint.ktor
 
+import io.rsocket.kotlin.payload.buildPayload
+import io.rsocket.kotlin.payload.data
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Serializable
 data class Success<out T>(
@@ -39,13 +43,8 @@ data class Failure(
         val InvalidUtf8String = Failure(false, 16, "Please provide valid string")
 
         val UnableToInvite = Failure(false, 17, "You are unable to invite this user. Probably, you are not admin of event, or this person is not your subscriber or friend")
-        val FriendAlreadyInvited = Failure(false, 18, "You have already invited this friend. Try another one")
-        val InvalidInvitationIds = Failure(false, 19, "One of your invitation IDs you sent is invalid")
-        val InvalidUserIds = Failure(false, 20, "One of your user IDs you sent is invalid")
-        val OnlyUserIdsOrInvitationIdsAreAllowed = Failure(false, 21, "Only user IDs or invitation IDs are allowed. You have specified both ones")
+        val UserAlreadyInvited = Failure(false, 18, "You have already invited this friend. Try another one")
         val InvitationNotFound = Failure(false, 22, "Invitation you are requested for is not found ¬_¬")
-        val InvitationExpired = Failure(false, 23, "Your invitation was expired! +_+")
-        val InvalidDateTimeIdentity = Failure(false, 24, "Enter valid date, please")
 
         fun UnhandledException(throwable: Throwable): Failure {
             System.err.println(throwable.stackTraceToString())
@@ -59,9 +58,19 @@ data class Failure(
             )
         }
     }
+
+    fun encodeToPayload() = buildPayload {
+        data(Json.encodeToString(this@Failure))
+    }
 }
 
 @Serializable
 data class EmptySuccess(
     val status: Boolean
-)
+) {
+    constructor() : this(status = true)
+
+    fun encodeToPayload() = buildPayload {
+        data(Json.encodeToString(this@EmptySuccess))
+    }
+}

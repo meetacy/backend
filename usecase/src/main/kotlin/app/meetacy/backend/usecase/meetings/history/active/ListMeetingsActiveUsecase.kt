@@ -4,9 +4,7 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.meeting.MeetingId
-import app.meetacy.backend.types.paging.PagingId
-import app.meetacy.backend.types.paging.PagingResult
-import app.meetacy.backend.types.paging.PagingValue
+import app.meetacy.backend.types.paging.*
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 import kotlinx.coroutines.flow.*
@@ -32,19 +30,19 @@ class ListMeetingsActiveUsecase(
             .getJoinHistoryFlow(
                 userId = userId,
                 startPagingId = pagingId
-            ).map { (meetingId, nextPagingId) ->
-                getMeetingsViewsRepository.getMeetingView(
-                    viewerId = userId,
-                    meetingId = meetingId
-                ) to nextPagingId
+            ).map { meetingIdPaging ->
+                meetingIdPaging.map { meetingId ->
+                    getMeetingsViewsRepository.getMeetingView(
+                        viewerId = userId,
+                        meetingId = meetingId
+                    )
+                }
             }.filter { (meeting) -> meeting.date >= Date.today() }
             .take(amount.int).toList()
 
-        val nextPagingId = if (list.size == amount.int) list.last().second else null
-
         val paging = PagingResult(
             data = list.map { (meeting) -> meeting },
-            nextPagingId = nextPagingId
+            nextPagingId = list.pagingId(amount) { it.nextPagingId }
         )
 
         return Result.Success(paging)

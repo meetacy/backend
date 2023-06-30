@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @JvmInline
-value class NotificationIdSerializable(private val long: Long) {
-    fun type() = NotificationId(long)
+value class NotificationIdSerializable(private val string: String) {
+    fun type() = NotificationId(string.toLong())
 }
 
-fun NotificationId.serializable() = NotificationIdSerializable(long)
+fun NotificationId.serializable() = NotificationIdSerializable(long.toString())

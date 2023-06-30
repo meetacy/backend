@@ -1,4 +1,5 @@
 
+import app.meetacy.backend.database.integration.types.UsecaseGetNotificationsViewsRepository
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
@@ -11,6 +12,7 @@ import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.startEndpoints
+import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
@@ -32,8 +34,6 @@ import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptI
 import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.deny.UsecaseDenyInvitationRepository
-import app.meetacy.backend.usecase.integration.invitations.read.UsecaseReadInvitationRepository
-import app.meetacy.backend.usecase.integration.invitations.update.UsecaseUpdateInvitationRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
@@ -44,8 +44,9 @@ import app.meetacy.backend.usecase.integration.meetings.history.past.UsecaseList
 import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
 import app.meetacy.backend.usecase.integration.meetings.participants.list.UsecaseListMeetingParticipantsRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
-import app.meetacy.backend.usecase.integration.notifications.get.UsecaseGetNotificationsRepository
+import app.meetacy.backend.usecase.integration.notifications.get.UsecaseListNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
+import app.meetacy.backend.usecase.integration.updates.stream.StreamUpdatesRepository
 import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
 import app.meetacy.backend.usecase.integration.users.validate.UsecaseValidateUsernameRepository
@@ -53,9 +54,6 @@ import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
-import app.meetacy.backend.usecase.invitations.read.ReadInvitationUsecase
-import app.meetacy.backend.usecase.invitations.update.UpdateInvitationUsecase
-import app.meetacy.backend.usecase.location.stream.BaseFriendsLocationStreamingStorage
 import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
@@ -67,8 +65,9 @@ import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
-import app.meetacy.backend.usecase.notification.GetNotificationsUsecase
-import app.meetacy.backend.usecase.notification.ReadNotificationsUsecase
+import app.meetacy.backend.usecase.notifications.GetNotificationsUsecase
+import app.meetacy.backend.usecase.notifications.GetNotificationsViewsUsecase
+import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import app.meetacy.backend.usecase.validate.ValidateUsernameUsecase
@@ -164,10 +163,7 @@ fun runTestServer(
                 streamLocationRepository = UsecaseStreamLocationRepository(
                     usecase = FriendsLocationStreamingUsecase(
                         authRepository = mockStorage,
-                        storage = BaseFriendsLocationStreamingStorage(
-                            flowStorageUnderlying = mockStorage,
-                            friendsStorage = mockStorage
-                        ),
+                        storage = mockStorage,
                         usersViewsRepository = mockStorage
                     )
                 )
@@ -280,12 +276,11 @@ fun runTestServer(
             )
         ),
         notificationsDependencies = NotificationsDependencies(
-            getNotificationsRepository = UsecaseGetNotificationsRepository(
+            listNotificationsRepository = UsecaseListNotificationsRepository(
                 usecase = GetNotificationsUsecase(
                     authRepository = mockStorage,
-                    usersRepository = mockStorage,
-                    meetingsRepository = mockStorage,
-                    storage = mockStorage
+                    storage = mockStorage,
+                    viewNotificationsRepository = mockStorage
                 )
             ),
             readNotificationsRepository = UsecaseReadNotificationsRepository(
@@ -337,14 +332,7 @@ fun runTestServer(
                     authRepository = mockStorage,
                     storage = mockStorage,
                     hashGenerator = DefaultHashGenerator,
-                    getInvitationsViewsRepository = mockStorage
-                )
-            ),
-            invitationsGetRepository = UsecaseReadInvitationRepository(
-                usecase = ReadInvitationUsecase(
-                    storage = mockStorage,
-                    authRepository = mockStorage,
-                    getInvitationsViewsRepository = mockStorage
+                    invitationsRepository = mockStorage
                 )
             ),
             invitationsAcceptRepository = UsecaseAcceptInvitationRepository(
@@ -359,19 +347,24 @@ fun runTestServer(
                     storage = mockStorage
                 ),
             ),
-            invitationUpdateRepository = UsecaseUpdateInvitationRepository(
-                usecase = UpdateInvitationUsecase(
-                    authRepository = mockStorage,
-                    storage = mockStorage,
-                    getInvitationsViewsRepository = mockStorage
-                ),
-            ),
             invitationCancelRepository = UsecaseCancelInvitationRepository(
                 usecase = CancelInvitationUsecase(
                     authRepository = mockStorage,
                     storage = mockStorage
                 ),
             ),
+        ),
+        updatesDependencies = UpdatesDependencies(
+            streamUpdatesRepository = StreamUpdatesRepository(
+                auth = mockStorage,
+                storage = mockStorage,
+                notificationsRepository = UsecaseGetNotificationsViewsRepository(
+                    usecase = GetNotificationsViewsUsecase(
+                        storage = mockStorage,
+                        viewRepository = mockStorage
+                    )
+                )
+            )
         ),
         validateUsernameRepository = UsecaseValidateUsernameRepository(
             usecase = ValidateUsernameUsecase(

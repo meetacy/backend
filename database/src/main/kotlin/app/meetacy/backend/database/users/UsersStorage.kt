@@ -30,6 +30,8 @@ object UsersTable : Table() {
     val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT).nullable()
     val EMAIL_VERIFIED = bool("EMAIL_VERIFIED").default(false)
     val AVATAR_ID = long("AVATAR_ID").nullable()
+
+    override val primaryKey: PrimaryKey = PrimaryKey(USER_ID)
 }
 
 class UsersStorage(private val db: Database) {

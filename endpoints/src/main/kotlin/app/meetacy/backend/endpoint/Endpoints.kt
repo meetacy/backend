@@ -13,6 +13,8 @@ import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.meetings
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.notifications.notifications
+import app.meetacy.backend.endpoint.updates.UpdatesDependencies
+import app.meetacy.backend.endpoint.updates.updates
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.endpoint.users.users
 import app.meetacy.backend.endpoint.validate.ValidateUsernameRepository
@@ -47,7 +49,8 @@ fun startEndpoints(
     filesDependencies: FilesDependencies,
     usersDependencies: UsersDependencies,
     invitationsDependencies: InvitationsDependencies,
-    validateUsernameRepository: ValidateUsernameRepository
+    validateUsernameRepository: ValidateUsernameRepository,
+    updatesDependencies: UpdatesDependencies
 ): ApplicationEngine = embeddedServer(CIO, host = "localhost", port = port) {
 
     install(ContentNegotiation) {
@@ -82,5 +85,6 @@ fun startEndpoints(
         files(filesDependencies)
         invitations(invitationsDependencies)
         validateUsername(validateUsernameRepository)
+        updates(updatesDependencies)
     }
 }.start(wait)

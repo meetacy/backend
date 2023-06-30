@@ -13,7 +13,6 @@ class UsecaseCancelInvitationRepository(
         usecase.cancel(form.token.type(), form.id.type()).toEndpoint()
 
     private fun CancelInvitationUsecase.Result.toEndpoint(): CancelInvitationResponse = when (this) {
-        CancelInvitationUsecase.Result.NoPermissions -> CancelInvitationResponse.NoPermissions
         CancelInvitationUsecase.Result.NotFound -> CancelInvitationResponse.NotFound
         CancelInvitationUsecase.Result.Success -> CancelInvitationResponse.Success
         CancelInvitationUsecase.Result.Unauthorized -> CancelInvitationResponse.Unauthorized

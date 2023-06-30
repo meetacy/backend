@@ -1,12 +1,12 @@
 package app.meetacy.backend.usecase.integration.types
 
-import app.meetacy.backend.endpoint.types.User
+import app.meetacy.backend.endpoint.types.user.User
 import app.meetacy.backend.types.serialization.datetime.serializable
 import app.meetacy.backend.types.serialization.file.serializable
 import app.meetacy.backend.types.serialization.location.serializable
 import app.meetacy.backend.types.serialization.user.serializable
 import app.meetacy.backend.usecase.types.UserView
-import app.meetacy.backend.endpoint.types.UserLocationSnapshot as EndpointUserLocationSnapshot
+import app.meetacy.backend.endpoint.types.user.UserLocationSnapshot as EndpointUserLocationSnapshot
 import app.meetacy.backend.usecase.types.UserLocationSnapshot as UsecaseUserLocationSnapshot
 
 fun UserView.mapToEndpoint() = User(
