@@ -21,13 +21,13 @@ fun startEndpoints(
     startEndpoints(
         port = port,
         wait = wait,
-        authDependencies = authDependenciesFactory(db = db),
-        usersDependencies = userDependenciesFactory(db = db),
-        friendsDependencies = friendDependenciesFactory(db = db),
-        meetingsDependencies = meetingsDependenciesFactory(db = db),
-        notificationsDependencies = notificationDependenciesFactory(db = db),
+        authDependencies = authDependenciesFactory(db),
+        usersDependencies = userDependenciesFactory(db),
+        friendsDependencies = friendDependenciesFactory(db),
+        meetingsDependencies = meetingsDependenciesFactory(db),
+        notificationsDependencies = notificationDependenciesFactory(db),
         filesDependencies = fileDependenciesFactory(db, filesBasePath, filesLimit),
-        invitationsDependencies = invitationDependenciesFactory(db = db),
-        updatesDependencies = updatesDependenciesFactory(db = db)
+        invitationsDependencies = invitationDependenciesFactory(db),
+        updatesDependencies = updatesDependenciesFactory(db)
     )
 }
