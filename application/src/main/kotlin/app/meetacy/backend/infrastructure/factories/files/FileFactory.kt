@@ -1,6 +1,8 @@
 package app.meetacy.backend.infrastructure.factories.files
 
 import app.meetacy.backend.endpoint.files.FilesDependencies
+import app.meetacy.backend.infrastructure.factories.files.get.getFileRepository
+import app.meetacy.backend.infrastructure.factories.files.upload.uploadFileRepository
 import org.jetbrains.exposed.sql.Database
 
 fun fileDependenciesFactory(
