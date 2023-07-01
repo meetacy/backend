@@ -17,7 +17,6 @@ fun startEndpoints(
     db: Database,
     wait: Boolean,
 ) {
-    val authRepository = DatabaseAuthRepository(db)
     val filesRepository = DatabaseFilesRepository(db)
 
     val getUsersViewsRepository = DatabaseGetUsersViewsRepository(db)
@@ -43,19 +42,44 @@ fun startEndpoints(
     startEndpoints(
         port = port,
         wait = wait,
-        authDependencies = authDependenciesFactory(db, authRepository),
-        usersDependencies = userDependenciesFactory(db, authRepository, filesRepository, getUsersViewsRepository),
-        friendsDependencies = friendDependenciesFactory(db, addNotificationUsecase, authRepository, getUsersViewsRepository),
+        authDependencies = authDependenciesFactory(db),
+        usersDependencies = userDependenciesFactory(
+            db = db,
+            filesRepository = filesRepository,
+            getUsersViewsRepository = getUsersViewsRepository
+        ),
+        friendsDependencies = friendDependenciesFactory(
+            db = db,
+            addNotificationUsecase = addNotificationUsecase,
+            getUsersViewsRepository = getUsersViewsRepository
+        ),
         meetingsDependencies = meetingsDependenciesFactory(
-            db, authRepository, filesRepository, checkMeetingsRepository,
-            getMeetingsViewsRepository, getUsersViewsRepository, viewMeetingsRepository
+            db = db,
+            filesRepository = filesRepository,
+            checkMeetingsRepository = checkMeetingsRepository,
+            getMeetingsViewsRepository = getMeetingsViewsRepository,
+            getUsersViewsRepository = getUsersViewsRepository,
+            viewMeetingsRepository = viewMeetingsRepository
         ),
         notificationsDependencies = notificationDependenciesFactory(
-            db, authRepository, getMeetingsViewsRepository,
-            getUsersViewsRepository
+            db = db,
+            getMeetingsViewsRepository = getMeetingsViewsRepository,
+            getUsersViewsRepository = getUsersViewsRepository
         ),
-        filesDependencies = fileDependenciesFactory(db, authRepository, filesBasePath, filesLimit),
-        invitationsDependencies = invitationDependenciesFactory(db, addNotificationUsecase, authRepository, getInvitationsViewsRepository),
-        updatesDependencies = updatesDependenciesFactory(db, authRepository, getNotificationsViewsRepository, updatesMiddleware)
+        filesDependencies = fileDependenciesFactory(
+            db = db,
+            filesBasePath = filesBasePath,
+            filesLimit = filesLimit
+        ),
+        invitationsDependencies = invitationDependenciesFactory(
+            db = db,
+            addNotificationUsecase = addNotificationUsecase,
+            getInvitationsViewsRepository = getInvitationsViewsRepository
+        ),
+        updatesDependencies = updatesDependenciesFactory(
+            db = db,
+            getNotificationsViewsRepository = getNotificationsViewsRepository,
+            updatesMiddleware = updatesMiddleware
+        )
     )
 }
