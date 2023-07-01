@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories.friends
+package app.meetacy.backend.infrastructure.factories.friends.location.stream
 
 import app.meetacy.backend.database.integration.location.stream.DatabaseFriendsLocationStreamingStorage
 import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies

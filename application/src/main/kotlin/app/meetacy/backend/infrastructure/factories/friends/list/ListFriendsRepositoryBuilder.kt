@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories.friends
+package app.meetacy.backend.infrastructure.factories.friends.list
 
 import app.meetacy.backend.database.integration.friends.get.DatabaseGetFriendsStorage
 import app.meetacy.backend.endpoint.friends.list.ListFriendsRepository

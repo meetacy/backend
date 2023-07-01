@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories.friends
+package app.meetacy.backend.infrastructure.factories.friends.delete
 
 import app.meetacy.backend.database.integration.friends.delete.DatabaseDeleteFriendStorage
 import app.meetacy.backend.endpoint.friends.delete.DeleteFriendRepository
