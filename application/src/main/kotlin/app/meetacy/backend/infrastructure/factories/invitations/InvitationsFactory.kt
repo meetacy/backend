@@ -1,18 +1,16 @@
 package app.meetacy.backend.infrastructure.factories.invitations
 
-import app.meetacy.backend.database.integration.invitations.cancel.DatabaseCancelInvitationStorage
 import app.meetacy.backend.database.integration.invitations.create.DatabaseCreateInvitationStorage
 import app.meetacy.backend.database.integration.invitations.deny.DatabaseDenyInvitationStorage
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.infrastructure.factories.invitations.accept.acceptInvitationRepository
+import app.meetacy.backend.infrastructure.factories.invitations.cancel.cancelInvitationRepository
 import app.meetacy.backend.infrastructure.factories.notifications.addNotificationUsecase
-import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.deny.UsecaseDenyInvitationRepository
 import app.meetacy.backend.usecase.invitations.add.AddNotificationUsecase
-import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
 import app.meetacy.backend.usecase.types.AuthRepository
@@ -40,10 +38,5 @@ fun invitationDependenciesFactory(
             storage = DatabaseDenyInvitationStorage(db)
         )
     ),
-    invitationCancelRepository = UsecaseCancelInvitationRepository(
-        usecase = CancelInvitationUsecase(
-            authRepository = authRepository,
-            storage = DatabaseCancelInvitationStorage(db)
-        )
-    )
+    invitationCancelRepository = cancelInvitationRepository(db)
 )
