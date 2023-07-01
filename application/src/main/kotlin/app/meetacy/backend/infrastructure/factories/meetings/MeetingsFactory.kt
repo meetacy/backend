@@ -1,14 +1,11 @@
 package app.meetacy.backend.infrastructure.factories.meetings
 
-import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMeetingStorage
 import app.meetacy.backend.database.integration.meetings.edit.DatabaseEditMeetingStorage
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.infrastructure.factories.files.filesRepository
 import app.meetacy.backend.infrastructure.factories.meetings.history.meetingHistoryDependencies
-import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
-import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.FilesRepository
@@ -30,13 +27,7 @@ fun meetingsDependenciesFactory(
     createMeetingRepository = createMeetingRepository(db),
     getMeetingRepository = getMeetingRepository(db),
     participateMeetingRepository = participateMeetingRepository(db),
-    deleteMeetingRepository = UsecaseDeleteMeetingRepository(
-        usecase = DeleteMeetingUsecase(
-            authRepository = authRepository,
-            getMeetingsViewsRepository = getMeetingsViewsRepository,
-            storage = DatabaseDeleteMeetingStorage(db)
-        )
-    ),
+    deleteMeetingRepository = deleteMeetingRepository(db),
     editMeetingRepository = UsecaseEditMeetingRepository(
         usecase = EditMeetingUsecase(
             storage = DatabaseEditMeetingStorage(db),
