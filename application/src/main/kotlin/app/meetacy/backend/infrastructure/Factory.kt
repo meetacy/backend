@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
-import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
 import app.meetacy.backend.database.integration.types.GetInvitationsViewsRepository
 import app.meetacy.backend.database.integration.types.GetNotificationsViewsRepository
 import app.meetacy.backend.database.integration.types.ViewInvitationsRepository
@@ -26,7 +25,6 @@ fun startEndpoints(
     db: Database,
     wait: Boolean,
 ) {
-    val viewMeetingsRepository = DatabaseGetMeetingsViewsViewMeetingsRepository(db)
     val checkMeetingsRepository = DatabaseCheckMeetingsViewRepository(db)
     val getInvitationsViewsRepository = GetInvitationsViewsRepository(
         db,
@@ -51,8 +49,7 @@ fun startEndpoints(
         friendsDependencies = friendDependenciesFactory(db = db),
         meetingsDependencies = meetingsDependenciesFactory(
             db = db,
-            checkMeetingsRepository = checkMeetingsRepository,
-            viewMeetingsRepository = viewMeetingsRepository
+            checkMeetingsRepository = checkMeetingsRepository
         ),
         notificationsDependencies = notificationDependenciesFactory(db = db),
         filesDependencies = fileDependenciesFactory(

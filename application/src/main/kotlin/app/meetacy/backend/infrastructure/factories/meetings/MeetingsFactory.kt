@@ -49,7 +49,7 @@ fun meetingsDependenciesFactory(
     checkMeetingsRepository: CheckMeetingRepository,
     getMeetingsViewsRepository: GetMeetingsViewsRepository = getMeetingsViewsRepository(db),
     getUsersViewsRepository: GetUsersViewsRepository = getUserViewsRepository(db),
-    viewMeetingsRepository: ViewMeetingsRepository
+    viewMeetingsRepository: ViewMeetingsRepository = viewMeetingsRepository(db)
 ): MeetingsDependencies = MeetingsDependencies(
     meetingsHistoryDependencies = MeetingsHistoryDependencies(
         listMeetingsHistoryRepository = UsecaseListMeetingsHistoryRepository(
