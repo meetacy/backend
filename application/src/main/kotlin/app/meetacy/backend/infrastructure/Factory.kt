@@ -1,16 +1,13 @@
 package app.meetacy.backend.infrastructure
 
-import app.meetacy.backend.database.integration.types.GetNotificationsViewsRepository
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.infrastructure.factories.auth.authDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.files.fileDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.friendDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.invitationDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.meetings.getMeetingsViewsRepository
 import app.meetacy.backend.infrastructure.factories.meetings.meetingsDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.notifications.notificationDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.updatesDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.users.getUserViewsRepository
 import app.meetacy.backend.infrastructure.factories.users.userDependenciesFactory
 import org.jetbrains.exposed.sql.Database
 
@@ -21,12 +18,6 @@ fun startEndpoints(
     db: Database,
     wait: Boolean,
 ) {
-    val getNotificationsViewsRepository = GetNotificationsViewsRepository(
-        db = db,
-        getMeetingsViewsRepository = getMeetingsViewsRepository(db),
-        getUsersViewsRepository = getUserViewsRepository(db)
-    )
-
     startEndpoints(
         port = port,
         wait = wait,
@@ -41,9 +32,6 @@ fun startEndpoints(
             filesLimit = filesLimit
         ),
         invitationsDependencies = invitationDependenciesFactory(db = db),
-        updatesDependencies = updatesDependenciesFactory(
-            db = db,
-            getNotificationsViewsRepository = getNotificationsViewsRepository
-        )
+        updatesDependencies = updatesDependenciesFactory(db = db)
     )
 }
