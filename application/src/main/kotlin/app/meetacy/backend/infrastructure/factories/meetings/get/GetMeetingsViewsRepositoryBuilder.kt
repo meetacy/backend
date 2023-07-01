@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories.meetings
+package app.meetacy.backend.infrastructure.factories.meetings.get
 
 import app.meetacy.backend.database.integration.types.DatabaseGetMeetingsViewsRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository

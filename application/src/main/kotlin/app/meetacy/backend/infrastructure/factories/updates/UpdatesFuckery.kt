@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories
+package app.meetacy.backend.infrastructure.factories.updates
 
 import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies

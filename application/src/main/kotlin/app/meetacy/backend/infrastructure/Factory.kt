@@ -4,10 +4,10 @@ import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.infrastructure.factories.auth.authDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.files.fileDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.friends.friendDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.invitationDependenciesFactory
+import app.meetacy.backend.infrastructure.factories.invitations.invitationDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.meetings.meetingsDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.notifications.notificationDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.updatesDependenciesFactory
+import app.meetacy.backend.infrastructure.factories.updates.updatesDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.users.userDependenciesFactory
 import org.jetbrains.exposed.sql.Database
 

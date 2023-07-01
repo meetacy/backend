@@ -1,8 +1,10 @@
-package app.meetacy.backend.infrastructure.factories.meetings
+package app.meetacy.backend.infrastructure.factories.meetings.map
 
 import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
+import app.meetacy.backend.infrastructure.factories.meetings.get.getMeetingsViewsRepository
+import app.meetacy.backend.infrastructure.factories.meetings.get.viewMeetingsRepository
 import app.meetacy.backend.usecase.integration.meetings.map.list.UsecaseListMeetingsMapRepository
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.types.AuthRepository
