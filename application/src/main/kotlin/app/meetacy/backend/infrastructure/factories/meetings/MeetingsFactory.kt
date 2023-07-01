@@ -2,17 +2,14 @@ package app.meetacy.backend.infrastructure.factories.meetings
 
 import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMeetingStorage
 import app.meetacy.backend.database.integration.meetings.edit.DatabaseEditMeetingStorage
-import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.infrastructure.factories.files.filesRepository
 import app.meetacy.backend.infrastructure.factories.meetings.history.meetingHistoryDependencies
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
-import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.FilesRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
@@ -32,13 +29,7 @@ fun meetingsDependenciesFactory(
     meetingParticipantsDependencies = participantDependenciesBuilder(db),
     createMeetingRepository = createMeetingRepository(db),
     getMeetingRepository = getMeetingRepository(db),
-    participateMeetingRepository = UsecaseParticipateMeetingRepository(
-        usecase = ParticipateMeetingUsecase(
-            authRepository = authRepository,
-            storage = DatabaseParticipateMeetingStorage(db),
-            getMeetingsViewsRepository = getMeetingsViewsRepository
-        )
-    ),
+    participateMeetingRepository = participateMeetingRepository(db),
     deleteMeetingRepository = UsecaseDeleteMeetingRepository(
         usecase = DeleteMeetingUsecase(
             authRepository = authRepository,
