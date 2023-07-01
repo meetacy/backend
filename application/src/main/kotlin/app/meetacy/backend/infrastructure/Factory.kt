@@ -3,7 +3,7 @@ package app.meetacy.backend.infrastructure
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.infrastructure.factories.auth.authDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.files.fileDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.friendDependenciesFactory
+import app.meetacy.backend.infrastructure.factories.friends.friendDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.invitationDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.meetings.meetingsDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.notifications.notificationDependenciesFactory
