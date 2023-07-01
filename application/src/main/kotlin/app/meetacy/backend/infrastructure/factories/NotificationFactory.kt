@@ -3,6 +3,7 @@ package app.meetacy.backend.infrastructure.factories
 import app.meetacy.backend.database.integration.notifications.DatabaseReadNotificationsStorage
 import app.meetacy.backend.database.integration.notifications.GetNotificationsUsecase
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
+import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseListNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
@@ -13,7 +14,7 @@ import org.jetbrains.exposed.sql.Database
 
 fun notificationDependenciesFactory(
     db: Database,
-    authRepository: AuthRepository,
+    authRepository: AuthRepository = authRepository(db),
     getMeetingsViewsRepository: GetMeetingsViewsRepository,
     getUsersViewsRepository: GetUsersViewsRepository
 ): NotificationsDependencies = NotificationsDependencies(

@@ -2,13 +2,16 @@ package app.meetacy.backend.infrastructure.factories
 
 import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
+import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository
 import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
+import org.jetbrains.exposed.sql.Database
 
 fun updatesDependenciesFactory(
-    authRepository: AuthRepository,
+    db: Database,
+    authRepository: AuthRepository = authRepository(db),
     getNotificationsViewsRepository: GetNotificationsViewsRepository,
     updatesMiddleware: UpdatesMiddleware
 ): UpdatesDependencies = UpdatesDependencies(

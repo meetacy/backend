@@ -6,6 +6,7 @@ import app.meetacy.backend.database.integration.invitations.create.DatabaseCreat
 import app.meetacy.backend.database.integration.invitations.deny.DatabaseDenyInvitationStorage
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
+import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
@@ -22,7 +23,7 @@ import org.jetbrains.exposed.sql.Database
 fun invitationDependenciesFactory(
     db: Database,
     addNotificationUsecase: AddNotificationUsecase,
-    authRepository: AuthRepository,
+    authRepository: AuthRepository = authRepository(db),
     getInvitationsViewsRepository: GetInvitationsViewsRepository
 ): InvitationsDependencies = InvitationsDependencies(
     invitationsCreateRepository = UsecaseCreateInvitationRepository(

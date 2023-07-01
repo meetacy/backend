@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories
+package app.meetacy.backend.infrastructure.factories.auth
 
 import app.meetacy.backend.database.integration.email.DatabaseConfirmEmailStorage
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailMailer
@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.Database
 
 fun authDependenciesFactory(
     db: Database,
-    authRepository: AuthRepository
+    authRepository: AuthRepository = authRepository(db)
 ): AuthDependencies = AuthDependencies(
         emailDependencies = EmailDependencies(
             linkEmailRepository = UsecaseLinkEmailRepository(

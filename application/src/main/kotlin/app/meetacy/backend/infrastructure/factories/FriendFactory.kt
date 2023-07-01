@@ -6,6 +6,7 @@ import app.meetacy.backend.database.integration.friends.get.DatabaseGetFriendsSt
 import app.meetacy.backend.database.integration.location.stream.DatabaseFriendsLocationStreamingStorage
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
+import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
@@ -22,7 +23,7 @@ import org.jetbrains.exposed.sql.Database
 fun friendDependenciesFactory(
     db: Database,
     addNotificationUsecase: AddNotificationUsecase,
-    authRepository: AuthRepository,
+    authRepository: AuthRepository = authRepository(db),
     getUsersViewsRepository: GetUsersViewsRepository
 ): FriendsDependencies = FriendsDependencies(
     friendsLocationDependencies = FriendsLocationDependencies(
