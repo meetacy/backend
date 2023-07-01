@@ -26,11 +26,7 @@ fun startEndpoints(
         friendsDependencies = friendDependenciesFactory(db = db),
         meetingsDependencies = meetingsDependenciesFactory(db = db),
         notificationsDependencies = notificationDependenciesFactory(db = db),
-        filesDependencies = fileDependenciesFactory(
-            db = db,
-            filesBasePath = filesBasePath,
-            filesLimit = filesLimit
-        ),
+        filesDependencies = fileDependenciesFactory(db, filesBasePath, filesLimit),
         invitationsDependencies = invitationDependenciesFactory(db = db),
         updatesDependencies = updatesDependenciesFactory(db = db)
     )

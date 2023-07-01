@@ -12,9 +12,9 @@ import org.jetbrains.exposed.sql.Database
 
 fun fileDependenciesFactory(
     db: Database,
-    authRepository: AuthRepository = authRepository(db),
     filesBasePath: String,
-    filesLimit: Long
+    filesLimit: Long,
+    authRepository: AuthRepository = authRepository(db)
 ): FilesDependencies = FilesDependencies(
     saveFileRepository = UsecaseUploadFileRepository(
         usecase = UploadFileUsecase(
