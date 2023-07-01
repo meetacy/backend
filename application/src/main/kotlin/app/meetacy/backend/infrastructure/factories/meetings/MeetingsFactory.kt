@@ -1,21 +1,16 @@
 package app.meetacy.backend.infrastructure.factories.meetings
 
-import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
-import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
 import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMeetingStorage
 import app.meetacy.backend.database.integration.meetings.edit.DatabaseEditMeetingStorage
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
-import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.infrastructure.factories.files.filesRepository
 import app.meetacy.backend.infrastructure.factories.meetings.history.meetingHistoryDependencies
-import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
-import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
@@ -37,16 +32,7 @@ fun meetingsDependenciesFactory(
     meetingsHistoryDependencies = meetingHistoryDependencies(db),
     meetingsMapDependencies = meetingsMapDependencies(db),
     meetingParticipantsDependencies = participantDependenciesBuilder(db),
-    createMeetingRepository = UsecaseCreateMeetingRepository(
-        usecase = CreateMeetingUsecase(
-            hashGenerator = DefaultHashGenerator,
-            storage = DatabaseCreateMeetingStorage(db),
-            authRepository = authRepository,
-            viewMeetingRepository = DatabaseCreateMeetingViewMeetingRepository(db),
-            utf8Checker = DefaultUtf8Checker,
-            filesRepository = filesRepository
-        )
-    ),
+    createMeetingRepository = createMeetingRepository(db),
     getMeetingRepository = UsecaseGetMeetingRepository(
         usecase = GetMeetingUsecase(
             authRepository = authRepository,
