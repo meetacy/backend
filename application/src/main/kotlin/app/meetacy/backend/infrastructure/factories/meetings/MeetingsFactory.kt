@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories
+package app.meetacy.backend.infrastructure.factories.meetings
 
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
@@ -47,7 +47,7 @@ fun meetingsDependenciesFactory(
     authRepository: AuthRepository = authRepository(db),
     filesRepository: FilesRepository = filesRepository(db),
     checkMeetingsRepository: CheckMeetingRepository,
-    getMeetingsViewsRepository: GetMeetingsViewsRepository,
+    getMeetingsViewsRepository: GetMeetingsViewsRepository = getMeetingsViewsRepository(db),
     getUsersViewsRepository: GetUsersViewsRepository = getUserViewsRepository(db),
     viewMeetingsRepository: ViewMeetingsRepository
 ): MeetingsDependencies = MeetingsDependencies(

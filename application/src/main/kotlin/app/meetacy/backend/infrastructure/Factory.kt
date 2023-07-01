@@ -2,7 +2,6 @@ package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
 import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
-import app.meetacy.backend.database.integration.types.DatabaseGetMeetingsViewsRepository
 import app.meetacy.backend.database.integration.types.GetInvitationsViewsRepository
 import app.meetacy.backend.database.integration.types.GetNotificationsViewsRepository
 import app.meetacy.backend.database.integration.types.ViewInvitationsRepository
@@ -12,7 +11,8 @@ import app.meetacy.backend.infrastructure.factories.auth.authDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.files.fileDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.friendDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.invitationDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.meetingsDependenciesFactory
+import app.meetacy.backend.infrastructure.factories.meetings.getMeetingsViewsRepository
+import app.meetacy.backend.infrastructure.factories.meetings.meetingsDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.notifications.notificationDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.updatesDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.users.getUserViewsRepository
@@ -26,19 +26,18 @@ fun startEndpoints(
     db: Database,
     wait: Boolean,
 ) {
-    val getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
     val viewMeetingsRepository = DatabaseGetMeetingsViewsViewMeetingsRepository(db)
     val checkMeetingsRepository = DatabaseCheckMeetingsViewRepository(db)
     val getInvitationsViewsRepository = GetInvitationsViewsRepository(
         db,
         viewInvitationsRepository = ViewInvitationsRepository(
             usersRepository = getUserViewsRepository(db),
-            meetingsRepository = getMeetingsViewsRepository
+            meetingsRepository = getMeetingsViewsRepository(db)
         )
     )
     val getNotificationsViewsRepository = GetNotificationsViewsRepository(
         db = db,
-        getMeetingsViewsRepository = getMeetingsViewsRepository,
+        getMeetingsViewsRepository = getMeetingsViewsRepository(db),
         getUsersViewsRepository = getUserViewsRepository(db)
     )
 
@@ -53,13 +52,9 @@ fun startEndpoints(
         meetingsDependencies = meetingsDependenciesFactory(
             db = db,
             checkMeetingsRepository = checkMeetingsRepository,
-            getMeetingsViewsRepository = getMeetingsViewsRepository,
             viewMeetingsRepository = viewMeetingsRepository
         ),
-        notificationsDependencies = notificationDependenciesFactory(
-            db = db,
-            getMeetingsViewsRepository = getMeetingsViewsRepository
-        ),
+        notificationsDependencies = notificationDependenciesFactory(db = db),
         filesDependencies = fileDependenciesFactory(
             db = db,
             filesBasePath = filesBasePath,
