@@ -7,6 +7,7 @@ import app.meetacy.backend.database.integration.invitations.deny.DatabaseDenyInv
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
+import app.meetacy.backend.infrastructure.factories.invitations.getInvitationsViewsRepository
 import app.meetacy.backend.infrastructure.factories.notifications.addNotificationUsecase
 import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
@@ -25,7 +26,7 @@ fun invitationDependenciesFactory(
     db: Database,
     addNotificationUsecase: AddNotificationUsecase = addNotificationUsecase(db),
     authRepository: AuthRepository = authRepository(db),
-    getInvitationsViewsRepository: GetInvitationsViewsRepository
+    getInvitationsViewsRepository: GetInvitationsViewsRepository = getInvitationsViewsRepository(db)
 ): InvitationsDependencies = InvitationsDependencies(
     invitationsCreateRepository = UsecaseCreateInvitationRepository(
         usecase = CreateInvitationUsecase(
