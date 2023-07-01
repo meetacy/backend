@@ -1,13 +1,10 @@
 package app.meetacy.backend.infrastructure.factories.meetings.history
 
-import app.meetacy.backend.database.integration.meetings.history.active.DatabaseListActiveMeetingsStorage
 import app.meetacy.backend.database.integration.meetings.history.past.DatabaseListPastMeetingsStorage
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.infrastructure.factories.meetings.getMeetingsViewsRepository
-import app.meetacy.backend.usecase.integration.meetings.history.active.UsecaseListActiveMeetingsRepository
 import app.meetacy.backend.usecase.integration.meetings.history.past.UsecaseListPastMeetingsRepository
-import app.meetacy.backend.usecase.meetings.history.active.ListMeetingsActiveUsecase
 import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
@@ -19,13 +16,7 @@ fun meetingHistoryDependencies(
     getMeetingsViewsRepository: GetMeetingsViewsRepository = getMeetingsViewsRepository(db)
 ): MeetingsHistoryDependencies = MeetingsHistoryDependencies(
     listMeetingsHistoryRepository = listMeetingsHistoryRepository(db),
-    meetingsActiveRepository = UsecaseListActiveMeetingsRepository(
-        usecase = ListMeetingsActiveUsecase(
-            authRepository,
-            storage = DatabaseListActiveMeetingsStorage(db),
-            getMeetingsViewsRepository = getMeetingsViewsRepository
-        )
-    ),
+    meetingsActiveRepository = listActiveMeetingsRepository(db),
     meetingsPastRepository = UsecaseListPastMeetingsRepository(
         usecase = ListMeetingsPastUsecase(
             authRepository,
