@@ -46,7 +46,7 @@ fun meetingsDependenciesFactory(
     db: Database,
     authRepository: AuthRepository = authRepository(db),
     filesRepository: FilesRepository = filesRepository(db),
-    checkMeetingsRepository: CheckMeetingRepository,
+    checkMeetingsRepository: CheckMeetingRepository = checkMeetingsRepository(db),
     getMeetingsViewsRepository: GetMeetingsViewsRepository = getMeetingsViewsRepository(db),
     getUsersViewsRepository: GetUsersViewsRepository = getUserViewsRepository(db),
     viewMeetingsRepository: ViewMeetingsRepository = viewMeetingsRepository(db)
