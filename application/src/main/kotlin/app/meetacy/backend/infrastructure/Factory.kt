@@ -3,7 +3,6 @@ package app.meetacy.backend.infrastructure
 import app.meetacy.backend.database.integration.types.GetInvitationsViewsRepository
 import app.meetacy.backend.database.integration.types.GetNotificationsViewsRepository
 import app.meetacy.backend.database.integration.types.ViewInvitationsRepository
-import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.infrastructure.factories.auth.authDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.files.fileDependenciesFactory
@@ -37,8 +36,6 @@ fun startEndpoints(
         getUsersViewsRepository = getUserViewsRepository(db)
     )
 
-    val updatesMiddleware = UpdatesMiddleware(db)
-
     startEndpoints(
         port = port,
         wait = wait,
@@ -58,8 +55,7 @@ fun startEndpoints(
         ),
         updatesDependencies = updatesDependenciesFactory(
             db = db,
-            getNotificationsViewsRepository = getNotificationsViewsRepository,
-            updatesMiddleware = updatesMiddleware
+            getNotificationsViewsRepository = getNotificationsViewsRepository
         )
     )
 }

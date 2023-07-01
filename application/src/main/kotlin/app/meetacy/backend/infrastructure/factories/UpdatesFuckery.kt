@@ -3,6 +3,7 @@ package app.meetacy.backend.infrastructure.factories
 import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
+import app.meetacy.backend.infrastructure.factories.notifications.updatesMiddlewareBuilder
 import app.meetacy.backend.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository
@@ -13,7 +14,7 @@ fun updatesDependenciesFactory(
     db: Database,
     authRepository: AuthRepository = authRepository(db),
     getNotificationsViewsRepository: GetNotificationsViewsRepository,
-    updatesMiddleware: UpdatesMiddleware
+    updatesMiddleware: UpdatesMiddleware = updatesMiddlewareBuilder(db)
 ): UpdatesDependencies = UpdatesDependencies(
     streamUpdatesRepository = UsecaseStreamUpdatesRepository(
         usecase = StreamUpdatesUsecase(
