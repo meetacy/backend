@@ -3,8 +3,8 @@ package app.meetacy.backend.infrastructure.factories.updates
 import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
-import app.meetacy.backend.infrastructure.factories.notifications.getNotificationViewsRepository
-import app.meetacy.backend.infrastructure.factories.notifications.updatesMiddlewareBuilder
+import app.meetacy.backend.infrastructure.factories.notifications.list.getNotificationViewsRepository
+import app.meetacy.backend.infrastructure.factories.notifications.add.updatesMiddlewareBuilder
 import app.meetacy.backend.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository

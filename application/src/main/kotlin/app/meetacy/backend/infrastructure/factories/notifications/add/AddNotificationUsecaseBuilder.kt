@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories.notifications
+package app.meetacy.backend.infrastructure.factories.notifications.add
 
 import app.meetacy.backend.database.integration.notifications.AddNotificationUsecase
 import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware

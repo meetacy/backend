@@ -3,7 +3,7 @@ package app.meetacy.backend.infrastructure.factories.friends.add
 import app.meetacy.backend.database.integration.friends.add.DatabaseAddFriendStorage
 import app.meetacy.backend.endpoint.friends.add.AddFriendRepository
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
-import app.meetacy.backend.infrastructure.factories.notifications.addNotificationUsecase
+import app.meetacy.backend.infrastructure.factories.notifications.add.addNotificationUsecase
 import app.meetacy.backend.infrastructure.factories.users.getUserViewsRepository
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository

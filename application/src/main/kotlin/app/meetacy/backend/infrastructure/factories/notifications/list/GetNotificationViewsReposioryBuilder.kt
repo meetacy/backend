@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories.notifications
+package app.meetacy.backend.infrastructure.factories.notifications.list
 
 import app.meetacy.backend.database.integration.types.GetNotificationsViewsRepository
 import app.meetacy.backend.infrastructure.factories.meetings.get.getMeetingsViewsRepository

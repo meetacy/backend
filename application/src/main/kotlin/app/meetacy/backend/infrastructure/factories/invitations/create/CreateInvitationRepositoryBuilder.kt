@@ -5,7 +5,7 @@ import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepositor
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.infrastructure.factories.invitations.getInvitationsViewsRepository
-import app.meetacy.backend.infrastructure.factories.notifications.addNotificationUsecase
+import app.meetacy.backend.infrastructure.factories.notifications.add.addNotificationUsecase
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
 import app.meetacy.backend.usecase.invitations.add.AddNotificationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
