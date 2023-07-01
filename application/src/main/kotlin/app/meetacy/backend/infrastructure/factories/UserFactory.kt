@@ -3,6 +3,7 @@ package app.meetacy.backend.infrastructure.factories
 import app.meetacy.backend.database.integration.users.edit.DatabaseEditUserStorage
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
+import app.meetacy.backend.infrastructure.factories.files.filesRepository
 import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
 import app.meetacy.backend.usecase.types.AuthRepository
@@ -16,7 +17,7 @@ import org.jetbrains.exposed.sql.Database
 fun userDependenciesFactory(
     db: Database,
     authRepository: AuthRepository = authRepository(db),
-    filesRepository: FilesRepository,
+    filesRepository: FilesRepository = filesRepository(db),
     getUsersViewsRepository: GetUsersViewsRepository
 ): UsersDependencies = UsersDependencies(
     getUserRepository = UsecaseUserRepository(

@@ -16,6 +16,7 @@ import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
+import app.meetacy.backend.infrastructure.factories.files.filesRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
@@ -43,7 +44,7 @@ import org.jetbrains.exposed.sql.Database
 fun meetingsDependenciesFactory(
     db: Database,
     authRepository: AuthRepository = authRepository(db),
-    filesRepository: FilesRepository,
+    filesRepository: FilesRepository = filesRepository(db),
     checkMeetingsRepository: CheckMeetingRepository,
     getMeetingsViewsRepository: GetMeetingsViewsRepository,
     getUsersViewsRepository: GetUsersViewsRepository,

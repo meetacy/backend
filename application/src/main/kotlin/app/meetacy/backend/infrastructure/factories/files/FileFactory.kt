@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories
+package app.meetacy.backend.infrastructure.factories.files
 
 import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository
 import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage

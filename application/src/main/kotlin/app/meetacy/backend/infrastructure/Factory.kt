@@ -8,6 +8,7 @@ import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.infrastructure.factories.*
 import app.meetacy.backend.infrastructure.factories.auth.authDependenciesFactory
+import app.meetacy.backend.infrastructure.factories.files.fileDependenciesFactory
 import org.jetbrains.exposed.sql.Database
 
 fun startEndpoints(
@@ -17,8 +18,6 @@ fun startEndpoints(
     db: Database,
     wait: Boolean,
 ) {
-    val filesRepository = DatabaseFilesRepository(db)
-
     val getUsersViewsRepository = DatabaseGetUsersViewsRepository(db)
     val getMeetingsViewsRepository = DatabaseGetMeetingsViewsRepository(db)
     val viewMeetingsRepository = DatabaseGetMeetingsViewsViewMeetingsRepository(db)
@@ -45,7 +44,6 @@ fun startEndpoints(
         authDependencies = authDependenciesFactory(db),
         usersDependencies = userDependenciesFactory(
             db = db,
-            filesRepository = filesRepository,
             getUsersViewsRepository = getUsersViewsRepository
         ),
         friendsDependencies = friendDependenciesFactory(
@@ -55,7 +53,6 @@ fun startEndpoints(
         ),
         meetingsDependencies = meetingsDependenciesFactory(
             db = db,
-            filesRepository = filesRepository,
             checkMeetingsRepository = checkMeetingsRepository,
             getMeetingsViewsRepository = getMeetingsViewsRepository,
             getUsersViewsRepository = getUsersViewsRepository,
