@@ -1,9 +1,11 @@
-package app.meetacy.backend.infrastructure.factories.meetings
+package app.meetacy.backend.infrastructure.factories.meetings.edit
 
 import app.meetacy.backend.database.integration.meetings.edit.DatabaseEditMeetingStorage
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingRepository
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.infrastructure.factories.files.filesRepository
+import app.meetacy.backend.infrastructure.factories.meetings.get.getMeetingsViewsRepository
+import app.meetacy.backend.infrastructure.factories.meetings.get.viewMeetingsRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.usecase.types.AuthRepository

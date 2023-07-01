@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories.meetings
+package app.meetacy.backend.infrastructure.factories.meetings.get
 
 import app.meetacy.backend.endpoint.meetings.get.GetMeetingRepository
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
