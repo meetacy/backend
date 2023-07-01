@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.factories
+package app.meetacy.backend.infrastructure.factories.users
 
 import app.meetacy.backend.database.integration.users.edit.DatabaseEditUserStorage
 import app.meetacy.backend.endpoint.users.UsersDependencies
@@ -18,7 +18,7 @@ fun userDependenciesFactory(
     db: Database,
     authRepository: AuthRepository = authRepository(db),
     filesRepository: FilesRepository = filesRepository(db),
-    getUsersViewsRepository: GetUsersViewsRepository
+    getUsersViewsRepository: GetUsersViewsRepository = getUserViewsRepository(db)
 ): UsersDependencies = UsersDependencies(
     getUserRepository = UsecaseUserRepository(
         usecase = GetUserSafeUsecase(

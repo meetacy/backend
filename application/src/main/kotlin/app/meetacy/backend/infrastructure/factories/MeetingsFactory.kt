@@ -17,6 +17,7 @@ import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependenci
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.infrastructure.factories.files.filesRepository
+import app.meetacy.backend.infrastructure.factories.users.getUserViewsRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
@@ -47,7 +48,7 @@ fun meetingsDependenciesFactory(
     filesRepository: FilesRepository = filesRepository(db),
     checkMeetingsRepository: CheckMeetingRepository,
     getMeetingsViewsRepository: GetMeetingsViewsRepository,
-    getUsersViewsRepository: GetUsersViewsRepository,
+    getUsersViewsRepository: GetUsersViewsRepository = getUserViewsRepository(db),
     viewMeetingsRepository: ViewMeetingsRepository
 ): MeetingsDependencies = MeetingsDependencies(
     meetingsHistoryDependencies = MeetingsHistoryDependencies(

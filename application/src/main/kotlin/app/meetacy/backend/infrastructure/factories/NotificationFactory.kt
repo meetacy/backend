@@ -4,6 +4,7 @@ import app.meetacy.backend.database.integration.notifications.DatabaseReadNotifi
 import app.meetacy.backend.database.integration.notifications.GetNotificationsUsecase
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
+import app.meetacy.backend.infrastructure.factories.users.getUserViewsRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseListNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
@@ -16,7 +17,7 @@ fun notificationDependenciesFactory(
     db: Database,
     authRepository: AuthRepository = authRepository(db),
     getMeetingsViewsRepository: GetMeetingsViewsRepository,
-    getUsersViewsRepository: GetUsersViewsRepository
+    getUsersViewsRepository: GetUsersViewsRepository = getUserViewsRepository(db)
 ): NotificationsDependencies = NotificationsDependencies(
     listNotificationsRepository = UsecaseListNotificationsRepository(
         usecase = GetNotificationsUsecase(
