@@ -6,14 +6,12 @@ import app.meetacy.backend.database.integration.location.stream.DatabaseFriendsL
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
-import app.meetacy.backend.infrastructure.factories.notifications.addNotificationUsecase
 import app.meetacy.backend.infrastructure.factories.users.getUserViewsRepository
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
 import app.meetacy.backend.usecase.integration.friends.location.stream.UsecaseStreamLocationRepository
-import app.meetacy.backend.usecase.invitations.add.AddNotificationUsecase
 import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetUsersViewsRepository
@@ -21,7 +19,6 @@ import org.jetbrains.exposed.sql.Database
 
 fun friendDependenciesFactory(
     db: Database,
-    addNotificationUsecase: AddNotificationUsecase = addNotificationUsecase(db),
     authRepository: AuthRepository = authRepository(db),
     getUsersViewsRepository: GetUsersViewsRepository = getUserViewsRepository(db)
 ): FriendsDependencies = FriendsDependencies(
@@ -34,12 +31,7 @@ fun friendDependenciesFactory(
             )
         )
     ),
-    addFriendRepository = addFriendRepository(
-        db,
-        authRepository,
-        getUsersViewsRepository,
-        addNotificationUsecase
-    ),
+    addFriendRepository = addFriendRepository(db),
     listFriendsRepository = UsecaseListFriendsRepository(
         usecase = ListFriendsUsecase(
             authRepository = authRepository,
