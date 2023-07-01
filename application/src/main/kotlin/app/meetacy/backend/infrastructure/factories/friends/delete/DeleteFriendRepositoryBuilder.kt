@@ -3,7 +3,7 @@ package app.meetacy.backend.infrastructure.factories.friends.delete
 import app.meetacy.backend.database.integration.friends.delete.DatabaseDeleteFriendStorage
 import app.meetacy.backend.endpoint.friends.delete.DeleteFriendRepository
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
-import app.meetacy.backend.infrastructure.factories.users.getUserViewsRepository
+import app.meetacy.backend.infrastructure.factories.users.get.getUserViewsRepository
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.types.AuthRepository

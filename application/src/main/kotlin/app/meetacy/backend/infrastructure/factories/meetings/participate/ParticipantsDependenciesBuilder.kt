@@ -4,7 +4,7 @@ import app.meetacy.backend.database.integration.meetings.participants.list.Datab
 import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependencies
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.infrastructure.factories.meetings.checkMeetingsRepository
-import app.meetacy.backend.infrastructure.factories.users.getUserViewsRepository
+import app.meetacy.backend.infrastructure.factories.users.get.getUserViewsRepository
 import app.meetacy.backend.usecase.integration.meetings.participants.list.UsecaseListMeetingParticipantsRepository
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.types.AuthRepository

@@ -4,7 +4,7 @@ import app.meetacy.backend.database.integration.notifications.GetNotificationsUs
 import app.meetacy.backend.endpoint.notifications.get.ListNotificationsRepository
 import app.meetacy.backend.infrastructure.factories.auth.authRepository
 import app.meetacy.backend.infrastructure.factories.meetings.get.getMeetingsViewsRepository
-import app.meetacy.backend.infrastructure.factories.users.getUserViewsRepository
+import app.meetacy.backend.infrastructure.factories.users.get.getUserViewsRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseListNotificationsRepository
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
