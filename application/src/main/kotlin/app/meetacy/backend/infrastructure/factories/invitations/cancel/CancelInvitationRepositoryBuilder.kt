@@ -8,7 +8,10 @@ import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.types.AuthRepository
 import org.jetbrains.exposed.sql.Database
 
-fun cancelInvitationRepository(db: Database, authRepository: AuthRepository = authRepository(db)): CancelInvitationRepository = UsecaseCancelInvitationRepository(
+fun cancelInvitationRepository(
+    db: Database,
+    authRepository: AuthRepository = authRepository(db)
+): CancelInvitationRepository = UsecaseCancelInvitationRepository(
     usecase = CancelInvitationUsecase(
         authRepository = authRepository,
         storage = DatabaseCancelInvitationStorage(db)
