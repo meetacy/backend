@@ -1,5 +1,8 @@
+@file:Suppress("UNUSED_VARIABLE", "NAME_SHADOWING")
+
 package app.meetacy.backend.infrastructure
 
+import app.meetacy.backend.di.di
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.infrastructure.factories.auth.authDependenciesFactory
 import app.meetacy.backend.infrastructure.factories.files.fileDependenciesFactory
@@ -18,16 +21,22 @@ fun startEndpoints(
     db: Database,
     wait: Boolean,
 ) {
+    val di = di() + di {
+        val filesBasePath by constant(filesBasePath)
+        val filesLimit by constant(filesLimit)
+        val db by constant(db)
+    }
+
     startEndpoints(
         port = port,
         wait = wait,
-        authDependencies = authDependenciesFactory(db),
-        usersDependencies = userDependenciesFactory(db),
-        friendsDependencies = friendDependenciesFactory(db),
-        meetingsDependencies = meetingsDependenciesFactory(db),
-        notificationsDependencies = notificationDependenciesFactory(db),
-        filesDependencies = fileDependenciesFactory(db, filesBasePath, filesLimit),
-        invitationsDependencies = invitationDependenciesFactory(db),
-        updatesDependencies = updatesDependenciesFactory(db)
+        authDependencies = di.get(),
+        usersDependencies = di.get(),
+        friendsDependencies = di.get(),
+        meetingsDependencies = di.get(),
+        notificationsDependencies = di.get(),
+        filesDependencies = di.get(),
+        invitationsDependencies = di.get(),
+        updatesDependencies = di.get()
     )
 }

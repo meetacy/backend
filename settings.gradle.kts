@@ -25,5 +25,6 @@ include(
     "libs:hash-generator:usecase-integration",
     "libs:utf8-checker",
     "libs:utf8-checker:usecase-integration",
-    "libs:stdlib-extensions"
+    "libs:stdlib-extensions",
+    "libs:di"
 )
