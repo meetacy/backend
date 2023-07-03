@@ -22,5 +22,5 @@ val tables: List<Table> = listOf(
     LastReadNotificationsTable, NotificationsTable,
     FriendsTable, UpdatesTable
 ).apply {
-    require(distinctBy { table -> table.name }.size == size) { "There were duplicates in `tables` list" }
+    require(distinctBy { table -> table.tableName }.size == size) { "There were duplicates in `tables` list" }
 }
