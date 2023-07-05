@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 package app.meetacy.backend.infrastructure.integrations.notifications.list
 
 import app.meetacy.backend.database.integration.notifications.DatabaseGetNotificationStorage
