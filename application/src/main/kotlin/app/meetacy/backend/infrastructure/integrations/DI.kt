@@ -7,6 +7,7 @@ import app.meetacy.backend.infrastructure.integrations.friends.friends
 import app.meetacy.backend.infrastructure.integrations.invitations.invitations
 import app.meetacy.backend.infrastructure.integrations.meetings.meetings
 import app.meetacy.backend.infrastructure.integrations.notifications.notifications
+import app.meetacy.backend.infrastructure.integrations.updates.updates
 import app.meetacy.backend.infrastructure.integrations.users.users
 
 fun DIBuilder.integrations() {
@@ -17,4 +18,5 @@ fun DIBuilder.integrations() {
     meetings()
     notifications()
     users()
+    updates()
 }
