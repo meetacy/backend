@@ -6,20 +6,20 @@ import app.meetacy.backend.di.DI
 import app.meetacy.backend.di.builder.DIBuilder
 import app.meetacy.backend.di.dependency.Dependency
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
-import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.integrations.notifications.add.addNotificationUsecase
-import app.meetacy.backend.infrastructure.integrations.notifications.list.listNotificationRepository
-import app.meetacy.backend.infrastructure.integrations.notifications.read.readNotificationRepository
+import app.meetacy.backend.infrastructure.integrations.notifications.list.listNotificationsRepository
+import app.meetacy.backend.infrastructure.integrations.notifications.read.readNotificationsRepository
 
 val DI.notificationsDependencies: NotificationsDependencies by Dependency
 
 fun DIBuilder.notifications() {
     addNotificationUsecase()
+    listNotificationsRepository()
+    readNotificationsRepository()
     val notificationsDependencies by singleton<NotificationsDependencies> {
         NotificationsDependencies(
-            listNotificationsRepository = listNotificationRepository(database),
-            readNotificationsRepository = readNotificationRepository(database)
+            listNotificationsRepository = listNotificationsRepository,
+            readNotificationsRepository = readNotificationsRepository
         )
     }
-    // TODO: migrate to the new DI
 }
