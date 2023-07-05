@@ -71,9 +71,14 @@ class DI private constructor(
     private fun <T> provideSingleton(
         dependency: DependencyPair<T>
     ): T {
-        return singletons.computeIfAbsent(dependency.key) {
-            dependency.provider.createNewInstance(subDI(dependency.key))
-        } as T
+        if (dependency.key in singletons) return singletons.getValue(dependency.key) as T
+
+        return synchronized(lock = singletons) {
+            if (dependency.key in singletons) return singletons.getValue(dependency.key) as T
+            val instance = dependency.provider.createNewInstance(subDI(dependency.key))
+            singletons[dependency.key] = instance
+            instance
+        }
     }
 
     fun <T> get(
@@ -103,7 +108,7 @@ class DI private constructor(
 //        singletons = singletons + other.singletons
     )
 
-    val getting: InnerGettingDelegate = InnerGettingDelegate(di = this)
+    val getting: InnerDependency = InnerDependency(di = this)
 
     private fun subDI(key: DependencyKey<*>): DI {
         return DI(
