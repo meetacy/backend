@@ -4,14 +4,14 @@ import app.meetacy.backend.di.DI
 import kotlin.reflect.KProperty
 import kotlin.reflect.typeOf
 
-object GettingDelegate {
+object Dependency {
     inline operator fun <reified T> getValue(
         thisRef: DI,
         property: KProperty<*>
     ): T = thisRef.get(typeOf<T>(), property.name)
 }
 
-class InnerGettingDelegate(val di: DI) {
+class InnerDependency(val di: DI) {
     inline operator fun <reified T> getValue(
         thisRef: Any?,
         property: KProperty<*>

@@ -103,7 +103,7 @@ class DI private constructor(
 //        singletons = singletons + other.singletons
     )
 
-    val getting: InnerGettingDelegate = InnerGettingDelegate(di = this)
+    val getting: InnerDependency = InnerDependency(di = this)
 
     private fun subDI(key: DependencyKey<*>): DI {
         return DI(
