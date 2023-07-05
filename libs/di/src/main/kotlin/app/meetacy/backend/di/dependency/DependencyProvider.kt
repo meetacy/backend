@@ -1,4 +1,6 @@
-package app.meetacy.backend.di
+package app.meetacy.backend.di.dependency
+
+import app.meetacy.backend.di.DI
 
 sealed interface DependencyProvider<out T> {
 

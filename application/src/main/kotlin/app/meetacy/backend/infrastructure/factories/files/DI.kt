@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.factories.files
 
-import app.meetacy.backend.di.DIBuilder
+import app.meetacy.backend.di.builder.DIBuilder
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.infrastructure.factories.files.get.getFileRepository
 import app.meetacy.backend.infrastructure.factories.files.upload.uploadFileRepository

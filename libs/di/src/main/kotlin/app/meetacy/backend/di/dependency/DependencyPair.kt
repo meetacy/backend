@@ -1,4 +1,4 @@
-package app.meetacy.backend.di
+package app.meetacy.backend.di.dependency
 
 data class DependencyPair<T>(
     val key: DependencyKey<T>,

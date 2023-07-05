@@ -1,9 +1,19 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 package app.meetacy.backend.infrastructure.factories.files.get
 
 import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository
-import app.meetacy.backend.di.DIBuilder
-import app.meetacy.backend.infrastructure.baseUrl
+import app.meetacy.backend.di.DI
+import app.meetacy.backend.di.builder.DIBuilder
+import app.meetacy.backend.di.dependency.GettingDelegate
+import app.meetacy.backend.endpoint.files.download.GetFileRepository
+import app.meetacy.backend.infrastructure.database.files.filesStorage
+import app.meetacy.backend.infrastructure.filesDirectory
 
-fun DIBuilder.getFileRepository() = singleton {
-    DatabaseGetFileRepository(get(), baseUrl)
+val DI.getFileRepository: GetFileRepository by GettingDelegate
+
+fun DIBuilder.getFileRepository() {
+    val getFilesRepository by singleton {
+        DatabaseGetFileRepository(filesStorage, filesDirectory)
+    }
 }

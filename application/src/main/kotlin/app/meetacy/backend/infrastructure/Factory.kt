@@ -2,16 +2,8 @@
 
 package app.meetacy.backend.infrastructure
 
-import app.meetacy.backend.di.di
+import app.meetacy.backend.di.builder.di
 import app.meetacy.backend.endpoint.startEndpoints
-import app.meetacy.backend.infrastructure.factories.auth.authDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.files.fileDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.friends.friendDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.invitations.invitationDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.meetings.meetingsDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.notifications.notificationDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.updates.updatesDependenciesFactory
-import app.meetacy.backend.infrastructure.factories.users.userDependenciesFactory
 import org.jetbrains.exposed.sql.Database
 
 fun startEndpoints(
@@ -21,7 +13,7 @@ fun startEndpoints(
     db: Database,
     wait: Boolean,
 ) {
-    val di = di() + di {
+    val di = di() extend {
         val filesBasePath by constant(filesBasePath)
         val filesLimit by constant(filesLimit)
         val db by constant(db)
