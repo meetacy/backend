@@ -18,20 +18,20 @@ class UploadFileUsecase(
     sealed interface Result {
         class Success(val fileIdentity: FileIdentity) : Result
         object InvalidIdentity : Result
-        class LimitSize(val filesSize: FileSize, val limitSize: Long) : Result
+        class LimitSize(val filesSize: FileSize, val limitSize: FileSize) : Result
     }
 
     suspend fun saveFile(
         accessIdentity: AccessIdentity,
         fileUploader: FileUploader,
         fileName: String,
-        filesLimit: Long
+        filesLimit: FileSize
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
         val accessHash = AccessHash(hashGenerator.generate())
         val fileIdentity = storage.saveFileDescription(userId, accessHash, fileName)
         val wastedSize = storage.getUserWastedSize(userId)
-        val userFilesLimit = FileSize(filesLimit - wastedSize.bytesSize)
+        val userFilesLimit = FileSize(filesLimit.bytesSize - wastedSize.bytesSize)
 
         return when (val fileSize = fileUploader.uploadFile(fileIdentity.id, userFilesLimit)) {
             null -> Result.LimitSize(wastedSize, filesLimit)

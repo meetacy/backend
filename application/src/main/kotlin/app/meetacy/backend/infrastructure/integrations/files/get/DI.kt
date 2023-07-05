@@ -8,12 +8,12 @@ import app.meetacy.backend.di.builder.DIBuilder
 import app.meetacy.backend.di.dependency.Dependency
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.infrastructure.database.files.filesStorage
-import app.meetacy.backend.infrastructure.filesDirectory
+import app.meetacy.backend.infrastructure.filesBasePath
 
 val DI.getFileRepository: GetFileRepository by Dependency
 
 fun DIBuilder.getFileRepository() {
-    val getFilesRepository by singleton {
-        DatabaseGetFileRepository(filesStorage, filesDirectory)
+    val getFilesRepository by singleton<GetFileRepository> {
+        DatabaseGetFileRepository(filesStorage, filesBasePath)
     }
 }
