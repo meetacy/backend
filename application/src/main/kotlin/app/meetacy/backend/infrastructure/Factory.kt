@@ -4,6 +4,7 @@ import app.meetacy.backend.di.DI
 import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.infrastructure.integrations.auth.authDependencies
 import app.meetacy.backend.infrastructure.integrations.files.filesDependencies
+import app.meetacy.backend.infrastructure.integrations.users.usersDependencies
 
 fun startEndpoints(
     di: DI,
@@ -13,7 +14,7 @@ fun startEndpoints(
         port = di.port,
         wait = wait,
         authDependencies = di.authDependencies,
-        usersDependencies = di.get(),
+        usersDependencies = di.usersDependencies,
         friendsDependencies = di.get(),
         meetingsDependencies = di.get(),
         notificationsDependencies = di.get(),
