@@ -365,6 +365,7 @@ fun runTestServer(
             )
         )
     )
+    // TODO: migrate this fuckery to the new DI
     block()
     server.stop()
 }
