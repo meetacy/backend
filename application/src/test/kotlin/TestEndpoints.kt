@@ -15,6 +15,7 @@ import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
+import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
@@ -302,7 +303,7 @@ fun runTestServer(
                     storage = mockStorage,
                     hashGenerator = DefaultHashGenerator
                 ),
-                filesLimit = 100L * 1024 * 1024,
+                filesLimit = FileSize(100L * 1024 * 1024),
                 deleteFilesOnExit = true
             ),
             getFileRepository = mockStorage
