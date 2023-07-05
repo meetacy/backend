@@ -1,6 +1,9 @@
 package app.meetacy.backend.di
 
 import app.meetacy.backend.di.annotation.DIDsl
+import app.meetacy.backend.di.builder.DIBuilder
+import app.meetacy.backend.di.builder.di
+import app.meetacy.backend.di.dependency.*
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
@@ -90,11 +93,17 @@ class DI private constructor(
         )
     }
 
+    infix fun extend(block: DIBuilder.() -> Unit): DI = this + di(checkDependencies = false, block = block)
+
+    // TODO: add trace and singletons, so that initialization of singleton made in
+    //  one of children also saves it for parent
     operator fun plus(other: DI): DI = DI(
-        dependencies = Dependencies(list = dependencies.list + other.dependencies.list)
+        dependencies = Dependencies(list = dependencies.list + other.dependencies.list),
+//        trace = DependencyTrace(trace.list + other.trace.list),
+//        singletons = singletons + other.singletons
     )
 
-    val getting: GettingDelegate = GettingDelegate(di = this)
+    val getting: InnerGettingDelegate = InnerGettingDelegate(di = this)
 
     private fun subDI(key: DependencyKey<*>): DI {
         return DI(

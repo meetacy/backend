@@ -1,5 +1,7 @@
 package app.meetacy.backend.di
 
+import app.meetacy.backend.di.dependency.Dependencies
+
 /**
  * Throws if some dependencies are inaccessible.
  * This eliminates cons of having service locator

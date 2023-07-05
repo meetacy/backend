@@ -2,7 +2,7 @@
 
 package app.meetacy.backend.infrastructure.database
 
-import app.meetacy.backend.di.DIBuilder
+import app.meetacy.backend.di.builder.DIBuilder
 import org.jetbrains.exposed.sql.Database
 
 fun DIBuilder.database() {
@@ -10,8 +10,6 @@ fun DIBuilder.database() {
         val databaseUrl: String by getting
         val databaseUser: String by getting
         val databasePassword: String by getting
-
-        println("DATABASE $databaseUrl")
 
         Database.connect(
             url = databaseUrl,

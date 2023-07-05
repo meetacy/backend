@@ -1,7 +1,14 @@
-package app.meetacy.backend.di
+package app.meetacy.backend.di.builder
 
-import app.meetacy.backend.di.SingletonInitialize.Eager
+import app.meetacy.backend.di.DI
+import app.meetacy.backend.di.dependency.SingletonInitialize
+import app.meetacy.backend.di.dependency.SingletonInitialize.Eager
 import app.meetacy.backend.di.annotation.DIDsl
+import app.meetacy.backend.di.checkDependencies
+import app.meetacy.backend.di.dependency.Dependencies
+import app.meetacy.backend.di.dependency.DependencyKey
+import app.meetacy.backend.di.dependency.DependencyPair
+import app.meetacy.backend.di.dependency.DependencyProvider
 import kotlin.reflect.typeOf
 
 inline fun di(

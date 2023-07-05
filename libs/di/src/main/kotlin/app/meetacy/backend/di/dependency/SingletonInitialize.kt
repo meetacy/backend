@@ -1,4 +1,4 @@
-package app.meetacy.backend.di
+package app.meetacy.backend.di.dependency
 
 enum class SingletonInitialize {
     Eager, Lazy
