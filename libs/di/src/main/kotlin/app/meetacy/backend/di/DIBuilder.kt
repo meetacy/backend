@@ -1,6 +1,7 @@
 package app.meetacy.backend.di
 
 import app.meetacy.backend.di.SingletonInitialize.Eager
+import app.meetacy.backend.di.annotation.DIDsl
 import kotlin.reflect.typeOf
 
 inline fun di(
@@ -19,6 +20,7 @@ inline fun di(
     block: DIBuilder.() -> Unit
 ): DI = di(di.dependencies, checkDependencies, block)
 
+@DIDsl
 class DIBuilder(dependencies: Dependencies) {
     private val dependencies: MutableList<DependencyPair<*>> = dependencies.list.toMutableList()
 

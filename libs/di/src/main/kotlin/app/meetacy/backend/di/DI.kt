@@ -1,8 +1,10 @@
 package app.meetacy.backend.di
 
+import app.meetacy.backend.di.annotation.DIDsl
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
+@DIDsl
 class DI private constructor(
     val dependencies: Dependencies,
     private val trace: DependencyTrace,
