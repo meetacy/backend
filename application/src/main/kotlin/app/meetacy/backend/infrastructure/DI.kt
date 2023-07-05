@@ -7,6 +7,7 @@ import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.factories.files.files
 
 val DI.baseUrl: String by GettingDelegate
+val DI.filesDirectory: String by GettingDelegate
 
 fun di() = di {
     database()
