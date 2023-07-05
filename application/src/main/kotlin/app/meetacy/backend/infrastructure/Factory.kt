@@ -5,6 +5,7 @@ import app.meetacy.backend.endpoint.startEndpoints
 import app.meetacy.backend.infrastructure.integrations.auth.authDependencies
 import app.meetacy.backend.infrastructure.integrations.files.filesDependencies
 import app.meetacy.backend.infrastructure.integrations.friends.friendsDependencies
+import app.meetacy.backend.infrastructure.integrations.meetings.meetingsDependencies
 import app.meetacy.backend.infrastructure.integrations.notifications.notificationsDependencies
 import app.meetacy.backend.infrastructure.integrations.users.usersDependencies
 
@@ -18,7 +19,7 @@ fun startEndpoints(
         authDependencies = di.authDependencies,
         usersDependencies = di.usersDependencies,
         friendsDependencies = di.friendsDependencies,
-        meetingsDependencies = di.get(),
+        meetingsDependencies = di.meetingsDependencies,
         notificationsDependencies = di.notificationsDependencies,
         filesDependencies = di.filesDependencies,
         invitationsDependencies = di.get(),
