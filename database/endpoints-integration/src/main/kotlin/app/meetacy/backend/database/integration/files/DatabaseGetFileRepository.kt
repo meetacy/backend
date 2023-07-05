@@ -8,10 +8,9 @@ import org.jetbrains.exposed.sql.Database
 import java.io.File
 
 class DatabaseGetFileRepository(
-    database: Database,
+    private val filesStorage: FilesStorage,
     private val basePath: String
 ) : GetFileRepository {
-    private val filesStorage = FilesStorage(database)
     override suspend fun getFile(fileId: FileIdentity): GetFileResult {
         return when(val description = filesStorage.getFileDescription(fileId.id)) {
             null -> GetFileResult.InvalidFileIdentity

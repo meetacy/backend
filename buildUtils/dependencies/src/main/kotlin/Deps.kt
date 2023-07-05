@@ -255,5 +255,6 @@ object Deps {
         const val Utf8Checker = ":libs:utf8-checker"
         const val Utf8CheckerUsecase = ":libs:utf8-checker:usecase-integration"
         const val StdlibExtensions = ":libs:stdlib-extensions"
+        const val DI = ":libs:di"
     }
 }
