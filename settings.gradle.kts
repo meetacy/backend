@@ -28,3 +28,18 @@ include(
     "libs:stdlib-extensions",
     "libs:di"
 )
+include("invitation")
+include("invitation:database")
+findProject(":invitation:database")?.name = "database"
+include("invitation:usecase")
+findProject(":invitation:usecase")?.name = "usecase"
+include("invitation:endpoints")
+findProject(":invitation:endpoints")?.name = "endpoints"
+include("invitation:types")
+findProject(":invitation:types")?.name = "types"
+include("invitation:usecase:integrations")
+findProject(":invitation:usecase:integrations")?.name = "integrations"
+include("invitation:database:integrations")
+findProject(":invitation:database:integrations")?.name = "integrations"
+include("invitation:types:integrations")
+findProject(":invitation:types:integrations")?.name = "integrations"

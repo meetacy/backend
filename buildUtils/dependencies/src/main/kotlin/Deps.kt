@@ -242,6 +242,19 @@ object Deps {
         }
     }
     object Projects {
+        object Invitation {
+            // components
+            const val Database = ":invitation:database"
+            const val Endpoints = ":invitation:endpoints"
+            const val Usecase = ":invitation:usecase"
+            const val Types = ":invitation:types"
+            const val it = ":invitation"
+            // integrations for each component (database, usecase, etc.)
+            const val DatabaseIntegrations = ":invitation:database:integrations"
+            const val UsecaseIntegrations = ":invitation:usecase:integrations"
+            const val TypesIntegrations = ":invitation:types:integrations"
+        }
+
         const val Endpoints = ":endpoints"
         const val Usecase = ":usecase"
         const val UsecaseEndpoints = ":usecase:endpoints-integration"
