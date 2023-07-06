@@ -2,7 +2,6 @@
 
 package app.meetacy.backend.database.invitations
 
-import app.meetacy.backend.database.invitations.InvitationsTable.ACCESS_HASH
 import app.meetacy.backend.database.invitations.InvitationsTable.INVITATION_ID
 import app.meetacy.backend.database.invitations.InvitationsTable.INVITED_USER_ID
 import app.meetacy.backend.database.invitations.InvitationsTable.INVITER_USER_ID
