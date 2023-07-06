@@ -1,8 +1,8 @@
-package app.meetacy.backend.usecase.integration.types
+package app.meetacy.usecase.integration.types
 
-import app.meetacy.backend.endpoint.types.invitation.Invitation
-import app.meetacy.backend.types.serialization.datetime.serializable
+import app.meetacy.backend.endpoints.types.Invitation
 import app.meetacy.backend.types.serialization.invitation.serializable
+import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.types.InvitationView
 
 fun InvitationView.toEndpoint(): Invitation {

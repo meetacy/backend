@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.types.invitation
+package app.meetacy.backend.endpoints.types
 
 import app.meetacy.backend.endpoint.types.meeting.Meeting
 import app.meetacy.backend.endpoint.types.user.User
