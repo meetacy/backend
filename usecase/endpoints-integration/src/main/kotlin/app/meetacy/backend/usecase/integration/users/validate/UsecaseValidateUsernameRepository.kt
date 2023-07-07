@@ -2,6 +2,7 @@ package app.meetacy.backend.usecase.integration.users.validate
 
 import app.meetacy.backend.endpoint.validate.ValidateUsernameRepository
 import app.meetacy.backend.endpoint.validate.ValidateUsernameResult
+import app.meetacy.backend.types.serialization.user.serializable
 import app.meetacy.backend.usecase.validate.ValidateUsernameUsecase
 
 class UsecaseValidateUsernameRepository(
@@ -14,6 +15,6 @@ class UsecaseValidateUsernameRepository(
             ValidateUsernameUsecase.Result.InvalidUtf8String ->
                 ValidateUsernameResult.InvalidValidateUsernameString
             is ValidateUsernameUsecase.Result.Success ->
-                ValidateUsernameResult.Success(result.username)
+                ValidateUsernameResult.Success(result.username.serializable())
         }
 }

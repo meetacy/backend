@@ -3,7 +3,7 @@ package app.meetacy.backend.endpoint.validate
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.user.Username
+import app.meetacy.backend.types.serialization.user.UsernameSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -19,7 +19,7 @@ interface ValidateUsernameRepository {
 }
 
 sealed interface ValidateUsernameResult {
-    class Success(val username: Username) : ValidateUsernameResult
+    class Success(val username: UsernameSerializable) : ValidateUsernameResult
     object AlreadyOccupiedUsername : ValidateUsernameResult
     object InvalidValidateUsernameString : ValidateUsernameResult
 }
