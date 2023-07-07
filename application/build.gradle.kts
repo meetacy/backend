@@ -17,6 +17,7 @@ dependencies {
     implementation(project(Deps.Projects.DatabaseExtensions))
     implementation(project(Deps.Projects.EndpointsNew))
     implementation(project(Deps.Projects.Invitation.it))
+    implementation(project(Deps.Projects.Notification.it))
 
     testImplementation(Deps.Libs.Meetacy.Sdk.ApiKtor)
     testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
