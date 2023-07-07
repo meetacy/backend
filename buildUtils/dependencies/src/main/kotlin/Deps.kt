@@ -252,7 +252,18 @@ object Deps {
             // integrations for each component (database, usecase, etc.)
             const val DatabaseIntegrations = ":invitation:database:integrations"
             const val UsecaseIntegrations = ":invitation:usecase:integrations"
-            const val TypesIntegrations = ":invitation:types:integrations"
+        }
+
+        object Notification {
+            // components
+            const val Database = ":notification:database"
+            const val Endpoints = ":notification:endpoints"
+            const val Usecase = ":notification:usecase"
+            const val Types = ":notification:types"
+            const val it = ":notification"
+            // integrations for each component (database, usecase, etc.)
+            const val DatabaseIntegrations = ":notification:database:integrations"
+            const val UsecaseIntegrations = ":notification:usecase:integrations"
         }
 
         const val EndpointsNew = ":endpoints-new"
