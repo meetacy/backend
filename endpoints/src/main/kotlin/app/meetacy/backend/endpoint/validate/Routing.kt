@@ -24,7 +24,7 @@ sealed interface ValidateUsernameResult {
     object InvalidValidateUsernameString : ValidateUsernameResult
 }
 
-fun Route.validateUsername(repository: ValidateUsernameRepository) = post("/generate") {
+fun Route.validateUsername(repository: ValidateUsernameRepository) = post("/validate") {
     val validateParam = call.receive<ValidateParam>()
 
     when (val result = repository.validateUsername(validateParam.username)) {
