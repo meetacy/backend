@@ -7,7 +7,8 @@ dependencies {
     api(project(Deps.Projects.Database))
     api(project(Deps.Projects.Invitation.Database))
     api(project(Deps.Projects.Notification.Database))
-
+    api(project(Deps.Projects.Friends.Database))
+    
     api(Deps.Libs.Meetacy.Wdater.Core)
     api(Deps.Libs.Meetacy.Wdater.AutoMigrations)
     api(Deps.Libs.Exposed.Core)
