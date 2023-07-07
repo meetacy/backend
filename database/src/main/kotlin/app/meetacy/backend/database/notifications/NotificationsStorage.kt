@@ -4,8 +4,8 @@ package app.meetacy.backend.database.notifications
 
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.notifications.NotificationsTable.DATE
-import app.meetacy.backend.database.notifications.NotificationsTable.MEETING_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.INVITER_ID
+import app.meetacy.backend.database.notifications.NotificationsTable.MEETING_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.NOTIFICATION_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.OWNER_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.SUBSCRIBED_ID
@@ -16,7 +16,6 @@ import app.meetacy.backend.database.types.DatabaseNotification
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.DATE_TIME_MAX_LIMIT
 import app.meetacy.backend.types.amount.Amount
-import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.notification.NotificationId

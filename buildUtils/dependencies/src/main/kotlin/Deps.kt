@@ -255,6 +255,9 @@ object Deps {
             const val TypesIntegrations = ":invitation:types:integrations"
         }
 
+        const val EndpointsNew = ":endpoints-new"
+        const val DatabaseExtensions = ":database-extensions"
+        const val KtorExtensions = ":ktor-extensions"
         const val Endpoints = ":endpoints"
         const val Usecase = ":usecase"
         const val UsecaseEndpoints = ":usecase:endpoints-integration"

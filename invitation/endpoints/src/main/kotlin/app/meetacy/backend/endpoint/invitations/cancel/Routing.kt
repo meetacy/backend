@@ -1,0 +1,45 @@
+package app.meetacy.backend.endpoint.invitations.cancel
+
+import app.meetacy.backend.endpoint.ktor.Failure
+import app.meetacy.backend.endpoint.ktor.respondFailure
+import app.meetacy.backend.endpoint.ktor.respondSuccess
+import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.routing.*
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class CancelInvitationForm(
+    val token: AccessIdentitySerializable,
+    val id: InvitationIdSerializable
+)
+
+fun Route.invitationCancel(invitationCancelRepository: CancelInvitationRepository) = post("/cancel") {
+    val form: CancelInvitationForm = call.receive()
+
+    with(invitationCancelRepository) {
+        when (cancel(form)) {
+            app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationResponse.Success -> {
+                call.respondSuccess()
+            }
+            app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationResponse.Unauthorized -> {
+                call.respondFailure(Failure.InvalidToken)
+            }
+            app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationResponse.NotFound -> {
+                call.respondFailure(Failure.InvitationNotFound)
+            }
+        }
+    }
+}
+
+interface CancelInvitationRepository {
+    suspend fun cancel(form: CancelInvitationForm): CancelInvitationResponse
+}
+
+sealed interface CancelInvitationResponse {
+    object Success : CancelInvitationResponse
+    object Unauthorized : CancelInvitationResponse
+    object NotFound : CancelInvitationResponse
+}

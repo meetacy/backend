@@ -32,7 +32,6 @@ import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
-import app.meetacy.backend.usecase.invitations.add.AddNotificationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
@@ -51,6 +50,7 @@ import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
+import app.meetacy.backend.usecase.notifications.add.AddNotificationUsecase
 import app.meetacy.backend.usecase.notifications.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notifications.GetNotificationsViewsUsecase
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase

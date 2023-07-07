@@ -5,4 +5,5 @@ plugins {
 dependencies {
     api(project(Deps.Projects.Invitation.Types))
     api(project(Deps.Projects.Types))
+    api(project(Deps.Projects.Usecase))
 }

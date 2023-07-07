@@ -43,3 +43,6 @@ include("invitation:database:integrations")
 findProject(":invitation:database:integrations")?.name = "integrations"
 include("invitation:types:integrations")
 findProject(":invitation:types:integrations")?.name = "integrations"
+include("ktor-extensions")
+include("database-extensions")
+include("endpoints-new")

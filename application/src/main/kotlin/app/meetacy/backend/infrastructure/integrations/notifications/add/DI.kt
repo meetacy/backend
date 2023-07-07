@@ -8,7 +8,7 @@ import app.meetacy.backend.di.DI
 import app.meetacy.backend.di.builder.DIBuilder
 import app.meetacy.backend.di.dependency.Dependency
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.usecase.invitations.add.AddNotificationUsecase
+import app.meetacy.backend.usecase.notifications.add.AddNotificationUsecase
 import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
 
 val DI.addNotificationUsecase: AddNotificationUsecase by Dependency
