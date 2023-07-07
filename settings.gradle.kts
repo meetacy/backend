@@ -46,3 +46,16 @@ findProject(":invitation:types:integrations")?.name = "integrations"
 include("ktor-extensions")
 include("database-extensions")
 include("endpoints-new")
+include("notification")
+include("notification:database")
+findProject(":notification:database")?.name = "database"
+include("notification:usecase")
+findProject(":notification:usecase")?.name = "usecase"
+include("notification:endpoints")
+findProject(":notification:endpoints")?.name = "endpoints"
+include("notification:database:integrations")
+findProject(":notification:database:integrations")?.name = "integrations"
+include("notification:usecase:integrations")
+findProject(":notification:usecase:integrations")?.name = "integrations"
+include("notification:types")
+findProject(":notification:types")?.name = "types"
