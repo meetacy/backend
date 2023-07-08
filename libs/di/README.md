@@ -45,3 +45,9 @@ pass the name automatically:
 ```kotlin
 val port: String by di.getting
 ```
+
+There is also a way do make an extension using delegate like this:
+
+```kotlin
+val DI.port by Dependency
+```
