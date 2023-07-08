@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 package app.meetacy.backend.infrastructure.integrations.meetings.history.past
 
 import app.meetacy.backend.database.integration.meetings.history.past.DatabaseListPastMeetingsStorage

@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 package app.meetacy.backend.infrastructure.integrations.updates.stream
 
 import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase

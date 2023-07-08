@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 package app.meetacy.backend.infrastructure.integrations.meetings.create
 
 import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
