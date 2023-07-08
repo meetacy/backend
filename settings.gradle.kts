@@ -85,3 +85,16 @@ include("updates:database:integrations")
 findProject(":updates:database:integrations")?.name = "integrations"
 include("updates:usecase:integrations")
 findProject(":updates:usecase:integrations")?.name = "integrations"
+include("files")
+include("files:database")
+findProject(":files:database")?.name = "database"
+include("files:usecase")
+findProject(":files:usecase")?.name = "usecase"
+include("files:endpoints")
+findProject(":files:endpoints")?.name = "endpoints"
+include("files:database:integrations")
+findProject(":files:database:integrations")?.name = "integrations"
+include("files:types")
+findProject(":files:types")?.name = "types"
+include("files:usecase:integrations")
+findProject(":files:usecase:integrations")?.name = "integrations"

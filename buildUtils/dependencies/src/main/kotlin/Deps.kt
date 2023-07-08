@@ -290,6 +290,18 @@ object Deps {
             const val UsecaseIntegrations = ":updates:usecase:integrations"
         }
 
+        object Files {
+            // components
+            const val Database = ":files:database"
+            const val Endpoints = ":files:endpoints"
+            const val Usecase = ":files:usecase"
+            const val Types = ":files:types"
+            const val it = ":files"
+            // integrations for each component (database, usecase, etc.)
+            const val DatabaseIntegrations = ":files:database:integrations"
+            const val UsecaseIntegrations = ":files:usecase:integrations"
+        }
+
         const val EndpointsNew = ":endpoints-new"
         const val DatabaseExtensions = ":database-extensions"
         const val KtorExtensions = ":ktor-extensions"
