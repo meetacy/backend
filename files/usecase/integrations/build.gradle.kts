@@ -1,19 +1,12 @@
 plugins {
-    id("java")
+    id(Deps.Plugins.Configuration.Kotlin.Jvm)
 }
 
-group = "app.meetacy.backend"
-version = "1.0"
-
-repositories {
-    mavenCentral()
-}
-
+// usecase and endpoints dependencies
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-}
-
-tasks.test {
-    useJUnitPlatform()
+    api(project(Deps.Projects.Files.Usecase))
+    api(project(Deps.Projects.Usecase))
+    api(project(Deps.Projects.Files.Endpoints))
+    api(project(Deps.Projects.Files.Types))
+    api(project(Deps.Projects.UsecaseEndpoints))
 }
