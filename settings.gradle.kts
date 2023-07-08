@@ -72,3 +72,16 @@ include("friends:database:integrations")
 findProject(":friends:database:integrations")?.name = "integrations"
 include("friends:usecase:integrations")
 findProject(":friends:usecase:integrations")?.name = "integrations"
+include("updates")
+include("updates:database")
+findProject(":updates:database")?.name = "database"
+include("updates:usecase")
+findProject(":updates:usecase")?.name = "usecase"
+include("updates:endpoints")
+findProject(":updates:endpoints")?.name = "endpoints"
+include("updates:types")
+findProject(":updates:types")?.name = "types"
+include("updates:database:integrations")
+findProject(":updates:database:integrations")?.name = "integrations"
+include("updates:usecase:integrations")
+findProject(":updates:usecase:integrations")?.name = "integrations"

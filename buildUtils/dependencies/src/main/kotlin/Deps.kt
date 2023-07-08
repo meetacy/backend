@@ -278,6 +278,18 @@ object Deps {
             const val UsecaseIntegrations = ":friends:usecase:integrations"
         }
 
+        object Updates {
+            // components
+            const val Database = ":updates:database"
+            const val Endpoints = ":updates:endpoints"
+            const val Usecase = ":updates:usecase"
+            const val Types = ":updates:types"
+            const val it = ":updates"
+            // integrations for each component (database, usecase, etc.)
+            const val DatabaseIntegrations = ":updates:database:integrations"
+            const val UsecaseIntegrations = ":updates:usecase:integrations"
+        }
+
         const val EndpointsNew = ":endpoints-new"
         const val DatabaseExtensions = ":database-extensions"
         const val KtorExtensions = ":ktor-extensions"
