@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Friends.Types))
     api(project(Deps.Projects.Types))
     api(project(Deps.Projects.Database))
     implementation(Deps.Libs.Exposed.Core)
