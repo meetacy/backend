@@ -76,10 +76,10 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage, FriendsLocationStreamingUsecase.Storage,
     CreateInvitationUsecase.Storage, AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage,
     CancelInvitationUsecase.Storage, ViewUserUsecase.Storage, GetInvitationsViewsRepository,
-    ListMeetingsActiveUsecase.Storage, ListMeetingsPastUsecase.Storage, ViewNotificationsRepository,
-    ViewNotificationsUsecase.Storage, StreamUpdatesUsecase.Storage, GetNotificationsViewsRepository,
-    GetNotificationsViewsUsecase.Storage, UpdatesMiddleware.Storage, ViewInvitationsRepository,
-    GetInvitationsViewsUsecase.InvitationsProvider, AddNotificationUsecase.Storage {
+    ListMeetingsActiveUsecase.Storage, ListMeetingsPastUsecase.Storage, ValidateRepository,
+    ViewNotificationsRepository, ViewNotificationsUsecase.Storage, StreamUpdatesUsecase.Storage,
+    GetNotificationsViewsRepository, GetNotificationsViewsUsecase.Storage, UpdatesMiddleware.Storage,
+    ViewInvitationsRepository, GetInvitationsViewsUsecase.InvitationsProvider, AddNotificationUsecase.Storage {
 
     private val users = mutableListOf<User>()
 

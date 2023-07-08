@@ -10,6 +10,7 @@ import app.meetacy.backend.infrastructure.integrations.meetings.meetingsDependen
 import app.meetacy.backend.infrastructure.integrations.notifications.notificationsDependencies
 import app.meetacy.backend.infrastructure.integrations.updates.updatesDependencies
 import app.meetacy.backend.infrastructure.integrations.users.usersDependencies
+import app.meetacy.backend.infrastructure.integrations.users.validate.validateUsernameRepository
 
 fun startEndpoints(
     di: DI,
@@ -25,6 +26,7 @@ fun startEndpoints(
         notificationsDependencies = di.notificationsDependencies,
         filesDependencies = di.filesDependencies,
         invitationsDependencies = di.invitationsDependencies,
-        updatesDependencies = di.updatesDependencies
+        updatesDependencies = di.updatesDependencies,
+        validateUsernameRepository = di.validateUsernameRepository
     )
 }

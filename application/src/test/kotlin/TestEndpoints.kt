@@ -50,6 +50,7 @@ import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNot
 import app.meetacy.backend.usecase.integration.updates.stream.StreamUpdatesRepository
 import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
+import app.meetacy.backend.usecase.integration.users.validate.UsecaseValidateUsernameRepository
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
@@ -70,6 +71,7 @@ import app.meetacy.backend.usecase.notifications.GetNotificationsViewsUsecase
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
+import app.meetacy.backend.usecase.validate.ValidateUsernameUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
@@ -363,6 +365,11 @@ fun runTestServer(
                         viewRepository = mockStorage
                     )
                 )
+            )
+        ),
+        validateUsernameRepository = UsecaseValidateUsernameRepository(
+            usecase = ValidateUsernameUsecase(
+                validateRepository = mockStorage
             )
         )
     )
