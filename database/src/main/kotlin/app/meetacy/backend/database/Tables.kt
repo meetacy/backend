@@ -20,6 +20,7 @@ val tables: List<Table> = listOf(
     InvitationsTable, UsersLocationsTable,
     MeetingsTable, ParticipantsTable,
     LastReadNotificationsTable, NotificationsTable,
-    InvitationsTable, FriendsTable,
-    UpdatesTable
-)
+    FriendsTable, UpdatesTable
+).apply {
+    require(distinctBy { table -> table.tableName }.size == size) { "There were duplicates in `tables` list" }
+}

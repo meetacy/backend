@@ -2,7 +2,10 @@ package app.meetacy.backend
 
 import app.meetacy.backend.database.initDatabase
 import app.meetacy.backend.database.migrations.runMigrations
+import app.meetacy.backend.infrastructure.database.database
+import app.meetacy.backend.infrastructure.di
 import app.meetacy.backend.infrastructure.startEndpoints
+import app.meetacy.backend.types.file.FileSize
 import org.jetbrains.exposed.sql.Database
 import java.io.File
 
@@ -18,12 +21,16 @@ suspend fun main() {
 
     val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (100L * 1024 * 1024)
 
-    val database = Database.connect(
-        databaseUrl,
-        user = databaseUser,
-        password = databasePassword
+    val di = di(
+        port = port,
+        databaseUrl = databaseUrl,
+        databaseUser = databaseUser,
+        databasePassword = databasePassword,
+        filesBasePath = filesBasePath,
+        filesSizeLimit = FileSize(filesSizeLimit)
     )
 
-    initDatabase(database)
-    startEndpoints(filesBasePath, filesSizeLimit, port, database, wait = true)
+    initDatabase(di.database)
+
+    startEndpoints(di, wait = true)
 }

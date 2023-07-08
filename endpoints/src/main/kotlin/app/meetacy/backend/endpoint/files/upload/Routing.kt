@@ -16,7 +16,7 @@ import java.io.InputStream
 sealed interface UploadFileResult {
     class Success(val fileIdentity: FileIdentity) : UploadFileResult
     object InvalidIdentity : UploadFileResult
-    class LimitSize(val filesSize: FileSize, val filesSizeLimit: Long) : UploadFileResult
+    class LimitSize(val filesSize: FileSize, val filesSizeLimit: FileSize) : UploadFileResult
 }
 
 interface SaveFileRepository {

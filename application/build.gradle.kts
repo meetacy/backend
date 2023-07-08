@@ -13,6 +13,7 @@ dependencies {
     implementation(project(Deps.Projects.DatabaseEndpoints))
     implementation(project(Deps.Projects.HashGeneratorUsecase))
     implementation(project(Deps.Projects.Utf8CheckerUsecase))
+    implementation(project(Deps.Projects.DI))
 
     testImplementation(Deps.Libs.Meetacy.Sdk.ApiKtor)
     testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
