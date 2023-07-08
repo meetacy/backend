@@ -9,6 +9,7 @@ dependencies {
     api(project(Deps.Projects.Notification.Endpoints))
     api(project(Deps.Projects.Friends.Endpoints))
     api(project(Deps.Projects.Endpoints))
+    api(project(Deps.Projects.Updates.Endpoints))
     api(project(Deps.Projects.KtorExtensions))
 
     api(Deps.Libs.Ktor.Server.Core)

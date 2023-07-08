@@ -8,7 +8,6 @@ import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository
 import app.meetacy.backend.usecase.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
 import kotlinx.coroutines.flow.Flow
-import org.jetbrains.exposed.sql.Database
 
 fun StreamUpdatesUsecase(
     auth: AuthRepository,

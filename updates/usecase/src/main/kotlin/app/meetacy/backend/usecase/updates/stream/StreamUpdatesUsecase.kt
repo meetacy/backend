@@ -6,7 +6,6 @@ import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 
 class StreamUpdatesUsecase(
     private val auth: AuthRepository,
