@@ -98,3 +98,16 @@ include("files:types")
 findProject(":files:types")?.name = "types"
 include("files:usecase:integrations")
 findProject(":files:usecase:integrations")?.name = "integrations"
+include("meetings")
+include("meetings:endpoints")
+findProject(":meetings:endpoints")?.name = "endpoints"
+include("meetings:types")
+findProject(":meetings:types")?.name = "types"
+include("meetings:usecase")
+findProject(":meetings:usecase")?.name = "usecase"
+include("meetings:database")
+findProject(":meetings:database")?.name = "database"
+include("meetings:database:integrations")
+findProject(":meetings:database:integrations")?.name = "integrations"
+include("meetings:usecase:integrations")
+findProject(":meetings:usecase:integrations")?.name = "integrations"

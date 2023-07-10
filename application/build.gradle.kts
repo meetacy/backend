@@ -10,7 +10,6 @@ dependencies {
     implementation(project(Deps.Projects.Endpoints))
     implementation(project(Deps.Projects.UsecaseEndpoints))
     implementation(project(Deps.Projects.DatabaseUsecase))
-    implementation(project(Deps.Projects.DatabaseEndpoints))
     implementation(project(Deps.Projects.HashGeneratorUsecase))
     implementation(project(Deps.Projects.Utf8CheckerUsecase))
     implementation(project(Deps.Projects.DI))
@@ -21,6 +20,7 @@ dependencies {
     implementation(project(Deps.Projects.Friends.it))
     implementation(project(Deps.Projects.Updates.it))
     implementation(project(Deps.Projects.Files.it))
+    implementation(project(Deps.Projects.Meetings.it))
 
     testImplementation(Deps.Libs.Meetacy.Sdk.ApiKtor)
     testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
