@@ -12,8 +12,6 @@ suspend fun runProductionServer(
 ) {
     val context = ProductionContext()
 
-    println(webhookUrl)
-
     try {
         if (webhookUrl == null) {
             block(context)

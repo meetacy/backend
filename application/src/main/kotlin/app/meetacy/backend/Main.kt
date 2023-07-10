@@ -17,9 +17,7 @@ suspend fun main() {
         /* parent = */ System.getenv("user.dir"),
         /* child = */ "files"
     ).apply { mkdirs() }.absolutePath
-
     val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (100L * 1024 * 1024)
-
     val webhookUrl = System.getenv("DISCORD_WEBHOOK_URL")
 
     runProductionServer(webhookUrl) {
