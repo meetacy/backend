@@ -4,5 +4,7 @@ plugins {
 }
 
 dependencies {
+    api(project(Deps.Projects.Types))
+
     implementation(Deps.Libs.Kotlinx.Serialization)
 }

@@ -4,7 +4,6 @@ import app.meetacy.backend.database.files.FilesStorage
 import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
 import app.meetacy.backend.types.file.FileIdentity
-import org.jetbrains.exposed.sql.Database
 import java.io.File
 
 class DatabaseGetFileRepository(
