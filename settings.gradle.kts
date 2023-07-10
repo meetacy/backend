@@ -125,3 +125,16 @@ findProject(":user:types")?.name = "types"
 include("user:usecase:integrations")
 findProject(":user:usecase:integrations")?.name = "integrations"
 include("auth")
+include("auth")
+include("auth:database")
+findProject(":auth:database")?.name = "database"
+include("auth:endpoints")
+findProject(":auth:endpoints")?.name = "endpoints"
+include("auth:types")
+findProject(":auth:types")?.name = "types"
+include("auth:usecase")
+findProject(":auth:usecase")?.name = "usecase"
+include("auth:database:integrations")
+findProject(":auth:database:integrations")?.name = "integrations"
+include("auth:usecase:integrations")
+findProject(":auth:usecase:integrations")?.name = "integrations"

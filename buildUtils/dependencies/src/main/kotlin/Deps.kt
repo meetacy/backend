@@ -326,6 +326,18 @@ object Deps {
             const val UsecaseIntegrations = ":user:usecase:integrations"
         }
 
+        object Auth {
+            // components
+            const val Database = ":auth:database"
+            const val Endpoints = ":auth:endpoints"
+            const val Usecase = ":auth:usecase"
+            const val Types = ":auth:types"
+            const val it = ":auth"
+            // integrations for each component (database, usecase, etc.)
+            const val DatabaseIntegrations = ":auth:database:integrations"
+            const val UsecaseIntegrations = ":auth:usecase:integrations"
+        }
+
         const val EndpointsNew = ":endpoints-new"
         const val DatabaseExtensions = ":database-extensions"
         const val KtorExtensions = ":ktor-extensions"
