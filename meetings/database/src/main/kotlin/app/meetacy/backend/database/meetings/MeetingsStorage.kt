@@ -25,7 +25,6 @@ import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.channelFlow
@@ -61,7 +60,7 @@ class MeetingsStorage(private val db: Database) {
         avatarId: FileId?
     ): MeetingId =
         newSuspendedTransaction(Dispatchers.IO, db) {
-            val meetingId =MeetingsTable.insert { statement ->
+            val meetingId = MeetingsTable.insert { statement ->
                 statement[ACCESS_HASH] = accessHash.string
                 statement[CREATOR_ID] = creatorId.long
                 statement[DATE] = date.iso8601

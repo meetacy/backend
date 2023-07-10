@@ -9,15 +9,6 @@ import app.meetacy.backend.usecase.types.InvitationView
 import app.meetacy.backend.usecase.types.ViewInvitationsRepository
 import org.jetbrains.exposed.sql.Database
 
-fun GetInvitationsViewsRepository(
-    db: Database,
-    viewInvitationsRepository: ViewInvitationsRepository,
-): GetInvitationsViewsRepository {
-    return UsecaseGetInvitationsViewsRepository(
-        usecase = GetInvitationsViewsUsecase(db, viewInvitationsRepository)
-    )
-}
-
 class UsecaseGetInvitationsViewsRepository(
     val usecase: GetInvitationsViewsUsecase
 ) : GetInvitationsViewsRepository {
