@@ -14,7 +14,7 @@ import app.meetacy.backend.usecase.validate.ValidateUsernameUsecase
 val DI.validateUsernameRepository: ValidateUsernameRepository by Dependency
 
 fun DIBuilder.validateUsernameRepository() {
-    val validateUsernameRepository by singleton {
+    val validateUsernameRepository by singleton<ValidateUsernameRepository> {
         UsecaseValidateUsernameRepository(
             usecase = ValidateUsernameUsecase(
                 validateRepository = DatabaseValidateRepository(database)
