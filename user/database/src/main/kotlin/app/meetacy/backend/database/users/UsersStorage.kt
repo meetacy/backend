@@ -20,7 +20,6 @@ import app.meetacy.backend.types.user.username
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object UsersTable : Table() {
     val USER_ID = long("USER_ID").autoIncrement()

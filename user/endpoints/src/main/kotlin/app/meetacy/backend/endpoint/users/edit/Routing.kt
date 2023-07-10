@@ -38,7 +38,7 @@ fun Route.editUser(editUserRepository: EditUserRepository) = post("/edit") {
     val params = call.receive<EditUserParams>()
 
     when (val result = editUserRepository.editUser(params)) {
-        is EditUserResult.Success-> call.respondSuccess(result.user)
+        is EditUserResult.Success -> call.respondSuccess(result.user)
         EditUserResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
         EditUserResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
         EditUserResult.InvalidAvatarIdentity -> call.respondFailure(Failure.InvalidFileIdentity)

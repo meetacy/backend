@@ -1,4 +1,4 @@
-package app.meetacy.backend.database.integration.users
+package app.meetacy.backend.database.integration.users.create
 
 import app.meetacy.backend.database.users.UsersStorage
 import app.meetacy.backend.types.access.AccessHash

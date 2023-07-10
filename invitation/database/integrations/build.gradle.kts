@@ -10,4 +10,5 @@ dependencies {
     api(project(Deps.Projects.Friends.Database))
     api(project(Deps.Projects.Notification.Usecase))
     api(project(Deps.Projects.Meetings.DatabaseIntegrations))
+    api(project(Deps.Projects.User.DatabaseIntegrations))
 }

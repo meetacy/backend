@@ -8,4 +8,6 @@ dependencies {
     api(project(Deps.Projects.Usecase))
     api(project(Deps.Projects.Friends.Endpoints))
     api(project(Deps.Projects.UsecaseEndpoints))
+
+    api(project(Deps.Projects.User.UsecaseIntegrations))
 }

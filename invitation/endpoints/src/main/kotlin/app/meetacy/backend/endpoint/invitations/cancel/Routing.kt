@@ -21,13 +21,13 @@ fun Route.invitationCancel(invitationCancelRepository: CancelInvitationRepositor
 
     with(invitationCancelRepository) {
         when (cancel(form)) {
-            app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationResponse.Success -> {
+            CancelInvitationResponse.Success -> {
                 call.respondSuccess()
             }
-            app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationResponse.Unauthorized -> {
+            CancelInvitationResponse.Unauthorized -> {
                 call.respondFailure(Failure.InvalidToken)
             }
-            app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationResponse.NotFound -> {
+            CancelInvitationResponse.NotFound -> {
                 call.respondFailure(Failure.InvitationNotFound)
             }
         }

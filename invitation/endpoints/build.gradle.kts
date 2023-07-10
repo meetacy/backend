@@ -9,6 +9,8 @@ dependencies {
     api(project(Deps.Projects.TypesSerialization))
     api(project(Deps.Projects.KtorExtensions))
     api(project(Deps.Projects.Endpoints))
+    api(project(Deps.Projects.User.Types))
+    api(project(Deps.Projects.Meetings.Endpoints))
 
     implementation(Deps.Libs.Ktor.Server.Core)
     implementation(Deps.Libs.Kotlinx.Serialization)

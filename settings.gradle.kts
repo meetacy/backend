@@ -111,3 +111,17 @@ include("meetings:database:integrations")
 findProject(":meetings:database:integrations")?.name = "integrations"
 include("meetings:usecase:integrations")
 findProject(":meetings:usecase:integrations")?.name = "integrations"
+include("user")
+include("user:database")
+findProject(":user:database")?.name = "database"
+include("user:database:integrations")
+findProject(":user:database:integrations")?.name = "integrations"
+include("user:usecase")
+findProject(":user:usecase")?.name = "usecase"
+include("user:endpoints")
+findProject(":user:endpoints")?.name = "endpoints"
+include("user:types")
+findProject(":user:types")?.name = "types"
+include("user:usecase:integrations")
+findProject(":user:usecase:integrations")?.name = "integrations"
+include("auth")

@@ -21,6 +21,7 @@ dependencies {
     implementation(project(Deps.Projects.Updates.it))
     implementation(project(Deps.Projects.Files.it))
     implementation(project(Deps.Projects.Meetings.it))
+    implementation(project(Deps.Projects.User.it))
 
     testImplementation(Deps.Libs.Meetacy.Sdk.ApiKtor)
     testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
