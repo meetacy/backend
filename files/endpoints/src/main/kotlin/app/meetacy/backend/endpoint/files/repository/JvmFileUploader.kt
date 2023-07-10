@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.repository
+package app.meetacy.backend.endpoint.files.repository
 
 import app.meetacy.backend.types.file.FileSize
 import kotlinx.coroutines.Dispatchers
