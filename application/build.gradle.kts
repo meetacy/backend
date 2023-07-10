@@ -14,6 +14,7 @@ dependencies {
     implementation(project(Deps.Projects.HashGeneratorUsecase))
     implementation(project(Deps.Projects.Utf8CheckerUsecase))
     implementation(project(Deps.Projects.DI))
+    implementation(project(Deps.Projects.DiscordWebhookKtor))
 
     testImplementation(Deps.Libs.Meetacy.Sdk.ApiKtor)
     testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
