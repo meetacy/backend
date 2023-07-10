@@ -4,7 +4,7 @@ object Deps {
     const val compileSdkVersion = 31
     const val minSdkVersion = 21
     
-    private const val kotlinVersion = "1.7.0"
+    const val kotlinVersion = "1.7.0"
     private const val coroutinesVersion = "1.6.0"
     private const val serializationVersion = "1.3.2"
     private const val nodejsExternalsVersion = "0.0.7"
@@ -103,6 +103,7 @@ object Deps {
                 const val ContentNegotiation = "io.ktor:ktor-client-content-negotiation:$ktorVersion"
                 const val SerializationJson = "io.ktor:ktor-serialization-kotlinx-json:$ktorVersion"
                 const val Logging = "io.ktor:ktor-client-logging:$ktorVersion"
+                const val Curl = "io.ktor:ktor-client-curl:$ktorVersion"
             }
             object Server {
                 const val Core = "io.ktor:ktor-server-core:$ktorVersion"
@@ -256,5 +257,7 @@ object Deps {
         const val Utf8CheckerUsecase = ":libs:utf8-checker:usecase-integration"
         const val StdlibExtensions = ":libs:stdlib-extensions"
         const val DI = ":libs:di"
+        const val DiscordWebhook = ":libs:discord-webhook"
+        const val DiscordWebhookKtor = ":libs:discord-webhook:ktor"
     }
 }
