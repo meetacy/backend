@@ -138,3 +138,16 @@ include("auth:database:integrations")
 findProject(":auth:database:integrations")?.name = "integrations"
 include("auth:usecase:integrations")
 findProject(":auth:usecase:integrations")?.name = "integrations"
+include("email")
+include("email:database")
+findProject(":email:database")?.name = "database"
+include("email:usecase")
+findProject(":email:usecase")?.name = "usecase"
+include("email:endpoints")
+findProject(":email:endpoints")?.name = "endpoints"
+include("email:types")
+findProject(":email:types")?.name = "types"
+include("email:database:integrations")
+findProject(":email:database:integrations")?.name = "integrations"
+include("email:usecase:integrations")
+findProject(":email:usecase:integrations")?.name = "integrations"
