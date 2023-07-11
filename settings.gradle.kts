@@ -23,7 +23,9 @@ include(
     "libs:utf8-checker",
     "libs:utf8-checker:usecase-integration",
     "libs:stdlib-extensions",
-    "libs:di"
+    "libs:di",
+    "libs:discord-webhook",
+    "libs:discord-webhook:ktor"
 )
 include("invitation")
 include("invitation:database")

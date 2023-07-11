@@ -11,7 +11,7 @@ import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependencies
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
-import app.meetacy.backend.endpoint.startEndpoints
+import app.meetacy.backend.endpoint.prepareEndpoints
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
@@ -129,9 +129,8 @@ fun runTestServer(
 ) = runTest {
     val mockStorage = MockStorage()
 
-    val server = startEndpoints(
+    val server = prepareEndpoints(
         port = port,
-        wait = wait,
         authDependencies = AuthDependencies(
             emailDependencies = EmailDependencies(
                 linkEmailRepository = UsecaseLinkEmailRepository(
@@ -372,7 +371,7 @@ fun runTestServer(
                 validateRepository = mockStorage
             )
         )
-    )
+    ).start(wait)
     // TODO: migrate this fuckery to the new DI
     block()
     server.stop()

@@ -39,9 +39,8 @@ import kotlinx.serialization.json.Json
 
 @Suppress("ExtractKtorModule")
 @OptIn(ExperimentalSerializationApi::class)
-fun startEndpoints(
+fun prepareEndpoints(
     port: Int,
-    wait: Boolean,
     authDependencies: AuthDependencies,
     friendsDependencies: FriendsDependencies,
     meetingsDependencies: MeetingsDependencies,
@@ -87,4 +86,4 @@ fun startEndpoints(
         validateUsername(validateUsernameRepository)
         updates(updatesDependencies)
     }
-}.start(wait)
+}

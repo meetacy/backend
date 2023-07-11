@@ -22,6 +22,7 @@ dependencies {
     implementation(project(Deps.Projects.User.it))
     implementation(project(Deps.Projects.Auth.it))
     implementation(project(Deps.Projects.Email.it))
+    implementation(project(Deps.Projects.DiscordWebhookKtor))
 
     testImplementation(Deps.Libs.Meetacy.Sdk.ApiKtor)
     testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
