@@ -338,6 +338,18 @@ object Deps {
             const val UsecaseIntegrations = ":auth:usecase:integrations"
         }
 
+        object Email {
+            // components
+            const val Database = ":email:database"
+            const val Endpoints = ":email:endpoints"
+            const val Usecase = ":email:usecase"
+            const val Types = ":email:types"
+            const val it = ":email"
+            // integrations for each component (database, usecase, etc.)
+            const val DatabaseIntegrations = ":email:database:integrations"
+            const val UsecaseIntegrations = ":email:usecase:integrations"
+        }
+
         const val EndpointsNew = ":endpoints-new"
         const val DatabaseExtensions = ":database-extensions"
         const val KtorExtensions = ":ktor-extensions"

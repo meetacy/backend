@@ -7,6 +7,7 @@ dependencies {
     api(project(Deps.Projects.Types))
     api(project(Deps.Projects.Database))
     api(project(Deps.Projects.Files.Database))
+    api(project(Deps.Projects.Auth.Types))
 
     implementation(Deps.Libs.Exposed.Core)
 }
