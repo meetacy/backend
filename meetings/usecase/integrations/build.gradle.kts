@@ -9,5 +9,5 @@ dependencies {
     api(project(Deps.Projects.Meetings.Endpoints))
     api(project(Deps.Projects.Meetings.Types))
 
-    api(project(Deps.Projects.UsecaseEndpoints))
+    api(project(Deps.Projects.User.UsecaseIntegrations))
 }

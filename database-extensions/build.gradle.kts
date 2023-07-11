@@ -13,6 +13,7 @@ dependencies {
     api(project(Deps.Projects.Meetings.Database))
     api(project(Deps.Projects.User.Database))
     api(project(Deps.Projects.Auth.Database))
+    api(project(Deps.Projects.Email.Database))
     
     api(Deps.Libs.Meetacy.Wdater.Core)
     api(Deps.Libs.Meetacy.Wdater.AutoMigrations)
