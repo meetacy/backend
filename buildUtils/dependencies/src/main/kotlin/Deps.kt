@@ -360,7 +360,6 @@ object Deps {
         const val HashGenerator = ":libs:hash-generator"
         const val HashGeneratorUsecase = ":libs:hash-generator:usecase-integration"
         const val Database = ":database"
-        const val DatabaseUsecase = ":database:usecase-integration"
         const val DatabaseEndpoints = ":database:endpoints-integration"
         const val Utf8Checker = ":libs:utf8-checker"
         const val Utf8CheckerUsecase = ":libs:utf8-checker:usecase-integration"

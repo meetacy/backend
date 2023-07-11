@@ -16,8 +16,6 @@ include(
     "usecase",
     "usecase:endpoints-integration",
     "database",
-    "database:usecase-integration",
-    "database:endpoints-integration",
     "types",
     "types:serialization-integration",
     "libs:hash-generator",
