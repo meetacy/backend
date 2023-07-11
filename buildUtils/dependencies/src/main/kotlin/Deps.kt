@@ -351,7 +351,7 @@ object Deps {
         }
 
         const val EndpointsNew = ":endpoints-new"
-        const val DatabaseExtensions = ":database-extensions"
+        const val Migrations = ":migrations"
         const val KtorExtensions = ":ktor-extensions"
         const val Endpoints = ":endpoints"
         const val Usecase = ":usecase"
