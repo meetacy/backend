@@ -11,7 +11,7 @@ import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.integrations.auth.authRepository
 import app.meetacy.backend.infrastructure.integrations.notifications.view.viewNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseListNotificationsRepository
-import app.meetacy.backend.usecase.notifications.GetNotificationsUsecase
+import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
 
 val DI.listNotificationsRepository: ListNotificationsRepository by Dependency
 

@@ -10,7 +10,7 @@ import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.notifications.GetNotificationsUsecase
+import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.FullNotification
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository

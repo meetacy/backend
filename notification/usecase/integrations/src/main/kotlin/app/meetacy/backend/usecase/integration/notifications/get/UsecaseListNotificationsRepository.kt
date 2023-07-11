@@ -5,7 +5,7 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
-import app.meetacy.backend.usecase.notifications.GetNotificationsUsecase
+import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
 
 class UsecaseListNotificationsRepository(
     private val usecase: GetNotificationsUsecase

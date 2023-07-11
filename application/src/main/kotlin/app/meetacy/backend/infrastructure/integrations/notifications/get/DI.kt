@@ -9,7 +9,7 @@ import app.meetacy.backend.di.builder.DIBuilder
 import app.meetacy.backend.di.dependency.Dependency
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.integrations.notifications.view.viewNotificationsRepository
-import app.meetacy.backend.usecase.notifications.GetNotificationsViewsUsecase
+import app.meetacy.backend.usecase.notifications.get.GetNotificationsViewsUsecase
 import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository
 
 val DI.getNotificationViewsRepository: GetNotificationsViewsRepository by Dependency

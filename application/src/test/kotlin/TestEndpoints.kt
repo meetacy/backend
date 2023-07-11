@@ -66,8 +66,8 @@ import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
-import app.meetacy.backend.usecase.notifications.GetNotificationsUsecase
-import app.meetacy.backend.usecase.notifications.GetNotificationsViewsUsecase
+import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
+import app.meetacy.backend.usecase.notifications.get.GetNotificationsViewsUsecase
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase

@@ -2,7 +2,7 @@ package app.meetacy.backend.database.integration.types
 
 import app.meetacy.backend.database.integration.notifications.ViewNotificationsUsecase
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.notifications.ViewNotificationsUsecase
+import app.meetacy.backend.usecase.notifications.get.ViewNotificationsUsecase
 import app.meetacy.backend.usecase.types.*
 import org.jetbrains.exposed.sql.Database
 

@@ -1,4 +1,4 @@
-package app.meetacy.backend.usecase.notifications
+package app.meetacy.backend.usecase.notifications.get
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
