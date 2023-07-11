@@ -30,7 +30,6 @@ data class Failure(
         val LastNotificationIdInvalid = Failure(false, 5, "Please provide a valid notificationId")
 
         val UsernameAlreadyOccupied = Failure(false, 6, "This username is not a unique username")
-
         val FriendNotFound = Failure(false, 7, "Friend was not found")
         val UserNotFound = Failure(false, 8, "FullUser not found")
         val MeetingAlreadyParticipate = Failure(false, 9, "You are already participating in this meeting")
