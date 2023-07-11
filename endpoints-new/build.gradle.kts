@@ -13,6 +13,7 @@ dependencies {
     api(project(Deps.Projects.Files.Endpoints))
     api(project(Deps.Projects.Meetings.Endpoints))
     api(project(Deps.Projects.User.Endpoints))
+    api(project(Deps.Projects.Auth.Endpoints))
     api(project(Deps.Projects.KtorExtensions))
 
     api(Deps.Libs.Ktor.Server.Core)
