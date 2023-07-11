@@ -23,6 +23,7 @@ dependencies {
     implementation(project(Deps.Projects.Meetings.it))
     implementation(project(Deps.Projects.User.it))
     implementation(project(Deps.Projects.Auth.it))
+    implementation(project(Deps.Projects.Email.it))
 
     testImplementation(Deps.Libs.Meetacy.Sdk.ApiKtor)
     testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)

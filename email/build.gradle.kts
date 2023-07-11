@@ -8,5 +8,5 @@ dependencies {
     api(project(Deps.Projects.Email.Endpoints))
     api(project(Deps.Projects.Email.Types))
     api(project(Deps.Projects.Email.DatabaseIntegrations))
-    api(project(Deps.Projects.Files.UsecaseIntegrations))
+    api(project(Deps.Projects.Email.UsecaseIntegrations))
 }
