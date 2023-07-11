@@ -71,7 +71,7 @@ import app.meetacy.backend.usecase.notifications.GetNotificationsViewsUsecase
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
-import app.meetacy.backend.usecase.validate.ValidateUsernameUsecase
+import app.meetacy.backend.usecase.users.validate.ValidateUsernameUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.meetings.AuthorizedMeetingsApi

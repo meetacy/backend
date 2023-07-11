@@ -1,4 +1,4 @@
-package app.meetacy.backend.usecase.validate
+package app.meetacy.backend.usecase.users.validate
 
 import app.meetacy.backend.types.user.Username
 import app.meetacy.backend.usecase.types.ValidateRepository

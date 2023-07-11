@@ -1,9 +1,9 @@
 package app.meetacy.backend.usecase.integration.users.validate
 
-import app.meetacy.backend.endpoint.validate.ValidateUsernameRepository
-import app.meetacy.backend.endpoint.validate.ValidateUsernameResult
+import app.meetacy.backend.endpoint.users.validate.ValidateUsernameRepository
+import app.meetacy.backend.endpoint.users.validate.ValidateUsernameResult
 import app.meetacy.backend.types.serialization.user.serializable
-import app.meetacy.backend.usecase.validate.ValidateUsernameUsecase
+import app.meetacy.backend.usecase.users.validate.ValidateUsernameUsecase
 
 class UsecaseValidateUsernameRepository(
     private val usecase: ValidateUsernameUsecase

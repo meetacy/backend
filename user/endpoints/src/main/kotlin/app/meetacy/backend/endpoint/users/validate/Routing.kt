@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.validate
+package app.meetacy.backend.endpoint.users.validate
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
