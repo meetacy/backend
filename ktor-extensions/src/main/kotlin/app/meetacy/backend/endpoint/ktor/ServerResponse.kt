@@ -20,7 +20,8 @@ data class Failure(
     val errorCode: Int,
     val errorMessage: String
 ) {
-    // next errorCode -- 25
+    // next errorCode -- 26
+    // errorCode 14 is occupied for a fileSizeLimit, because his is inline
     companion object {
         val InvalidToken = Failure(false, 1, "Please provide a valid token")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingId")
@@ -39,7 +40,7 @@ data class Failure(
         val ExpiredLink = Failure(false, 12, "This link was expired. Please consider to create a new one")
         val LinkMaxAttemptsReached = Failure(false, 13, "You have reached max attempts for today. Please try again later.")
 
-        val ApiVersionIsNotSpecified = Failure(false, 14, "Please specify api version using header 'Api-Version'")
+        val ApiVersionIsNotSpecified = Failure(false, 25, "Please specify api version using header 'Api-Version'")
         val InvalidUtf8String = Failure(false, 16, "Please provide valid string")
 
         val UnableToInvite = Failure(false, 17, "You are unable to invite this user. Probably, you are not admin of event, or this person is not your subscriber or friend")
