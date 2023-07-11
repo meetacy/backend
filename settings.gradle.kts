@@ -13,7 +13,6 @@ includeBuild("buildUtils/service-deploy")
 
 include(
     "application",
-    "endpoints",
     "usecase",
     "usecase:endpoints-integration",
     "database",

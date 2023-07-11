@@ -2,7 +2,7 @@ package app.meetacy.backend.endpoint.friends.location.stream
 
 import app.meetacy.backend.endpoint.friends.location.stream.StreamLocationRepository.Result
 import app.meetacy.backend.endpoint.ktor.Failure
-import app.meetacy.backend.endpoint.rsocket.failRSocket
+import app.meetacy.backend.endpoint.ktor.rsocket.failRSocket
 import app.meetacy.backend.endpoint.types.user.UserLocationSnapshot
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.location.Location

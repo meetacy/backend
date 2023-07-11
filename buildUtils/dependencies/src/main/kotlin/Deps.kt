@@ -353,7 +353,6 @@ object Deps {
         const val EndpointsNew = ":endpoints-new"
         const val Migrations = ":migrations"
         const val KtorExtensions = ":ktor-extensions"
-        const val Endpoints = ":endpoints"
         const val Usecase = ":usecase"
         const val UsecaseEndpoints = ":usecase:endpoints-integration"
         const val Types = ":types"

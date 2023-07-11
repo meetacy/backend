@@ -19,7 +19,7 @@ import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.endpoint.users.users
 import app.meetacy.backend.endpoint.users.validate.ValidateUsernameRepository
 import app.meetacy.backend.endpoint.users.validate.validateUsername
-import app.meetacy.backend.endpoint.versioning.ApiVersion
+import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

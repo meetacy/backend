@@ -1,5 +1,5 @@
-import app.meetacy.backend.endpoint.versioning.ApiVersion
-import app.meetacy.backend.endpoint.versioning.versioning
+import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
+import app.meetacy.backend.endpoint.ktor.versioning.versioning
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.logging.*

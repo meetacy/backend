@@ -1,7 +1,7 @@
 package app.meetacy.backend.endpoint.updates.stream
 
 import app.meetacy.backend.endpoint.ktor.Failure
-import app.meetacy.backend.endpoint.rsocket.failRSocket
+import app.meetacy.backend.endpoint.ktor.rsocket.failRSocket
 import app.meetacy.backend.endpoint.types.updates.Update
 import app.meetacy.backend.endpoint.updates.stream.StreamUpdatesRepository.Result
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable

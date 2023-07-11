@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.versioning
+package app.meetacy.backend.endpoint.ktor.versioning
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure

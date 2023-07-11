@@ -8,7 +8,6 @@ dependencies {
     api(project(Deps.Projects.Invitation.Endpoints))
     api(project(Deps.Projects.Notification.Endpoints))
     api(project(Deps.Projects.Friends.Endpoints))
-    api(project(Deps.Projects.Endpoints))
     api(project(Deps.Projects.Updates.Endpoints))
     api(project(Deps.Projects.Files.Endpoints))
     api(project(Deps.Projects.Meetings.Endpoints))
