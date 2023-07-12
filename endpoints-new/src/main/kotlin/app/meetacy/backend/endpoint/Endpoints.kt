@@ -16,9 +16,9 @@ import app.meetacy.backend.endpoint.notifications.notifications
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.updates.updates
 import app.meetacy.backend.endpoint.users.UsersDependencies
+import app.meetacy.backend.endpoint.users.username.validate.ValidateUsernameRepository
+import app.meetacy.backend.endpoint.users.username.validate.validateUsername
 import app.meetacy.backend.endpoint.users.users
-import app.meetacy.backend.endpoint.users.validate.ValidateUsernameRepository
-import app.meetacy.backend.endpoint.users.validate.validateUsername
 import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*

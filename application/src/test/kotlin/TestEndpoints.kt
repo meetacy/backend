@@ -14,6 +14,7 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.prepareEndpoints
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.users.UsersDependencies
+import app.meetacy.backend.endpoint.users.username.UsernameDependencies
 import app.meetacy.backend.hash.integration.DefaultHashGenerator
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
@@ -316,13 +317,19 @@ fun runTestServer(
                     usersViewsRepository = mockStorage
                 )
             ),
-
             editUserRepository = UsecaseEditUserRepository(
                 usecase = EditUserUsecase(
                     storage = mockStorage,
                     authRepository = mockStorage,
                     filesRepository = mockStorage,
                     utf8Checker = DefaultUtf8Checker
+                )
+            ),
+            usernameDependencies = UsernameDependencies(
+                validateUsernameRepository = UsecaseValidateUsernameRepository(
+                    usecase = ValidateUsernameUsecase(
+                        validateRepository = mockStorage
+                    )
                 )
             )
         ),

@@ -1,9 +1,10 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
 import app.meetacy.backend.hash.HashGenerator
+import app.meetacy.sdk.exception.MeetacyInternalException
 import app.meetacy.sdk.exception.MeetacyUsernameAlreadyOccupiedException
-import app.meetacy.sdk.types.user.username
 import app.meetacy.sdk.types.optional.Optional
+import app.meetacy.sdk.types.user.username
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 
@@ -50,6 +51,23 @@ class TestUsers {
         assertThrows<MeetacyUsernameAlreadyOccupiedException> {
             generateTestAccount(postfix = "#2")
                 .edited(username = Optional.Present(username))
+        }
+    }
+
+    @Test
+    fun `validate username test`() = runTestServer {
+        val validUsername = "username"
+        val invalidUsername = "1username"
+
+        testApi.users.validateUsername(validUsername)
+        assertThrows<MeetacyInternalException> {
+            testApi.users.validateUsername(invalidUsername)
+        }
+
+        generateTestAccount()
+            .edited(username = Optional.Present(validUsername.username))
+        assertThrows<MeetacyUsernameAlreadyOccupiedException> {
+            testApi.users.validateUsername(validUsername)
         }
     }
 }

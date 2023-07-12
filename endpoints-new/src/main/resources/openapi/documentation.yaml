@@ -951,8 +951,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
               examples:
-                InvalidAccessIdentity:
-                  $ref: '#/components/examples/InvalidToken'
+                InvalidUtf8String:
+                  $ref: '#/components/examples/InvalidUtf8String'
                 UserNotFound:
                   $ref: '#/components/examples/UserNotFound'
   /users/edit:
@@ -996,8 +996,48 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 InvalidAvatarIdentity:
                   $ref: '#/components/examples/InvalidFileId'
-                InvalidNickname:
-                  $ref: '#/components/examples/InvalidNickname'
+                InvalidUtf8String:
+                  $ref: '#/components/examples/InvalidUtf8String'
+                UsernameAlreadyOccupied:
+                  $ref: '#/components/examples/UsernameAlreadyOccupied'
+                NullEditParameters:
+                  $ref: '#/components/examples/NullEditParameters'
+  /users/username/validate:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Validating a username
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ValidateUsernameRequest"
+      responses:
+        "200":
+          description: An example of a passed validation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidateUsernameResponse"
+        "400":
+          description: Failed verification example
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidUtf8String:
+                  $ref: '#/components/examples/InvalidUtf8String'
+                UsernameAlreadyOccupied:
+                  $ref: '#/components/examples/UsernameAlreadyOccupied'
+
 components:
   examples:
     ExpiredLink:
@@ -1023,18 +1063,18 @@ components:
     InvalidNickname:
       value:
         status: false
-        errorCode: 6
+        errorCode: 16
         errorMessage: "Please provide a valid nickname"
+    UsernameAlreadyOccupied:
+      value:
+        status: false
+        errorCode: 6
+        errorMessage: "Username already occupied. Please provide another username."
     NullEditParameters:
       value:
         status: false
-        errorCode: 14
+        errorCode: 10
         errorMessage: "Specify at least one meeting edit parameter"
-    InvalidTitleOrDescription:
-      value:
-        status: false
-        errorCode: 7
-        errorMessage: "Please provide a valid title or description"
     InvalidFileId:
       value:
         status: false
@@ -1048,7 +1088,7 @@ components:
     FriendNotFound:
       value:
         status: false
-        errorCode: 8
+        errorCode: 7
         errorMessage: "Friend was not found"
     FriendAlreadyAdded:
       value:
@@ -1063,7 +1103,7 @@ components:
     MeetingAlreadyParticipate:
       value:
         status: false
-        errorCode: 10
+        errorCode: 9
         errorMessage: "You are already participating in this meeting"
     LastNotificationIdInvalid:
       value:
@@ -1073,12 +1113,12 @@ components:
     UserNotFound:
       value:
         status: false
-        errorCode: 9
+        errorCode: 8
         errorMessage: "FullUser not found"
     InvalidUtf8String:
       value:
         status: false
-        errorCode: 9
+        errorCode: 16
         errorMessage: "Please provide a valid string"
   schemas:
     GenerateIdentityRequest:
@@ -1772,3 +1812,27 @@ components:
         - "id"
         - "isNew"
         - "date"
+    ValidateUsernameRequest:
+      type: object
+      properties:
+        username:
+          type: string
+      required:
+        - username
+    ValidateUsernameResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        result:
+          type: object
+          properties:
+            username:
+              type: string
+              example: bpavuk
+          required:
+            - username
+      required:
+        - result
+        - status

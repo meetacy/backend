@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.users.validate
+package app.meetacy.backend.endpoint.users.username.validate
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
@@ -12,6 +12,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ValidateParam(
     val username: String
+)
+
+@Serializable
+data class ValidateResponse(
+    val username: UsernameSerializable
 )
 
 interface ValidateUsernameRepository {
@@ -30,6 +35,6 @@ fun Route.validateUsername(repository: ValidateUsernameRepository) = post("/vali
     when (val result = repository.validateUsername(validateParam.username)) {
         ValidateUsernameResult.InvalidValidateUsernameString -> call.respondFailure(Failure.InvalidUtf8String)
         ValidateUsernameResult.AlreadyOccupiedUsername -> call.respondFailure(Failure.UsernameAlreadyOccupied)
-        is ValidateUsernameResult.Success -> call.respondSuccess(result.username)
+        is ValidateUsernameResult.Success -> call.respondSuccess(ValidateResponse(result.username))
     }
 }
