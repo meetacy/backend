@@ -351,6 +351,11 @@ object Deps {
             const val UsecaseIntegrations = ":email:usecase:integrations"
         }
 
+        object UsecaseUtf8Checker {
+            const val Usecase = ":utf8-checker:usecase"
+            const val it = ":utf8-checker"
+        }
+
         const val EndpointsNew = ":endpoints-new"
         const val Migrations = ":migrations"
         const val KtorExtensions = ":ktor-extensions"

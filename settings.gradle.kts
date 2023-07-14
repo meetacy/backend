@@ -149,3 +149,6 @@ include("email:database:integrations")
 findProject(":email:database:integrations")?.name = "integrations"
 include("email:usecase:integrations")
 findProject(":email:usecase:integrations")?.name = "integrations"
+include("utf8-checker")
+include("utf8-checker:usecase")
+findProject(":utf8-checker:usecase")?.name = "usecase"
