@@ -364,7 +364,6 @@ object Deps {
         const val EndpointsNew = ":endpoints-new"
         const val Migrations = ":migrations"
         const val KtorExtensions = ":ktor-extensions"
-        const val Usecase = ":usecase"
         const val Types = ":types"
         const val TypesSerialization = ":types:serialization-integration"
         const val HashGenerator = ":libs:hash-generator"

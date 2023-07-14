@@ -13,7 +13,6 @@ includeBuild("buildUtils/service-deploy")
 
 include(
     "application",
-    "usecase",
     "database",
     "types",
     "types:serialization-integration",
