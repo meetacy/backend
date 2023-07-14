@@ -356,6 +356,11 @@ object Deps {
             const val it = ":utf8-checker"
         }
 
+        object UsecaseHashGenerator {
+            const val Usecase = ":hash-generator:usecase"
+            const val it = ":hash-generator"
+        }
+
         const val EndpointsNew = ":endpoints-new"
         const val Migrations = ":migrations"
         const val KtorExtensions = ":ktor-extensions"

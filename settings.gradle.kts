@@ -152,3 +152,6 @@ findProject(":email:usecase:integrations")?.name = "integrations"
 include("utf8-checker")
 include("utf8-checker:usecase")
 findProject(":utf8-checker:usecase")?.name = "usecase"
+include("hash-generator")
+include("hash-generator:usecase")
+findProject(":hash-generator:usecase")?.name = "usecase"
