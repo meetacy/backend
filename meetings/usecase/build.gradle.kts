@@ -8,4 +8,7 @@ dependencies {
 
     api(project(Deps.Projects.Files.Usecase))
     api(project(Deps.Projects.User.Usecase))
+
+    implementation(Deps.Libs.Kotlinx.Coroutines)
+    api(project(Deps.Projects.StdlibExtensions))
 }
