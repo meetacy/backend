@@ -367,6 +367,7 @@ object Deps {
             const val it = ":paging"
         }
 
+        const val Annotations = ":annotations"
         const val EndpointsNew = ":endpoints-new"
         const val Migrations = ":migrations"
         const val KtorExtensions = ":ktor-extensions"
