@@ -2,7 +2,7 @@ package app.meetacy.backend.endpoint
 
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.auth
-import app.meetacy.backend.endpoint.exceptions.installExceptionsHandler
+import app.meetacy.backend.endpoint.ktor.exceptions.installExceptionsHandler
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.files.files
 import app.meetacy.backend.endpoint.friends.FriendsDependencies

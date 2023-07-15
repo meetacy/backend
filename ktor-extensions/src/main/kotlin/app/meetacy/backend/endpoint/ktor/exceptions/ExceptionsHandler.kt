@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.exceptions
+package app.meetacy.backend.endpoint.ktor.exceptions
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure

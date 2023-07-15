@@ -367,6 +367,8 @@ object Deps {
             const val it = ":paging"
         }
 
+        const val ExposedExtensions = ":exposed-extensions"
+        const val Annotations = ":annotations"
         const val EndpointsNew = ":endpoints-new"
         const val Migrations = ":migrations"
         const val KtorExtensions = ":ktor-extensions"
@@ -374,8 +376,6 @@ object Deps {
         const val TypesSerialization = ":types:serialization-integration"
         const val HashGenerator = ":libs:hash-generator"
         const val HashGeneratorUsecase = ":libs:hash-generator:usecase-integration"
-        const val Database = ":database"
-        const val DatabaseEndpoints = ":database:endpoints-integration"
         const val Utf8Checker = ":libs:utf8-checker"
         const val Utf8CheckerUsecase = ":libs:utf8-checker:usecase-integration"
         const val StdlibExtensions = ":libs:stdlib-extensions"

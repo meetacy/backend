@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Annotations))
+    api(Deps.Libs.Exposed.Core)
 }
