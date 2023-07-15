@@ -13,7 +13,6 @@ includeBuild("buildUtils/service-deploy")
 
 include(
     "application",
-    "database",
     "types",
     "types:serialization-integration",
     "libs:hash-generator",
