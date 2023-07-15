@@ -160,3 +160,4 @@ findProject(":paging:types")?.name = "types"
 include("paging:database")
 findProject(":paging:database")?.name = "database"
 include("annotations")
+include("exposed-extensions")
