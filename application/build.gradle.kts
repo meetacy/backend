@@ -7,7 +7,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(Deps.Projects.UsecaseEndpoints))
     implementation(project(Deps.Projects.HashGeneratorUsecase))
     implementation(project(Deps.Projects.Utf8CheckerUsecase))
     implementation(project(Deps.Projects.DI))

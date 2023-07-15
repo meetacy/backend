@@ -1,9 +1,10 @@
 plugins {
     id(Deps.Plugins.Configuration.Kotlin.Jvm)
+    id(Deps.Plugins.Serialization.Id)
 }
 
 dependencies {
-    api(Deps.Libs.Kotlinx.Coroutines)
-    api(project(Deps.Projects.StdlibExtensions))
     api(project(Deps.Projects.Types))
+
+    implementation(Deps.Libs.Kotlinx.Serialization)
 }

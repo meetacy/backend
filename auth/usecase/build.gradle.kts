@@ -5,7 +5,8 @@ plugins {
 dependencies {
     api(project(Deps.Projects.Auth.Types))
     api(project(Deps.Projects.Types))
-    api(project(Deps.Projects.Usecase))
 
     api(project(Deps.Projects.User.Types))
+    api(project(Deps.Projects.UsecaseUtf8Checker.it))
+    api(project(Deps.Projects.UsecaseHashGenerator.it))
 }

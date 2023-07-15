@@ -13,8 +13,6 @@ includeBuild("buildUtils/service-deploy")
 
 include(
     "application",
-    "usecase",
-    "usecase:endpoints-integration",
     "database",
     "types",
     "types:serialization-integration",
@@ -150,3 +148,14 @@ include("email:database:integrations")
 findProject(":email:database:integrations")?.name = "integrations"
 include("email:usecase:integrations")
 findProject(":email:usecase:integrations")?.name = "integrations"
+include("utf8-checker")
+include("utf8-checker:usecase")
+findProject(":utf8-checker:usecase")?.name = "usecase"
+include("hash-generator")
+include("hash-generator:usecase")
+findProject(":hash-generator:usecase")?.name = "usecase"
+include("paging")
+include("paging:types")
+findProject(":paging:types")?.name = "types"
+include("paging:database")
+findProject(":paging:database")?.name = "database"

@@ -351,11 +351,25 @@ object Deps {
             const val UsecaseIntegrations = ":email:usecase:integrations"
         }
 
+        object UsecaseUtf8Checker {
+            const val Usecase = ":utf8-checker:usecase"
+            const val it = ":utf8-checker"
+        }
+
+        object UsecaseHashGenerator {
+            const val Usecase = ":hash-generator:usecase"
+            const val it = ":hash-generator"
+        }
+
+        object Paging {
+            const val Types = ":paging:types"
+            const val Database = ":paging:database"
+            const val it = ":paging"
+        }
+
         const val EndpointsNew = ":endpoints-new"
         const val Migrations = ":migrations"
         const val KtorExtensions = ":ktor-extensions"
-        const val Usecase = ":usecase"
-        const val UsecaseEndpoints = ":usecase:endpoints-integration"
         const val Types = ":types"
         const val TypesSerialization = ":types:serialization-integration"
         const val HashGenerator = ":libs:hash-generator"
