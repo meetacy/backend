@@ -154,3 +154,8 @@ findProject(":utf8-checker:usecase")?.name = "usecase"
 include("hash-generator")
 include("hash-generator:usecase")
 findProject(":hash-generator:usecase")?.name = "usecase"
+include("paging")
+include("paging:types")
+findProject(":paging:types")?.name = "types"
+include("paging:database")
+findProject(":paging:database")?.name = "database"

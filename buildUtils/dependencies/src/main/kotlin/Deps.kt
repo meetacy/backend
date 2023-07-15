@@ -361,6 +361,12 @@ object Deps {
             const val it = ":hash-generator"
         }
 
+        object Paging {
+            const val Types = ":paging:types"
+            const val Database = ":paging:database"
+            const val it = ":paging"
+        }
+
         const val EndpointsNew = ":endpoints-new"
         const val Migrations = ":migrations"
         const val KtorExtensions = ":ktor-extensions"
