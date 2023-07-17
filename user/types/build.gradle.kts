@@ -6,6 +6,7 @@ plugins {
 dependencies {
     api(project(Deps.Projects.Types))
     api(project(Deps.Projects.Auth.Types))
+    api(project(Deps.Projects.LocationTypes))
 
     implementation(Deps.Libs.Kotlinx.Serialization)
 }
