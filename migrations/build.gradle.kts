@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Types))
     api(project(Deps.Projects.Invitation.Database))
     api(project(Deps.Projects.Notification.Database))
     api(project(Deps.Projects.Friends.Database))

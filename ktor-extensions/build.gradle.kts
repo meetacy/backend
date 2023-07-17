@@ -4,8 +4,6 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.TypesSerialization))
-
     api(Deps.Libs.Ktor.Server.Core)
     api(Deps.Libs.Ktor.Server.Cio)
     api(Deps.Libs.Ktor.Server.RSocket)

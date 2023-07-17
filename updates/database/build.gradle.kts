@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.Updates.Types))
-    api(project(Deps.Projects.Types))
     implementation(Deps.Libs.Exposed.Core)
 
     api(project(Deps.Projects.User.Database))

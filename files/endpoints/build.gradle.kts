@@ -5,8 +5,6 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.Files.Types))
-    api(project(Deps.Projects.Types))
-    api(project(Deps.Projects.TypesSerialization))
     api(project(Deps.Projects.KtorExtensions))
 
     implementation(Deps.Libs.Ktor.Server.Core)

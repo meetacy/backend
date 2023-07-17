@@ -13,8 +13,6 @@ includeBuild("buildUtils/service-deploy")
 
 include(
     "application",
-    "types",
-    "types:serialization-integration",
     "libs:hash-generator",
     "libs:hash-generator:usecase-integration",
     "libs:utf8-checker",
@@ -160,3 +158,8 @@ include("paging:database")
 findProject(":paging:database")?.name = "database"
 include("annotations")
 include("exposed-extensions")
+include("location")
+include("date-time")
+include("amount")
+include("optional")
+include("constants")
