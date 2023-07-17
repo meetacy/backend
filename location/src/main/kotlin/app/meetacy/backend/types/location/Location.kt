@@ -1,7 +1,10 @@
 package app.meetacy.backend.types.location
 
 import app.meetacy.backend.types.meters.Kilometers
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 data class Location(
     val latitude: Double,
