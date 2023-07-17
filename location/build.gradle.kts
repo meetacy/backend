@@ -7,5 +7,4 @@ dependencies {
     api(project(Deps.Projects.DateTime))
 
     implementation(Deps.Libs.Kotlinx.Serialization)
-    api(project(Deps.Projects.Types)) // TODO: remove
 }

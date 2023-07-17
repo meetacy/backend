@@ -31,6 +31,7 @@ dependencies {
     testImplementation(Deps.Libs.Ktor.Client.Mock)
     testImplementation(Deps.Libs.Ktor.Client.Cio)
     testImplementation(kotlin("test"))
+    testImplementation(Deps.Libs.Kotlinx.Serialization)
 }
 
 tasks.test {

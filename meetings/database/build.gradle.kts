@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.Meetings.Types))
-    api(project(Deps.Projects.Types))
     implementation(Deps.Libs.Exposed.Core)
 
     api(project(Deps.Projects.Paging.it))
