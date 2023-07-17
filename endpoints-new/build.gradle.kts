@@ -4,7 +4,6 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.TypesSerialization))
     api(project(Deps.Projects.Invitation.Endpoints))
     api(project(Deps.Projects.Notification.Endpoints))
     api(project(Deps.Projects.Friends.Endpoints))

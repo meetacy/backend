@@ -5,8 +5,6 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.Updates.Types))
-    api(project(Deps.Projects.Types))
-    api(project(Deps.Projects.TypesSerialization))
     api(project(Deps.Projects.KtorExtensions))
     api(project(Deps.Projects.Notification.Endpoints))
 
