@@ -1,11 +1,10 @@
 package app.meetacy.backend.types.datetime
 
-import java.time.LocalDate
-import java.util.Date as JavaDate
 import app.meetacy.backend.types.datetime.Date as DateType
 import app.meetacy.backend.types.datetime.DateTime as DateTimeType
 import java.time.Instant as JavaInstant
 import java.time.LocalDate as JavaLocalDate
+import java.util.Date as JavaDate
 
 sealed interface DateOrTime {
     val date: DateType

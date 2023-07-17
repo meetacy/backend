@@ -4,8 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.DateTime))
+    api(project(Deps.Projects.Annotations))
 
     implementation(Deps.Libs.Kotlinx.Serialization)
-    api(project(Deps.Projects.Types)) // TODO: remove
 }

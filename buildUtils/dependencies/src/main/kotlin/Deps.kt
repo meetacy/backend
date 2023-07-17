@@ -367,6 +367,7 @@ object Deps {
             const val it = ":paging"
         }
 
+        const val DateTime = ":date-time"
         const val LocationTypes = ":location"
         const val ExposedExtensions = ":exposed-extensions"
         const val Annotations = ":annotations"
