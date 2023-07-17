@@ -367,6 +367,7 @@ object Deps {
             const val it = ":paging"
         }
 
+        const val Optional = ":optional"
         const val AmountTypes = ":amount"
         const val DateTime = ":date-time"
         const val LocationTypes = ":location"
