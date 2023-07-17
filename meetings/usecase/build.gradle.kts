@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.Meetings.Types))
-    api(project(Deps.Projects.Types))
 
     api(project(Deps.Projects.Files.Usecase))
     api(project(Deps.Projects.User.Usecase))
