@@ -22,21 +22,21 @@ include(
     "libs:discord-webhook",
     "libs:discord-webhook:ktor"
 )
-include("invitation")
-include("invitation:database")
-findProject(":invitation:database")?.name = "database"
-include("invitation:usecase")
-findProject(":invitation:usecase")?.name = "usecase"
-include("invitation:endpoints")
-findProject(":invitation:endpoints")?.name = "endpoints"
-include("invitation:types")
-findProject(":invitation:types")?.name = "types"
-include("invitation:usecase:integrations")
-findProject(":invitation:usecase:integrations")?.name = "integrations"
-include("invitation:database:integrations")
-findProject(":invitation:database:integrations")?.name = "integrations"
-include("invitation:types:integrations")
-findProject(":invitation:types:integrations")?.name = "integrations"
+include("feature:invitation")
+include("feature:invitation:database")
+findProject(":feature:invitation:database")?.name = "database"
+include("feature:invitation:usecase")
+findProject(":feature:invitation:usecase")?.name = "usecase"
+include("feature:invitation:endpoints")
+findProject(":feature:invitation:endpoints")?.name = "endpoints"
+include("feature:invitation:types")
+findProject(":feature:invitation:types")?.name = "types"
+include("feature:invitation:usecase:integrations")
+findProject(":feature:invitation:usecase:integrations")?.name = "integrations"
+include("feature:invitation:database:integrations")
+findProject(":feature:invitation:database:integrations")?.name = "integrations"
+include("feature:invitation:types:integrations")
+findProject(":feature:invitation:types:integrations")?.name = "integrations"
 include("ktor-extensions")
 include("migrations")
 include("endpoints-new")

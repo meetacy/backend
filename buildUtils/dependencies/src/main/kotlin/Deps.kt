@@ -244,7 +244,7 @@ object Deps {
     }
     object Projects {
         object Invitation {
-            const val Root = ":invitation"
+            const val Root = "$Feature:invitation"
             // components
             const val Database = "$Root:database"
             const val Endpoints = "$Root:endpoints"
