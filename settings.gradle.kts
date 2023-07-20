@@ -53,19 +53,19 @@ include("notification:usecase:integrations")
 findProject(":notification:usecase:integrations")?.name = "integrations"
 include("notification:types")
 findProject(":notification:types")?.name = "types"
-include("features:friends")
-include("features:friends:database")
-findProject(":features:friends:database")?.name = "database"
-include("features:friends:usecase")
-findProject(":features:friends:usecase")?.name = "usecase"
-include("features:friends:endpoints")
-findProject(":features:friends:endpoints")?.name = "endpoints"
-include("features:friends:types")
-findProject(":features:friends:types")?.name = "types"
-include("features:friends:database:integrations")
-findProject(":features:friends:database:integrations")?.name = "integrations"
-include("features:friends:usecase:integrations")
-findProject(":features:friends:usecase:integrations")?.name = "integrations"
+include("feature:friends")
+include("feature:friends:database")
+findProject(":feature:friends:database")?.name = "database"
+include("feature:friends:usecase")
+findProject(":feature:friends:usecase")?.name = "usecase"
+include("feature:friends:endpoints")
+findProject(":feature:friends:endpoints")?.name = "endpoints"
+include("feature:friends:types")
+findProject(":feature:friends:types")?.name = "types"
+include("feature:friends:database:integrations")
+findProject(":feature:friends:database:integrations")?.name = "integrations"
+include("feature:friends:usecase:integrations")
+findProject(":feature:friends:usecase:integrations")?.name = "integrations"
 include("updates")
 include("updates:database")
 findProject(":updates:database")?.name = "database"
@@ -163,4 +163,4 @@ include("datetime")
 include("amount")
 include("optional")
 include("constants")
-include("features")
+include("feature")
