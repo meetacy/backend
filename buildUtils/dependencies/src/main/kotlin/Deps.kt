@@ -268,7 +268,7 @@ object Deps {
         }
 
         object Friends {
-            const val Root = ":friends"
+            const val Root = "$Features:friends"
             // components
             const val Database = "$Root:database"
             const val Endpoints = "$Root:endpoints"
