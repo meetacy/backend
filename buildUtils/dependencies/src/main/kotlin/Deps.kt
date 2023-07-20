@@ -1,4 +1,4 @@
-@file:Suppress("FunctionName", "unused")
+@file:Suppress("FunctionName", "unused", "MemberVisibilityCanBePrivate")
 
 object Deps {
     const val compileSdkVersion = 31
@@ -244,111 +244,111 @@ object Deps {
     }
     object Projects {
         object Invitation {
-            // components
-            const val Database = ":invitation:database"
-            const val Endpoints = ":invitation:endpoints"
-            const val Usecase = ":invitation:usecase"
-            const val Types = ":invitation:types"
             const val Root = ":invitation"
+            // components
+            const val Database = "$Root:database"
+            const val Endpoints = "$Root:endpoints"
+            const val Usecase = "$Root:usecase"
+            const val Types = "$Root:types"
             // integrations for each component (database, usecase, etc.)
-            const val DatabaseIntegrations = ":invitation:database:integrations"
-            const val UsecaseIntegrations = ":invitation:usecase:integrations"
+            const val DatabaseIntegrations = "$Database:integrations"
+            const val UsecaseIntegrations = "$Usecase:integrations"
         }
 
         object Notification {
-            // components
-            const val Database = ":notification:database"
-            const val Endpoints = ":notification:endpoints"
-            const val Usecase = ":notification:usecase"
-            const val Types = ":notification:types"
             const val Root = ":notification"
+            // components
+            const val Database = "$Root:database"
+            const val Endpoints = "$Root:endpoints"
+            const val Usecase = "$Root:usecase"
+            const val Types = "$Root:types"
             // integrations for each component (database, usecase, etc.)
-            const val DatabaseIntegrations = ":notification:database:integrations"
-            const val UsecaseIntegrations = ":notification:usecase:integrations"
+            const val DatabaseIntegrations = "$Database:integrations"
+            const val UsecaseIntegrations = "$Usecase:integrations"
         }
 
         object Friends {
-            // components
-            const val Database = ":friends:database"
-            const val Endpoints = ":friends:endpoints"
-            const val Usecase = ":friends:usecase"
-            const val Types = ":friends:types"
             const val Root = ":friends"
+            // components
+            const val Database = "$Root:database"
+            const val Endpoints = "$Root:endpoints"
+            const val Usecase = "$Root:usecase"
+            const val Types = "$Root:types"
             // integrations for each component (database, usecase, etc.)
-            const val DatabaseIntegrations = ":friends:database:integrations"
-            const val UsecaseIntegrations = ":friends:usecase:integrations"
+            const val DatabaseIntegrations = "$Database:integrations"
+            const val UsecaseIntegrations = "$Usecase:integrations"
         }
 
         object Updates {
-            // components
-            const val Database = ":updates:database"
-            const val Endpoints = ":updates:endpoints"
-            const val Usecase = ":updates:usecase"
-            const val Types = ":updates:types"
             const val Root = ":updates"
+            // components
+            const val Database = "$Root:database"
+            const val Endpoints = "$Root:endpoints"
+            const val Usecase = "$Root:usecase"
+            const val Types = "$Root:types"
             // integrations for each component (database, usecase, etc.)
-            const val DatabaseIntegrations = ":updates:database:integrations"
-            const val UsecaseIntegrations = ":updates:usecase:integrations"
+            const val DatabaseIntegrations = "$Database:integrations"
+            const val UsecaseIntegrations = "$Usecase:integrations"
         }
 
         object Files {
-            // components
-            const val Database = ":files:database"
-            const val Endpoints = ":files:endpoints"
-            const val Usecase = ":files:usecase"
-            const val Types = ":files:types"
             const val Root = ":files"
+            // components
+            const val Database = "$Root:database"
+            const val Endpoints = "$Root:endpoints"
+            const val Usecase = "$Root:usecase"
+            const val Types = "$Root:types"
             // integrations for each component (database, usecase, etc.)
-            const val DatabaseIntegrations = ":files:database:integrations"
-            const val UsecaseIntegrations = ":files:usecase:integrations"
+            const val DatabaseIntegrations = "$Database:integrations"
+            const val UsecaseIntegrations = "$Usecase:integrations"
         }
 
         object Meetings {
-            // components
-            const val Database = ":meetings:database"
-            const val Endpoints = ":meetings:endpoints"
-            const val Usecase = ":meetings:usecase"
-            const val Types = ":meetings:types"
             const val Root = ":meetings"
+            // components
+            const val Database = "$Root:database"
+            const val Endpoints = "$Root:endpoints"
+            const val Usecase = "$Root:usecase"
+            const val Types = "$Root:types"
             // integrations for each component (database, usecase, etc.)
-            const val DatabaseIntegrations = ":meetings:database:integrations"
-            const val UsecaseIntegrations = ":meetings:usecase:integrations"
+            const val DatabaseIntegrations = "$Database:integrations"
+            const val UsecaseIntegrations = "$Usecase:integrations"
         }
 
         object User {
-            // components
-            const val Database = ":user:database"
-            const val Endpoints = ":user:endpoints"
-            const val Usecase = ":user:usecase"
-            const val Types = ":user:types"
             const val Root = ":user"
+            // components
+            const val Database = "$Root:database"
+            const val Endpoints = "$Root:endpoints"
+            const val Usecase = "$Root:usecase"
+            const val Types = "$Root:types"
             // integrations for each component (database, usecase, etc.)
-            const val DatabaseIntegrations = ":user:database:integrations"
-            const val UsecaseIntegrations = ":user:usecase:integrations"
+            const val DatabaseIntegrations = "$Database:integrations"
+            const val UsecaseIntegrations = "$Usecase:integrations"
         }
 
         object Auth {
-            // components
-            const val Database = ":auth:database"
-            const val Endpoints = ":auth:endpoints"
-            const val Usecase = ":auth:usecase"
-            const val Types = ":auth:types"
             const val Root = ":auth"
+            // components
+            const val Database = "$Root:database"
+            const val Endpoints = "$Root:endpoints"
+            const val Usecase = "$Root:usecase"
+            const val Types = "$Root:types"
             // integrations for each component (database, usecase, etc.)
-            const val DatabaseIntegrations = ":auth:database:integrations"
-            const val UsecaseIntegrations = ":auth:usecase:integrations"
+            const val DatabaseIntegrations = "$Database:integrations"
+            const val UsecaseIntegrations = "$Usecase:integrations"
         }
 
         object Email {
-            // components
-            const val Database = ":email:database"
-            const val Endpoints = ":email:endpoints"
-            const val Usecase = ":email:usecase"
-            const val Types = ":email:types"
             const val Root = ":email"
+            // components
+            const val Database = "$Root:database"
+            const val Endpoints = "$Root:endpoints"
+            const val Usecase = "$Root:usecase"
+            const val Types = "$Root:types"
             // integrations for each component (database, usecase, etc.)
-            const val DatabaseIntegrations = ":email:database:integrations"
-            const val UsecaseIntegrations = ":email:usecase:integrations"
+            const val DatabaseIntegrations = "$Database:integrations"
+            const val UsecaseIntegrations = "$Usecase:integrations"
         }
 
         object UsecaseUtf8Checker {
@@ -362,9 +362,9 @@ object Deps {
         }
 
         object Paging {
-            const val Types = ":paging:types"
-            const val Database = ":paging:database"
             const val Root = ":paging"
+            const val Types = "$Root:types"
+            const val Database = "$Root:database"
         }
 
         const val Features = ":features"
