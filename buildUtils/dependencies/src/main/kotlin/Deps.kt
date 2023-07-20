@@ -370,7 +370,7 @@ object Deps {
         const val Constants = ":constants"
         const val Optional = ":optional"
         const val AmountTypes = ":amount"
-        const val DateTime = ":date-time"
+        const val DateTime = ":datetime"
         const val LocationTypes = ":location"
         const val ExposedExtensions = ":exposed-extensions"
         const val Annotations = ":annotations"
