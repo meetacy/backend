@@ -105,20 +105,19 @@ include("meetings:database:integrations")
 findProject(":meetings:database:integrations")?.name = "integrations"
 include("meetings:usecase:integrations")
 findProject(":meetings:usecase:integrations")?.name = "integrations"
-include("user")
-include("user:database")
-findProject(":user:database")?.name = "database"
-include("user:database:integrations")
-findProject(":user:database:integrations")?.name = "integrations"
-include("user:usecase")
-findProject(":user:usecase")?.name = "usecase"
-include("user:endpoints")
-findProject(":user:endpoints")?.name = "endpoints"
-include("user:types")
-findProject(":user:types")?.name = "types"
-include("user:usecase:integrations")
-findProject(":user:usecase:integrations")?.name = "integrations"
-include("auth")
+include("feature:user")
+include("feature:user:database")
+findProject(":feature:user:database")?.name = "database"
+include("feature:user:database:integrations")
+findProject(":feature:user:database:integrations")?.name = "integrations"
+include("feature:user:usecase")
+findProject(":feature:user:usecase")?.name = "usecase"
+include("feature:user:endpoints")
+findProject(":feature:user:endpoints")?.name = "endpoints"
+include("feature:user:types")
+findProject(":feature:user:types")?.name = "types"
+include("feature:user:usecase:integrations")
+findProject(":feature:user:usecase:integrations")?.name = "integrations"
 include("auth")
 include("auth:database")
 findProject(":auth:database")?.name = "database"

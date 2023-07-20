@@ -316,7 +316,7 @@ object Deps {
         }
 
         object User {
-            const val Root = ":user"
+            const val Root = "$Feature:user"
             // components
             const val Database = "$Root:database"
             const val Endpoints = "$Root:endpoints"
