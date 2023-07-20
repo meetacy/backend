@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.Utf8Checker))
-    api(project(Deps.Projects.UsecaseUtf8Checker.it))
+    api(project(Deps.Projects.UsecaseUtf8Checker.Root))
 }

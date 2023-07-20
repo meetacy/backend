@@ -249,7 +249,7 @@ object Deps {
             const val Endpoints = ":invitation:endpoints"
             const val Usecase = ":invitation:usecase"
             const val Types = ":invitation:types"
-            const val it = ":invitation"
+            const val Root = ":invitation"
             // integrations for each component (database, usecase, etc.)
             const val DatabaseIntegrations = ":invitation:database:integrations"
             const val UsecaseIntegrations = ":invitation:usecase:integrations"
@@ -261,7 +261,7 @@ object Deps {
             const val Endpoints = ":notification:endpoints"
             const val Usecase = ":notification:usecase"
             const val Types = ":notification:types"
-            const val it = ":notification"
+            const val Root = ":notification"
             // integrations for each component (database, usecase, etc.)
             const val DatabaseIntegrations = ":notification:database:integrations"
             const val UsecaseIntegrations = ":notification:usecase:integrations"
@@ -273,7 +273,7 @@ object Deps {
             const val Endpoints = ":friends:endpoints"
             const val Usecase = ":friends:usecase"
             const val Types = ":friends:types"
-            const val it = ":friends"
+            const val Root = ":friends"
             // integrations for each component (database, usecase, etc.)
             const val DatabaseIntegrations = ":friends:database:integrations"
             const val UsecaseIntegrations = ":friends:usecase:integrations"
@@ -285,7 +285,7 @@ object Deps {
             const val Endpoints = ":updates:endpoints"
             const val Usecase = ":updates:usecase"
             const val Types = ":updates:types"
-            const val it = ":updates"
+            const val Root = ":updates"
             // integrations for each component (database, usecase, etc.)
             const val DatabaseIntegrations = ":updates:database:integrations"
             const val UsecaseIntegrations = ":updates:usecase:integrations"
@@ -297,7 +297,7 @@ object Deps {
             const val Endpoints = ":files:endpoints"
             const val Usecase = ":files:usecase"
             const val Types = ":files:types"
-            const val it = ":files"
+            const val Root = ":files"
             // integrations for each component (database, usecase, etc.)
             const val DatabaseIntegrations = ":files:database:integrations"
             const val UsecaseIntegrations = ":files:usecase:integrations"
@@ -309,7 +309,7 @@ object Deps {
             const val Endpoints = ":meetings:endpoints"
             const val Usecase = ":meetings:usecase"
             const val Types = ":meetings:types"
-            const val it = ":meetings"
+            const val Root = ":meetings"
             // integrations for each component (database, usecase, etc.)
             const val DatabaseIntegrations = ":meetings:database:integrations"
             const val UsecaseIntegrations = ":meetings:usecase:integrations"
@@ -321,7 +321,7 @@ object Deps {
             const val Endpoints = ":user:endpoints"
             const val Usecase = ":user:usecase"
             const val Types = ":user:types"
-            const val it = ":user"
+            const val Root = ":user"
             // integrations for each component (database, usecase, etc.)
             const val DatabaseIntegrations = ":user:database:integrations"
             const val UsecaseIntegrations = ":user:usecase:integrations"
@@ -333,7 +333,7 @@ object Deps {
             const val Endpoints = ":auth:endpoints"
             const val Usecase = ":auth:usecase"
             const val Types = ":auth:types"
-            const val it = ":auth"
+            const val Root = ":auth"
             // integrations for each component (database, usecase, etc.)
             const val DatabaseIntegrations = ":auth:database:integrations"
             const val UsecaseIntegrations = ":auth:usecase:integrations"
@@ -345,7 +345,7 @@ object Deps {
             const val Endpoints = ":email:endpoints"
             const val Usecase = ":email:usecase"
             const val Types = ":email:types"
-            const val it = ":email"
+            const val Root = ":email"
             // integrations for each component (database, usecase, etc.)
             const val DatabaseIntegrations = ":email:database:integrations"
             const val UsecaseIntegrations = ":email:usecase:integrations"
@@ -353,19 +353,21 @@ object Deps {
 
         object UsecaseUtf8Checker {
             const val Usecase = ":utf8-checker:usecase"
-            const val it = ":utf8-checker"
+            const val Root = ":utf8-checker"
         }
 
         object UsecaseHashGenerator {
             const val Usecase = ":hash-generator:usecase"
-            const val it = ":hash-generator"
+            const val Root = ":hash-generator"
         }
 
         object Paging {
             const val Types = ":paging:types"
             const val Database = ":paging:database"
-            const val it = ":paging"
+            const val Root = ":paging"
         }
+
+        const val Features = ":features"
 
         const val Constants = ":constants"
         const val Optional = ":optional"

@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(project(Deps.Projects.HashGenerator))
-    api(project(Deps.Projects.UsecaseHashGenerator.it))
+    api(project(Deps.Projects.UsecaseHashGenerator.Root))
 }
