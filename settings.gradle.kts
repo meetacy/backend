@@ -40,8 +40,8 @@ include(
 //    "libs:utf8-checker:usecase-integration",
 //    "libs:stdlib-extensions",
 //    "libs:di",
-//    "libs:discord-webhook",
-//    "libs:discord-webhook:ktor"
+    "libs:discord-webhook", // TODO: migrate
+    "libs:discord-webhook:ktor", // migrated
     "libs:paging", // migrated
     "libs:paging:types", // migrated
     "libs:paging:database", // migrated

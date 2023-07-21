@@ -32,6 +32,11 @@ mdi = { module = "app.meetacy.di:core", version.ref = "meetacyDi" }
 
 # ktor
 
+ktorClient-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktorClient-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktorClient-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktorClient-serializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
 # gradle
 
 kotlinGradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
