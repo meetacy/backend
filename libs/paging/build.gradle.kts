@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Paging.Types))
-    api(project(Deps.Projects.Paging.Database))
+    api(projects.libs.paging.types)
+    api(projects.libs.paging.database)
 }

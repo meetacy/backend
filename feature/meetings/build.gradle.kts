@@ -9,4 +9,5 @@ dependencies {
     api(project(Deps.Projects.Meetings.Types))
     api(project(Deps.Projects.Meetings.DatabaseIntegrations))
     api(project(Deps.Projects.Meetings.UsecaseIntegrations))
+
 }

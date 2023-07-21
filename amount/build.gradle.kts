@@ -1,10 +1,11 @@
 plugins {
     id("backend-convention")
-    id(Deps.Plugins.Serialization.Id)
+    kotlin("plugin.serialization") version "1.9.0"
 }
 
 dependencies {
-    api(project(Deps.Projects.Annotations))
+    api(projects.annotations)
 
-    implementation(Deps.Libs.Kotlinx.Serialization)
+    implementation(libs.serializationGradle)
+    implementation(libs.serializationJson)
 }

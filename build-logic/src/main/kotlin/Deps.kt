@@ -1,6 +1,6 @@
 @file:Suppress("FunctionName", "unused", "MemberVisibilityCanBePrivate")
 
-object _Deps {
+object Deps {
     const val compileSdkVersion = 31
     const val minSdkVersion = 21
     

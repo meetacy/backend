@@ -5,5 +5,5 @@ plugins {
 
 dependencies {
     api(projects.annotations)
-    api(libs.serialization)
+    api(libs.serializationJson)
 }

@@ -1,10 +1,10 @@
 plugins {
     id("backend-convention")
-    id(Deps.Plugins.Serialization.Id)
+    id("serialization-convention")
 }
 
 dependencies {
-    api(project(Deps.Projects.AmountTypes))
+    api(projects.amount)
 
-    implementation(Deps.Libs.Kotlinx.Serialization)
+    implementation(libs.serializationJson)
 }
