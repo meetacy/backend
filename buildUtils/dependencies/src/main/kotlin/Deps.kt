@@ -362,7 +362,7 @@ object Deps {
         }
 
         object Paging {
-            const val Root = ":paging"
+            const val Root = ":libs:paging"
             const val Types = "$Root:types"
             const val Database = "$Root:database"
         }
