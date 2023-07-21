@@ -2,7 +2,6 @@ package app.meetacy.backend.endpoint.types.notification
 
 import app.meetacy.backend.endpoint.types.meeting.Meeting
 import app.meetacy.backend.endpoint.types.user.User
-import app.meetacy.backend.types.serialization.datetime.DateSerializable
 import app.meetacy.backend.types.serialization.datetime.DateTimeSerializable
 import app.meetacy.backend.types.serialization.notification.NotificationIdSerializable
 import kotlinx.serialization.SerialName

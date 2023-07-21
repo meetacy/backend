@@ -40,19 +40,19 @@ findProject(":feature:invitation:types:integrations")?.name = "integrations"
 include("ktor-extensions")
 include("migrations")
 include("endpoints-new")
-include("notification")
-include("notification:database")
-findProject(":notification:database")?.name = "database"
-include("notification:usecase")
-findProject(":notification:usecase")?.name = "usecase"
-include("notification:endpoints")
-findProject(":notification:endpoints")?.name = "endpoints"
-include("notification:database:integrations")
-findProject(":notification:database:integrations")?.name = "integrations"
-include("notification:usecase:integrations")
-findProject(":notification:usecase:integrations")?.name = "integrations"
-include("notification:types")
-findProject(":notification:types")?.name = "types"
+include("feature:notification")
+include("feature:notification:database")
+findProject(":feature:notification:database")?.name = "database"
+include("feature:notification:usecase")
+findProject(":feature:notification:usecase")?.name = "usecase"
+include("feature:notification:endpoints")
+findProject(":feature:notification:endpoints")?.name = "endpoints"
+include("feature:notification:database:integrations")
+findProject(":feature:notification:database:integrations")?.name = "integrations"
+include("feature:notification:usecase:integrations")
+findProject(":feature:notification:usecase:integrations")?.name = "integrations"
+include("feature:notification:types")
+findProject(":feature:notification:types")?.name = "types"
 include("feature:friends")
 include("feature:friends:database")
 findProject(":feature:friends:database")?.name = "database"
@@ -66,45 +66,45 @@ include("feature:friends:database:integrations")
 findProject(":feature:friends:database:integrations")?.name = "integrations"
 include("feature:friends:usecase:integrations")
 findProject(":feature:friends:usecase:integrations")?.name = "integrations"
-include("updates")
-include("updates:database")
-findProject(":updates:database")?.name = "database"
-include("updates:usecase")
-findProject(":updates:usecase")?.name = "usecase"
-include("updates:endpoints")
-findProject(":updates:endpoints")?.name = "endpoints"
-include("updates:types")
-findProject(":updates:types")?.name = "types"
-include("updates:database:integrations")
-findProject(":updates:database:integrations")?.name = "integrations"
-include("updates:usecase:integrations")
-findProject(":updates:usecase:integrations")?.name = "integrations"
-include("files")
-include("files:database")
-findProject(":files:database")?.name = "database"
-include("files:usecase")
-findProject(":files:usecase")?.name = "usecase"
-include("files:endpoints")
-findProject(":files:endpoints")?.name = "endpoints"
-include("files:database:integrations")
-findProject(":files:database:integrations")?.name = "integrations"
-include("files:types")
-findProject(":files:types")?.name = "types"
-include("files:usecase:integrations")
-findProject(":files:usecase:integrations")?.name = "integrations"
-include("meetings")
-include("meetings:endpoints")
-findProject(":meetings:endpoints")?.name = "endpoints"
-include("meetings:types")
-findProject(":meetings:types")?.name = "types"
-include("meetings:usecase")
-findProject(":meetings:usecase")?.name = "usecase"
-include("meetings:database")
-findProject(":meetings:database")?.name = "database"
-include("meetings:database:integrations")
-findProject(":meetings:database:integrations")?.name = "integrations"
-include("meetings:usecase:integrations")
-findProject(":meetings:usecase:integrations")?.name = "integrations"
+include("feature:updates")
+include("feature:updates:database")
+findProject(":feature:updates:database")?.name = "database"
+include("feature:updates:usecase")
+findProject(":feature:updates:usecase")?.name = "usecase"
+include("feature:updates:endpoints")
+findProject(":feature:updates:endpoints")?.name = "endpoints"
+include("feature:updates:types")
+findProject(":feature:updates:types")?.name = "types"
+include("feature:updates:database:integrations")
+findProject(":feature:updates:database:integrations")?.name = "integrations"
+include("feature:updates:usecase:integrations")
+findProject(":feature:updates:usecase:integrations")?.name = "integrations"
+include("feature:files")
+include("feature:files:database")
+findProject(":feature:files:database")?.name = "database"
+include("feature:files:usecase")
+findProject(":feature:files:usecase")?.name = "usecase"
+include("feature:files:endpoints")
+findProject(":feature:files:endpoints")?.name = "endpoints"
+include("feature:files:database:integrations")
+findProject(":feature:files:database:integrations")?.name = "integrations"
+include("feature:files:types")
+findProject(":feature:files:types")?.name = "types"
+include("feature:files:usecase:integrations")
+findProject(":feature:files:usecase:integrations")?.name = "integrations"
+include("feature:meetings")
+include("feature:meetings:endpoints")
+findProject(":feature:meetings:endpoints")?.name = "endpoints"
+include("feature:meetings:types")
+findProject(":feature:meetings:types")?.name = "types"
+include("feature:meetings:usecase")
+findProject(":feature:meetings:usecase")?.name = "usecase"
+include("feature:meetings:database")
+findProject(":feature:meetings:database")?.name = "database"
+include("feature:meetings:database:integrations")
+findProject(":feature:meetings:database:integrations")?.name = "integrations"
+include("feature:meetings:usecase:integrations")
+findProject(":feature:meetings:usecase:integrations")?.name = "integrations"
 include("feature:user")
 include("feature:user:database")
 findProject(":feature:user:database")?.name = "database"
@@ -118,32 +118,32 @@ include("feature:user:types")
 findProject(":feature:user:types")?.name = "types"
 include("feature:user:usecase:integrations")
 findProject(":feature:user:usecase:integrations")?.name = "integrations"
-include("auth")
-include("auth:database")
-findProject(":auth:database")?.name = "database"
-include("auth:endpoints")
-findProject(":auth:endpoints")?.name = "endpoints"
-include("auth:types")
-findProject(":auth:types")?.name = "types"
-include("auth:usecase")
-findProject(":auth:usecase")?.name = "usecase"
-include("auth:database:integrations")
-findProject(":auth:database:integrations")?.name = "integrations"
-include("auth:usecase:integrations")
-findProject(":auth:usecase:integrations")?.name = "integrations"
-include("email")
-include("email:database")
-findProject(":email:database")?.name = "database"
-include("email:usecase")
-findProject(":email:usecase")?.name = "usecase"
-include("email:endpoints")
-findProject(":email:endpoints")?.name = "endpoints"
-include("email:types")
-findProject(":email:types")?.name = "types"
-include("email:database:integrations")
-findProject(":email:database:integrations")?.name = "integrations"
-include("email:usecase:integrations")
-findProject(":email:usecase:integrations")?.name = "integrations"
+include("feature:auth")
+include("feature:auth:database")
+findProject(":feature:auth:database")?.name = "database"
+include("feature:auth:endpoints")
+findProject(":feature:auth:endpoints")?.name = "endpoints"
+include("feature:auth:types")
+findProject(":feature:auth:types")?.name = "types"
+include("feature:auth:usecase")
+findProject(":feature:auth:usecase")?.name = "usecase"
+include("feature:auth:database:integrations")
+findProject(":feature:auth:database:integrations")?.name = "integrations"
+include("feature:auth:usecase:integrations")
+findProject(":feature:auth:usecase:integrations")?.name = "integrations"
+include("feature:email")
+include("feature:email:database")
+findProject(":feature:email:database")?.name = "database"
+include("feature:email:usecase")
+findProject(":feature:email:usecase")?.name = "usecase"
+include("feature:email:endpoints")
+findProject(":feature:email:endpoints")?.name = "endpoints"
+include("feature:email:types")
+findProject(":feature:email:types")?.name = "types"
+include("feature:email:database:integrations")
+findProject(":feature:email:database:integrations")?.name = "integrations"
+include("feature:email:usecase:integrations")
+findProject(":feature:email:usecase:integrations")?.name = "integrations"
 include("utf8-checker")
 include("utf8-checker:usecase")
 findProject(":utf8-checker:usecase")?.name = "usecase"

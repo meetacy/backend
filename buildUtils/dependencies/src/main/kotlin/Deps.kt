@@ -256,7 +256,7 @@ object Deps {
         }
 
         object Notification {
-            const val Root = ":notification"
+            const val Root = "$Feature:notification"
             // components
             const val Database = "$Root:database"
             const val Endpoints = "$Root:endpoints"
@@ -280,7 +280,7 @@ object Deps {
         }
 
         object Updates {
-            const val Root = ":updates"
+            const val Root = "$Feature:updates"
             // components
             const val Database = "$Root:database"
             const val Endpoints = "$Root:endpoints"
@@ -292,7 +292,7 @@ object Deps {
         }
 
         object Files {
-            const val Root = ":files"
+            const val Root = "$Feature:files"
             // components
             const val Database = "$Root:database"
             const val Endpoints = "$Root:endpoints"
@@ -304,7 +304,7 @@ object Deps {
         }
 
         object Meetings {
-            const val Root = ":meetings"
+            const val Root = "$Feature:meetings"
             // components
             const val Database = "$Root:database"
             const val Endpoints = "$Root:endpoints"
@@ -328,7 +328,7 @@ object Deps {
         }
 
         object Auth {
-            const val Root = ":auth"
+            const val Root = "$Feature:auth"
             // components
             const val Database = "$Root:database"
             const val Endpoints = "$Root:endpoints"
@@ -340,7 +340,7 @@ object Deps {
         }
 
         object Email {
-            const val Root = ":email"
+            const val Root = "$Feature:email"
             // components
             const val Database = "$Root:database"
             const val Endpoints = "$Root:endpoints"
@@ -352,13 +352,13 @@ object Deps {
         }
 
         object UsecaseUtf8Checker {
-            const val Usecase = ":utf8-checker:usecase"
             const val Root = ":utf8-checker"
+            const val Usecase = "$Root:usecase"
         }
 
         object UsecaseHashGenerator {
-            const val Usecase = ":hash-generator:usecase"
             const val Root = ":hash-generator"
+            const val Usecase = "$Root:usecase"
         }
 
         object Paging {
@@ -379,8 +379,6 @@ object Deps {
         const val EndpointsNew = ":endpoints-new"
         const val Migrations = ":migrations"
         const val KtorExtensions = ":ktor-extensions"
-        const val Types = ":types"
-        const val TypesSerialization = ":types:serialization-integration"
         const val HashGenerator = ":libs:hash-generator"
         const val HashGeneratorUsecase = ":libs:hash-generator:usecase-integration"
         const val Utf8Checker = ":libs:utf8-checker"
