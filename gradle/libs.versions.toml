@@ -1,0 +1,47 @@
+[versions]
+
+kotlin = "1.9.0"
+coroutines = "1.6.0"
+serialization = "1.3.2"
+ktor = "2.2.3"
+rsocket = "0.15.4"
+exposed = "0.41.1"
+
+postgresql = "42.2.24"
+slf4jJ = "1.7.32"
+logback = "1.2.6"
+ssh = "2.10.1"
+shadow = "7.0.0"
+
+wdater = "0.0.2"
+meetacySdk = "0.0.58"
+meetacyDi = "0.0.23"
+
+[libraries]
+
+coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+
+# exposed
+exposedCore = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposedJdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+
+# meetacy
+mdi = { module = "app.meetacy.di:core", version.ref = "meetacyDi" }
+
+# ktor
+
+# gradle
+
+kotlinGradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+serializationGradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+shadowGradle = { module = "gradle.plugin.com.github.jengelman.gradle.plugins:shadow", version.ref = "shadow" }
+sshGradle = { module = "org.hidetake:gradle-ssh-plugin", version.ref = "ssh" }
+
+[plugins]
+
+deploy = { id = "deploy-convention" }
+backend = { id = "backend-app-convention" }
+shadow = { id = "com.github.johnrengelman.shadow" }
+ssh = { id = "org.hidetake.ssh" }

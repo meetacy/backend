@@ -1,37 +1,42 @@
+import deploy.default
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.util.GUtil.loadProperties
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.konan.properties.loadProperties
 
 plugins {
-    id(Deps.Plugins.Configuration.Kotlin.Jvm)
-    id(Deps.Plugins.Deploy.Id)
+    id("backend-convention")
+    id("deploy-convention")
 }
 
 dependencies {
-    implementation(project(Deps.Projects.HashGeneratorUsecase))
-    implementation(project(Deps.Projects.Utf8CheckerUsecase))
-    implementation(project(Deps.Projects.DI))
-    implementation(project(Deps.Projects.Migrations))
-    implementation(project(Deps.Projects.EndpointsNew))
-    implementation(project(Deps.Projects.Invitation.Root))
-    implementation(project(Deps.Projects.Notification.Root))
-    implementation(project(Deps.Projects.Friends.Root))
-    implementation(project(Deps.Projects.Updates.Root))
-    implementation(project(Deps.Projects.Files.Root))
-    implementation(project(Deps.Projects.Meetings.Root))
-    implementation(project(Deps.Projects.User.Root))
-    implementation(project(Deps.Projects.Auth.Root))
-    implementation(project(Deps.Projects.Email.Root))
-    implementation(project(Deps.Projects.DiscordWebhookKtor))
 
-    testImplementation(Deps.Libs.Meetacy.Sdk.ApiKtor)
-    testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
-    testImplementation(Deps.Libs.Ktor.Client.Core)
-    testImplementation(Deps.Libs.Ktor.Client.Cio)
-    testImplementation(Deps.Libs.Ktor.Client.Logging)
-    testImplementation(Deps.Libs.Ktor.Client.Mock)
-    testImplementation(Deps.Libs.Ktor.Client.Cio)
+    implementation(projects.feature.common.types.integration)
+
+
+
+//    implementation(project(Deps.Projects.HashGeneratorUsecase))
+//    implementation(project(Deps.Projects.Migrations))
+//    implementation(project(Deps.Projects.EndpointsNew))
+//    implementation(project(Deps.Projects.Invitation.Root))
+//    implementation(project(Deps.Projects.Notification.Root))
+//    implementation(project(Deps.Projects.Friends.Root))
+//    implementation(project(Deps.Projects.Updates.Root))
+//    implementation(project(Deps.Projects.Files.Root))
+//    implementation(project(Deps.Projects.Meetings.Root))
+//    implementation(project(Deps.Projects.User.Root))
+//    implementation(project(Deps.Projects.Auth.Root))
+//    implementation(project(Deps.Projects.Email.Root))
+//    implementation(project(Deps.Projects.DiscordWebhookKtor))
+
+//    testImplementation(Deps.Libs.Meetacy.Sdk.ApiKtor)
+//    testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
+//    testImplementation(Deps.Libs.Ktor.Client.Core)
+//    testImplementation(Deps.Libs.Ktor.Client.Cio)
+//    testImplementation(Deps.Libs.Ktor.Client.Logging)
+//    testImplementation(Deps.Libs.Ktor.Client.Mock)
+//    testImplementation(Deps.Libs.Ktor.Client.Cio)
+//    testImplementation(Deps.Libs.Kotlinx.Serialization)
     testImplementation(kotlin("test"))
-    testImplementation(Deps.Libs.Kotlinx.Serialization)
 }
 
 tasks.test {
@@ -41,11 +46,11 @@ tasks.test {
     }
 }
 
-val propertiesFile = rootProject.file("deploy.properties")
+val propertiesFile: File = rootProject.file("deploy.properties")
 
 deploy {
     val isRunner = System.getenv("IS_RUNNER")?.toBoolean() == true
-    val properties = if (propertiesFile.exists()) loadProperties(propertiesFile) else null
+    val properties = if (propertiesFile.exists()) loadProperties(propertiesFile.absolutePath) else null
 
     if (!isRunner && properties == null) return@deploy
 
@@ -69,6 +74,6 @@ application {
     mainClass.set("app.meetacy.backend.MainKt")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.freeCompilerArgs += "-opt-in=kotlinx.serialization.ExperimentalSerializationApi"
 }

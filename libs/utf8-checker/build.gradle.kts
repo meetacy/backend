@@ -1,3 +1,3 @@
 plugins {
-    id(Deps.Plugins.Configuration.Kotlin.Jvm)
+    id("backend-convention")
 }

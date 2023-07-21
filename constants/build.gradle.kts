@@ -1,7 +1,7 @@
 plugins {
-    id(Deps.Plugins.Configuration.Kotlin.Jvm)
+    id("backend-convention")
 }
 
 dependencies {
-    api(project(Deps.Projects.DateTime))
+    api(projects.datetime)
 }

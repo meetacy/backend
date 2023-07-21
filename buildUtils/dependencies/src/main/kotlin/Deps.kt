@@ -1,6 +1,6 @@
 @file:Suppress("FunctionName", "unused", "MemberVisibilityCanBePrivate")
 
-object Deps {
+object _Deps {
     const val compileSdkVersion = 31
     const val minSdkVersion = 21
     
@@ -39,62 +39,6 @@ object Deps {
 
     object Libs {
 
-        object KotlinGang {
-            object KDS {
-                const val FileDataStorage = "fun.kotlingang.kds:json-files:$kdsVer"
-                const val LocalDataStorage = "fun.kotlingang.kds:json-files:$kdsVer"
-                const val BundleDataStorage = "fun.kotlingang.kds:json-bundle:$kdsVer"
-                object Integrations {
-                    const val Androidx = "fun.kotlingang.kds:extensions-androidx:$kdsVer"
-                    const val Coroutines = "fun.kotlingang.kds:extensions-coroutines:$kdsVer"
-                    const val KVision = "fun.kotlingang.kds:extensions-kvision:$kdsVer"
-                }
-                const val Core = "fun.kotlingang.kds:core:$kdsVer"
-                const val Json = "fun.kotlingang.kds:json:$kdsVer"
-            }
-            object ScriptKt {
-                const val Wrapper = "fun.kotlingang.scriptkt:scriptkt:$scriptKtVer"
-                const val ImportScript = "fun.kotlingang.scriptkt:import-script:$scriptKtVer"
-                const val MavenResolver = "fun.kotlingang.scriptkt:maven-resolver:$scriptKtVer"
-            }
-        }
-
-        object KVision {
-            const val Core = "io.kvision:kvision:$kvisionVersion"
-
-            object Bootstrap {
-                const val Core = "io.kvision:kvision-bootstrap:$kvisionVersion"
-                const val Css = "io.kvision:kvision-bootstrap-css:$kvisionVersion"
-                const val DateTime = "io.kvision:kvision-bootstrap-datetime:$kvisionVersion"
-                const val Select = "io.kvision:kvision-bootstrap-select:$kvisionVersion"
-                const val Spinner = "io.kvision:kvision-bootstrap-spinner:$kvisionVersion"
-                const val Upload = "io.kvision:kvision-bootstrap-upload:$kvisionVersion"
-                const val Dialog = "io.kvision:kvision-bootstrap-dialog:$kvisionVersion"
-                const val Typeahead = "io.kvision:kvision-bootstrap-typeahead:$kvisionVersion"
-            }
-
-            const val FontAwesome = "io.kvision:kvision-fontawesome:$kvisionVersion"
-            const val i18n = "io.kvision:kvision-i18n:$kvisionVersion"
-            const val RichText = "io.kvision:kvision-richtext:$kvisionVersion"
-            const val Handlebars = "io.kvision:kvision-handlebars:$kvisionVersion"
-            const val DataContainer = "io.kvision:kvision-datacontainer:$kvisionVersion"
-            const val Chart = "io.kvision:kvision-chart:$kvisionVersion"
-            const val Tabulator = "io.kvision:kvision-tabulator:$kvisionVersion"
-            const val Pace = "io.kvision:kvision-pace:$kvisionVersion"
-            const val Toast = "io.kvision:kvision-toast:$kvisionVersion"
-            const val React = "io.kvision:kvision-react:$kvisionVersion"
-            const val Navigo = "io.kvision:kvision-routing-navigo:$kvisionVersion"
-            const val State = "io.kvision:kvision-state:$kvisionVersion"
-            const val Rest = "io.kvision:kvision-rest:$kvisionVersion"
-        }
-
-        object Kotlinx {
-            const val Coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
-            const val CoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
-            const val Serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion"
-            const val Datetime = "org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion"
-            const val Nodejs = "org.jetbrains.kotlinx:kotlinx-nodejs:$nodejsExternalsVersion"
-        }
         object Ktor {
             object Client {
                 const val Core = "io.ktor:ktor-client-core:$ktorVersion"

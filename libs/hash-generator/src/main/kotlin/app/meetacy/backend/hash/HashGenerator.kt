@@ -11,6 +11,6 @@ private fun getRandomString(@Suppress("SameParameterValue") length: Int): String
 
 object HashGenerator {
     fun generate(): String {
-        return getRandomString(length = HASH_LENGTH)
+        return getRandomString(HASH_LENGTH)
     }
 }

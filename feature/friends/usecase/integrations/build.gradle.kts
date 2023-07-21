@@ -1,5 +1,5 @@
 plugins {
-    id(Deps.Plugins.Configuration.Kotlin.Jvm)
+    id("backend-convention")
 }
 
 // usecase and endpoints dependencies
