@@ -37,7 +37,7 @@ include("feature:invitation:database:integrations")
 findProject(":feature:invitation:database:integrations")?.name = "integrations"
 include("feature:invitation:types:integrations")
 findProject(":feature:invitation:types:integrations")?.name = "integrations"
-include("ktor-extensions")
+include("libs:ktor-extensions")
 include("migrations")
 include("endpoints-new")
 include("feature:notification")
@@ -156,7 +156,7 @@ findProject(":paging:types")?.name = "types"
 include("paging:database")
 findProject(":paging:database")?.name = "database"
 include("annotations")
-include("exposed-extensions")
+include("libs:exposed-extensions")
 include("location")
 include("datetime")
 include("amount")

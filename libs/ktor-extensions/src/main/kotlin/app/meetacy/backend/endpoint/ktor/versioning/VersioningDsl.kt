@@ -3,7 +3,6 @@ package app.meetacy.backend.endpoint.ktor.versioning
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import io.ktor.server.application.*
-import io.ktor.util.*
 import io.ktor.util.pipeline.*
 
 class VersioningBuilder {

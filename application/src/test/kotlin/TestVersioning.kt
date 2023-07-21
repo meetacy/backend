@@ -2,9 +2,7 @@ import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
 import app.meetacy.backend.endpoint.ktor.versioning.versioning
 import io.ktor.client.*
 import io.ktor.client.plugins.*
-import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
-import io.ktor.content.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.cio.*
