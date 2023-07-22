@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Meetings.Usecase))
-    api(project(Deps.Projects.Meetings.Database))
-    api(project(Deps.Projects.Files.DatabaseIntegrations))
-    api(project(Deps.Projects.User.DatabaseIntegrations))
+    api(projects.feature.meetings.usecase)
+    api(projects.feature.meetings.database)
+    api(projects.feature.files.database.integrations)
+    api(projects.feature.user.database.integrations)
 }
