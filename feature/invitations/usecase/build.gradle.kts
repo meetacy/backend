@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Invitation.Types))
+    api(projects.feature.invitations.types)
 
-    api(project(Deps.Projects.Meetings.Usecase))
+    api(projects.feature.invitations.usecase)
 }
