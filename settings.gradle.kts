@@ -52,7 +52,7 @@ include(
     "feature:files:usecase", // migrated
     "feature:files:usecase:integrations", // TODO: migrate
     "feature:files:endpoints", // migrated
-    "feature:friends", // TODO: migrate
+    "feature:friends", // migrated
     "feature:friends:database", // migrated
     "feature:friends:database:integrations", // migrated
     "feature:friends:usecase", // migrated
