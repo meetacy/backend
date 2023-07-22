@@ -48,7 +48,7 @@ include(
     "feature:files:types", // migrated
     "feature:files:usecase", // migrated
     "feature:user:database", // migrated
-    "feature:user:usecase", // TODO: migrate
+    "feature:user:usecase", // migrated
     "feature:user:types", // migrated
     "location", // migrated
     "migrations", // TODO: migrate
