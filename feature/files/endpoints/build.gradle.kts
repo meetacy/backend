@@ -1,12 +1,12 @@
 plugins {
     id("backend-convention")
-    id(Deps.Plugins.Serialization.Id)
+    id("serialization-convention")
 }
 
 dependencies {
-    api(project(Deps.Projects.Files.Types))
-    api(project(Deps.Projects.KtorExtensions))
+    api(projects.feature.files.types)
+    api(projects.libs.ktorExtensions)
 
-    implementation(Deps.Libs.Ktor.Server.Core)
-    implementation(Deps.Libs.Kotlinx.Serialization)
+    implementation(libs.ktorServer.core)
+    implementation(libs.serializationJson)
 }

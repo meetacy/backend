@@ -48,7 +48,10 @@ include(
     "feature:files", // TODO: migrate
     "feature:files:types", // migrated
     "feature:files:database", // TODO: migrate
+    "feature:files:database:integrations", // TODO: migrate
     "feature:files:usecase", // migrated
+    "feature:files:usecase:integrations", // TODO: migrate
+    "feature:files:endpoints", // migrated
     "feature:friends", // TODO: migrate
     "feature:friends:database", // migrated
     "feature:friends:usecase", // migrated
