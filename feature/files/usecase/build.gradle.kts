@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Files.Types))
+    api(projects.feature.files.types)
 
-    api(project(Deps.Projects.Auth.Usecase))
+    api(projects.feature.auth.usecase)
 }
