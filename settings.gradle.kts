@@ -40,9 +40,12 @@ include(
     "feature:common:types:integration", // migrated
     "feature:auth", // TODO: migrate
     "feature:auth:database", // migrated
+    "feature:auth:usecase", // TODO: migrate
     "feature:auth:types", // migrated
+    "feature:user:types", // TODO: migrate
     "migrations", // TODO: migrate
 //    "endpoints-new",
+    "location", // migrated
     "utf8-checker", // migrated
     "utf8-checker:usecase", // migrated
     "libs:hash-generator", // migrated

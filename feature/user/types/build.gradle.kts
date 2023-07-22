@@ -1,13 +1,15 @@
 plugins {
     id("backend-convention")
-    id(Deps.Plugins.Serialization.Id)
+    id("serialization-convention")
 }
 
 dependencies {
-    api(project(Deps.Projects.Auth.Types))
-    api(project(Deps.Projects.LocationTypes))
-    api(project(Deps.Projects.AmountTypes))
-    api(project(Deps.Projects.Optional))
+//    api(project(Deps.Projects.Auth.Types))
+//    api(project(Deps.Projects.LocationTypes))
+//    api(project(Deps.Projects.AmountTypes))
+//    api(project(Deps.Projects.Optional))
+    api(projects.feature.auth.types)
+    api(projects.location)
 
-    implementation(Deps.Libs.Kotlinx.Serialization)
+    implementation(libs.serializationGradle)
 }
