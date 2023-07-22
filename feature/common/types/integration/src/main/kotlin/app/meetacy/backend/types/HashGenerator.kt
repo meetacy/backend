@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.types
 
 import app.meetacy.backend.hash.HashGenerator

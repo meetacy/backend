@@ -33,6 +33,11 @@ include(
     "amount", // migrated
     "constants", // migrated
     "datetime", // migrated
+    "feature", // migrated
+    "feature:common", // migrated
+    "feature:common:integration", // migrated
+    "feature:common:types", // migrated
+    "feature:common:types:integration", // migrated
     "migrations", // TODO: migrate
 //    "endpoints-new",
     "utf8-checker", // migrated

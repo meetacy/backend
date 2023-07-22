@@ -19,4 +19,5 @@ dependencies {
 //    api(Deps.Libs.Exposed.Core)
 //    implementation(Deps.Libs.Exposed.Jdbc)
 //    implementation(Deps.Libs.Postgres.Jdbc)
+    implementation(libs.exposedCore)
 }
