@@ -34,10 +34,6 @@ include(
     "constants", // migrated
     "datetime", // migrated
     "feature", // migrated
-    "feature:common", // migrated
-    "feature:common:integration", // migrated
-    "feature:common:types", // migrated
-    "feature:common:types:integration", // migrated
     "feature:auth", // migrated
     "feature:auth:database", // migrated
     "feature:auth:database:integrations", // migrated
@@ -45,6 +41,10 @@ include(
     "feature:auth:usecase", // migrated
     "feature:auth:usecase:integrations", // migrated
     "feature:auth:types", // migrated
+    "feature:common", // migrated
+    "feature:common:integration", // migrated
+    "feature:common:types", // migrated
+    "feature:common:types:integration", // migrated
     "feature:files", // migrated
     "feature:files:types", // migrated
     "feature:files:database", // migrated
@@ -58,6 +58,13 @@ include(
     "feature:friends:usecase", // migrated
     "feature:friends:usecase:integrations", // migrated
     "feature:friends:endpoints", // migrated
+    "feature:invitations", // TODO: migrate
+    "feature:invitations:types", // migrated
+    "feature:invitations:usecase", // TODO: migrate
+    "feature:invitations:usecase:integrations", // TODO: migrate
+    "feature:invitations:endpoints", // TODO: migrate
+    "feature:invitations:database", // TODO: migrate
+    "feature:invitations:database:integrations", // TODO: migrate
     "feature:meetings", // migrated
     "feature:meetings:endpoints", // migrated
     "feature:meetings:database", // migrated
