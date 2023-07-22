@@ -42,10 +42,11 @@ include(
     "feature:auth:database", // migrated
     "feature:auth:usecase", // TODO: migrate
     "feature:auth:types", // migrated
-    "feature:user:types", // TODO: migrate
+    "feature:user:types", // migrated
+    "location", // migrated
     "migrations", // TODO: migrate
 //    "endpoints-new",
-    "location", // migrated
+    "optional", // migrated
     "utf8-checker", // migrated
     "utf8-checker:usecase", // migrated
     "libs:hash-generator", // migrated
