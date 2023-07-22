@@ -48,9 +48,9 @@ include(
     "feature:files", // migrated
     "feature:files:types", // migrated
     "feature:files:database", // migrated
-    "feature:files:database:integrations", // TODO: migrate
+    "feature:files:database:integrations", // migrated
     "feature:files:usecase", // migrated
-    "feature:files:usecase:integrations", // TODO: migrate
+    "feature:files:usecase:integrations", // migrated
     "feature:files:endpoints", // migrated
     "feature:friends", // migrated
     "feature:friends:database", // migrated
@@ -58,7 +58,12 @@ include(
     "feature:friends:usecase", // migrated
     "feature:friends:usecase:integrations", // migrated
     "feature:friends:endpoints", // migrated
+    "feature:meetings", // TODO: migrate
+    "feature:meetings:endpoints", // TODO: migrate
+    "feature:meetings:database", // TODO: migrate
+    "feature:meetings:database:integrations", // TODO: migrate
     "feature:meetings:usecase", // TODO: migrate
+    "feature:meetings:usecase:integrations", // TODO: migrate
     "feature:meetings:types", // TODO: migrate
     "feature:notification:usecase", // TODO: migrate
     "feature:notification:types", // TODO: migrate
