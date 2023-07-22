@@ -4,9 +4,9 @@ plugins {
 
 // usecase and endpoints dependencies
 dependencies {
-    api(project(Deps.Projects.Meetings.Usecase))
-    api(project(Deps.Projects.Meetings.Endpoints))
-    api(project(Deps.Projects.Meetings.Types))
+    api(projects.feature.meetings.usecase)
+    api(projects.feature.meetings.endpoints)
+    api(projects.feature.meetings.types)
 
-    api(project(Deps.Projects.User.UsecaseIntegrations))
+    api(projects.feature.user.usecase.integrations)
 }
