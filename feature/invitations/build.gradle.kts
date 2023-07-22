@@ -3,10 +3,10 @@ plugins {
 }
 
 dependencies {
-//    api(project(Deps.Projects.Invitation.Database))
-//    api(project(Deps.Projects.Invitation.Usecase))
-//    api(project(Deps.Projects.Invitation.Endpoints))
-//    api(project(Deps.Projects.Invitation.Types))
-//    api(project(Deps.Projects.Invitation.DatabaseIntegrations))
-//    api(project(Deps.Projects.Invitation.UsecaseIntegrations))
+    api(projects.feature.invitations.database)
+    api(projects.feature.invitations.usecase)
+    api(projects.feature.invitations.endpoints)
+    api(projects.feature.invitations.types)
+    api(projects.feature.invitations.database.integrations)
+    api(projects.feature.invitations.usecase.integrations)
 }
