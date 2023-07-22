@@ -4,8 +4,8 @@ plugins {
 
 // usecase and endpoints dependencies
 dependencies {
-    api(project(Deps.Projects.Friends.Usecase))
-    api(project(Deps.Projects.Friends.Endpoints))
+    api(projects.feature.friends.usecase)
+    api(projects.feature.friends.endpoints)
 
-    api(project(Deps.Projects.User.UsecaseIntegrations))
+    api(projects.feature.user.usecase.integrations)
 }
