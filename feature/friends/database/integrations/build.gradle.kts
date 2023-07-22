@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Friends.Usecase))
-    api(project(Deps.Projects.Friends.Database))
-    api(project(Deps.Projects.Notification.Usecase))
+    api(projects.feature.friends.usecase)
+    api(projects.feature.friends.database)
+    api(projects.feature.notification.usecase)
 
-    api(project(Deps.Projects.User.DatabaseIntegrations))
+    api(projects.feature.user.database.integrations)
 }

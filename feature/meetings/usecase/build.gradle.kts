@@ -9,6 +9,6 @@ dependencies {
     api(project(Deps.Projects.User.Usecase))
     api(project(Deps.Projects.Paging.Types))
 
-    implementation(Deps.Libs.Kotlinx.Coroutines)
+    implementation(libs.coroutines)
     api(project(Deps.Projects.StdlibExtensions))
 }

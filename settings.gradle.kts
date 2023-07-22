@@ -54,12 +54,19 @@ include(
     "feature:files:endpoints", // migrated
     "feature:friends", // TODO: migrate
     "feature:friends:database", // migrated
+    "feature:friends:database:integrations", // migrated
     "feature:friends:usecase", // migrated
+    "feature:friends:usecase:integrations", // TODO: migrate
+    "feature:friends:endpoints", // TODO: migrate
+    "feature:meetings:usecase", // TODO: migrate
+    "feature:meetings:types", // TODO: migrate
+    "feature:notification:usecase", // TODO: migrate
+    "feature:notification:types", // TODO: migrate
     "feature:user", // migrated
     "feature:user:database", // migrated
     "feature:user:database:integrations", // migrated
     "feature:user:usecase", // migrated
-    "feature:user:usecase:integrations", // TODO: migrate
+    "feature:user:usecase:integrations", // migrated
     "feature:user:endpoints", // migrated
     "feature:user:types", // migrated
     "location", // migrated
