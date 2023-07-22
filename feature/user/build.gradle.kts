@@ -3,10 +3,10 @@ plugins {
 }
 
 dependencies {
-//    api(project(Deps.Projects.User.Database))
-//    api(project(Deps.Projects.User.Usecase))
-//    api(project(Deps.Projects.User.Endpoints))
-//    api(project(Deps.Projects.User.Types))
-//    api(project(Deps.Projects.User.DatabaseIntegrations))
-//    api(project(Deps.Projects.User.UsecaseIntegrations))
+    api(projects.feature.user.usecase)
+    api(projects.feature.user.database)
+    api(projects.feature.user.endpoints)
+    api(projects.feature.user.types)
+    api(projects.feature.user.database.integrations)
+    api(projects.feature.user.usecase.integrations)
 }
