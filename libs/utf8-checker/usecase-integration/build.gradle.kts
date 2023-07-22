@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Utf8Checker))
-    api(project(Deps.Projects.UsecaseUtf8Checker.Root))
+    api(projects.libs.utf8Checker)
+    api(projects.utf8Checker)
 }
