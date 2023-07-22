@@ -46,7 +46,7 @@ include(
     "feature:auth:usecase:integrations", // migrated
     "feature:auth:types", // migrated
     "feature:files:types", // migrated
-    "feature:user:database", // TODO: migrate
+    "feature:user:database", // migrated
     "feature:user:types", // migrated
     "location", // migrated
     "migrations", // TODO: migrate
