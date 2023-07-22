@@ -4,10 +4,10 @@ plugins {
 }
 
 dependencies {
-//    api(project(Deps.Projects.KtorExtensions))
-//    api(project(Deps.Projects.User.Endpoints))
-//    api(project(Deps.Projects.Paging.Types))
-//
-//    implementation(Deps.Libs.Ktor.Server.Core)
-//    implementation(Deps.Libs.Kotlinx.Serialization)
+    api(projects.libs.ktorExtensions)
+    api(projects.feature.user.endpoints)
+    api(projects.libs.paging.types)
+
+    implementation(libs.ktorServer.core)
+    implementation(libs.serializationJson)
 }
