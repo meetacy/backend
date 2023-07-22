@@ -58,7 +58,7 @@ include(
     "feature:friends:usecase", // migrated
     "feature:friends:usecase:integrations", // migrated
     "feature:friends:endpoints", // migrated
-    "feature:meetings", // TODO: migrate
+    "feature:meetings", // migrated
     "feature:meetings:endpoints", // TODO: migrate
     "feature:meetings:database", // TODO: migrate
     "feature:meetings:database:integrations", // TODO: migrate
