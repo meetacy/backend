@@ -4,13 +4,12 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Meetings.Types))
-    api(project(Deps.Projects.Files.Types))
-    api(project(Deps.Projects.KtorExtensions))
+    api(projects.feature.meetings.types)
+    api(projects.feature.files.types)
+    api(projects.libs.ktorExtensions)
 
-    api(project(Deps.Projects.User.Endpoints))
-    api(project(Deps.Projects.Paging.Types))
+    api(projects.feature.user.endpoints)
+    api(projects.libs.paging.types)
 
-    implementation(Deps.Libs.Ktor.Server.Core)
     implementation(libs.serializationJson)
 }
