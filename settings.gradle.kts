@@ -62,7 +62,7 @@ include(
     "feature:invitations:types", // migrated
     "feature:invitations:usecase", // migrated
     "feature:invitations:usecase:integrations", // migrated
-    "feature:invitations:endpoints", // TODO: migrate
+    "feature:invitations:endpoints", // migrated
     "feature:invitations:database", // TODO: migrate
     "feature:invitations:database:integrations", // TODO: migrate
     "feature:meetings", // migrated

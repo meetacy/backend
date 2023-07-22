@@ -4,11 +4,10 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Invitation.Types))
-    api(project(Deps.Projects.KtorExtensions))
-    api(project(Deps.Projects.User.Types))
-    api(project(Deps.Projects.Meetings.Endpoints))
+    api(projects.feature.invitations.types)
+    api(projects.libs.ktorExtensions)
+    api(projects.feature.user.types)
+    api(projects.feature.meetings.endpoints)
 
-    implementation(Deps.Libs.Ktor.Server.Core)
     implementation(libs.serializationJson)
 }
