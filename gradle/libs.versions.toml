@@ -19,6 +19,9 @@ meetacyDi = "0.0.23"
 
 [libraries]
 
+# slf4j
+slf4jSimple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jJ" }
+
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
@@ -36,6 +39,20 @@ ktorClient-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktorClient-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktorClient-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktorClient-serializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+ktorServer-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
+ktorServer-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+ktorServer-rsocket = { module = "io.rsocket.kotlin:rsocket-ktor-server", version.ref = "rsocket" }
+ktorServer-websockets = { module = "io.ktor:ktor-server-websockets", version.ref = "ktor" }
+ktorServer-contentNegotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
+ktorServer-serializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktorServer-statusPages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
+ktorServer-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
+ktorServer-partialContent = { module = "io.ktor:ktor-server-partial-content", version.ref = "ktor" }
+ktorServer-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
+ktorServer-autoHead = { module = "io.ktor:ktor-server-auto-head-response", version.ref = "ktor" }
+ktorServer-requestValidation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
+ktorServer-serverStatusPage = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
 
 # gradle
 
