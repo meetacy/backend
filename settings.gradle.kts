@@ -38,11 +38,12 @@ include(
     "feature:common:integration", // migrated
     "feature:common:types", // migrated
     "feature:common:types:integration", // migrated
-    "feature:auth", // TODO: migrate
+    "feature:auth", // migrated
     "feature:auth:database", // migrated
     "feature:auth:database:integrations", // migrated
     "feature:auth:endpoints", // migrated
     "feature:auth:usecase", // migrated
+    "feature:auth:usecase:integrations", // migrated
     "feature:auth:types", // migrated
     "feature:user:types", // migrated
     "location", // migrated

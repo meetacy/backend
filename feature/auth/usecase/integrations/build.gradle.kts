@@ -4,7 +4,7 @@ plugins {
 
 // usecase and endpoints dependencies
 dependencies {
-    api(project(Deps.Projects.Auth.Usecase))
-    api(project(Deps.Projects.Auth.Endpoints))
-    api(project(Deps.Projects.Auth.Types))
+    api(projects.feature.auth.usecase)
+    api(projects.feature.auth.endpoints)
+    api(projects.feature.auth.types)
 }
