@@ -41,7 +41,7 @@ include(
     "feature:auth", // TODO: migrate
     "feature:auth:database", // migrated
     "feature:auth:database:integrations", // migrated
-    "feature:auth:endpoints", // TODO: migrate
+    "feature:auth:endpoints", // migrated
     "feature:auth:usecase", // migrated
     "feature:auth:types", // migrated
     "feature:user:types", // migrated
@@ -61,5 +61,5 @@ include(
     "libs:paging:types", // migrated
     "libs:paging:database", // migrated
     "libs:exposed-extensions", // migrated
-    "libs:ktor-extensions", // TODO: migrate
+    "libs:ktor-extensions", // migrated
 )
