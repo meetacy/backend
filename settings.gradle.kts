@@ -38,9 +38,8 @@ include(
     "libs:hash-generator", // migrated
 //    "libs:utf8-checker",
 //    "libs:utf8-checker:usecase-integration",
-//    "libs:stdlib-extensions",
-//    "libs:di",
-    "libs:discord-webhook", // TODO: migrate
+    "libs:stdlib-extensions", // migrated
+    "libs:discord-webhook", // migrated
     "libs:discord-webhook:ktor", // migrated
     "libs:paging", // migrated
     "libs:paging:types", // migrated
