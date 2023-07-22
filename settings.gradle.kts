@@ -40,6 +40,7 @@ include(
     "feature:common:types:integration", // migrated
     "feature:auth", // TODO: migrate
     "feature:auth:database", // migrated
+    "feature:auth:database:integrations", // migrated
     "feature:auth:usecase", // migrated
     "feature:auth:types", // migrated
     "feature:user:types", // migrated

@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Auth.Database))
-    api(project(Deps.Projects.Auth.Usecase))
-    api(project(Deps.Projects.Auth.Types))
+    api(projects.feature.auth.database)
+    api(projects.feature.auth.usecase)
+    api(projects.feature.auth.types)
 
-    api(Deps.Libs.Exposed.Core)
+    api(libs.exposedCore)
 }
