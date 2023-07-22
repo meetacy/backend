@@ -3,11 +3,11 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Meetings.Types))
-    implementation(Deps.Libs.Exposed.Core)
+    api(projects.feature.meetings.types)
+    implementation(libs.exposedCore)
 
-    api(project(Deps.Projects.Paging.Root))
-    api(project(Deps.Projects.ExposedExtensions))
-    
-    api(project(Deps.Projects.Files.Database))
+    api(projects.libs.paging.types)
+    api(projects.libs.exposedExtensions)
+
+    api(projects.feature.files.database)
 }
