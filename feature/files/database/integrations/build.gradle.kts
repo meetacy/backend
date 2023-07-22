@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Files.Usecase))
-    api(project(Deps.Projects.Files.Database))
-    api(project(Deps.Projects.Files.Endpoints))
+    api(projects.feature.files.usecase)
+    api(projects.feature.files.database)
+    api(projects.feature.files.endpoints)
 }
