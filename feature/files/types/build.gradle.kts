@@ -4,8 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Auth.Types))
+    api(projects.feature.auth.types)
 
-    implementation(Deps.Libs.Kotlinx.Serialization)
-
+    implementation(libs.serializationJson)
 }
