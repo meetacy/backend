@@ -62,7 +62,7 @@ include(
     "feature:meetings:endpoints", // migrated
     "feature:meetings:database", // migrated
     "feature:meetings:database:integrations", // migrated
-    "feature:meetings:usecase", // TODO: migrate
+    "feature:meetings:usecase", // migrated
     "feature:meetings:usecase:integrations", // TODO: migrate
     "feature:meetings:types", // TODO: migrate
     "feature:notification:usecase", // TODO: migrate

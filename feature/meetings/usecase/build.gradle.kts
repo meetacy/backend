@@ -3,12 +3,12 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Meetings.Types))
+    api(projects.feature.meetings.types)
 
-    api(project(Deps.Projects.Files.Usecase))
-    api(project(Deps.Projects.User.Usecase))
-    api(project(Deps.Projects.Paging.Types))
+    api(projects.feature.files.usecase)
+    api(projects.feature.user.usecase)
+    api(projects.libs.paging.types)
 
     implementation(libs.coroutines)
-    api(project(Deps.Projects.StdlibExtensions))
+    api(projects.libs.stdlibExtensions)
 }
