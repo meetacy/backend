@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Auth.Types))
+    api(projects.feature.auth.types)
 
     implementation(libs.serializationJson)
 }
