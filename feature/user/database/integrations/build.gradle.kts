@@ -11,4 +11,7 @@ dependencies {
 //    api(project(Deps.Projects.Auth.Database))
     api(projects.feature.user.usecase)
     api(projects.feature.user.database)
+    api(projects.feature.friends.database)
+
+//    api(projects.feature.files.database.integrations) TODO
 }

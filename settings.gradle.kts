@@ -45,9 +45,12 @@ include(
     "feature:auth:usecase", // migrated
     "feature:auth:usecase:integrations", // migrated
     "feature:auth:types", // migrated
+    "feature:files", // TODO: migrate
     "feature:files:types", // migrated
+    "feature:files:database", // TODO: migrate
     "feature:files:usecase", // migrated
     "feature:friends", // TODO: migrate
+    "feature:friends:database", // migrated
     "feature:friends:usecase", // migrated
     "feature:user", // TODO: migrate
     "feature:user:database", // migrated
