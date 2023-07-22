@@ -38,6 +38,9 @@ include(
     "feature:common:integration", // migrated
     "feature:common:types", // migrated
     "feature:common:types:integration", // migrated
+    "feature:auth", // TODO: migrate
+    "feature:auth:database", // TODO: migrate
+    "feature:auth:types", // migrated
     "migrations", // TODO: migrate
 //    "endpoints-new",
     "utf8-checker", // migrated

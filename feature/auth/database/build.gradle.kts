@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Auth.Types))
-    implementation(Deps.Libs.Exposed.Core)
+//    api(project(Deps.Projects.Auth.Types))
+//    implementation(Deps.Libs.Exposed.Core)
 }
