@@ -61,6 +61,11 @@ serializationGradle = { module = "org.jetbrains.kotlin:kotlin-serialization", ve
 shadowGradle = { module = "gradle.plugin.com.github.jengelman.gradle.plugins:shadow", version.ref = "shadow" }
 sshGradle = { module = "org.hidetake:gradle-ssh-plugin", version.ref = "ssh" }
 
+# wdater
+
+wdater-core = { module = "app.meetacy.wdater:wdater", version.ref = "wdater" }
+wdater-autoMigrations = { module = "app.meetacy.wdater:auto-migrations", version.ref = "wdater" }
+
 [plugins]
 
 deploy = { id = "deploy-convention" }

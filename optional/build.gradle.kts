@@ -4,5 +4,5 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.serializationGradle)
+    implementation(libs.serializationJson)
 }

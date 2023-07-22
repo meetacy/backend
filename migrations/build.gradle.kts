@@ -19,5 +19,10 @@ dependencies {
 //    api(Deps.Libs.Exposed.Core)
 //    implementation(Deps.Libs.Exposed.Jdbc)
 //    implementation(Deps.Libs.Postgres.Jdbc)
+
+    api(projects.feature.auth.database)
+
     implementation(libs.exposedCore)
+    api(libs.wdater.core)
+    api(libs.wdater.autoMigrations)
 }
