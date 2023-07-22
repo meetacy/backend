@@ -4,12 +4,10 @@ plugins {
 }
 
 dependencies {
-//    api(project(Deps.Projects.Auth.Types))
-//    api(project(Deps.Projects.LocationTypes))
-//    api(project(Deps.Projects.AmountTypes))
-//    api(project(Deps.Projects.Optional))
     api(projects.feature.auth.types)
     api(projects.location)
+    api(projects.amount)
+    api(projects.optional)
 
     implementation(libs.serializationGradle)
 }
