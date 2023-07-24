@@ -9,5 +9,5 @@ dependencies {
     api(project(Deps.Projects.Notification.Endpoints))
 
     implementation(Deps.Libs.Ktor.Server.Core)
-    implementation(Deps.Libs.Kotlinx.Serialization)
+    implementation(libs.serializationJson)
 }
