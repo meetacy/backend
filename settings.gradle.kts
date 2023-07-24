@@ -101,7 +101,7 @@ include(
     "feature:user:endpoints", // migrated
     "feature:user:types", // migrated
     "location", // migrated
-    "migrations", // TODO: migrate
+    "migrations", // migrated
 //    "endpoints-new",
     "optional", // migrated
     "utf8-checker", // migrated
