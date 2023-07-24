@@ -102,7 +102,7 @@ include(
     "feature:user:types", // migrated
     "location", // migrated
     "migrations", // migrated
-    "endpoints-new", // TODO: migrate
+    "endpoints-new", // migrated
     "optional", // migrated
     "utf8-checker", // migrated
     "utf8-checker:usecase", // migrated
