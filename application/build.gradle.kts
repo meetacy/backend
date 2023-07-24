@@ -4,8 +4,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.properties.loadProperties
 
 plugins {
+    application
     id("backend-convention")
     id("deploy-convention")
+}
+
+application {
+    mainClass = "app.meetacy.backend.MainKt"
 }
 
 dependencies {
