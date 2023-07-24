@@ -4,9 +4,9 @@ plugins {
 }
 
 dependencies {
-//    api(project(Deps.Projects.Email.Types))
-//    api(project(Deps.Projects.KtorExtensions))
-//
-//    implementation(Deps.Libs.Ktor.Server.Core)
-//    implementation(Deps.Libs.Kotlinx.Serialization)
+    api(projects.feature.email.types)
+    api(projects.libs.ktorExtensions)
+
+    implementation(libs.ktorServer.core)
+    implementation(libs.serializationJson)
 }

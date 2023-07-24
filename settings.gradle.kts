@@ -50,7 +50,7 @@ include(
     "feature:email:database:integrations", // TODO: migrate
     "feature:email:usecase", // TODO: migrate
     "feature:email:usecase:integrations", // TODO: migrate
-    "feature:email:endpoints", // TODO: migrate
+    "feature:email:endpoints", // migrated
     "feature:email:types", // migrated
     "feature:files", // migrated
     "feature:files:types", // migrated
