@@ -4,5 +4,5 @@ plugins {
 }
 
 dependencies {
-    implementation(Deps.Libs.Kotlinx.Serialization)
+//    implementation(Deps.Libs.Kotlinx.Serialization)
 }

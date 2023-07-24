@@ -45,6 +45,13 @@ include(
     "feature:common:integration", // migrated
     "feature:common:types", // migrated
     "feature:common:types:integration", // migrated
+    "feature:email", // TODO: migrate
+    "feature:email:database", // TODO: migrate
+    "feature:email:database:integrations", // TODO: migrate
+    "feature:email:usecase", // TODO: migrate
+    "feature:email:usecase:integrations", // TODO: migrate
+    "feature:email:endpoints", // TODO: migrate
+    "feature:email:types", // TODO: migrate
     "feature:files", // migrated
     "feature:files:types", // migrated
     "feature:files:database", // migrated
