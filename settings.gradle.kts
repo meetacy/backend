@@ -107,7 +107,6 @@ include(
     "utf8-checker", // migrated
     "utf8-checker:usecase", // migrated
     "libs:hash-generator", // migrated
-    "libs:hash-generator:usecase-integration", // TODO: migrate
     "libs:utf8-checker", // migrated
     "libs:utf8-checker:usecase-integration", // migrated
     "libs:stdlib-extensions", // migrated
