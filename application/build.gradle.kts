@@ -19,7 +19,6 @@ dependencies {
 
 
 
-    implementation(projects.feature.common)
     implementation(libs.mdi)
     implementation(projects.feature.common)
     implementation(projects.libs.utf8Checker.usecaseIntegration)

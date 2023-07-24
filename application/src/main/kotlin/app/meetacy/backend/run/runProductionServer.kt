@@ -21,6 +21,8 @@ suspend fun runProductionServer(
     } catch (throwable: Throwable) {
         if (context.initialized) {
             runProductionServer(webhookUrl, block)
+        } else {
+            throw throwable
         }
     }
 }
