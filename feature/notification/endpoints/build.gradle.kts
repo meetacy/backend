@@ -4,12 +4,12 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Notification.Types))
-    api(project(Deps.Projects.KtorExtensions))
+    api(projects.feature.notification.types)
+    api(projects.libs.ktorExtensions)
 
-    api(project(Deps.Projects.User.Endpoints))
-    api(project(Deps.Projects.Meetings.Endpoints))
+    api(projects.feature.user.endpoints)
+    api(projects.feature.meetings.endpoints)
 
-    implementation(Deps.Libs.Ktor.Server.Core)
-    implementation(Deps.Libs.Kotlinx.Serialization)
+    implementation(libs.ktorServer.core)
+    implementation(libs.serializationJson)
 }
