@@ -2,9 +2,9 @@
 
 package app.meetacy.backend.infrastructure.integrations.users
 
-import app.meetacy.backend.di.DI
-import app.meetacy.backend.di.builder.DIBuilder
-import app.meetacy.backend.di.dependency.Dependency
+import app.meetacy.di.DI
+import app.meetacy.di.builder.DIBuilder
+import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.infrastructure.integrations.users.edit.editUserRepository
 import app.meetacy.backend.infrastructure.integrations.users.get.getUserRepository

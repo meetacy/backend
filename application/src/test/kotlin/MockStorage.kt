@@ -3,7 +3,7 @@ import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
-import app.meetacy.backend.hash.integration.DefaultHashGenerator
+import app.meetacy.backend.types.BasicHashGenerator
 import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
@@ -53,11 +53,11 @@ import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
+import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
+import app.meetacy.backend.usecase.notifications.add.AddNotificationUsecase
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsViewsUsecase
-import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.notifications.get.ViewNotificationsUsecase
-import app.meetacy.backend.usecase.notifications.add.AddNotificationUsecase
 import app.meetacy.backend.usecase.types.*
 import app.meetacy.backend.usecase.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
@@ -92,7 +92,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun createUser(nickname: String): UserId {
         synchronized(lock = this) {
             val userId = UserId(users.size.toLong())
-            val accessHash = AccessHash(DefaultHashGenerator.generate())
+            val accessHash = AccessHash(BasicHashGenerator.generate())
             val user = User(UserIdentity(userId, accessHash), nickname)
             users += user
             return user.identity.id

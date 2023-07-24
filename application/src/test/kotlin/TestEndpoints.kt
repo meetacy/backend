@@ -14,7 +14,7 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.prepareEndpoints
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.users.UsersDependencies
-import app.meetacy.backend.hash.integration.DefaultHashGenerator
+import app.meetacy.backend.types.BasicHashGenerator
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
@@ -66,15 +66,16 @@ import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
+import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsViewsUsecase
-import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import app.meetacy.backend.usecase.users.validate.ValidateUsernameUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
+import app.meetacy.sdk.types.annotation.UnstableApi
 import app.meetacy.sdk.types.auth.Token
 import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.location.Location
@@ -87,6 +88,7 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import java.io.File
 
+@OptIn(UnstableApi::class)
 val testApi = MeetacyApi(
     baseUrl = "http://localhost:8080".url,
     httpClient = HttpClient {
@@ -136,7 +138,7 @@ fun runTestServer(
                 linkEmailRepository = UsecaseLinkEmailRepository(
                     usecase = LinkEmailUsecase(
                         storage = mockStorage,
-                        hashGenerator = DefaultHashGenerator,
+                        hashGenerator = BasicHashGenerator,
                         authRepository = mockStorage,
                         mailer = object : LinkEmailUsecase.Mailer {
                             override fun sendEmailOccupiedMessage(email: String) {}
@@ -153,7 +155,7 @@ fun runTestServer(
             tokenGenerateRepository = UsecaseTokenGenerateRepository(
                 usecase = GenerateTokenUsecase(
                     storage = mockStorage,
-                    tokenGenerator = DefaultHashGenerator,
+                    tokenGenerator = BasicHashGenerator,
                     utf8Checker = DefaultUtf8Checker
                 )
             )
@@ -242,7 +244,7 @@ fun runTestServer(
             ),
             createMeetingRepository = UsecaseCreateMeetingRepository(
                 usecase = CreateMeetingUsecase(
-                    hashGenerator = DefaultHashGenerator,
+                    hashGenerator = BasicHashGenerator,
                     storage = mockStorage,
                     authRepository = mockStorage,
                     viewMeetingRepository = mockStorage,
@@ -302,7 +304,7 @@ fun runTestServer(
                 usecase = UploadFileUsecase(
                     authRepository = mockStorage,
                     storage = mockStorage,
-                    hashGenerator = DefaultHashGenerator
+                    hashGenerator = BasicHashGenerator
                 ),
                 filesLimit = FileSize(100L * 1024 * 1024),
                 deleteFilesOnExit = true
@@ -331,7 +333,7 @@ fun runTestServer(
                 usecase = CreateInvitationUsecase(
                     authRepository = mockStorage,
                     storage = mockStorage,
-                    hashGenerator = DefaultHashGenerator,
+                    hashGenerator = BasicHashGenerator,
                     invitationsRepository = mockStorage
                 )
             ),

@@ -2,15 +2,13 @@
 
 package app.meetacy.backend.infrastructure
 
-import app.meetacy.backend.di.DI
-import app.meetacy.backend.di.builder.di
-import app.meetacy.backend.di.dependency.Dependency
+import app.meetacy.di.DI
+import app.meetacy.di.builder.di
 import app.meetacy.backend.infrastructure.database.DatabaseConfig
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.infrastructure.integrations.files.files
 import app.meetacy.backend.infrastructure.integrations.integrations
 import app.meetacy.backend.types.file.FileSize
-import java.io.File
+import app.meetacy.di.dependency.Dependency
 
 val DI.port: Int by Dependency
 val DI.databaseConfig: DatabaseConfig by Dependency

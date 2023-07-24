@@ -1,5 +1,6 @@
 package app.meetacy.backend.usecase.meetings.create
 
+import app.meetacy.backend.types.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.Date
@@ -11,7 +12,7 @@ import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 
 class CreateMeetingUsecase(
-    private val hashGenerator: HashGenerator,
+    private val hashGenerator: AccessHashGenerator,
     private val storage: Storage,
     private val authRepository: AuthRepository,
     private val filesRepository: FilesRepository,

@@ -28,7 +28,7 @@ dependencyResolutionManagement {
 includeBuild("build-logic")
 
 include(
-//    "application",
+    "application", // TODO: migrate
     "annotations", // migrated
     "amount", // migrated
     "constants", // migrated
@@ -102,11 +102,12 @@ include(
     "feature:user:types", // migrated
     "location", // migrated
     "migrations", // migrated
-//    "endpoints-new",
+    "endpoints-new", // TODO: migrate
     "optional", // migrated
     "utf8-checker", // migrated
     "utf8-checker:usecase", // migrated
     "libs:hash-generator", // migrated
+    "libs:hash-generator:usecase-integration", // TODO: migrate
     "libs:utf8-checker", // migrated
     "libs:utf8-checker:usecase-integration", // migrated
     "libs:stdlib-extensions", // migrated

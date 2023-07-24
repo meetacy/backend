@@ -3,9 +3,9 @@
 package app.meetacy.backend.infrastructure.integrations.meetings.map
 
 import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
-import app.meetacy.backend.di.DI
-import app.meetacy.backend.di.builder.DIBuilder
-import app.meetacy.backend.di.dependency.Dependency
+import app.meetacy.di.DI
+import app.meetacy.di.builder.DIBuilder
+import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.endpoint.meetings.map.MeetingsMapDependencies
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.integrations.auth.authRepository

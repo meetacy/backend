@@ -1,5 +1,6 @@
 package app.meetacy.backend.usecase.files
 
+import app.meetacy.backend.types.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.file.FileId
@@ -7,13 +8,12 @@ import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.HashGenerator
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class UploadFileUsecase(
     private val authRepository: AuthRepository,
     private val storage: Storage,
-    private val hashGenerator: HashGenerator
+    private val hashGenerator: AccessHashGenerator
 ) {
     sealed interface Result {
         class Success(val fileIdentity: FileIdentity) : Result

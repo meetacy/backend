@@ -2,9 +2,9 @@
 
 package app.meetacy.backend.infrastructure.integrations.meetings
 
-import app.meetacy.backend.di.DI
-import app.meetacy.backend.di.builder.DIBuilder
-import app.meetacy.backend.di.dependency.Dependency
+import app.meetacy.di.DI
+import app.meetacy.di.builder.DIBuilder
+import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.infrastructure.integrations.meetings.create.createMeetingRepository
 import app.meetacy.backend.infrastructure.integrations.meetings.delete.deleteMeetingRepository

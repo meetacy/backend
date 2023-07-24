@@ -1,15 +1,15 @@
 package app.meetacy.backend.usecase.email
 
+import app.meetacy.backend.types.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.HashGenerator
 import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class LinkEmailUsecase(
     private val storage: Storage,
     private val mailer: Mailer,
-    private val hashGenerator: HashGenerator,
+    private val hashGenerator: AccessHashGenerator,
     private val authRepository: AuthRepository
 ) {
     sealed interface LinkResult {

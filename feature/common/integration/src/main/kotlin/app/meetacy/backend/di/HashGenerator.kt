@@ -1,7 +1,6 @@
-package app.meetacy.backend.di
+package app.meetacy.di
 
 import app.meetacy.backend.types.AccessHashGenerator
-import app.meetacy.di.DI
 import app.meetacy.di.dependency.Dependency
 
 val DI.accessHashGenerator: AccessHashGenerator by Dependency

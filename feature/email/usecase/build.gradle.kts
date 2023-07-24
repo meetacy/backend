@@ -6,4 +6,5 @@ dependencies {
     api(project(Deps.Projects.Email.Types))
 
     api(project(Deps.Projects.User.Usecase))
+    api(projects.feature.common)
 }

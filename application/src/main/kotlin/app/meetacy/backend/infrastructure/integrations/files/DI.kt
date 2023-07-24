@@ -3,9 +3,9 @@
 package app.meetacy.backend.infrastructure.integrations.files
 
 import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
-import app.meetacy.backend.di.DI
-import app.meetacy.backend.di.builder.DIBuilder
-import app.meetacy.backend.di.dependency.Dependency
+import app.meetacy.di.DI
+import app.meetacy.di.builder.DIBuilder
+import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.integrations.files.get.getFileRepository

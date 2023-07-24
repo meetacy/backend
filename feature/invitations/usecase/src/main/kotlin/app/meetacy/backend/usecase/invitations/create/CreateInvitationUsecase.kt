@@ -1,5 +1,6 @@
 package app.meetacy.backend.usecase.invitations.create
 
+import app.meetacy.backend.types.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.invitation.InvitationId
@@ -12,7 +13,7 @@ import app.meetacy.backend.usecase.types.*
 class CreateInvitationUsecase(
     private val authRepository: AuthRepository,
     private val storage: Storage,
-    private val hashGenerator: HashGenerator,
+    private val hashGenerator: AccessHashGenerator,
     private val invitationsRepository: GetInvitationsViewsRepository
 ) {
     sealed interface Result {

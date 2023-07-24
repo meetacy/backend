@@ -9,4 +9,6 @@ dependencies {
 
     api(projects.feature.files.database.integrations)
     api(projects.feature.auth.database)
+
+    api(projects.feature.common)
 }

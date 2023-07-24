@@ -3,9 +3,9 @@
 package app.meetacy.backend.infrastructure.integrations.meetings.delete
 
 import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMeetingStorage
-import app.meetacy.backend.di.DI
-import app.meetacy.backend.di.builder.DIBuilder
-import app.meetacy.backend.di.dependency.Dependency
+import app.meetacy.di.DI
+import app.meetacy.di.builder.DIBuilder
+import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.endpoint.meetings.delete.DeleteMeetingRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.integrations.auth.authRepository

@@ -1,10 +1,5 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.database
 
-import app.meetacy.backend.di.DI
-import app.meetacy.backend.di.builder.DIBuilder
-import app.meetacy.backend.di.dependency.Dependency
 import app.meetacy.backend.infrastructure.database.auth.auth
 import app.meetacy.backend.infrastructure.database.email.email
 import app.meetacy.backend.infrastructure.database.files.files
@@ -15,6 +10,9 @@ import app.meetacy.backend.infrastructure.database.notifications.notifications
 import app.meetacy.backend.infrastructure.database.updates.updates
 import app.meetacy.backend.infrastructure.database.users.users
 import app.meetacy.backend.infrastructure.databaseConfig
+import app.meetacy.di.DI
+import app.meetacy.di.builder.DIBuilder
+import app.meetacy.di.dependency.Dependency
 import org.jetbrains.exposed.sql.Database
 
 data class DatabaseConfig(
