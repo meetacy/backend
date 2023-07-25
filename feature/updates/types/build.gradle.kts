@@ -1,6 +1,6 @@
 plugins {
     id("backend-convention")
-    id(Deps.Plugins.Serialization.Id)
+    id("serialization-convention")
 }
 
 dependencies {
