@@ -9,7 +9,7 @@ import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.di.DI
-import app.meetacy.di.accessHashGenerator
+import app.meetacy.backend.di.accessHashGenerator
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 

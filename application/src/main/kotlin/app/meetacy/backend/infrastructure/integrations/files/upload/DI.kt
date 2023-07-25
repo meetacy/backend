@@ -11,7 +11,7 @@ import app.meetacy.backend.infrastructure.integrations.auth.authRepository
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.di.DI
-import app.meetacy.di.accessHashGenerator
+import app.meetacy.backend.di.accessHashGenerator
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 

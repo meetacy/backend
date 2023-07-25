@@ -11,7 +11,7 @@ import app.meetacy.backend.infrastructure.integrations.notifications.add.addNoti
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.di.DI
-import app.meetacy.di.accessHashGenerator
+import app.meetacy.backend.di.accessHashGenerator
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 

@@ -17,7 +17,9 @@ dependencies {
 
     implementation(projects.feature.common.types.integration)
 
-
+    implementation(libs.exposedCore)
+    implementation(libs.exposedJdbc)
+    implementation(libs.postgresJdbc)
 
     implementation(libs.mdi)
     implementation(projects.feature.common)

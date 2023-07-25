@@ -29,6 +29,7 @@ serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json
 # exposed
 exposedCore = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
 exposedJdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+postgresJdbc = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 
 # meetacy
 mdi = { module = "app.meetacy.di:core", version.ref = "meetacyDi" }
