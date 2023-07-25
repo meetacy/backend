@@ -91,7 +91,7 @@ include(
     "feature:updates:database:integrations", // migrated
     "feature:updates:usecase", // migrated
     "feature:updates:usecase:integrations", // migrated
-    "feature:updates:endpoints", // TODO: migrate
+    "feature:updates:endpoints", // migrated
     "feature:updates:types", // TODO: migrate
     "feature:user", // migrated
     "feature:user:database", // migrated
