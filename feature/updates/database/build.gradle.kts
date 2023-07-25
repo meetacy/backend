@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Updates.Types))
-    implementation(Deps.Libs.Exposed.Core)
+    api(projects.feature.updates.types)
+    implementation(libs.exposedCore)
 
-    api(project(Deps.Projects.User.Database))
-    api(project(Deps.Projects.ExposedExtensions))
+    api(projects.feature.user.database)
+    api(projects.libs.exposedExtensions)
 }
