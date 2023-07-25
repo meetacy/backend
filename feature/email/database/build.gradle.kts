@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Email.Types))
-    api(Deps.Libs.Exposed.Core)
+    api(projects.feature.email.types)
+    api(libs.exposedCore)
 
-    api(project(Deps.Projects.User.Database))
+    api(projects.feature.user.database)
 }
