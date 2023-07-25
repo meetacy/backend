@@ -19,6 +19,11 @@ meetacyDi = "0.0.23"
 
 [libraries]
 
+# meetacy sdk
+
+meetacySdk-apiKtor = { module = "app.meetacy.sdk:api-ktor", version.ref = "meetacySdk" }
+meetacySdk-api = { module = "app.meetacy.sdk:api", version.ref = "meetacySdk" }
+
 # slf4j
 slf4jSimple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jJ" }
 
@@ -40,6 +45,8 @@ ktorClient-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktorClient-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktorClient-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktorClient-serializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktorClient-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktorClient-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 
 ktorServer-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktorServer-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
