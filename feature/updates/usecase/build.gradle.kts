@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Updates.Types))
-    api(project(Deps.Projects.Notification.Usecase))
+    api(projects.feature.updates.types)
+    api(projects.feature.notification.usecase)
 }
