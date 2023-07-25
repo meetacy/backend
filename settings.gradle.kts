@@ -84,7 +84,7 @@ include(
     "feature:notification:database:integrations", // migrated
     "feature:notification:usecase", // migrated
     "feature:notification:usecase:integrations", // migrated
-    "feature:notification:endpoints", // TODO: migrate
+    "feature:notification:endpoints", // migrated
     "feature:notification:types", // TODO: migrate
     "feature:updates", // TODO: migrate
     "feature:updates:database", // TODO: migrate
