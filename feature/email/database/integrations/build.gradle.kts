@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Email.Usecase))
-    api(project(Deps.Projects.Email.Database))
+    api(projects.feature.email.usecase)
+    api(projects.feature.email.database)
 }
