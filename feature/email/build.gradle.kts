@@ -3,10 +3,10 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Email.Database))
-    api(project(Deps.Projects.Email.Usecase))
-    api(project(Deps.Projects.Email.Endpoints))
-    api(project(Deps.Projects.Email.Types))
-    api(project(Deps.Projects.Email.DatabaseIntegrations))
-    api(project(Deps.Projects.Email.UsecaseIntegrations))
+    api(projects.feature.email.database)
+    api(projects.feature.email.usecase)
+    api(projects.feature.email.endpoints)
+    api(projects.feature.email.types)
+    api(projects.feature.email.database.integrations)
+    api(projects.feature.email.usecase.integrations)
 }
