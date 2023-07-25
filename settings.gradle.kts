@@ -81,7 +81,7 @@ include(
     "feature:meetings:types", // migrated
     "feature:notification", // migrated
     "feature:notification:database", // migrated
-    "feature:notification:database:integrations", // TODO: migrate
+    "feature:notification:database:integrations", // migrated
     "feature:notification:usecase", // TODO: migrate
     "feature:notification:usecase:integrations", // TODO: migrate
     "feature:notification:endpoints", // TODO: migrate

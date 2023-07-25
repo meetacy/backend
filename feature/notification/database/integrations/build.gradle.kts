@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Notification.Usecase))
-    api(project(Deps.Projects.Notification.Database))
-    api(project(Deps.Projects.Updates.Usecase))
+    api(projects.feature.notification.usecase)
+    api(projects.feature.notification.database)
+    api(projects.feature.updates.usecase)
 }
