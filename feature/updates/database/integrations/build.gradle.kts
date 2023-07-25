@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Updates.Usecase))
-    api(project(Deps.Projects.Updates.Database))
+    api(projects.feature.updates.usecase)
+    api(projects.feature.updates.database)
 }
