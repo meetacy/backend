@@ -10,5 +10,5 @@ dependencies {
     api(projects.feature.meetings.types)
     api(projects.feature.meetings.usecase)
 
-    api(projects.feature.common)
+    api(projects.core)
 }

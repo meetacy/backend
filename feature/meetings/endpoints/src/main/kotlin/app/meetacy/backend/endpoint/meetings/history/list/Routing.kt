@@ -9,7 +9,7 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.amount.AmountSerializable
+import app.meetacy.backend.types.serialization.amount.Amount
 import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
 import app.meetacy.backend.types.serialization.paging.serializable
 import io.ktor.server.application.*
@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ListParam(
     val token: AccessIdentitySerializable,
-    val amount: AmountSerializable,
+    val amount: Amount,
     val pagingId: PagingIdSerializable? = null
 )
 

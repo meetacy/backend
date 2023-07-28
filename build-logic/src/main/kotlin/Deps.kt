@@ -319,7 +319,6 @@ object Deps {
         const val DateTime = ":datetime"
         const val LocationTypes = ":location"
         const val ExposedExtensions = ":libs:exposed-extensions"
-        const val Annotations = ":annotations"
         const val EndpointsNew = ":endpoints-new"
         const val Migrations = ":migrations"
         const val KtorExtensions = ":libs:ktor-extensions"

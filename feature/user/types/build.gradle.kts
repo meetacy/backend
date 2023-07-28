@@ -5,9 +5,7 @@ plugins {
 
 dependencies {
     api(projects.feature.auth.types)
-    api(projects.location)
-    api(projects.amount)
-    api(projects.optional)
+    api(projects.core.types)
 
     implementation(libs.serializationGradle)
 }

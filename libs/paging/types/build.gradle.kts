@@ -4,7 +4,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.amount)
-
     implementation(libs.serializationJson)
 }

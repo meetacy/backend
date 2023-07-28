@@ -17,7 +17,7 @@ dependencies {
 
     // features
     implementation(projects.feature.auth)
-    implementation(projects.feature.common)
+    implementation(projects.core)
     implementation(projects.feature.email)
     implementation(projects.feature.files)
     implementation(projects.feature.friends)

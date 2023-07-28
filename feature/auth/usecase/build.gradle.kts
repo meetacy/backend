@@ -13,5 +13,5 @@ dependencies {
 
     api(projects.feature.user.types)
     api(projects.utf8Checker)
-    api(projects.feature.common.types)
+    api(projects.core.types)
 }

@@ -10,5 +10,5 @@ dependencies {
 
     api(projects.feature.files.usecase)
 
-    api(projects.feature.common)
+    api(projects.core)
 }

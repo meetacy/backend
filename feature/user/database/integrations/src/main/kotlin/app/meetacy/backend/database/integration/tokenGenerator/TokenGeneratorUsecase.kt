@@ -2,7 +2,7 @@ package app.meetacy.backend.database.integration.tokenGenerator
 
 import app.meetacy.backend.database.auth.TokensStorage
 import app.meetacy.backend.database.integration.users.create.DatabaseCreateUserStorage
-import app.meetacy.backend.types.AccessHashGenerator
+import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.auth.CreateUserUsecase

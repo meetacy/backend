@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.auth
 
-import app.meetacy.backend.types.AccessHashGenerator
+import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.access.AccessToken
 import app.meetacy.backend.types.user.UserId

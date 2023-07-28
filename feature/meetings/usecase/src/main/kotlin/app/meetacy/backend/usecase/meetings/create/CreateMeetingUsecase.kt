@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.meetings.create
 
-import app.meetacy.backend.types.AccessHashGenerator
+import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.Date

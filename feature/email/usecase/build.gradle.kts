@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.common)
+    api(projects.core)
 
     api(projects.feature.email.types)
     api(projects.feature.user.usecase)

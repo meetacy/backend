@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.constants)
+//    api(projects.constants)
 
     implementation(libs.serializationGradle)
 }
