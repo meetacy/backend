@@ -8,7 +8,7 @@ object Deps {
     private const val coroutinesVersion = "1.6.0"
     private const val serializationVersion = "1.3.2"
     private const val nodejsExternalsVersion = "0.0.7"
-    private const val ktorVersion = "2.2.3"
+    private const val ktorVersion = "2.2.2"
     private const val rsocketVersion = "0.15.4"
     private const val ktorOpenapiVersion = "0.2-beta.20"
     private const val exposedVersion = "0.41.1"
