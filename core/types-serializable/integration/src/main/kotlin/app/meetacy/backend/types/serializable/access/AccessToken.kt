@@ -1,7 +1,6 @@
 package app.meetacy.backend.types.serialization.access
 
 import app.meetacy.backend.types.access.AccessToken
-import kotlinx.serialization.Serializable
 
 @Serializable
 @JvmInline
