@@ -3,8 +3,9 @@ package app.meetacy.backend.usecase.integration.invitations.create
 import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
 import app.meetacy.backend.endpoint.invitations.create.InvitationCreatingFormSerializable
 import app.meetacy.backend.endpoint.invitations.create.InvitationsCreateResponse
-import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
+import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.usecase.integration.types.toEndpoint
+import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 
 class UsecaseCreateInvitationRepository(
     private val usecase: CreateInvitationUsecase

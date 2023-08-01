@@ -2,6 +2,7 @@
 
 package app.meetacy.backend.database.invitations
 
+import app.meetacy.backend.constants.HASH_LENGTH
 import app.meetacy.backend.database.invitations.InvitationsTable.INVITATION_ID
 import app.meetacy.backend.database.invitations.InvitationsTable.INVITED_USER_ID
 import app.meetacy.backend.database.invitations.InvitationsTable.INVITER_USER_ID
@@ -10,7 +11,6 @@ import app.meetacy.backend.database.invitations.InvitationsTable.MEETING_ID
 import app.meetacy.backend.database.meetings.MeetingsTable
 import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.database.users.UsersTable
-import app.meetacy.backend.types.HASH_LENGTH
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId

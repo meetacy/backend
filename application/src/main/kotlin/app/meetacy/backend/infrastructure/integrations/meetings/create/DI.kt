@@ -14,7 +14,6 @@ import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.types.ViewMeetingsRepository
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
 import app.meetacy.di.DI
-import app.meetacy.backend.di.accessHashGenerator
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 
@@ -32,7 +31,7 @@ fun DIBuilder.createMeetingRepository() {
     val createMeetingRepository by singleton<CreateMeetingRepository> {
         UsecaseCreateMeetingRepository(
             usecase = CreateMeetingUsecase(
-                hashGenerator = accessHashGenerator,
+                hashGenerator = get(),
                 storage = DatabaseCreateMeetingStorage(database),
                 authRepository = authRepository,
                 viewMeetingRepository = DatabaseCreateMeetingViewMeetingRepository(database),

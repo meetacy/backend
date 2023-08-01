@@ -3,7 +3,7 @@ package app.meetacy.backend.endpoint.meetings.delete
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serialization.meeting.MeetingIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -12,14 +12,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DeleteMeetingParams(
-    val token: AccessIdentitySerializable,
+    val token: AccessIdentity,
     val meetingId: MeetingIdentitySerializable
 )
 
 sealed interface DeleteMeetingResult {
-    object Success : DeleteMeetingResult
-    object InvalidIdentity : DeleteMeetingResult
-    object MeetingNotFound : DeleteMeetingResult
+    data object Success : DeleteMeetingResult
+    data object InvalidIdentity : DeleteMeetingResult
+    data object MeetingNotFound : DeleteMeetingResult
 }
 
 interface DeleteMeetingRepository {

@@ -4,8 +4,8 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.user.User
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.user.UserIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.user.UserIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -18,7 +18,7 @@ interface UserRepository {
 @Serializable
 data class GetUserParams(
     val id: UserIdentitySerializable? = null,
-    val token: AccessIdentitySerializable
+    val token: AccessIdentity
 )
 
 sealed interface GetUserResult {

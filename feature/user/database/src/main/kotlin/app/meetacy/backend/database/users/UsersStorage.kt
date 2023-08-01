@@ -2,6 +2,10 @@
 
 package app.meetacy.backend.database.users
 
+import app.meetacy.backend.constants.EMAIL_MAX_LIMIT
+import app.meetacy.backend.constants.HASH_LENGTH
+import app.meetacy.backend.constants.NICKNAME_MAX_LIMIT
+import app.meetacy.backend.constants.USERNAME_MAX_LIMIT
 import app.meetacy.backend.database.types.DatabaseUser
 import app.meetacy.backend.database.users.UsersTable.ACCESS_HASH
 import app.meetacy.backend.database.users.UsersTable.AVATAR_ID
@@ -10,9 +14,10 @@ import app.meetacy.backend.database.users.UsersTable.EMAIL_VERIFIED
 import app.meetacy.backend.database.users.UsersTable.NICKNAME
 import app.meetacy.backend.database.users.UsersTable.USERNAME
 import app.meetacy.backend.database.users.UsersTable.USER_ID
-import app.meetacy.backend.types.*
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.optional.Optional
+import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.types.user.Username

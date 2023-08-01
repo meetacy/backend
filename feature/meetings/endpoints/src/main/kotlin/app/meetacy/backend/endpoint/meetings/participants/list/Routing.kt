@@ -4,8 +4,8 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.user.User
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.amount.Amount
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serialization.meeting.MeetingIdentitySerializable
 import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
 import app.meetacy.backend.types.serialization.paging.PagingResultSerializable

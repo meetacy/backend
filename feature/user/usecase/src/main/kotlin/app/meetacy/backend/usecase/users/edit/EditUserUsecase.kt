@@ -1,11 +1,11 @@
 package app.meetacy.backend.usecase.users.edit
 
-import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
-import app.meetacy.backend.types.ifPresent
-import app.meetacy.backend.types.map
+import app.meetacy.backend.types.optional.Optional
+import app.meetacy.backend.types.optional.ifPresent
+import app.meetacy.backend.types.optional.map
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.Username
 import app.meetacy.backend.usecase.types.*

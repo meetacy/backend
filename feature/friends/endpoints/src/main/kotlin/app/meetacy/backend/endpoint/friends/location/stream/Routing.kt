@@ -6,8 +6,8 @@ import app.meetacy.backend.endpoint.ktor.rsocket.failRSocket
 import app.meetacy.backend.endpoint.types.user.UserLocationSnapshot
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.location.LocationSerializable
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.location.type
 import io.ktor.server.routing.*
 import io.rsocket.kotlin.RSocketRequestHandler
 import io.rsocket.kotlin.ktor.server.rSocket
@@ -20,6 +20,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.location.Location as LocationSerializable
 
 @Serializable
 data class InitStreamLocation(
@@ -39,7 +41,7 @@ interface StreamLocationRepository {
     ): Result
 
     sealed interface Result {
-        object TokenInvalid : Result
+        data object TokenInvalid : Result
         class Ready(val flow: Flow<UserLocationSnapshot>) : Result
     }
 }

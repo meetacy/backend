@@ -3,6 +3,7 @@ package app.meetacy.backend.usecase.integration.invitations.cancel
 import app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationForm
 import app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationRepository
 import app.meetacy.backend.endpoint.invitations.cancel.CancelInvitationResponse
+import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 
 class UsecaseCancelInvitationRepository(

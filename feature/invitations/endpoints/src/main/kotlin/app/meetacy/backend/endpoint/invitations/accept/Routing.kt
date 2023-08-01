@@ -3,7 +3,7 @@ package app.meetacy.backend.endpoint.invitations.accept
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*

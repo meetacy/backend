@@ -2,6 +2,10 @@
 
 package app.meetacy.backend.database.meetings
 
+import app.meetacy.backend.constants.DATE_TIME_MAX_LIMIT
+import app.meetacy.backend.constants.DESCRIPTION_MAX_LIMIT
+import app.meetacy.backend.constants.HASH_LENGTH
+import app.meetacy.backend.constants.MEETING_TITLE_MAX_LIMIT
 import app.meetacy.backend.database.files.FilesTable
 import app.meetacy.backend.database.meetings.MeetingsTable.ACCESS_HASH
 import app.meetacy.backend.database.meetings.MeetingsTable.AVATAR_ID
@@ -15,7 +19,6 @@ import app.meetacy.backend.database.meetings.MeetingsTable.TITLE
 import app.meetacy.backend.database.meetings.MeetingsTable.VISIBILITY
 import app.meetacy.backend.database.types.DatabaseMeeting
 import app.meetacy.backend.database.users.UsersTable
-import app.meetacy.backend.types.*
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
@@ -23,6 +26,8 @@ import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.optional.Optional
+import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

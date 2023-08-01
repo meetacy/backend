@@ -3,6 +3,7 @@ package app.meetacy.backend.usecase.integration.friends.add
 import app.meetacy.backend.endpoint.friends.add.AddFriendParams
 import app.meetacy.backend.endpoint.friends.add.AddFriendRepository
 import app.meetacy.backend.endpoint.friends.add.AddFriendResult
+import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 
 class UsecaseAddFriendRepository(

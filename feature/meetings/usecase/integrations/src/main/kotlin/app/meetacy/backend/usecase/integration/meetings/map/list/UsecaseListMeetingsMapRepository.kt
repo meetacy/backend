@@ -3,11 +3,12 @@ package app.meetacy.backend.usecase.integration.meetings.map.list
 import app.meetacy.backend.endpoint.meetings.map.list.ListMeetingsMapRepository
 import app.meetacy.backend.endpoint.meetings.map.list.ListMeetingsResult
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.serialization.location.LocationSerializable
+import app.meetacy.backend.types.serializable.location.type
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase.Result
 import app.meetacy.backend.usecase.types.MeetingView
+import app.meetacy.backend.types.serializable.location.Location as LocationSerializable
 
 class UsecaseListMeetingsMapRepository(
     private val usecase: ListMeetingsMapUsecase

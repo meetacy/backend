@@ -2,11 +2,11 @@
 
 package app.meetacy.backend.database.location
 
+import app.meetacy.backend.constants.DATE_TIME_MAX_LIMIT
 import app.meetacy.backend.database.location.UsersLocationsTable.LATITUDE
 import app.meetacy.backend.database.location.UsersLocationsTable.LONGITUDE
 import app.meetacy.backend.database.location.UsersLocationsTable.UPDATED_TIME
 import app.meetacy.backend.database.location.UsersLocationsTable.USER_ID
-import app.meetacy.backend.types.DATE_TIME_MAX_LIMIT
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.location.Location

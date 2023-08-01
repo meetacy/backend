@@ -4,11 +4,11 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.meeting.Meeting
-import app.meetacy.backend.types.serialization.OptionalSerializable
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.datetime.DateSerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.datetime.Date
+import app.meetacy.backend.types.serializable.location.Location
+import app.meetacy.backend.types.serializable.optional.Optional
 import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
-import app.meetacy.backend.types.serialization.location.LocationSerializable
 import app.meetacy.backend.types.serialization.meeting.MeetingIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -17,23 +17,23 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EditMeetingParams(
-    val token: AccessIdentitySerializable,
+    val token: AccessIdentity,
     val meetingId: MeetingIdentitySerializable,
-    val avatarId: OptionalSerializable<FileIdentitySerializable?> = OptionalSerializable.Undefined,
+    val avatarId: Optional<FileIdentitySerializable?> = Optional.Undefined,
     val title: String?,
     val description: String?,
-    val location: LocationSerializable?,
-    val date: DateSerializable?,
+    val location: Location?,
+    val date: Date?,
     val visibility: Meeting.Visibility?
 )
 
 sealed interface EditMeetingResult {
     class Success(val meeting: Meeting) : EditMeetingResult
-    object InvalidAccessIdentity : EditMeetingResult
-    object InvalidUtf8String : EditMeetingResult
-    object NullEditParameters : EditMeetingResult
-    object InvalidMeetingId : EditMeetingResult
-    object InvalidAvatarIdentity : EditMeetingResult
+    data object InvalidAccessIdentity : EditMeetingResult
+    data object InvalidUtf8String : EditMeetingResult
+    data object NullEditParameters : EditMeetingResult
+    data object InvalidMeetingId : EditMeetingResult
+    data object InvalidAvatarIdentity : EditMeetingResult
 }
 
 interface EditMeetingRepository {

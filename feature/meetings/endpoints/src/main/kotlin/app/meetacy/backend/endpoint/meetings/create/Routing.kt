@@ -4,10 +4,10 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.meeting.Meeting
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.datetime.DateSerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.datetime.Date
+import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
-import app.meetacy.backend.types.serialization.location.LocationSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -15,11 +15,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateParam(
-    val token: AccessIdentitySerializable,
+    val token: AccessIdentity,
     val title: String?,
     val description: String?,
-    val date: DateSerializable,
-    val location: LocationSerializable,
+    val date: Date,
+    val location: Location,
     val visibility: Meeting.Visibility,
     val avatarId: FileIdentitySerializable?
 )

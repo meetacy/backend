@@ -5,12 +5,13 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.meeting.Meeting
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.location.LocationSerializable
+import app.meetacy.backend.types.serializable.access.type
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.location.Location as LocationSerializable
 
 fun interface ListMeetingsMapRepository {
     suspend fun list(

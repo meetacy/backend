@@ -1,15 +1,15 @@
 package app.meetacy.backend.usecase.meetings.edit
 
-import app.meetacy.backend.types.Optional
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
-import app.meetacy.backend.types.ifPresent
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.map
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.optional.Optional
+import app.meetacy.backend.types.optional.ifPresent
+import app.meetacy.backend.types.optional.map
 import app.meetacy.backend.usecase.types.*
 
 class EditMeetingUsecase(
@@ -23,11 +23,11 @@ class EditMeetingUsecase(
 
     sealed interface Result {
         class Success(val meeting: MeetingView) : Result
-        object InvalidAccessIdentity : Result
-        object InvalidUtf8String : Result
-        object NullEditParameters : Result
-        object InvalidMeetingIdentity : Result
-        object InvalidAvatarIdentity : Result
+        data object InvalidAccessIdentity : Result
+        data object InvalidUtf8String : Result
+        data object NullEditParameters : Result
+        data object InvalidMeetingIdentity : Result
+        data object InvalidAvatarIdentity : Result
     }
 
     suspend fun editMeeting(

@@ -4,6 +4,8 @@ plugins {
 }
 
 dependencies {
+    api(projects.core.typesSerializable.integration)
+
     api(projects.feature.meetings.types)
     api(projects.feature.files.types)
     api(projects.libs.ktorExtensions)

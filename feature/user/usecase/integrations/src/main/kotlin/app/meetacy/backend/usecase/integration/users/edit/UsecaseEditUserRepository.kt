@@ -3,7 +3,9 @@ package app.meetacy.backend.usecase.integration.users.edit
 import app.meetacy.backend.endpoint.users.edit.EditUserParams
 import app.meetacy.backend.endpoint.users.edit.EditUserRepository
 import app.meetacy.backend.endpoint.users.edit.EditUserResult
-import app.meetacy.backend.types.map
+import app.meetacy.backend.types.optional.map
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.optional.type
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 

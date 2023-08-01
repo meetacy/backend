@@ -14,6 +14,7 @@ application {
 }
 
 dependencies {
+    implementation(projects.core.types.integration)
 
     // features
     implementation(projects.feature.auth)

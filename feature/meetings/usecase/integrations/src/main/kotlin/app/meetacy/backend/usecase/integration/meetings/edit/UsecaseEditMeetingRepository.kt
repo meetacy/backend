@@ -3,7 +3,11 @@ package app.meetacy.backend.usecase.integration.meetings.edit
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingParams
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingRepository
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingResult
-import app.meetacy.backend.types.map
+import app.meetacy.backend.types.optional.map
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.datetime.type
+import app.meetacy.backend.types.serializable.location.type
+import app.meetacy.backend.types.serializable.optional.type
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.integration.types.mapToFullMeeting
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase

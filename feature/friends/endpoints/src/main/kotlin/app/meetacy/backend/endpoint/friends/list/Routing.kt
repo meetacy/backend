@@ -3,10 +3,10 @@ package app.meetacy.backend.endpoint.friends.list
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.endpoint.types.user.User
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.amount.Amount
+import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
 import app.meetacy.backend.types.serialization.paging.serializable
 import io.ktor.server.application.*
@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ListFriendsBody(
-    val token: AccessIdentitySerializable,
+    val token: AccessIdentity,
     val amount: Amount,
     val pagingId: PagingIdSerializable? = null
 )
@@ -26,7 +26,7 @@ interface ListFriendsRepository {
 }
 
 sealed interface ListFriendsResult {
-    object InvalidIdentity : ListFriendsResult
+    data object InvalidIdentity : ListFriendsResult
 
     class Success(val paging: PagingResult<User>) : ListFriendsResult
 }

@@ -4,10 +4,10 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.user.User
-import app.meetacy.backend.types.serialization.OptionalSerializable
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.optional.Optional
+import app.meetacy.backend.types.serializable.user.UsernameSerializable
 import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
-import app.meetacy.backend.types.serialization.user.UsernameSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -15,19 +15,19 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EditUserParams(
-    val token: AccessIdentitySerializable,
-    val nickname: OptionalSerializable<String> = OptionalSerializable.Undefined,
-    val username: OptionalSerializable<UsernameSerializable?> = OptionalSerializable.Undefined,
-    val avatarId: OptionalSerializable<FileIdentitySerializable?> = OptionalSerializable.Undefined,
+    val token: AccessIdentity,
+    val nickname: Optional<String> = Optional.Undefined,
+    val username: Optional<UsernameSerializable?> = Optional.Undefined,
+    val avatarId: Optional<FileIdentitySerializable?> = Optional.Undefined,
 )
 
 sealed interface EditUserResult {
     class Success(val user: User) : EditUserResult
-    object InvalidAccessIdentity : EditUserResult
-    object InvalidUtf8String : EditUserResult
-    object NullEditParameters : EditUserResult
-    object InvalidAvatarIdentity : EditUserResult
-    object UsernameAlreadyOccupied : EditUserResult
+    data object InvalidAccessIdentity : EditUserResult
+    data object InvalidUtf8String : EditUserResult
+    data object NullEditParameters : EditUserResult
+    data object InvalidAvatarIdentity : EditUserResult
+    data object UsernameAlreadyOccupied : EditUserResult
 }
 
 interface EditUserRepository {

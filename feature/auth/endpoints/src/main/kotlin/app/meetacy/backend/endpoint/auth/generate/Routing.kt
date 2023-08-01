@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.serialization.access.serializable
+import app.meetacy.backend.types.serializable.access.serializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -21,7 +21,7 @@ fun interface TokenGenerateRepository {
 
 sealed interface TokenGenerateResult {
     class Success(val accessIdentity: AccessIdentity) : TokenGenerateResult
-    object InvalidUtf8String : TokenGenerateResult
+    data object InvalidUtf8String : TokenGenerateResult
 }
 
 fun Route.generateToken(repository: TokenGenerateRepository) = post("/generate") {

@@ -11,7 +11,6 @@ import app.meetacy.backend.infrastructure.integrations.auth.authRepository
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.di.DI
-import app.meetacy.backend.di.accessHashGenerator
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 
@@ -23,7 +22,7 @@ fun DIBuilder.uploadFileRepository() {
             usecase = UploadFileUsecase(
                 authRepository = authRepository,
                 storage = DatabaseUploadFileStorage(database),
-                hashGenerator = accessHashGenerator
+                hashGenerator = get()
             ),
             basePath = filesBasePath,
             filesLimit = filesLimitPerUser,

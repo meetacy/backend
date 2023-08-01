@@ -1,4 +1,4 @@
-package app.meetacy.backend.types.serialization.user
+package app.meetacy.backend.types.serializable.user
 
 import app.meetacy.backend.types.user.UserIdentity
 import kotlinx.serialization.Serializable

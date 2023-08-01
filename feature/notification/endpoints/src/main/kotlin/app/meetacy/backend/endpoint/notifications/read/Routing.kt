@@ -5,12 +5,13 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.notification.NotificationId
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serialization.notification.NotificationIdSerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 
 @Serializable
 private data class RequestBody(
@@ -22,9 +23,9 @@ interface ReadNotificationsRepository {
     suspend fun read(accessIdentity: AccessIdentity, lastNotificationId: NotificationId): Result
 
     sealed interface Result {
-        object InvalidIdentity : Result
-        object LastNotificationIdInvalid : Result
-        object Success : Result
+        data object InvalidIdentity : Result
+        data object LastNotificationIdInvalid : Result
+        data object Success : Result
     }
 }
 

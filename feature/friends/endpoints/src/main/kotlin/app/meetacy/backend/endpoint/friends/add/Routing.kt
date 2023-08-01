@@ -3,8 +3,8 @@ package app.meetacy.backend.endpoint.friends.add
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.user.UserIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.user.UserIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -16,15 +16,15 @@ interface AddFriendRepository {
 
 @Serializable
 data class AddFriendParams(
-    val token: AccessIdentitySerializable,
+    val token: AccessIdentity,
     val friendId: UserIdentitySerializable
 )
 
 sealed interface AddFriendResult {
-    object Success : AddFriendResult
-    object InvalidIdentity : AddFriendResult
-    object FriendNotFound : AddFriendResult
-    object FriendAlreadyAdded : AddFriendResult
+    data object Success : AddFriendResult
+    data object InvalidIdentity : AddFriendResult
+    data object FriendNotFound : AddFriendResult
+    data object FriendAlreadyAdded : AddFriendResult
 }
 
 fun Route.addFriend(provider: AddFriendRepository) = post("/add") {

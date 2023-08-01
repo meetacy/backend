@@ -1,6 +1,6 @@
+
 import app.meetacy.backend.hash.HashGenerator
 import app.meetacy.sdk.exception.MeetacyInternalException
-import app.meetacy.sdk.types.amount.Amount
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.datetime.meetacyDate
@@ -215,7 +215,7 @@ class TestMeetings {
             location = Location.NullIsland
         )
 
-        val newTitle = HashGenerator.generate()
+        val newTitle = HashGenerator.generate((1..100).random())
 
         val edited = meeting.edited(title = Optional.Present(newTitle))
 

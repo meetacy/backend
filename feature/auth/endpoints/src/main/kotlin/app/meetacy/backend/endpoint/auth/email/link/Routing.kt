@@ -4,11 +4,12 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.type
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 
 @Serializable
 data class LinkParameters(
@@ -17,8 +18,8 @@ data class LinkParameters(
 )
 
 sealed interface ConfirmHashResult {
-    object InvalidIdentity : ConfirmHashResult
-    object Success : ConfirmHashResult
+    data object InvalidIdentity : ConfirmHashResult
+    data object Success : ConfirmHashResult
 }
 
 interface LinkEmailRepository {

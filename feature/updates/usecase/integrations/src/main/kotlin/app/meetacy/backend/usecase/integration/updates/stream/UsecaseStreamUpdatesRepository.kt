@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.integration.updates.stream
 
 import app.meetacy.backend.endpoint.updates.stream.StreamUpdatesRepository
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serialization.update.UpdateIdSerializable
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.types.AuthRepository
@@ -10,6 +10,7 @@ import app.meetacy.backend.usecase.types.UpdateView
 import app.meetacy.backend.usecase.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.usecase.updates.stream.StreamUpdatesUsecase.Result
 import kotlinx.coroutines.flow.map
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 
 fun StreamUpdatesRepository(
     auth: AuthRepository,

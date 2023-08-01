@@ -8,19 +8,21 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.amount.Amount
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.amount.type
 import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
 import app.meetacy.backend.types.serialization.paging.serializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.amount.Amount as AmountSerializable
 
 @Serializable
 data class ListParam(
     val token: AccessIdentitySerializable,
-    val amount: Amount,
+    val amount: AmountSerializable,
     val pagingId: PagingIdSerializable? = null
 )
 

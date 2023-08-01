@@ -3,8 +3,8 @@ package app.meetacy.backend.endpoint.friends.delete
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.serialization.access.AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.user.UserIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.user.UserIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -16,14 +16,14 @@ interface DeleteFriendRepository {
 
 @Serializable
 data class DeleteFriendParams(
-    val token: AccessIdentitySerializable,
+    val token: AccessIdentity,
     val friendId: UserIdentitySerializable
 )
 
 sealed interface DeleteFriendResult {
-    object Success : DeleteFriendResult
-    object InvalidIdentity : DeleteFriendResult
-    object FriendNotFound : DeleteFriendResult
+    data object Success : DeleteFriendResult
+    data object InvalidIdentity : DeleteFriendResult
+    data object FriendNotFound : DeleteFriendResult
 }
 
 fun Route.deleteFriend(provider: DeleteFriendRepository) = post("/delete") {
