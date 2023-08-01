@@ -9,7 +9,7 @@ dependencies {
 //    api(project(Deps.Projects.UsecaseUtf8Checker.Root))
 //    api(project(Deps.Projects.UsecaseHashGenerator.Root))
 
-    api(projects.feature.auth.types)
+    api(projects.core.types)
 
     api(projects.feature.user.types)
     api(projects.utf8Checker)

@@ -4,9 +4,9 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.auth.types)
+    api(projects.core.types)
     api(projects.libs.ktorExtensions)
 
     implementation(libs.ktorServer.core)
-    implementation(libs.serializationGradle)
+    implementation(libs.serializationJson)
 }

@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.auth.types)
+    api(projects.core.types)
     implementation(libs.exposedCore)
 }

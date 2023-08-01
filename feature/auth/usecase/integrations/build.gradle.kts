@@ -6,5 +6,5 @@ plugins {
 dependencies {
     api(projects.feature.auth.usecase)
     api(projects.feature.auth.endpoints)
-    api(projects.feature.auth.types)
+    api(projects.core.types)
 }
