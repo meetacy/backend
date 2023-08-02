@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
+import app.meetacy.backend.types.serializable.invitation.InvitationId
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CancelInvitationForm(
     val token: AccessIdentitySerializable,
-    val id: InvitationIdSerializable
+    val id: InvitationId
 )
 
 fun Route.invitationCancel(invitationCancelRepository: CancelInvitationRepository) = post("/cancel") {

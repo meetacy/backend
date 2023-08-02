@@ -5,7 +5,7 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.Invitation
 import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
-import app.meetacy.backend.types.serialization.meeting.MeetingIdentitySerializable
+import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
 import app.meetacy.backend.types.serializable.user.UserIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class InvitationCreatingFormSerializable(
     val token: AccessIdentitySerializable,
-    val meetingId: MeetingIdentitySerializable,
+    val meetingId: MeetingIdentity,
     val userId: UserIdentitySerializable
 )
 

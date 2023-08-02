@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.types.meeting.Meeting
 import app.meetacy.backend.types.serializable.datetime.serializable
 import app.meetacy.backend.types.serialization.file.serializable
 import app.meetacy.backend.types.serializable.location.serializable
-import app.meetacy.backend.types.serialization.meeting.serializable
+import app.meetacy.backend.types.serializable.meeting.serializable
 import app.meetacy.backend.usecase.types.FullMeeting
 import app.meetacy.backend.usecase.types.MeetingView
 import app.meetacy.backend.usecase.types.UserView

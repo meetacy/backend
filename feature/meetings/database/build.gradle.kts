@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.meetings.types)
     implementation(libs.exposed.core)
 
     api(projects.libs.paging.types)

@@ -4,7 +4,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.updates.types)
     api(projects.libs.ktorExtensions)
     api(projects.feature.notification.endpoints)
 

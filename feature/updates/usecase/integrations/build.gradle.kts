@@ -6,6 +6,5 @@ plugins {
 dependencies {
     api(projects.feature.updates.usecase)
     api(projects.feature.updates.endpoints)
-    api(projects.feature.updates.types)
     api(projects.feature.notification.usecase.integrations)
 }

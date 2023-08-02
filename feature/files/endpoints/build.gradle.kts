@@ -4,7 +4,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.files.types)
     api(projects.libs.ktorExtensions)
 
     implementation(libs.ktor.server.core)

@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.meetings.types)
 
     api(projects.feature.files.usecase)
     api(projects.feature.user.usecase)
