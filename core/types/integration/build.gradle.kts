@@ -6,5 +6,5 @@ dependencies {
 //    api(projects.constants)
     api(projects.libs.hashGenerator)
     api(projects.core.types)
-    implementation(libs.mdi)
+    implementation(libs.meetacy.di.global)
 }

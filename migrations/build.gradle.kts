@@ -13,7 +13,7 @@ dependencies {
     api(projects.feature.updates.database)
     api(projects.feature.user.database)
 
-    implementation(libs.exposedCore)
-    api(libs.wdater.core)
-    api(libs.wdater.autoMigrations)
+    implementation(libs.exposed.core)
+    api(libs.meetacy.wdater.core)
+    api(libs.meetacy.wdater.autoMigrations)
 }

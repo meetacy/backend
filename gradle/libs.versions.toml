@@ -15,64 +15,72 @@ shadow = "7.0.0"
 
 wdater = "0.0.2"
 meetacySdk = "0.0.58"
-meetacyDi = "0.0.23"
+meetacyDi = "0.0.24"
 
 [libraries]
 
-# meetacy sdk
+# meetacy libs
 
-meetacySdk-apiKtor = { module = "app.meetacy.sdk:api-ktor", version.ref = "meetacySdk" }
-meetacySdk-api = { module = "app.meetacy.sdk:api", version.ref = "meetacySdk" }
+## sdk
+meetacy-sdk-api-ktor = { module = "app.meetacy.sdk:api-ktor", version.ref = "meetacySdk" }
+meetacy-sdk-api = { module = "app.meetacy.sdk:api", version.ref = "meetacySdk" }
+
+## di
+meetacy-di-core = { module = "app.meetacy.di:core", version.ref = "meetacyDi" }
+meetacy-di-global = { module = "app.meetacy.di:global", version.ref = "meetacyDi" }
+
+## wdater
+meetacy-wdater-core = { module = "app.meetacy.wdater:wdater", version.ref = "wdater" }
+meetacy-wdater-autoMigrations = { module = "app.meetacy.wdater:auto-migrations", version.ref = "wdater" }
 
 # slf4j
-slf4jSimple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jJ" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jJ" }
 
-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
-coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+# kotlinx libs
+
+## coroutines
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+
+## serialization
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 # exposed
-exposedCore = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
-exposedJdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
-postgresJdbc = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
-
-# meetacy
-mdi = { module = "app.meetacy.di:core", version.ref = "meetacyDi" }
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+postgres-jdbc = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 
 # ktor
 
-ktorClient-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-ktorClient-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
-ktorClient-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
-ktorClient-serializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktorClient-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
-ktorClient-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+## ktor-client
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-serializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 
-ktorServer-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
-ktorServer-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
-ktorServer-rsocket = { module = "io.rsocket.kotlin:rsocket-ktor-server", version.ref = "rsocket" }
-ktorServer-websockets = { module = "io.ktor:ktor-server-websockets", version.ref = "ktor" }
-ktorServer-contentNegotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
-ktorServer-serializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktorServer-statusPages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
-ktorServer-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
-ktorServer-partialContent = { module = "io.ktor:ktor-server-partial-content", version.ref = "ktor" }
-ktorServer-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
-ktorServer-autoHead = { module = "io.ktor:ktor-server-auto-head-response", version.ref = "ktor" }
-ktorServer-requestValidation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
-ktorServer-serverStatusPage = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
+## ktor-server
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+ktor-server-rsocket = { module = "io.rsocket.kotlin:rsocket-ktor-server", version.ref = "rsocket" }
+ktor-server-websockets = { module = "io.ktor:ktor-server-websockets", version.ref = "ktor" }
+ktor-server-contentNegotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
+ktor-server-serializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-server-statusPages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
+ktor-server-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
+ktor-server-partialContent = { module = "io.ktor:ktor-server-partial-content", version.ref = "ktor" }
+ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
+ktor-server-autoHead = { module = "io.ktor:ktor-server-auto-head-response", version.ref = "ktor" }
+ktor-server-requestValidation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
+ktor-server-serverStatusPage = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
 
 # gradle
 
-kotlinGradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-serializationGradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
-shadowGradle = { module = "gradle.plugin.com.github.jengelman.gradle.plugins:shadow", version.ref = "shadow" }
-sshGradle = { module = "org.hidetake:gradle-ssh-plugin", version.ref = "ssh" }
-
-# wdater
-
-wdater-core = { module = "app.meetacy.wdater:wdater", version.ref = "wdater" }
-wdater-autoMigrations = { module = "app.meetacy.wdater:auto-migrations", version.ref = "wdater" }
+gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+gradle-kotlinx-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+gradle-shadow = { module = "gradle.plugin.com.github.jengelman.gradle.plugins:shadow", version.ref = "shadow" }
+gradle-ssh = { module = "org.hidetake:gradle-ssh-plugin", version.ref = "ssh" }
 
 [plugins]
 

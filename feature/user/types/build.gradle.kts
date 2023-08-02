@@ -7,5 +7,5 @@ dependencies {
     api(projects.core.types)
     api(projects.core.types)
 
-    implementation(libs.serializationGradle)
+    implementation(libs.gradle.kotlinx.serialization)
 }

@@ -13,5 +13,5 @@ dependencies {
     api(projects.feature.user.endpoints)
     api(projects.libs.paging.types)
 
-    implementation(libs.serializationJson)
+    implementation(libs.kotlinx.serialization.json)
 }

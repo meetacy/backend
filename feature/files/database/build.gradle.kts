@@ -7,5 +7,5 @@ dependencies {
 
     api(projects.feature.user.database)
 
-    api(libs.exposedCore)
+    api(libs.exposed.core)
 }

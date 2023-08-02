@@ -9,6 +9,6 @@ dependencies {
     api(projects.feature.user.usecase)
     api(projects.libs.paging.types)
 
-    implementation(libs.coroutines)
+    implementation(libs.kotlinx.coroutines.core)
     api(projects.libs.stdlibExtensions)
 }

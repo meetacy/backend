@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     api(projects.feature.updates.types)
-    implementation(libs.exposedCore)
+    implementation(libs.exposed.core)
 
     api(projects.feature.user.database)
     api(projects.libs.exposedExtensions)

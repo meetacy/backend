@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -29,11 +29,15 @@ interface LinkEmailRepository {
 /**
  * TODO: check for *email* format
  */
-fun Route.linkEmail(repository: LinkEmailRepository) = post("/link") {
-    val parameters = call.receive<LinkParameters>()
+fun Route.linkEmail() {
+    val repository: LinkEmailRepository by di.getting
 
-    when (repository.linkEmail(parameters.token.type(), parameters.email)) {
-        is ConfirmHashResult.Success -> call.respondSuccess()
-        is ConfirmHashResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
+    post("/link") {
+        val parameters = call.receive<LinkParameters>()
+
+        when (repository.linkEmail(parameters.token, parameters.email)) {
+            is ConfirmHashResult.Success -> call.respondSuccess()
+            is ConfirmHashResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
+        }
     }
 }

@@ -9,5 +9,5 @@ dependencies {
     api(projects.feature.user.types)
     api(projects.feature.meetings.endpoints)
 
-    implementation(libs.serializationJson)
+    implementation(libs.kotlinx.serialization.json)
 }
