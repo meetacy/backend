@@ -80,7 +80,7 @@ deploy {
 }
 
 application {
-    mainClass.set("app.meetacy.backend.MainKt")
+    mainClass = "app.meetacy.backend.MainKt"
 }
 
 tasks.withType<KotlinCompile>().configureEach {

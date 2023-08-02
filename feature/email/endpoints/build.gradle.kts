@@ -4,7 +4,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.email.types)
     api(projects.libs.ktorExtensions)
 
     implementation(libs.ktorServer.core)

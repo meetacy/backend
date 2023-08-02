@@ -3,7 +3,7 @@ package app.meetacy.backend.endpoint.invitations.deny
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.serialization.invitation.InvitationIdSerializable
+import app.meetacy.backend.types.serializable.invitation.InvitationId
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -12,7 +12,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIde
 
 @Serializable
 data class InvitationDenyingFormSerializable(
-    val id: InvitationIdSerializable,
+    val id: InvitationId,
     val token: AccessIdentitySerializable
 )
 

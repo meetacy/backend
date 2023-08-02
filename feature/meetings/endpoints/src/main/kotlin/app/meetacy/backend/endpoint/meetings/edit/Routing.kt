@@ -6,10 +6,10 @@ import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.meeting.Meeting
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.datetime.Date
+import app.meetacy.backend.types.serializable.file.FileIdentity
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.optional.Optional
-import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
-import app.meetacy.backend.types.serialization.meeting.MeetingIdentitySerializable
+import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -18,8 +18,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class EditMeetingParams(
     val token: AccessIdentity,
-    val meetingId: MeetingIdentitySerializable,
-    val avatarId: Optional<FileIdentitySerializable?> = Optional.Undefined,
+    val meetingId: MeetingIdentity,
+    val avatarId: Optional<FileIdentity?> = Optional.Undefined,
     val title: String?,
     val description: String?,
     val location: Location?,

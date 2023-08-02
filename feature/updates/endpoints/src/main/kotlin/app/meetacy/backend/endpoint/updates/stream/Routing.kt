@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.rsocket.failRSocket
 import app.meetacy.backend.endpoint.types.updates.Update
 import app.meetacy.backend.endpoint.updates.stream.StreamUpdatesRepository.Result
-import app.meetacy.backend.types.serialization.update.UpdateIdSerializable
+import app.meetacy.backend.types.serializable.update.UpdateId
 import io.ktor.server.routing.*
 import io.rsocket.kotlin.RSocketRequestHandler
 import io.rsocket.kotlin.ktor.server.rSocket
@@ -22,14 +22,14 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIde
 @Serializable
 data class InitStreamUpdates(
     val token: AccessIdentitySerializable,
-    val fromId: UpdateIdSerializable?,
+    val fromId: UpdateId?,
     val apiVersion: Int
 )
 
 interface StreamUpdatesRepository {
     suspend fun flow(
         token: AccessIdentitySerializable,
-        fromId: UpdateIdSerializable?
+        fromId: UpdateId?
     ): Result
 
     sealed interface Result {

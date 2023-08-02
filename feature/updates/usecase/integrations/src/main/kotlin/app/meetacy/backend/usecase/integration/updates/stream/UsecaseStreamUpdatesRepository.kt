@@ -2,7 +2,8 @@ package app.meetacy.backend.usecase.integration.updates.stream
 
 import app.meetacy.backend.endpoint.updates.stream.StreamUpdatesRepository
 import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serialization.update.UpdateIdSerializable
+import app.meetacy.backend.types.serializable.update.UpdateId
+import app.meetacy.backend.types.serializable.update.type
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository
@@ -26,7 +27,7 @@ class UsecaseStreamUpdatesRepository(
 
     override suspend fun flow(
         token: AccessIdentitySerializable,
-        fromId: UpdateIdSerializable?
+        fromId: UpdateId?
     ): StreamUpdatesRepository.Result {
         return when (
             val result = usecase.flow(token.type(), fromId?.type())

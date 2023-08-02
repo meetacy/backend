@@ -14,6 +14,7 @@ import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.DatabaseConnectionAutoRegistration
 
 data class DatabaseConfig(
     val url: String,

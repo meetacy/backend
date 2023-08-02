@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(project(Deps.Projects.Notification.Types))
     implementation(Deps.Libs.Exposed.Core)
 
     api(project(Deps.Projects.User.Database))
