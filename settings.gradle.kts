@@ -30,6 +30,8 @@ includeBuild("build-logic")
 include(
     "application",
     "application:endpoints",
+    "application:usecase",
+    "application:usecase:database",
     "core",
     "core:integration",
     "core:constants",

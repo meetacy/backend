@@ -9,11 +9,12 @@ import app.meetacy.backend.infrastructure.database.meetings.meetings
 import app.meetacy.backend.infrastructure.database.notifications.notifications
 import app.meetacy.backend.infrastructure.database.updates.updates
 import app.meetacy.backend.infrastructure.database.users.users
-import app.meetacy.backend.infrastructure.databaseConfig
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 import org.jetbrains.exposed.sql.Database
+
+val DI.databaseConfig: DatabaseConfig by Dependency
 
 data class DatabaseConfig(
     val url: String,

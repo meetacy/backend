@@ -16,6 +16,8 @@ application {
 
 dependencies {
     implementation(projects.application.endpoints)
+    implementation(projects.application.usecase)
+
 
     implementation(projects.core.types.integration)
 
