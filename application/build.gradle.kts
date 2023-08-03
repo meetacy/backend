@@ -9,11 +9,14 @@ plugins {
     id("deploy-convention")
 }
 
+@Suppress("UnstableApiUsage")
 application {
     mainClass = "app.meetacy.backend.MainKt"
 }
 
 dependencies {
+    implementation(projects.application.endpoints)
+
     implementation(projects.core.types.integration)
 
     // features
@@ -35,7 +38,6 @@ dependencies {
     implementation(libs.mdi)
     implementation(projects.libs.utf8Checker.usecaseIntegration)
     implementation(projects.migrations)
-    implementation(projects.endpointsNew)
     implementation(projects.libs.discordWebhook.ktor)
 
     testImplementation(libs.meetacySdk.apiKtor)

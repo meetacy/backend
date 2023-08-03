@@ -2,13 +2,14 @@ package app.meetacy.backend.endpoint
 
 import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.auth
-import app.meetacy.backend.endpoint.ktor.exceptions.installExceptionsHandler
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.files.files
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.friends
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
 import app.meetacy.backend.endpoint.invitations.invitations
+import app.meetacy.backend.endpoint.ktor.exceptions.installExceptionsHandler
+import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.meetings
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
@@ -19,7 +20,6 @@ import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.endpoint.users.users
 import app.meetacy.backend.endpoint.users.validate.ValidateUsernameRepository
 import app.meetacy.backend.endpoint.users.validate.validateUsername
-import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
