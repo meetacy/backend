@@ -10,7 +10,7 @@ import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependencies
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepository
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.infrastructure.integrations.auth.authRepository
+import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.integrations.meetings.checkMeetingsRepository
 import app.meetacy.backend.infrastructure.integrations.meetings.get.getMeetingsViewsRepository
 import app.meetacy.backend.infrastructure.integrations.users.get.getUserViewsRepository

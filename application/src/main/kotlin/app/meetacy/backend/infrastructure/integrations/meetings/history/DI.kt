@@ -9,7 +9,7 @@ import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.infrastructure.integrations.auth.authRepository
+import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.integrations.meetings.get.getMeetingsViewsRepository
 import app.meetacy.backend.infrastructure.integrations.meetings.history.active.listActiveMeetingsRepository
 import app.meetacy.backend.infrastructure.integrations.meetings.history.past.listPastMeetingsRepository

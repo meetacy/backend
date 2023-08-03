@@ -8,7 +8,7 @@ import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.endpoint.users.get.UserRepository
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.infrastructure.integrations.auth.authRepository
+import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
 import app.meetacy.backend.usecase.types.GetUsersViewsRepository
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase

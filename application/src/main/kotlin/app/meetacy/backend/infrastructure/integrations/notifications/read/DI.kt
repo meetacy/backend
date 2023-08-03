@@ -8,7 +8,7 @@ import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.endpoint.notifications.read.ReadNotificationsRepository
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.infrastructure.integrations.auth.authRepository
+import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 

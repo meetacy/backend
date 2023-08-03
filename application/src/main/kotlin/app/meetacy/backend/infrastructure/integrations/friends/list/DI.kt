@@ -8,7 +8,7 @@ import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.endpoint.friends.list.ListFriendsRepository
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.infrastructure.integrations.auth.authRepository
+import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.integrations.users.get.getUserViewsRepository
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
