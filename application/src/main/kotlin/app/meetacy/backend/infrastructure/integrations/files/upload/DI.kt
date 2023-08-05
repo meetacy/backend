@@ -1,13 +1,10 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.files.upload
 
-import app.meetacy.backend.database.integration.files.DatabaseUploadFileStorage
 import app.meetacy.backend.endpoint.files.upload.SaveFileRepository
-import app.meetacy.backend.infrastructure.database.database
+import app.meetacy.backend.infrastructure.database.auth.authRepository
+import app.meetacy.backend.infrastructure.database.files.upload.uploadFileUsecase
 import app.meetacy.backend.infrastructure.filesBasePath
 import app.meetacy.backend.infrastructure.filesLimitPerUser
-import app.meetacy.backend.infrastructure.integrations.auth.authRepository
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.di.DI
@@ -21,7 +18,7 @@ fun DIBuilder.uploadFileRepository() {
         UsecaseUploadFileRepository(
             usecase = UploadFileUsecase(
                 authRepository = authRepository,
-                storage = DatabaseUploadFileStorage(database),
+                storage = uploadFileUsecase,
                 hashGenerator = get()
             ),
             basePath = filesBasePath,

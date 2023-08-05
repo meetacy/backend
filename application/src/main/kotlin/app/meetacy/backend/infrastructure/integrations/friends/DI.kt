@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.friends
 
 import app.meetacy.di.DI

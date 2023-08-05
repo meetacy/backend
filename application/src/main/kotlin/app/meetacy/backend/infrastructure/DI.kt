@@ -1,18 +1,17 @@
-@file:Suppress("NAME_SHADOWING", "UNUSED_VARIABLE")
+@file:Suppress("NAME_SHADOWING")
 
 package app.meetacy.backend.infrastructure
 
-import app.meetacy.di.DI
-import app.meetacy.di.builder.di
 import app.meetacy.backend.infrastructure.database.DatabaseConfig
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.integrations.integrations
 import app.meetacy.backend.types.common
 import app.meetacy.backend.types.file.FileSize
+import app.meetacy.di.DI
+import app.meetacy.di.builder.di
 import app.meetacy.di.dependency.Dependency
 
 val DI.port: Int by Dependency
-val DI.databaseConfig: DatabaseConfig by Dependency
 val DI.filesBasePath: String by Dependency
 val DI.filesLimitPerUser: FileSize by Dependency
 

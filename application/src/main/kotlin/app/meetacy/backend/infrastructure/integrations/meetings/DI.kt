@@ -1,10 +1,5 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.meetings
 
-import app.meetacy.di.DI
-import app.meetacy.di.builder.DIBuilder
-import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.infrastructure.integrations.meetings.create.createMeetingRepository
 import app.meetacy.backend.infrastructure.integrations.meetings.delete.deleteMeetingRepository
@@ -14,11 +9,13 @@ import app.meetacy.backend.infrastructure.integrations.meetings.history.meetings
 import app.meetacy.backend.infrastructure.integrations.meetings.map.meetingsMapDependencies
 import app.meetacy.backend.infrastructure.integrations.meetings.participate.participantDependencies
 import app.meetacy.backend.infrastructure.integrations.meetings.participate.participateMeetingRepository
+import app.meetacy.di.DI
+import app.meetacy.di.builder.DIBuilder
+import app.meetacy.di.dependency.Dependency
 
 val DI.meetingsDependencies: MeetingsDependencies by Dependency
 
 fun DIBuilder.meetings() {
-    checkMeetingsRepository()
     createMeetingRepository()
     deleteMeetingRepository()
     editMeetingRepository()

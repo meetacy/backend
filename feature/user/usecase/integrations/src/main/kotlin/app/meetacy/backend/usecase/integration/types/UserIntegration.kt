@@ -3,11 +3,12 @@ package app.meetacy.backend.usecase.integration.types
 import app.meetacy.backend.endpoint.types.user.User
 import app.meetacy.backend.types.serializable.datetime.serializable
 import app.meetacy.backend.types.serializable.datetime.type
+import app.meetacy.backend.types.serializable.file.serializable
+import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.serializable
 import app.meetacy.backend.types.serializable.location.type
 import app.meetacy.backend.types.serializable.user.serializable
 import app.meetacy.backend.types.serializable.user.type
-import app.meetacy.backend.types.serialization.file.serializable
 import app.meetacy.backend.usecase.types.UserView
 import app.meetacy.backend.endpoint.types.user.UserLocationSnapshot as EndpointUserLocationSnapshot
 import app.meetacy.backend.usecase.types.UserLocationSnapshot as UsecaseUserLocationSnapshot

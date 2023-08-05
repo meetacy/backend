@@ -1,12 +1,9 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.auth.email.link
 
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailMailer
-import app.meetacy.backend.database.integration.email.DatabaseLinkEmailStorage
 import app.meetacy.backend.endpoint.auth.email.link.LinkEmailRepository
-import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.infrastructure.integrations.auth.authRepository
+import app.meetacy.backend.infrastructure.database.auth.authRepository
+import app.meetacy.backend.infrastructure.database.email.link.linkEmailStorage
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
 import app.meetacy.di.DI
@@ -19,7 +16,7 @@ fun DIBuilder.linkEmailRepository() {
     val linkEmailRepository by singleton<LinkEmailRepository> {
         UsecaseLinkEmailRepository(
             usecase = LinkEmailUsecase(
-                storage = DatabaseLinkEmailStorage(database),
+                storage = linkEmailStorage,
                 mailer = DatabaseLinkEmailMailer,
                 hashGenerator = get(),
                 authRepository = authRepository

@@ -1,15 +1,12 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.users.validate
 
-import app.meetacy.backend.database.integration.types.DatabaseValidateRepository
+import app.meetacy.backend.endpoint.users.validate.ValidateUsernameRepository
+import app.meetacy.backend.infrastructure.database.users.validate.validateUserRepository
+import app.meetacy.backend.usecase.integration.users.validate.UsecaseValidateUsernameRepository
+import app.meetacy.backend.usecase.users.validate.ValidateUsernameUsecase
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
-import app.meetacy.backend.endpoint.users.validate.ValidateUsernameRepository
-import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.usecase.integration.users.validate.UsecaseValidateUsernameRepository
-import app.meetacy.backend.usecase.users.validate.ValidateUsernameUsecase
 
 val DI.validateUsernameRepository: ValidateUsernameRepository by Dependency
 
@@ -17,7 +14,7 @@ fun DIBuilder.validateUsernameRepository() {
     val validateUsernameRepository by singleton<ValidateUsernameRepository> {
         UsecaseValidateUsernameRepository(
             usecase = ValidateUsernameUsecase(
-                validateRepository = DatabaseValidateRepository(database)
+                validateRepository = validateUserRepository
             )
         )
     }

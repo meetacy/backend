@@ -5,7 +5,7 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.user.User
 import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.backend.types.serializable.user.UserIdentitySerializable
+import app.meetacy.backend.types.serializable.user.UserIdentity as UserIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*

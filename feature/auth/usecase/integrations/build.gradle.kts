@@ -6,5 +6,5 @@ plugins {
 dependencies {
     api(projects.feature.auth.usecase)
     api(projects.feature.auth.endpoints)
-    api(projects.core.types)
+    api(projects.core.typesSerializable.integration)
 }
