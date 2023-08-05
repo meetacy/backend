@@ -7,15 +7,15 @@ dependencies {
 
     implementation(libs.meetacy.di.core)
 
-    implementation(projects.feature.auth.usecase.integrations)
-    implementation(projects.feature.email.usecase.integrations)
-    implementation(projects.feature.files.usecase.integrations)
-    implementation(projects.feature.friends.usecase.integrations)
-    implementation(projects.feature.invitations.usecase.integrations)
-    implementation(projects.feature.meetings.usecase.integrations)
-    implementation(projects.feature.notification.usecase.integrations)
-    implementation(projects.feature.updates.usecase.integrations)
-    implementation(projects.feature.user.usecase.integrations)
+    implementation(projects.feature.auth.usecase.integration)
+    implementation(projects.feature.email.usecase.integration)
+    implementation(projects.feature.files.usecase.integration)
+    implementation(projects.feature.friends.usecase.integration)
+    implementation(projects.feature.invitations.usecase.integration)
+    implementation(projects.feature.meetings.usecase.integration)
+    implementation(projects.feature.notifications.usecase.integration)
+    implementation(projects.feature.updates.usecase.integration)
+    implementation(projects.feature.user.usecase.integration)
 
-    implementation(projects.libs.utf8Checker.usecaseIntegration)
+    implementation(projects.libs.utf8Checker)
 }

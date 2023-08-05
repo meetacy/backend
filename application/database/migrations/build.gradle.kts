@@ -9,7 +9,7 @@ dependencies {
     api(projects.feature.friends.database)
     api(projects.feature.invitations.database)
     api(projects.feature.meetings.database)
-    api(projects.feature.notification.database)
+    api(projects.feature.notifications.database)
     api(projects.feature.updates.database)
     api(projects.feature.user.database)
 

@@ -32,7 +32,7 @@ dependencies {
     implementation(projects.feature.files)
     implementation(projects.feature.friends)
     implementation(projects.feature.invitations)
-    implementation(projects.feature.notification)
+    implementation(projects.feature.notifications)
     implementation(projects.feature.meetings)
     implementation(projects.feature.updates)
     implementation(projects.feature.user)
@@ -42,7 +42,6 @@ dependencies {
     implementation(libs.postgres.jdbc)
 
     implementation(libs.meetacy.di.core)
-    implementation(projects.libs.utf8Checker.usecaseIntegration)
     implementation(projects.application.database.migrations)
     implementation(projects.libs.discordWebhook.ktor)
 

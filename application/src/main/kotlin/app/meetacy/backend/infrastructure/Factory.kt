@@ -1,15 +1,15 @@
 package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.endpoint.prepareEndpoints
-import app.meetacy.backend.infrastructure.integrations.auth.authDependencies
-import app.meetacy.backend.infrastructure.integrations.files.filesDependencies
-import app.meetacy.backend.infrastructure.integrations.friends.friendsDependencies
-import app.meetacy.backend.infrastructure.integrations.invitations.invitationsDependencies
-import app.meetacy.backend.infrastructure.integrations.meetings.meetingsDependencies
-import app.meetacy.backend.infrastructure.integrations.notifications.notificationsDependencies
-import app.meetacy.backend.infrastructure.integrations.updates.updatesDependencies
-import app.meetacy.backend.infrastructure.integrations.users.usersDependencies
-import app.meetacy.backend.infrastructure.integrations.users.validate.validateUsernameRepository
+import app.meetacy.backend.infrastructure.integration.auth.authDependencies
+import app.meetacy.backend.infrastructure.integration.files.filesDependencies
+import app.meetacy.backend.infrastructure.integration.friends.friendsDependencies
+import app.meetacy.backend.infrastructure.integration.invitations.invitationsDependencies
+import app.meetacy.backend.infrastructure.integration.meetings.meetingsDependencies
+import app.meetacy.backend.infrastructure.integration.notifications.notificationsDependencies
+import app.meetacy.backend.infrastructure.integration.updates.updatesDependencies
+import app.meetacy.backend.infrastructure.integration.users.usersDependencies
+import app.meetacy.backend.infrastructure.integration.users.validate.validateUsernameRepository
 import app.meetacy.di.DI
 
 fun prepareEndpoints(di: DI) = prepareEndpoints(

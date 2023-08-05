@@ -7,6 +7,6 @@ dependencies {
     api(projects.feature.email.usecase)
     api(projects.feature.email.endpoints)
 
-    api(projects.feature.email.database.integrations)
-    api(projects.feature.email.usecase.integrations)
+    api(projects.feature.email.database.integration)
+    api(projects.feature.email.usecase.integration)
 }
