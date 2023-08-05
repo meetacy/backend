@@ -6,7 +6,7 @@ import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
-import app.meetacy.backend.types.serialization.file.serializable
+import app.meetacy.backend.types.serializable.file.serializable
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*

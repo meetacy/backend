@@ -5,7 +5,7 @@ plugins {
 dependencies {
     api(projects.application.database)
 
-    implementation(libs.mdi)
+    implementation(libs.meetacy.di.core)
 
     implementation(projects.feature.auth.usecase.integrations)
     implementation(projects.feature.email.usecase.integrations)

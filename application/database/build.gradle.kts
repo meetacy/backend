@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.mdi)
+//    implementation(libs.meetacy.di.core)
 
     implementation(projects.feature.auth.database.integrations)
     implementation(projects.feature.email.database.integrations)

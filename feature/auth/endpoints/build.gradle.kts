@@ -8,5 +8,6 @@ dependencies {
     api(projects.libs.ktorExtensions)
     implementation(libs.ktor.server.core)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.meetacy.di.global)
+    api(libs.meetacy.di.global)
+    implementation(libs.meetacy.di.core)
 }
