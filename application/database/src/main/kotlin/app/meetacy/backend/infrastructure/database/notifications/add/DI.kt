@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.integrations.notifications.add
+package app.meetacy.backend.infrastructure.database.notifications.add
 
 import app.meetacy.backend.database.integration.notifications.AddNotificationUsecase
 import app.meetacy.backend.infrastructure.database.database
@@ -10,7 +10,7 @@ import app.meetacy.di.dependency.Dependency
 
 val DI.addNotificationUsecase: AddNotificationUsecase by Dependency
 
-fun DIBuilder.addNotificationUsecase() {
+fun DIBuilder.addNotification() {
     val addNotificationUsecase by singleton<AddNotificationUsecase> {
         AddNotificationUsecase(
             database,

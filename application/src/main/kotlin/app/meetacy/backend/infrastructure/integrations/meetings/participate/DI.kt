@@ -8,7 +8,7 @@ import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository
 import app.meetacy.backend.infrastructure.integrations.meetings.checkMeetingsRepository
-import app.meetacy.backend.infrastructure.integrations.meetings.get.getMeetingsViewsRepository
+import app.meetacy.backend.infrastructure.integrations.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.usecase.integration.meetings.participants.list.UsecaseListMeetingParticipantsRepository
 import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
@@ -26,7 +26,7 @@ fun DIBuilder.participateMeetingRepository() {
             usecase = ParticipateMeetingUsecase(
                 authRepository,
                 DatabaseParticipateMeetingStorage(database),
-                getMeetingsViewsRepository(database)
+                getMeetingViewRepository
             )
         )
     }

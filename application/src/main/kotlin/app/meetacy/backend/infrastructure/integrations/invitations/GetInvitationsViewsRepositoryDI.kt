@@ -4,8 +4,8 @@ import app.meetacy.backend.database.integration.invitations.get.DatabaseGetInvit
 import app.meetacy.backend.database.integration.types.UsecaseGetInvitationsViewsRepository
 import app.meetacy.backend.database.integration.types.UsecaseViewInvitationsRepository
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.infrastructure.integrations.meetings.get.getMeetingsViewsRepository
 import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository
+import app.meetacy.backend.infrastructure.integrations.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.usecase.invitations.get.GetInvitationsViewsUsecase
 import app.meetacy.backend.usecase.invitations.get.ViewInvitationsUsecase
 import app.meetacy.backend.usecase.types.GetInvitationsViewsRepository
@@ -22,7 +22,7 @@ fun DIBuilder.getInvitationsViewsRepository() {
                 viewInvitationsRepository = UsecaseViewInvitationsRepository(
                     usecase = ViewInvitationsUsecase(
                         usersRepository = getUserViewsRepository,
-                        meetingsRepository = getMeetingsViewsRepository(database)
+                        meetingsRepository = getMeetingViewRepository
                     )
                 ),
                 invitationsProvider = DatabaseGetInvitationsViewsUsecaseInvitationsProvider(database)

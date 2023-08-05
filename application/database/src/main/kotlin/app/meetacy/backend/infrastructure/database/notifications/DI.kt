@@ -4,15 +4,23 @@ package app.meetacy.backend.infrastructure.database.notifications
 
 import app.meetacy.backend.database.notifications.LastReadNotificationsStorage
 import app.meetacy.backend.database.notifications.NotificationsStorage
+import app.meetacy.backend.infrastructure.database.database
+import app.meetacy.backend.infrastructure.database.notifications.add.addNotification
+import app.meetacy.backend.infrastructure.database.notifications.get.getNotification
+import app.meetacy.backend.infrastructure.database.notifications.read.readNotification
+import app.meetacy.backend.infrastructure.database.notifications.view.viewNotification
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
-import app.meetacy.backend.infrastructure.database.database
 
 val DI.notificationsStorage: NotificationsStorage by Dependency
 val DI.lastReadNotificationsStorage: LastReadNotificationsStorage by Dependency
 
 fun DIBuilder.notifications() {
+    addNotification()
+    getNotification()
+    readNotification()
+    viewNotification()
     val notificationsStorage by singleton { NotificationsStorage(database) }
     val lastReadNotificationsStorage by singleton { LastReadNotificationsStorage(database) }
 }
