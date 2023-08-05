@@ -2,6 +2,6 @@ package app.meetacy.backend.types.serializable.user
 
 import kotlinx.serialization.Serializable
 
-@Serializable
 @JvmInline
-value class RelationshipSerializable(val string: String)
+@Serializable
+value class Username(val string: String)

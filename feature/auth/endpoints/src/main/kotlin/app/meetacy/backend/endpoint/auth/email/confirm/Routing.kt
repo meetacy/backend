@@ -3,6 +3,7 @@ package app.meetacy.backend.endpoint.auth.email.confirm
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
+import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -25,13 +26,17 @@ interface ConfirmEmailRepository {
     suspend fun checkConfirmHash(email: String, confirmHash: String): ConfirmHashResult
 }
 
-fun Route.confirmEmail(storage: ConfirmEmailRepository) = post("/confirm") {
-    val parameters = call.receive<ConfirmParams>()
+fun Route.confirmEmail() {
+    val repository: ConfirmEmailRepository by di.getting
 
-    when (storage.checkConfirmHash(parameters.email, parameters.confirmHash)) {
-        ConfirmHashResult.LinkExpired -> call.respondFailure(Failure.ExpiredLink)
-        ConfirmHashResult.LinkInvalid -> call.respondFailure(Failure.InvalidLink)
-        ConfirmHashResult.LinkMaxAttemptsReached -> call.respondFailure(Failure.LinkMaxAttemptsReached)
-        ConfirmHashResult.Success -> call.respondSuccess()
+    post("/confirm") {
+        val parameters = call.receive<ConfirmParams>()
+
+        when (repository.checkConfirmHash(parameters.email, parameters.confirmHash)) {
+            ConfirmHashResult.LinkExpired -> call.respondFailure(Failure.ExpiredLink)
+            ConfirmHashResult.LinkInvalid -> call.respondFailure(Failure.InvalidLink)
+            ConfirmHashResult.LinkMaxAttemptsReached -> call.respondFailure(Failure.LinkMaxAttemptsReached)
+            ConfirmHashResult.Success -> call.respondSuccess()
+        }
     }
 }

@@ -4,4 +4,4 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @JvmInline
-value class UserIdSerializable(val long: Long)
+value class Relationship(val string: String)

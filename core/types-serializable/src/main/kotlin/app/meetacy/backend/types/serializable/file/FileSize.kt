@@ -4,4 +4,4 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @JvmInline
-value class FileSize(val long: Long)
+value class FileSize(val bytesSize: Long)

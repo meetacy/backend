@@ -3,18 +3,17 @@ package app.meetacy.backend.endpoint.auth.email.link
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
 
 @Serializable
 data class LinkParameters(
     val email: String,
-    val token: AccessIdentitySerializable
+    val token: AccessIdentity
 )
 
 sealed interface ConfirmHashResult {

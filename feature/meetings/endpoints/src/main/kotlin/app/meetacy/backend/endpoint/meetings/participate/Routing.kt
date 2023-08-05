@@ -26,7 +26,7 @@ sealed interface ParticipateMeetingResult {
 
 interface ParticipateMeetingRepository {
     suspend fun participateMeeting(
-        meetingIdentity: app.meetacy.backend.types.meeting.MeetingIdentity,
+        meetingIdentity: MeetingIdentity,
         accessIdentity: AccessIdentity
     ): ParticipateMeetingResult
 }

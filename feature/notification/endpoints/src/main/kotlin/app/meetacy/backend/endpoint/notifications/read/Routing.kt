@@ -3,24 +3,22 @@ package app.meetacy.backend.endpoint.notifications.read
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serializable.notification.type
 
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.notification.NotificationId
 
 @Serializable
 private data class RequestBody(
-    val token: AccessIdentitySerializable,
-    val lastNotificationId: app.meetacy.backend.types.serializable.notification.NotificationId
+    val token: AccessIdentity,
+    val lastNotificationId: NotificationId
 )
 
 interface ReadNotificationsRepository {
-    suspend fun read(accessIdentity: AccessIdentity, lastNotificationId: app.meetacy.backend.types.notification.NotificationId): Result
+    suspend fun read(accessIdentity: AccessIdentity, lastNotificationId: NotificationId): Result
 
     sealed interface Result {
         data object InvalidIdentity : Result
@@ -31,7 +29,7 @@ interface ReadNotificationsRepository {
 
 fun Route.read(repository: ReadNotificationsRepository) = post("/read") {
     val requestBody = call.receive<RequestBody>()
-    when (repository.read(requestBody.token.type(), requestBody.lastNotificationId.type())) {
+    when (repository.read(requestBody.token, requestBody.lastNotificationId)) {
 
         ReadNotificationsRepository.Result.Success -> call.respondSuccess()
 
