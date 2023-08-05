@@ -2,13 +2,12 @@
 
 package app.meetacy.backend.infrastructure.integrations.meetings.edit
 
-import app.meetacy.backend.database.integration.meetings.edit.DatabaseEditMeetingStorage
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingRepository
 import app.meetacy.backend.infrastructure.database.auth.authRepository
-import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.files.filesRepository
-import app.meetacy.backend.infrastructure.integrations.meetings.create.viewMeetingRepository
-import app.meetacy.backend.infrastructure.integrations.meetings.get.getMeetingViewRepository
+import app.meetacy.backend.infrastructure.database.meetings.edit.editMeetingStorage
+import app.meetacy.backend.infrastructure.database.meetings.view.viewMeetingRepository
+import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
@@ -22,7 +21,7 @@ fun DIBuilder.editMeetingRepository() {
     val editMeetingRepository by singleton<EditMeetingRepository> {
         UsecaseEditMeetingRepository(
             usecase = EditMeetingUsecase(
-                DatabaseEditMeetingStorage(database),
+                editMeetingStorage,
                 authRepository,
                 getMeetingViewRepository,
                 viewMeetingRepository,

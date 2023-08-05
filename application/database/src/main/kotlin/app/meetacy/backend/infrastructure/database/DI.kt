@@ -33,9 +33,9 @@ fun DIBuilder.database() {
     files() // migrated
     friends() // migrated
     invitations() // migrated
-    meetings()
+    meetings() // migrated
     notifications() // migrated
-    tokenGenerator()
+    tokenGenerator() // migrated
     updates()
     users() // migrated
 }

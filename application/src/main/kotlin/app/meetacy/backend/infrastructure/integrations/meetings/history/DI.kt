@@ -1,13 +1,10 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.meetings.history
 
-import app.meetacy.backend.database.integration.meetings.history.list.DatabaseListMeetingsHistoryListStorage
 import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.infrastructure.database.auth.authRepository
-import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.infrastructure.integrations.meetings.get.getMeetingViewRepository
+import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
+import app.meetacy.backend.infrastructure.database.meetings.history.listMeetingsHistoryStorage
 import app.meetacy.backend.infrastructure.integrations.meetings.history.active.listActiveMeetingsRepository
 import app.meetacy.backend.infrastructure.integrations.meetings.history.past.listPastMeetingsRepository
 import app.meetacy.backend.usecase.integration.meetings.history.list.UsecaseListMeetingsHistoryRepository
@@ -33,9 +30,7 @@ fun DIBuilder.meetingsHistoryDependencies() {
         UsecaseListMeetingsHistoryRepository(
             usecase = ListMeetingsHistoryUsecase(
                 authRepository,
-                DatabaseListMeetingsHistoryListStorage(
-                    database
-                ),
+                listMeetingsHistoryStorage,
                 getMeetingViewRepository
             )
         )

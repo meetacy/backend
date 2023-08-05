@@ -2,11 +2,10 @@
 
 package app.meetacy.backend.infrastructure.integrations.meetings.delete
 
-import app.meetacy.backend.database.integration.meetings.delete.DatabaseDeleteMeetingStorage
 import app.meetacy.backend.endpoint.meetings.delete.DeleteMeetingRepository
 import app.meetacy.backend.infrastructure.database.auth.authRepository
-import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.infrastructure.integrations.meetings.get.getMeetingViewRepository
+import app.meetacy.backend.infrastructure.database.meetings.delete.deleteMeetingStorage
+import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 import app.meetacy.di.DI
@@ -21,7 +20,7 @@ fun DIBuilder.deleteMeetingRepository() {
             usecase = DeleteMeetingUsecase(
                 authRepository = authRepository,
                 getMeetingsViewsRepository = getMeetingViewRepository,
-                storage = DatabaseDeleteMeetingStorage(database)
+                storage = deleteMeetingStorage
             )
         )
     }

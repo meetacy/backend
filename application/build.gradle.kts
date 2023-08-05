@@ -83,10 +83,6 @@ deploy {
     }
 }
 
-application {
-    mainClass.set("app.meetacy.backend.MainKt")
-}
-
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.freeCompilerArgs += "-opt-in=kotlinx.serialization.ExperimentalSerializationApi"
 }
