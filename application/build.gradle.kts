@@ -43,7 +43,7 @@ dependencies {
 
     implementation(libs.meetacy.di.core)
     implementation(projects.libs.utf8Checker.usecaseIntegration)
-    implementation(projects.migrations)
+    implementation(projects.application.database.migrations)
     implementation(projects.libs.discordWebhook.ktor)
 
     testImplementation(libs.meetacy.sdk.api.ktor)
