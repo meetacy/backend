@@ -3,14 +3,14 @@
 package app.meetacy.backend.infrastructure.integrations.updates.stream
 
 import app.meetacy.backend.database.integration.updates.stream.StreamUpdatesUsecase
+import app.meetacy.backend.endpoint.updates.stream.StreamUpdatesRepository
+import app.meetacy.backend.infrastructure.database.auth.authRepository
+import app.meetacy.backend.infrastructure.database.updates.updatesMiddleware
+import app.meetacy.backend.infrastructure.integrations.notifications.get.getNotificationViewsRepository
+import app.meetacy.backend.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
-import app.meetacy.backend.endpoint.updates.stream.StreamUpdatesRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
-import app.meetacy.backend.infrastructure.integrations.notifications.add.updatesMiddleware
-import app.meetacy.backend.infrastructure.integrations.notifications.get.getNotificationViewsRepository
-import app.meetacy.backend.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
 
 val DI.streamUpdatesRepository: StreamUpdatesRepository by Dependency
 
