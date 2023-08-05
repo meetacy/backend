@@ -30,7 +30,7 @@ fun DIBuilder.database() {
     // storages
     auth() // migrated
     email() // migrated
-    files()
+    files() // migrated
     friends()
     invitations()
     meetings()
