@@ -31,13 +31,13 @@ fun DIBuilder.database() {
     auth() // migrated
     email() // migrated
     files() // migrated
-    friends()
-    invitations()
+    friends() // migrated
+    invitations() // migrated
     meetings()
     notifications()
     tokenGenerator()
     updates()
-    users()
+    users() // migrated
 }
 
 private fun DIBuilder.singleton() {
