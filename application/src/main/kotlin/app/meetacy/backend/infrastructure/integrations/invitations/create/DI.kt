@@ -2,12 +2,10 @@
 
 package app.meetacy.backend.infrastructure.integrations.invitations.create
 
-import app.meetacy.backend.database.integration.invitations.create.DatabaseCreateInvitationStorage
 import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepository
-import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.auth.authRepository
+import app.meetacy.backend.infrastructure.database.invitations.create.createInvitationStorage
 import app.meetacy.backend.infrastructure.integrations.invitations.getInvitationsViewsRepository
-import app.meetacy.backend.infrastructure.integrations.notifications.add.addNotificationUsecase
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.di.DI
@@ -21,10 +19,10 @@ fun DIBuilder.createInvitationRepository() {
     val createInvitationRepository by singleton<CreateInvitationRepository> {
         UsecaseCreateInvitationRepository(
             usecase = CreateInvitationUsecase(
-                authRepository,
-                DatabaseCreateInvitationStorage(database, addNotificationUsecase),
-                get(),
-                getInvitationsViewsRepository
+                authRepository = authRepository,
+                storage = createInvitationStorage,
+                hashGenerator = get(),
+                invitationsRepository = getInvitationsViewsRepository
             )
         )
     }
