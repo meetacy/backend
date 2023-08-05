@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.users.validate
 
 import app.meetacy.backend.endpoint.users.validate.ValidateUsernameRepository

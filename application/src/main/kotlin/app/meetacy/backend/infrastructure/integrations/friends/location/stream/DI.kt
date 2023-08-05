@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.friends.location.stream
 
 import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies

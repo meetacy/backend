@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.friends.list
 
 import app.meetacy.backend.endpoint.friends.list.ListFriendsRepository

@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.notifications.view
 
 import app.meetacy.backend.database.integration.notifications.DatabaseViewNotificationsUsecaseStorage

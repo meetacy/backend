@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.database.users
 
 import app.meetacy.backend.database.users.UsersStorage

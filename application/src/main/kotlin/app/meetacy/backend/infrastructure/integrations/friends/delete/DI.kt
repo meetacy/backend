@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.friends.delete
 
 import app.meetacy.backend.endpoint.friends.delete.DeleteFriendRepository
