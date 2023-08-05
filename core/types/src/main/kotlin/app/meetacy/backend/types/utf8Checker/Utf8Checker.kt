@@ -1,6 +1,6 @@
-package app.meetacy.backend.usecase.types
+package app.meetacy.backend.types.utf8Checker
 
-interface Utf8Checker{
+interface Utf8Checker {
     fun checkString(string: String): Boolean
 }
 

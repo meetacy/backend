@@ -29,6 +29,7 @@ includeBuild("build-logic")
 
 include(
     "application",
+    "application:endpoints",
     "core",
     "core:integration",
     "core:constants",
@@ -92,9 +93,6 @@ include(
     "feature:user:usecase:integrations",
     "feature:user:endpoints",
     "migrations",
-    "endpoints-new",
-    "utf8-checker",
-    "utf8-checker:usecase",
     "libs",
     "libs:hash-generator",
     "libs:utf8-checker",
