@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.auth.email.confirm
 
 import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmEmailRepository

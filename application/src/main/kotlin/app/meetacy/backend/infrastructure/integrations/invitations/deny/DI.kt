@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.invitations.deny
 
 import app.meetacy.backend.endpoint.invitations.deny.DenyInvitationRepository

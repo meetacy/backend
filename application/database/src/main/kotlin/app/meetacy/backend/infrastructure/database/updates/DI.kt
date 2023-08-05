@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.database.updates
 
 import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware

@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.database.notifications
 
 import app.meetacy.backend.database.notifications.LastReadNotificationsStorage

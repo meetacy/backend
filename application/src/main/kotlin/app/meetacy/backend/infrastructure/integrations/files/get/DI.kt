@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.files.get
 
 import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository

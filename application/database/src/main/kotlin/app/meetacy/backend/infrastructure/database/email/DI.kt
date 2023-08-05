@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.database.email
 
 import app.meetacy.backend.database.email.ConfirmationStorage

@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.auth.email.link
 
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailMailer

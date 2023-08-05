@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.auth.tokenGenerator
 
 import app.meetacy.backend.endpoint.auth.generate.TokenGenerateRepository

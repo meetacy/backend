@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.files
 
 import app.meetacy.backend.endpoint.files.FilesDependencies

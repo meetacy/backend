@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.notifications.list
 
 import app.meetacy.backend.endpoint.notifications.get.ListNotificationsRepository

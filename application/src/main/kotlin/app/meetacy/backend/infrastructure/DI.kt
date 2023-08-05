@@ -1,4 +1,4 @@
-@file:Suppress("NAME_SHADOWING", "UNUSED_VARIABLE")
+@file:Suppress("NAME_SHADOWING")
 
 package app.meetacy.backend.infrastructure
 

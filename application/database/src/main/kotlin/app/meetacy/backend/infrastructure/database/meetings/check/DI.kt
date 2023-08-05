@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.database.meetings.check
 
 import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository

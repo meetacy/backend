@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 package app.meetacy.backend.infrastructure.integrations.meetings.edit
 
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingRepository
