@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(libs.exposedCore)
+    api(libs.exposed.core)
 }

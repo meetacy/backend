@@ -1,3 +1,4 @@
+
 package app.meetacy.backend.endpoint.meetings.create
 
 import app.meetacy.backend.endpoint.ktor.Failure
@@ -6,8 +7,8 @@ import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.meeting.Meeting
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.datetime.Date
+import app.meetacy.backend.types.serializable.file.FileIdentity
 import app.meetacy.backend.types.serializable.location.Location
-import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -21,7 +22,7 @@ data class CreateParam(
     val date: Date,
     val location: Location,
     val visibility: Meeting.Visibility,
-    val avatarId: FileIdentitySerializable?
+    val avatarId: FileIdentity?
 )
 
 sealed interface CreateMeetingResult {

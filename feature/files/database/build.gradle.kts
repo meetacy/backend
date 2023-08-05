@@ -3,9 +3,8 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.files.types)
 
     api(projects.feature.user.database)
 
-    api(libs.exposedCore)
+    api(libs.exposed.core)
 }

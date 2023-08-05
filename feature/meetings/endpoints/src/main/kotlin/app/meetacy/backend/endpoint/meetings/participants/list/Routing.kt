@@ -6,7 +6,7 @@ import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.user.User
 import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 import app.meetacy.backend.types.serializable.amount.Amount
-import app.meetacy.backend.types.serialization.meeting.MeetingIdentitySerializable
+import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
 import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
 import app.meetacy.backend.types.serialization.paging.PagingResultSerializable
 import io.ktor.server.application.*
@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ListMeetingParticipantsParams(
     val token: AccessIdentitySerializable,
-    val meetingId: MeetingIdentitySerializable,
+    val meetingId: MeetingIdentity,
     val amount: Amount,
     val pagingId: PagingIdSerializable? = null
 )

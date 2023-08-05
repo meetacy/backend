@@ -4,26 +4,22 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.notification.Notification
-import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
-import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serializable.amount.type
+import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
 import app.meetacy.backend.types.serialization.paging.serializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
-import app.meetacy.backend.types.serializable.amount.Amount as AmountSerializable
+import app.meetacy.backend.types.serializable.amount.Amount
 
 @Serializable
 private data class RequestBody(
-    val token: AccessIdentitySerializable,
+    val token: AccessIdentity,
     val pagingId: PagingIdSerializable? = null,
-    val amount: AmountSerializable
+    val amount: Amount
 )
 
 interface ListNotificationsRepository {
@@ -44,9 +40,9 @@ fun Route.list(repository: ListNotificationsRepository) = post("/list") {
 
     when (
         val result = repository.getNotifications(
-            accessIdentity = requestBody.token.type(),
+            accessIdentity = requestBody.token,
             pagingId = requestBody.pagingId?.type(),
-            amount = requestBody.amount.type()
+            amount = requestBody.amount
         )
     ) {
 

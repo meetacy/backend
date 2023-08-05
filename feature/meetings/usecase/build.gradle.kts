@@ -3,12 +3,11 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.meetings.types)
 
     api(projects.feature.files.usecase)
     api(projects.feature.user.usecase)
     api(projects.libs.paging.types)
 
-    implementation(libs.coroutines)
+    implementation(libs.kotlinx.coroutines.core)
     api(projects.libs.stdlibExtensions)
 }

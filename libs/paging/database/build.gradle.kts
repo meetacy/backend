@@ -5,5 +5,5 @@ plugins {
 dependencies {
     api(projects.libs.paging.types)
 
-    api(libs.exposedCore)
+    api(libs.exposed.core)
 }

@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(libs.coroutines)
+    api(libs.kotlinx.coroutines.core)
 }

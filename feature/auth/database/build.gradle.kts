@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(projects.core.types)
-    implementation(libs.exposedCore)
+    implementation(libs.exposed.core)
 }

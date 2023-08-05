@@ -9,7 +9,7 @@ dependencies {
 //    implementation(Deps.Libs.Ktor.Client.SerializationJson)
 //    implementation(Deps.Libs.Ktor.Client.Cio)
     implementation(projects.libs.discordWebhook)
-    implementation(libs.ktorClient.core)
-    implementation(libs.ktorClient.contentNegotiation)
-    implementation(libs.ktorClient.serializationJson)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.contentNegotiation)
+    implementation(libs.ktor.client.serializationJson)
 }

@@ -7,5 +7,5 @@ dependencies {
     api(projects.feature.auth.usecase)
     api(projects.core.types)
 
-    api(libs.exposedCore)
+    api(libs.exposed.core)
 }

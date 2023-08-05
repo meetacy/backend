@@ -5,9 +5,9 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.user.User
 import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.file.FileIdentity
 import app.meetacy.backend.types.serializable.optional.Optional
-import app.meetacy.backend.types.serializable.user.UsernameSerializable
-import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
+import app.meetacy.backend.types.serializable.user.Username
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -17,8 +17,8 @@ import kotlinx.serialization.Serializable
 data class EditUserParams(
     val token: AccessIdentity,
     val nickname: Optional<String> = Optional.Undefined,
-    val username: Optional<UsernameSerializable?> = Optional.Undefined,
-    val avatarId: Optional<FileIdentitySerializable?> = Optional.Undefined,
+    val username: Optional<Username?> = Optional.Undefined,
+    val avatarId: Optional<FileIdentity?> = Optional.Undefined,
 )
 
 sealed interface EditUserResult {

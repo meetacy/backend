@@ -2,15 +2,15 @@ package app.meetacy.backend.endpoint.types.meeting
 
 import app.meetacy.backend.endpoint.types.user.User
 import app.meetacy.backend.types.serializable.datetime.Date
+import app.meetacy.backend.types.serializable.file.FileIdentity
 import app.meetacy.backend.types.serializable.location.Location
-import app.meetacy.backend.types.serialization.file.FileIdentitySerializable
-import app.meetacy.backend.types.serialization.meeting.MeetingIdentitySerializable
+import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Meeting(
-    val id: MeetingIdentitySerializable,
+    val id: MeetingIdentity,
     val creator: User,
     val date: Date?,
     val location: Location,
@@ -19,7 +19,7 @@ data class Meeting(
     val participantsCount: Int,
     val previewParticipants: List<User>,
     val isParticipating: Boolean,
-    val avatarIdentity: FileIdentitySerializable?,
+    val avatarIdentity: FileIdentity?,
     val visibility: Visibility
 ) {
     @Serializable

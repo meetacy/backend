@@ -21,6 +21,11 @@ dependencies {
 
     implementation(projects.core.types.integration)
 
+    // implementation(projectsFeatureAuth)
+
+    // implementation(ktorClientSerializationJson)
+    // implementation(ktor.client.serialization.json)
+
     // features
     implementation(projects.feature.auth)
     implementation(projects.core)
@@ -33,22 +38,25 @@ dependencies {
     implementation(projects.feature.updates)
     implementation(projects.feature.user)
 
-    implementation(libs.exposedCore)
-    implementation(libs.exposedJdbc)
-    implementation(libs.postgresJdbc)
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.postgres.jdbc)
 
-    implementation(libs.mdi)
+    implementation(libs.meetacy.di.core)
     implementation(projects.libs.utf8Checker.usecaseIntegration)
     implementation(projects.migrations)
     implementation(projects.libs.discordWebhook.ktor)
 
-    testImplementation(libs.meetacySdk.apiKtor)
-    testImplementation(libs.coroutinesTest)
-    testImplementation(libs.ktorClient.core)
-    testImplementation(libs.ktorClient.cio)
-    testImplementation(libs.ktorClient.logging)
-    testImplementation(libs.ktorClient.mock)
-    testImplementation(libs.serializationJson)
+    testImplementation(libs.meetacy.sdk.api.ktor)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlinx.serialization.json)
+
+    testImplementation(libs.ktor.client.core)
+    testImplementation(libs.ktor.client.cio)
+    testImplementation(libs.ktor.client.logging)
+    testImplementation(libs.ktor.client.mock)
+
     testImplementation(kotlin("test"))
 }
 
@@ -81,6 +89,10 @@ deploy {
         destination = properties?.getProperty("prod.destination") ?: System.getenv("DEPLOY_DESTINATION")
         serviceName = properties?.getProperty("prod.serviceName") ?: System.getenv("DEPLOY_SERVICE_NAME")
     }
+}
+
+application {
+    mainClass = "app.meetacy.backend.MainKt"
 }
 
 tasks.withType<KotlinCompile>().configureEach {

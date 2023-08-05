@@ -3,8 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.exposedCore)
-    api(projects.feature.invitations.types)
+    implementation(libs.exposed.core)
     api(projects.feature.meetings.database)
     api(projects.feature.user.database)
 }

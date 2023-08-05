@@ -3,13 +3,13 @@ package app.meetacy.backend.endpoint.types.notification
 import app.meetacy.backend.endpoint.types.meeting.Meeting
 import app.meetacy.backend.endpoint.types.user.User
 import app.meetacy.backend.types.serializable.datetime.DateTime as DateTimeSerializable
-import app.meetacy.backend.types.serialization.notification.NotificationIdSerializable
+import app.meetacy.backend.types.serializable.notification.NotificationId
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class Notification {
-    abstract val id: NotificationIdSerializable
+    abstract val id: NotificationId
     abstract val isNew: Boolean
     abstract val date: DateTimeSerializable
 
@@ -17,7 +17,7 @@ sealed class Notification {
     @Serializable
     class Subscription(
         override val isNew: Boolean,
-        override val id: NotificationIdSerializable,
+        override val id: NotificationId,
         override val date: DateTimeSerializable,
         val subscriber: User,
     ) : Notification()
@@ -25,7 +25,7 @@ sealed class Notification {
     @SerialName("meeting_invitation")
     @Serializable
     class Invitation(
-        override val id: NotificationIdSerializable,
+        override val id: NotificationId,
         override val isNew: Boolean,
         override val date: DateTimeSerializable,
         val meeting: Meeting,

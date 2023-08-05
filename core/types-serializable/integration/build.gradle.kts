@@ -7,5 +7,5 @@ dependencies {
     api(projects.core.types)
     api(projects.core.typesSerializable)
 
-    implementation(libs.serializationJson)
+    implementation(libs.kotlinx.serialization.json)
 }

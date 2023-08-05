@@ -8,8 +8,8 @@ repositories {
 }
 
 dependencies {
-    api(libs.kotlinGradle)
-    api(libs.serializationGradle)
-    api(libs.sshGradle)
-    api(libs.shadowGradle)
+    api(libs.gradle.kotlin)
+    api(libs.gradle.kotlinx.serialization)
+    api(libs.gradle.ssh)
+    api(libs.gradle.shadow)
 }
