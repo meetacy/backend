@@ -28,16 +28,16 @@ val DI.database: Database by Dependency
 fun DIBuilder.database() {
     singleton()
     // storages
-    auth() // migrated
-    email() // migrated
-    files() // migrated
-    friends() // migrated
-    invitations() // migrated
-    meetings() // migrated
-    notifications() // migrated
-    tokenGenerator() // migrated
+    auth()
+    email()
+    files()
+    friends()
+    invitations()
+    meetings()
+    notifications()
+    tokenGenerator()
     updates()
-    users() // migrated
+    users()
 }
 
 private fun DIBuilder.singleton() {
