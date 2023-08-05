@@ -7,6 +7,7 @@ import app.meetacy.backend.infrastructure.database.friends.friends
 import app.meetacy.backend.infrastructure.database.invitations.invitations
 import app.meetacy.backend.infrastructure.database.meetings.meetings
 import app.meetacy.backend.infrastructure.database.notifications.notifications
+import app.meetacy.backend.infrastructure.database.tokenGenerator.tokenGenerator
 import app.meetacy.backend.infrastructure.database.updates.updates
 import app.meetacy.backend.infrastructure.database.users.users
 import app.meetacy.di.DI
@@ -27,13 +28,14 @@ val DI.database: Database by Dependency
 fun DIBuilder.database() {
     singleton()
     // storages
-    auth()
-    email()
+    auth() // migrated
+    email() // migrated
     files()
     friends()
     invitations()
     meetings()
     notifications()
+    tokenGenerator()
     updates()
     users()
 }

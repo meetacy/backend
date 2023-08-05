@@ -2,9 +2,8 @@
 
 package app.meetacy.backend.infrastructure.integrations.auth.tokenGenerator
 
-import app.meetacy.backend.database.integration.tokenGenerator.DatabaseGenerateTokenStorage
 import app.meetacy.backend.endpoint.auth.generate.TokenGenerateRepository
-import app.meetacy.backend.infrastructure.database.database
+import app.meetacy.backend.infrastructure.database.tokenGenerator.generateTokenStorage
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
 import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
@@ -18,7 +17,7 @@ fun DIBuilder.tokenGenerator() {
     val tokenGenerateRepository by singleton<TokenGenerateRepository> {
         UsecaseTokenGenerateRepository(
             usecase = GenerateTokenUsecase(
-                storage = DatabaseGenerateTokenStorage(hashGenerator = get(), database),
+                storage = generateTokenStorage,
                 tokenGenerator = get(),
                 utf8Checker = DefaultUtf8Checker
             )

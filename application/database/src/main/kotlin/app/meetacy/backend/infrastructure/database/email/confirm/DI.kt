@@ -7,12 +7,10 @@ import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 
-val DI.confirmEmailUsecase: ConfirmEmailUsecase by Dependency
+val DI.confirmEmailStorage: ConfirmEmailUsecase.Storage by Dependency
 
 fun DIBuilder.confirmEmail() {
-    val confirmEmailUsecase by singleton<ConfirmEmailUsecase> {
-        ConfirmEmailUsecase(
-            storage = DatabaseConfirmEmailStorage(database)
-        )
+    val confirmEmailStorage by singleton<ConfirmEmailUsecase.Storage> {
+        DatabaseConfirmEmailStorage(database)
     }
 }
