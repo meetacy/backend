@@ -16,5 +16,4 @@ class CreateUserUsecase(
     interface Storage {
         suspend fun addUser(accessHash: AccessHash, nickname: String): UserId
     }
-
 }

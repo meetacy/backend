@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.notification.usecase)
+    api(projects.feature.notifications.usecase)
 }

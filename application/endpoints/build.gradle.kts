@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     api(projects.feature.invitations.endpoints)
-    api(projects.feature.notification.endpoints)
+    api(projects.feature.notifications.endpoints)
     api(projects.feature.meetings.endpoints)
     api(projects.feature.files.endpoints)
     api(projects.feature.user.endpoints)
