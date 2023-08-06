@@ -4,15 +4,16 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.user.User
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
 import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
 import app.meetacy.backend.types.serialization.paging.PagingResultSerializable
+import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 
 @Serializable
 data class ListMeetingParticipantsParams(
@@ -32,9 +33,9 @@ sealed interface ListParticipantsResult {
     class Success(val paging: PagingResultSerializable<User>) : ListParticipantsResult
 }
 
-fun Route.listMeetingParticipants(
-    repository: ListMeetingParticipantsRepository
-) = post("/list") {
+fun Route.listMeetingParticipants() = post("/list") {
+    val repository: ListMeetingParticipantsRepository by di.getting
+
     val params = call.receive<ListMeetingParticipantsParams>()
 
     when (

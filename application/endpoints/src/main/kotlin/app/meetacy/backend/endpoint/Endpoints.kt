@@ -8,7 +8,6 @@ import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
 import app.meetacy.backend.endpoint.invitations.invitations
 import app.meetacy.backend.endpoint.ktor.exceptions.installExceptionsHandler
 import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
-import app.meetacy.backend.endpoint.meetings.MeetingsDependencies
 import app.meetacy.backend.endpoint.meetings.meetings
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.notifications.notifications
@@ -39,7 +38,6 @@ import kotlinx.serialization.json.Json
 fun prepareEndpoints(
     port: Int,
     friendsDependencies: FriendsDependencies,
-    meetingsDependencies: MeetingsDependencies,
     notificationsDependencies: NotificationsDependencies,
     invitationsDependencies: InvitationsDependencies,
     validateUsernameRepository: ValidateUsernameRepository,
@@ -72,7 +70,7 @@ fun prepareEndpoints(
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
         auth()
         users()
-        meetings(meetingsDependencies)
+        meetings()
         friends(friendsDependencies)
         notifications(notificationsDependencies)
         files()
