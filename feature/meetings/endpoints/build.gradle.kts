@@ -12,4 +12,6 @@ dependencies {
     api(projects.libs.paging.types)
 
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.meetacy.di.core)
+    implementation(libs.meetacy.di.global)
 }

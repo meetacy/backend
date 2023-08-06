@@ -11,6 +11,7 @@ import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.type
 import app.meetacy.backend.types.serialization.paging.serializable
+import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -23,7 +24,9 @@ interface ListMeetingsActiveRepository {
     ): ListMeetingsResult
 }
 
-fun Route.meetingsHistoryActive(repository: ListMeetingsActiveRepository) = get("/active") {
+fun Route.meetingsHistoryActive() = get("/active") {
+    val repository: ListMeetingsActiveRepository by di.getting
+
     val params = call.receive<ListParam>()
 
     when (

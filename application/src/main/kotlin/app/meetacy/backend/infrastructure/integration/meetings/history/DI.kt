@@ -1,6 +1,5 @@
 package app.meetacy.backend.infrastructure.integration.meetings.history
 
-import app.meetacy.backend.endpoint.meetings.history.MeetingsHistoryDependencies
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
@@ -13,19 +12,11 @@ import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 
-val DI.meetingsHistoryDependencies: MeetingsHistoryDependencies by Dependency
 val DI.listMeetingsHistoryRepository: ListMeetingsHistoryRepository by Dependency
 
 fun DIBuilder.meetingsHistoryDependencies() {
     listActiveMeetingsRepository()
     listPastMeetingsRepository()
-    val meetingsHistoryDependencies by singleton<MeetingsHistoryDependencies> {
-        MeetingsHistoryDependencies(
-            listMeetingsHistoryRepository,
-            listActiveMeetingsRepository,
-            listPastMeetingsRepository
-        )
-    }
     val listMeetingsHistoryRepository by singleton<ListMeetingsHistoryRepository> {
         UsecaseListMeetingsHistoryRepository(
             usecase = ListMeetingsHistoryUsecase(

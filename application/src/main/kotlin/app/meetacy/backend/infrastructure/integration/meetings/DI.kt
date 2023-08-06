@@ -25,11 +25,10 @@ fun DIBuilder.meetings() {
     participateMeetingRepository()
     val meetingsDependencies by singleton<MeetingsDependencies> {
         MeetingsDependencies(
-            meetingsHistoryDependencies = meetingsHistoryDependencies,
             meetingsMapDependencies = meetingsMapDependencies,
             meetingParticipantsDependencies = participantDependencies,
-            createMeetingRepository = createMeetingRepository,
             getMeetingRepository = getMeetingRepository,
+            createMeetingRepository = createMeetingRepository,
             participateMeetingRepository = participateMeetingRepository,
             deleteMeetingRepository = deleteMeetingRepository,
             editMeetingRepository = editMeetingRepository
