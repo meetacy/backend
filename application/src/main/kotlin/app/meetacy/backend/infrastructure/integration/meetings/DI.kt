@@ -6,7 +6,7 @@ import app.meetacy.backend.infrastructure.integration.meetings.delete.deleteMeet
 import app.meetacy.backend.infrastructure.integration.meetings.edit.editMeetingRepository
 import app.meetacy.backend.infrastructure.integration.meetings.get.getMeetingRepository
 import app.meetacy.backend.infrastructure.integration.meetings.history.meetingsHistoryDependencies
-import app.meetacy.backend.infrastructure.integration.meetings.map.meetingsMapDependencies
+import app.meetacy.backend.infrastructure.integration.meetings.map.listMeetingsMapRepository
 import app.meetacy.backend.infrastructure.integration.meetings.participate.participantDependencies
 import app.meetacy.backend.infrastructure.integration.meetings.participate.participateMeetingRepository
 import app.meetacy.di.DI
@@ -21,11 +21,10 @@ fun DIBuilder.meetings() {
     editMeetingRepository()
     getMeetingRepository()
     meetingsHistoryDependencies()
-    meetingsMapDependencies()
+    listMeetingsMapRepository()
     participateMeetingRepository()
     val meetingsDependencies by singleton<MeetingsDependencies> {
         MeetingsDependencies(
-            meetingsMapDependencies = meetingsMapDependencies,
             meetingParticipantsDependencies = participantDependencies,
             getMeetingRepository = getMeetingRepository,
             createMeetingRepository = createMeetingRepository,
