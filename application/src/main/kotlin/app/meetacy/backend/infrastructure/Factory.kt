@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.endpoint.prepareEndpoints
-import app.meetacy.backend.infrastructure.integration.auth.authDependencies
 import app.meetacy.backend.infrastructure.integration.files.filesDependencies
 import app.meetacy.backend.infrastructure.integration.friends.friendsDependencies
 import app.meetacy.backend.infrastructure.integration.invitations.invitationsDependencies

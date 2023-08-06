@@ -7,7 +7,7 @@ import app.meetacy.backend.infrastructure.database.meetings.create.createMeeting
 import app.meetacy.backend.infrastructure.database.meetings.create.viewMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
-import app.meetacy.backend.utf8.integration.DefaultUtf8Checker
+import app.meetacy.backend.types.DefaultUtf8Checker
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

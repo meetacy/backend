@@ -8,6 +8,7 @@ import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.optional.map
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.Username
+import app.meetacy.backend.types.utf8Checker.Utf8Checker
 import app.meetacy.backend.usecase.types.*
 
 class EditUserUsecase(
@@ -19,11 +20,11 @@ class EditUserUsecase(
 
     sealed interface Result {
         class Success(val user: UserView) : Result
-        object InvalidAccessIdentity : Result
-        object InvalidUtf8String : Result
-        object NullEditParameters : Result
-        object InvalidAvatarIdentity : Result
-        object UsernameAlreadyOccupied : Result
+        data object InvalidAccessIdentity : Result
+        data object InvalidUtf8String : Result
+        data object NullEditParameters : Result
+        data object InvalidAvatarIdentity : Result
+        data object UsernameAlreadyOccupied : Result
     }
 
     suspend fun editUser(

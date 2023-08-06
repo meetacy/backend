@@ -10,6 +10,7 @@ import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.optional.map
+import app.meetacy.backend.types.utf8Checker.Utf8Checker
 import app.meetacy.backend.usecase.types.*
 
 class EditMeetingUsecase(
