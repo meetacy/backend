@@ -5,6 +5,7 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
+import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -26,7 +27,9 @@ interface DeleteMeetingRepository {
     suspend fun deleteMeeting(deleteMeetingParams: DeleteMeetingParams): DeleteMeetingResult
 }
 
-fun Route.deleteMeeting(deleteMeetingRepository: DeleteMeetingRepository) = post("/delete") {
+fun Route.deleteMeeting() = post("/delete") {
+    val deleteMeetingRepository: DeleteMeetingRepository by di.getting
+
     val params = call.receive<DeleteMeetingParams>()
 
     when (deleteMeetingRepository.deleteMeeting(params)) {

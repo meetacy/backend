@@ -20,12 +20,7 @@ import app.meetacy.backend.usecase.integration.invitations.accept.UsecaseAcceptI
 import app.meetacy.backend.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
 import app.meetacy.backend.usecase.integration.invitations.deny.UsecaseDenyInvitationRepository
-import app.meetacy.backend.usecase.integration.meetings.create.UsecaseCreateMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.delete.UsecaseDeleteMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.edit.UsecaseEditMeetingRepository
-import app.meetacy.backend.usecase.integration.meetings.get.UsecaseGetMeetingRepository
 import app.meetacy.backend.usecase.integration.meetings.participants.list.UsecaseListMeetingParticipantsRepository
-import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseListNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.updates.stream.StreamUpdatesRepository
@@ -35,17 +30,11 @@ import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
 import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
-import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
-import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
-import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
-import app.meetacy.backend.usecase.meetings.get.GetMeetingUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
-import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsViewsUsecase
 import app.meetacy.backend.usecase.users.validate.ValidateUsernameUsecase
-import app.meetacy.backend.types.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
 import app.meetacy.sdk.types.annotation.UnstableApi
@@ -146,46 +135,6 @@ fun runTestServer(
                         storage = mockStorage,
                         getUsersViewsRepository = mockStorage
                     )
-                )
-            ),
-            getMeetingRepository = UsecaseGetMeetingRepository(
-                usecase = GetMeetingUsecase(
-                    authRepository = mockStorage,
-                    getMeetingsViewsRepository = mockStorage
-                )
-            ),
-            createMeetingRepository = UsecaseCreateMeetingRepository(
-                usecase = CreateMeetingUsecase(
-                    hashGenerator = BasicHashGenerator,
-                    storage = mockStorage,
-                    authRepository = mockStorage,
-                    viewMeetingRepository = mockStorage,
-                    utf8Checker = DefaultUtf8Checker,
-                    filesRepository = mockStorage
-                )
-            ),
-            participateMeetingRepository = UsecaseParticipateMeetingRepository(
-                usecase = ParticipateMeetingUsecase(
-                    authRepository = mockStorage,
-                    storage = mockStorage,
-                    getMeetingsViewsRepository = mockStorage
-                )
-            ),
-            deleteMeetingRepository = UsecaseDeleteMeetingRepository(
-                usecase = DeleteMeetingUsecase(
-                    authRepository = mockStorage,
-                    getMeetingsViewsRepository = mockStorage,
-                    storage = mockStorage
-                )
-            ),
-            editMeetingRepository = UsecaseEditMeetingRepository(
-                usecase = EditMeetingUsecase(
-                    storage = mockStorage,
-                    authRepository = mockStorage,
-                    getMeetingsViewsRepository = mockStorage,
-                    viewMeetingsRepository = mockStorage,
-                    filesRepository = mockStorage,
-                    utf8Checker = DefaultUtf8Checker
                 )
             )
         ),
