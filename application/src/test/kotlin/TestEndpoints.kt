@@ -1,6 +1,5 @@
 
 import app.meetacy.backend.database.integration.types.UsecaseGetNotificationsViewsRepository
-import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
@@ -13,12 +12,9 @@ import app.meetacy.backend.endpoint.prepareEndpoints
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.types.BasicHashGenerator
-import app.meetacy.backend.types.file.FileSize
-import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
-import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
@@ -78,7 +74,6 @@ import io.ktor.client.plugins.logging.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import java.io.File
 
 @OptIn(UnstableApi::class)
 val testApi = MeetacyApi(
@@ -256,25 +251,6 @@ fun runTestServer(
                     storage = mockStorage
                 )
             )
-        ),
-        filesDependencies = FilesDependencies(
-            saveFileRepository = UsecaseUploadFileRepository(
-                basePath = File(
-                    /* parent = */ System.getenv("user.dir"),
-                    /* child = */ "files"
-                ).apply {
-                    mkdirs()
-                    deleteOnExit()
-                }.absolutePath,
-                usecase = UploadFileUsecase(
-                    authRepository = mockStorage,
-                    storage = mockStorage,
-                    hashGenerator = BasicHashGenerator
-                ),
-                filesLimit = FileSize(100L * 1024 * 1024),
-                deleteFilesOnExit = true
-            ),
-            getFileRepository = mockStorage
         ),
         usersDependencies = UsersDependencies(
             getUserRepository = UsecaseUserRepository(

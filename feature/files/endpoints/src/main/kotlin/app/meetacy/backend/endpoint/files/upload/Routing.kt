@@ -7,6 +7,7 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.types.serializable.file.serializable
+import app.meetacy.di.global.di
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -27,7 +28,9 @@ interface SaveFileRepository {
     ): UploadFileResult
 }
 
-fun Route.upload(saveFileRepository: SaveFileRepository) = post("/upload") {
+fun Route.upload() = post("/upload") {
+    val saveFileRepository: SaveFileRepository by di.getting
+
     val multipartData = call.receiveMultipart()
 
     var token: AccessIdentity? = null

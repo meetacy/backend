@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.endpoint.prepareEndpoints
-import app.meetacy.backend.infrastructure.integration.files.filesDependencies
 import app.meetacy.backend.infrastructure.integration.friends.friendsDependencies
 import app.meetacy.backend.infrastructure.integration.invitations.invitationsDependencies
 import app.meetacy.backend.infrastructure.integration.meetings.meetingsDependencies
@@ -16,9 +15,8 @@ fun prepareEndpoints(di: DI) = prepareEndpoints(
     friendsDependencies = di.friendsDependencies,
     meetingsDependencies = di.meetingsDependencies,
     notificationsDependencies = di.notificationsDependencies,
-    filesDependencies = di.filesDependencies,
     usersDependencies = di.usersDependencies,
     invitationsDependencies = di.invitationsDependencies,
-    updatesDependencies = di.updatesDependencies,
-    validateUsernameRepository = di.validateUsernameRepository
+    validateUsernameRepository = di.validateUsernameRepository,
+    updatesDependencies = di.updatesDependencies
 )

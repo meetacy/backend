@@ -1,7 +1,6 @@
 package app.meetacy.backend.endpoint
 
 import app.meetacy.backend.endpoint.auth.auth
-import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.files.files
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.friends
@@ -43,7 +42,6 @@ fun prepareEndpoints(
     friendsDependencies: FriendsDependencies,
     meetingsDependencies: MeetingsDependencies,
     notificationsDependencies: NotificationsDependencies,
-    filesDependencies: FilesDependencies,
     usersDependencies: UsersDependencies,
     invitationsDependencies: InvitationsDependencies,
     validateUsernameRepository: ValidateUsernameRepository,
@@ -79,7 +77,7 @@ fun prepareEndpoints(
         meetings(meetingsDependencies)
         friends(friendsDependencies)
         notifications(notificationsDependencies)
-        files(filesDependencies)
+        files()
         invitations(invitationsDependencies)
         validateUsername(validateUsernameRepository)
         updates(updatesDependencies)
