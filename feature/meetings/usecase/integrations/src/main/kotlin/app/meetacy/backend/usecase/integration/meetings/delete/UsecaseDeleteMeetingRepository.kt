@@ -4,6 +4,7 @@ import app.meetacy.backend.endpoint.meetings.delete.DeleteMeetingParams
 import app.meetacy.backend.endpoint.meetings.delete.DeleteMeetingRepository
 import app.meetacy.backend.endpoint.meetings.delete.DeleteMeetingResult
 import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.meeting.type
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 
 class UsecaseDeleteMeetingRepository(
@@ -12,7 +13,7 @@ class UsecaseDeleteMeetingRepository(
     override suspend fun deleteMeeting(
         deleteMeetingParams: DeleteMeetingParams
     ): DeleteMeetingResult = with(deleteMeetingParams) {
-        when (usecase.deleteMeeting(token.type(), meetingId.type())) {
+        when (usecase.deleteMeeting(token.type(), meetingId.type()!!)) {
             DeleteMeetingUsecase.Result.InvalidIdentity ->
                 DeleteMeetingResult.InvalidIdentity
             DeleteMeetingUsecase.Result.MeetingNotFound ->

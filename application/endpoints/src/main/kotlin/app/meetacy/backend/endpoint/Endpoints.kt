@@ -1,6 +1,5 @@
 package app.meetacy.backend.endpoint
 
-import app.meetacy.backend.endpoint.auth.AuthDependencies
 import app.meetacy.backend.endpoint.auth.auth
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.files.files
@@ -41,7 +40,6 @@ import kotlinx.serialization.json.Json
 @OptIn(ExperimentalSerializationApi::class)
 fun prepareEndpoints(
     port: Int,
-    authDependencies: AuthDependencies,
     friendsDependencies: FriendsDependencies,
     meetingsDependencies: MeetingsDependencies,
     notificationsDependencies: NotificationsDependencies,
@@ -76,7 +74,7 @@ fun prepareEndpoints(
             resources()
         }
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
-        auth(authDependencies)
+        auth()
         users(usersDependencies)
         meetings(meetingsDependencies)
         friends(friendsDependencies)

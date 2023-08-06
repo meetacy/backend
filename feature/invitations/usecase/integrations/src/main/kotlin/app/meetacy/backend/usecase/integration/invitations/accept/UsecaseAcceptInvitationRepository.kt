@@ -4,6 +4,7 @@ import app.meetacy.backend.endpoint.invitations.accept.AcceptInvitationRepositor
 import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptParams
 import app.meetacy.backend.endpoint.invitations.accept.InvitationAcceptResponse
 import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.invitation.type
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 
 class UsecaseAcceptInvitationRepository(

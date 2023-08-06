@@ -6,7 +6,9 @@ import app.meetacy.backend.endpoint.meetings.edit.EditMeetingResult
 import app.meetacy.backend.types.optional.map
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.datetime.type
+import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.type
+import app.meetacy.backend.types.serializable.meeting.type
 import app.meetacy.backend.types.serializable.optional.type
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.integration.types.mapToFullMeeting
@@ -22,7 +24,7 @@ class UsecaseEditMeetingRepository(
         when (
             val result = usecase.editMeeting(
                 token.type(),
-                meetingId.type(),
+                meetingId.type()!!,
                 avatarId.type().map { fileIdentity -> fileIdentity?.type() },
                 title,
                 description,

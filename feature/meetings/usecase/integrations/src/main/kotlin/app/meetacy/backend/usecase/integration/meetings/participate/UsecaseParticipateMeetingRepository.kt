@@ -2,8 +2,10 @@ package app.meetacy.backend.usecase.integration.meetings.participate
 
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepository
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingResult
-import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
+import app.meetacy.backend.types.serializable.meeting.type
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 
 class UsecaseParticipateMeetingRepository(
@@ -14,7 +16,7 @@ class UsecaseParticipateMeetingRepository(
         meetingIdentity: MeetingIdentity,
         accessIdentity: AccessIdentity
     ): ParticipateMeetingResult =
-        when (usecase.participateMeeting(meetingIdentity, accessIdentity)) {
+        when (usecase.participateMeeting(meetingIdentity.type()!!, accessIdentity.type())) {
             is ParticipateMeetingUsecase.Result.Success ->
                 ParticipateMeetingResult.Success
 

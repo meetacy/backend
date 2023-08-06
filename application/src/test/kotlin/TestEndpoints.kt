@@ -1,7 +1,5 @@
 
 import app.meetacy.backend.database.integration.types.UsecaseGetNotificationsViewsRepository
-import app.meetacy.backend.endpoint.auth.AuthDependencies
-import app.meetacy.backend.endpoint.auth.email.EmailDependencies
 import app.meetacy.backend.endpoint.files.FilesDependencies
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
@@ -16,16 +14,10 @@ import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.types.BasicHashGenerator
 import app.meetacy.backend.types.file.FileSize
-import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
-import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
-import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
-import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
-import app.meetacy.backend.usecase.integration.email.confirm.UsecaseConfirmEmailRepository
-import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
 import app.meetacy.backend.usecase.integration.files.UsecaseUploadFileRepository
 import app.meetacy.backend.usecase.integration.friends.add.UsecaseAddFriendRepository
 import app.meetacy.backend.usecase.integration.friends.delete.UsecaseDeleteFriendRepository
@@ -133,33 +125,6 @@ fun runTestServer(
 
     val server = prepareEndpoints(
         port = port,
-        authDependencies = AuthDependencies(
-            emailDependencies = EmailDependencies(
-                linkEmailRepository = UsecaseLinkEmailRepository(
-                    usecase = LinkEmailUsecase(
-                        storage = mockStorage,
-                        hashGenerator = BasicHashGenerator,
-                        authRepository = mockStorage,
-                        mailer = object : LinkEmailUsecase.Mailer {
-                            override fun sendEmailOccupiedMessage(email: String) {}
-                            override fun sendConfirmationMessage(email: String, confirmationHash: String) {}
-                        }
-                    )
-                ),
-                confirmEmailRepository = UsecaseConfirmEmailRepository(
-                    usecase = ConfirmEmailUsecase(
-                        storage = mockStorage
-                    )
-                )
-            ),
-            tokenGenerateRepository = UsecaseTokenGenerateRepository(
-                usecase = GenerateTokenUsecase(
-                    storage = mockStorage,
-                    tokenGenerator = BasicHashGenerator,
-                    utf8Checker = DefaultUtf8Checker
-                )
-            )
-        ),
         friendsDependencies = FriendsDependencies(
             friendsLocationDependencies = FriendsLocationDependencies(
                 streamLocationRepository = UsecaseStreamLocationRepository(
@@ -356,6 +321,11 @@ fun runTestServer(
                 ),
             ),
         ),
+        validateUsernameRepository = UsecaseValidateUsernameRepository(
+            usecase = ValidateUsernameUsecase(
+                validateRepository = mockStorage
+            )
+        ),
         updatesDependencies = UpdatesDependencies(
             streamUpdatesRepository = StreamUpdatesRepository(
                 auth = mockStorage,
@@ -366,11 +336,6 @@ fun runTestServer(
                         viewRepository = mockStorage
                     )
                 )
-            )
-        ),
-        validateUsernameRepository = UsecaseValidateUsernameRepository(
-            usecase = ValidateUsernameUsecase(
-                validateRepository = mockStorage
             )
         )
     ).start(wait)

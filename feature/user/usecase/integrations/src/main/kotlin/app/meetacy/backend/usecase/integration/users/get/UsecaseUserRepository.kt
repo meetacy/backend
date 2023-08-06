@@ -4,6 +4,7 @@ import app.meetacy.backend.endpoint.users.get.GetUserParams
 import app.meetacy.backend.endpoint.users.get.GetUserResult
 import app.meetacy.backend.endpoint.users.get.UserRepository
 import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.user.type
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 

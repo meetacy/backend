@@ -4,6 +4,8 @@ import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepositor
 import app.meetacy.backend.endpoint.invitations.create.InvitationCreatingFormSerializable
 import app.meetacy.backend.endpoint.invitations.create.InvitationsCreateResponse
 import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.meeting.type
+import app.meetacy.backend.types.serializable.user.type
 import app.meetacy.backend.usecase.integration.types.toEndpoint
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 
@@ -14,7 +16,7 @@ class UsecaseCreateInvitationRepository(
         with(form) {
             val response = usecase.createInvitation(
                 token = token.type(),
-                meetingIdentity = meetingId.type(),
+                meetingIdentity = meetingId.type()!!,
                 userIdentity = userId.type()
             )
             return when (response) {

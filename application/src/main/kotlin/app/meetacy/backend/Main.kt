@@ -6,6 +6,7 @@ import app.meetacy.backend.infrastructure.di
 import app.meetacy.backend.infrastructure.prepareEndpoints
 import app.meetacy.backend.run.runProductionServer
 import app.meetacy.backend.types.file.FileSize
+import app.meetacy.di.global.GlobalDI
 import java.io.File
 
 suspend fun main() {
@@ -29,6 +30,7 @@ suspend fun main() {
             filesBasePath = filesBasePath,
             filesSizeLimit = FileSize(filesSizeLimit)
         )
+        GlobalDI.init(di)
 
         initDatabase(di.database)
 

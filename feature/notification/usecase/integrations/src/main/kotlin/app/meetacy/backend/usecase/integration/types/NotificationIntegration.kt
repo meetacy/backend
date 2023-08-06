@@ -11,13 +11,13 @@ fun UsecaseNotification.mapToEndpoint(): EndpointNotification =
             id = id.serializable(),
             isNew = isNew,
             meeting = meeting.mapToEndpoint(),
-            date = app.meetacy.backend.types.serializable.serializable(),
+            date = date.serializable(),
             inviter = inviter.mapToEndpoint()
         )
         is UsecaseNotification.Subscription -> EndpointNotification.Subscription(
             id = id.serializable(),
             isNew = isNew,
             subscriber = subscriber.mapToEndpoint(),
-            date = app.meetacy.backend.types.serializable.serializable()
+            date = date.serializable()
         )
     }

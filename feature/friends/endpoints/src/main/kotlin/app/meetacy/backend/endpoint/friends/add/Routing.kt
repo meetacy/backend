@@ -4,11 +4,11 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.backend.types.serializable.user.UserIdentitySerializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import app.meetacy.backend.types.serializable.user.UserIdentity as UserIdentitySerializable
 
 interface AddFriendRepository {
     suspend fun addFriend(addFriendParams: AddFriendParams): AddFriendResult

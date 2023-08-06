@@ -5,6 +5,7 @@ import app.meetacy.backend.endpoint.meetings.participants.list.ListMeetingPartic
 import app.meetacy.backend.endpoint.meetings.participants.list.ListParticipantsResult
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.type
+import app.meetacy.backend.types.serializable.meeting.type
 import app.meetacy.backend.types.serialization.paging.serializable
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
@@ -20,7 +21,7 @@ class UsecaseListMeetingParticipantsRepository(
         when (
             val result = usecase.getMeetingParticipants(
                 accessIdentity = token.type(),
-                meetingIdentity = meetingId.type(),
+                meetingIdentity = meetingId.type()!!,
                 amount = amount.type(),
                 pagingId = pagingId?.type()
             )
