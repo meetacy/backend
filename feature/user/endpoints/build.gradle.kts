@@ -10,4 +10,6 @@ dependencies {
 
     implementation(libs.ktor.server.core)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.meetacy.di.core)
+    implementation(libs.meetacy.di.global)
 }

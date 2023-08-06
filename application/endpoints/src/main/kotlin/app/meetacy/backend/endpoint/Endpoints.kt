@@ -14,7 +14,6 @@ import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.notifications.notifications
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.updates.updates
-import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.endpoint.users.users
 import app.meetacy.backend.endpoint.users.validate.ValidateUsernameRepository
 import app.meetacy.backend.endpoint.users.validate.validateUsername
@@ -42,7 +41,6 @@ fun prepareEndpoints(
     friendsDependencies: FriendsDependencies,
     meetingsDependencies: MeetingsDependencies,
     notificationsDependencies: NotificationsDependencies,
-    usersDependencies: UsersDependencies,
     invitationsDependencies: InvitationsDependencies,
     validateUsernameRepository: ValidateUsernameRepository,
     updatesDependencies: UpdatesDependencies
@@ -73,7 +71,7 @@ fun prepareEndpoints(
         }
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
         auth()
-        users(usersDependencies)
+        users()
         meetings(meetingsDependencies)
         friends(friendsDependencies)
         notifications(notificationsDependencies)

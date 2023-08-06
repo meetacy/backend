@@ -10,7 +10,6 @@ import app.meetacy.backend.endpoint.meetings.participants.ParticipantsDependenci
 import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
 import app.meetacy.backend.endpoint.prepareEndpoints
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
-import app.meetacy.backend.endpoint.users.UsersDependencies
 import app.meetacy.backend.types.BasicHashGenerator
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
@@ -36,8 +35,6 @@ import app.meetacy.backend.usecase.integration.meetings.participate.UsecaseParti
 import app.meetacy.backend.usecase.integration.notifications.get.UsecaseListNotificationsRepository
 import app.meetacy.backend.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.usecase.integration.updates.stream.StreamUpdatesRepository
-import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
-import app.meetacy.backend.usecase.integration.users.get.UsecaseUserRepository
 import app.meetacy.backend.usecase.integration.users.validate.UsecaseValidateUsernameRepository
 import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
@@ -57,8 +54,6 @@ import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecas
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsViewsUsecase
-import app.meetacy.backend.usecase.users.edit.EditUserUsecase
-import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 import app.meetacy.backend.usecase.users.validate.ValidateUsernameUsecase
 import app.meetacy.backend.types.DefaultUtf8Checker
 import app.meetacy.sdk.MeetacyApi
@@ -249,23 +244,6 @@ fun runTestServer(
                 usecase = ReadNotificationsUsecase(
                     authRepository = mockStorage,
                     storage = mockStorage
-                )
-            )
-        ),
-        usersDependencies = UsersDependencies(
-            getUserRepository = UsecaseUserRepository(
-                usecase = GetUserSafeUsecase(
-                    authRepository = mockStorage,
-                    usersViewsRepository = mockStorage
-                )
-            ),
-
-            editUserRepository = UsecaseEditUserRepository(
-                usecase = EditUserUsecase(
-                    storage = mockStorage,
-                    authRepository = mockStorage,
-                    filesRepository = mockStorage,
-                    utf8Checker = DefaultUtf8Checker
                 )
             )
         ),
