@@ -9,13 +9,13 @@ import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 
 val DI.linkEmailStorage: LinkEmailUsecase.Storage by Dependency
-val DI.linkEmailMailer: DatabaseLinkEmailMailer by Dependency
+val DI.linkEmailMailer: LinkEmailUsecase.Mailer by Dependency
 
 fun DIBuilder.linkEmail() {
     val linkEmailUsecase by singleton<LinkEmailUsecase.Storage> {
         DatabaseLinkEmailStorage(database)
     }
-    val linkEmailMailer by singleton<DatabaseLinkEmailMailer> {
+    val linkEmailMailer by singleton<LinkEmailUsecase.Mailer> {
         DatabaseLinkEmailMailer
     }
 }
