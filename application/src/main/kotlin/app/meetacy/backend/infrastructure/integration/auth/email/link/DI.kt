@@ -1,7 +1,7 @@
 package app.meetacy.backend.infrastructure.integration.auth.email.link
 
 import app.meetacy.backend.database.integration.email.DatabaseLinkEmailMailer
-import app.meetacy.backend.endpoint.auth.email.link.LinkEmailRepository
+import app.meetacy.backend.feature.email.endpoints.link.LinkEmailRepository
 import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.email.link.linkEmailStorage
 import app.meetacy.backend.usecase.email.LinkEmailUsecase

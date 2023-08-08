@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.integration.email.confirm
 
-import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmEmailRepository
-import app.meetacy.backend.endpoint.auth.email.confirm.ConfirmHashResult
+import app.meetacy.backend.feature.email.endpoints.confirm.ConfirmEmailRepository
+import app.meetacy.backend.feature.email.endpoints.confirm.ConfirmHashResult
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 
 class UsecaseConfirmEmailRepository(

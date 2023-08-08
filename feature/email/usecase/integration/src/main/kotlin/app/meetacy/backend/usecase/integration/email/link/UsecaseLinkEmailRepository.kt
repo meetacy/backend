@@ -2,8 +2,8 @@ package app.meetacy.backend.usecase.integration.email.link
 
 import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.endpoint.auth.email.link.ConfirmHashResult
-import app.meetacy.backend.endpoint.auth.email.link.LinkEmailRepository
+import app.meetacy.backend.feature.email.endpoints.link.ConfirmHashResult
+import app.meetacy.backend.feature.email.endpoints.link.LinkEmailRepository
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
 
 class UsecaseLinkEmailRepository(private val usecase: LinkEmailUsecase) : LinkEmailRepository {
