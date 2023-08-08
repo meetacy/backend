@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.auth.email.link
+package app.meetacy.backend.feature.email.endpoints.link
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
@@ -25,9 +25,6 @@ interface LinkEmailRepository {
     suspend fun linkEmail(token: AccessIdentity, email: String): ConfirmHashResult
 }
 
-/**
- * TODO: check for *email* format
- */
 fun Route.linkEmail() {
     val repository: LinkEmailRepository by di.getting
 

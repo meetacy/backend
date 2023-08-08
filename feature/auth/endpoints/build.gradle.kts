@@ -4,10 +4,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.typesSerializable)
-    api(projects.libs.ktorExtensions)
-    implementation(libs.ktor.server.core)
-    implementation(libs.kotlinx.serialization.json)
-    api(libs.meetacy.di.global)
-    implementation(libs.meetacy.di.core)
+    implementation(projects.core.endpoints)
+    implementation(projects.feature.email.endpoints)
 }

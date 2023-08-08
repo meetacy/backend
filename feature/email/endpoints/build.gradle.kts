@@ -4,8 +4,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.libs.ktorExtensions)
-
-    implementation(libs.ktor.server.core)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(projects.core.endpoints)
 }

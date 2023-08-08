@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.auth.email.confirm
+package app.meetacy.backend.feature.email.endpoints.confirm
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure

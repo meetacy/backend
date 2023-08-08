@@ -4,8 +4,6 @@ import app.meetacy.backend.endpoint.users.edit.editUser
 import app.meetacy.backend.endpoint.users.get.getUser
 import io.ktor.server.routing.*
 
-class UsersDependencies
-
 fun Route.users() = route("/users") {
     getUser()
     editUser()
