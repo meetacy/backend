@@ -3,7 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(libs.exposed.core)
-    api(projects.libs.exposedExtensions)
     api(projects.core.types)
 }

@@ -9,3 +9,8 @@ dependencyResolutionManagement {
         }
     }
 }
+
+val scripts = listOf(
+    "feature-gen"
+)
+include(scripts.map { "scripts:$it" })

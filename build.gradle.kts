@@ -1,0 +1,3 @@
+plugins {
+    id("create-feature")
+}
