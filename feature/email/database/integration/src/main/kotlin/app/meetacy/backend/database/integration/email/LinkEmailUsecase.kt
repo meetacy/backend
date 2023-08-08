@@ -1,8 +1,8 @@
 package app.meetacy.backend.database.integration.email
 
-import app.meetacy.backend.database.email.ConfirmationStorage
-import app.meetacy.backend.database.email.DatabaseEmailSender
-import app.meetacy.backend.database.email.DatabaseEmailText
+import app.meetacy.backend.feature.email.database.ConfirmationStorage
+import app.meetacy.backend.feature.email.database.DatabaseEmailSender
+import app.meetacy.backend.feature.email.database.DatabaseEmailText
 import app.meetacy.backend.database.users.UsersStorage
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.email.LinkEmailUsecase

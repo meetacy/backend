@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.integration.auth
 
-import app.meetacy.backend.endpoint.auth.generate.TokenGenerateRepository
-import app.meetacy.backend.endpoint.auth.generate.TokenGenerateResult
+import app.meetacy.backend.feature.auth.endpoints.generate.TokenGenerateRepository
+import app.meetacy.backend.feature.auth.endpoints.generate.TokenGenerateResult
 import app.meetacy.backend.types.serializable.access.serializable
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 

@@ -1,4 +1,4 @@
-package app.meetacy.backend.database.email
+package app.meetacy.backend.feature.email.database
 
 object DatabaseEmailSender {
     fun sendEmail(

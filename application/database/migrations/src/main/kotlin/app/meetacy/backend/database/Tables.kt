@@ -1,6 +1,6 @@
 package app.meetacy.backend.database
 
-import app.meetacy.backend.database.auth.TokensTable
+import app.meetacy.backend.feature.auth.database.TokensTable
 import org.jetbrains.exposed.sql.Table
 
 val tables: List<Table> = listOf(

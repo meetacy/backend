@@ -1,4 +1,4 @@
-package app.meetacy.backend.endpoint.auth.generate
+package app.meetacy.backend.feature.auth.endpoints.generate
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
