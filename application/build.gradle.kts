@@ -97,7 +97,3 @@ application {
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.freeCompilerArgs += "-opt-in=kotlinx.serialization.ExperimentalSerializationApi"
 }
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.languageVersion = "2.0"
-}
