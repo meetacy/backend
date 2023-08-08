@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.feature.auth.usecase.integration)
     implementation(projects.feature.email.usecase.integration)
     implementation(projects.feature.files.usecase.integration)
+    implementation(projects.feature.files.database.integration)
     implementation(projects.feature.friends.usecase.integration)
     implementation(projects.feature.invitations.usecase.integration)
     implementation(projects.feature.meetings.usecase.integration)
