@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.integration.users.edit
 
-import app.meetacy.backend.database.integration.types.mapToUsecase
+import app.meetacy.backend.feature.auth.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.users.UsersStorage
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.optional.Optional
