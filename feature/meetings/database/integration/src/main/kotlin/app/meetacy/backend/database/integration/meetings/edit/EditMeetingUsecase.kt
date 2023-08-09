@@ -1,7 +1,7 @@
 package app.meetacy.backend.database.integration.meetings.edit
 
-import app.meetacy.backend.database.integration.types.mapToDatabase
-import app.meetacy.backend.database.integration.types.mapToUsecase
+import app.meetacy.backend.feature.auth.database.integration.types.mapToDatabase
+import app.meetacy.backend.feature.auth.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.meetings.MeetingsStorage
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
