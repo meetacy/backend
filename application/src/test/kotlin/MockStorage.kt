@@ -11,6 +11,7 @@ import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.serializable.file.FileIdentity as FileIdentitySerializable
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.location.Location
@@ -23,6 +24,8 @@ import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.paging.PagingValue
 import app.meetacy.backend.types.paging.pagingResultLong
+import app.meetacy.backend.types.serializable.file.serializable
+import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
@@ -787,5 +790,16 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         invitationIds: List<InvitationId>
     ): List<FullInvitation?> {
         return invitationIds.map { id -> getInvitationOrNull(id) }
+    }
+
+    override suspend fun getFile(fileId: FileIdentitySerializable): GetFileResult {
+        val file = files.firstOrNull { it.identity == fileId.type() }
+            ?: return GetFileResult.InvalidFileIdentity
+
+        return GetFileResult.Success(
+            file = File(baseDir, "${fileId.type()}"),
+            fileName = file.fileName,
+            fileSize = file.size?.serializable() ?: return GetFileResult.InvalidFileIdentity
+        )
     }
 }
