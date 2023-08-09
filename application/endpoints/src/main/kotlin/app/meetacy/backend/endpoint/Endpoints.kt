@@ -1,6 +1,6 @@
 package app.meetacy.backend.endpoint
 
-import app.meetacy.backend.endpoint.auth.auth
+import app.meetacy.backend.feature.auth.endpoints.auth
 import app.meetacy.backend.endpoint.files.files
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.friends

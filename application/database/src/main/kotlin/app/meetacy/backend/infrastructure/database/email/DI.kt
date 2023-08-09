@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.database.email
 
-import app.meetacy.backend.database.email.ConfirmationStorage
+import app.meetacy.backend.feature.email.database.ConfirmationStorage
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.email.confirm.confirmEmail
 import app.meetacy.backend.infrastructure.database.email.link.linkEmail
