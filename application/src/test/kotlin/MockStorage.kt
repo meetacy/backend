@@ -253,16 +253,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         /* child = */ "files"
     ).apply { mkdirs() }.absolutePath
 
-    override suspend fun getFile(fileId: FileIdentity): GetFileResult {
-        val file = files.firstOrNull { it.identity == fileId }
-            ?: return GetFileResult.InvalidFileIdentity
 
-        return GetFileResult.Success(
-            file = File(baseDir, "${fileId.id.long}"),
-            fileName = file.fileName,
-            fileSize = file.size ?: return GetFileResult.InvalidFileIdentity
-        )
-    }
 
     private val meetings = mutableListOf<FullMeeting>()
 
@@ -787,5 +778,9 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         invitationIds: List<InvitationId>
     ): List<FullInvitation?> {
         return invitationIds.map { id -> getInvitationOrNull(id) }
+    }
+
+    override suspend fun getFile(fileId: app.meetacy.backend.types.serializable.file.FileIdentity): GetFileResult {
+        TODO("Not yet implemented")
     }
 }

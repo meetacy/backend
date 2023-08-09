@@ -1,10 +1,10 @@
 @file:Suppress("PrivatePropertyName")
 
-package app.meetacy.backend.database.auth
+package app.meetacy.backend.feature.auth.database
 
 import app.meetacy.backend.constants.HASH_LENGTH
-import app.meetacy.backend.database.auth.TokensTable.ACCESS_TOKEN
-import app.meetacy.backend.database.auth.TokensTable.OWNER_ID
+import app.meetacy.backend.feature.auth.database.TokensTable.ACCESS_TOKEN
+import app.meetacy.backend.feature.auth.database.TokensTable.OWNER_ID
 import app.meetacy.backend.types.access.AccessIdentity
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*

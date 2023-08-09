@@ -1,12 +1,12 @@
 @file:Suppress("PrivatePropertyName")
 
-package app.meetacy.backend.database.email
+package app.meetacy.backend.feature.email.database
 
 import app.meetacy.backend.constants.EMAIL_MAX_LIMIT
 import app.meetacy.backend.constants.HASH_LENGTH
-import app.meetacy.backend.database.email.ConfirmationTable.CONFIRM_HASH
-import app.meetacy.backend.database.email.ConfirmationTable.EMAIL
-import app.meetacy.backend.database.email.ConfirmationTable.OWNER_ID
+import app.meetacy.backend.feature.email.database.ConfirmationTable.CONFIRM_HASH
+import app.meetacy.backend.feature.email.database.ConfirmationTable.EMAIL
+import app.meetacy.backend.feature.email.database.ConfirmationTable.OWNER_ID
 import app.meetacy.backend.types.user.UserId
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
