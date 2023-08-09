@@ -1,5 +1,5 @@
 
-import app.meetacy.backend.feature.auth.database.integration.types.UsecaseGetNotificationsViewsRepository
+import app.meetacy.backend.database.integration.types.UsecaseGetNotificationsViewsRepository
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.location.FriendsLocationDependencies
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies

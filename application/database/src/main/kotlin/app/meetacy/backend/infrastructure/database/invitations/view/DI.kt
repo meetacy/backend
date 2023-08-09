@@ -1,8 +1,8 @@
 package app.meetacy.backend.infrastructure.database.invitations.view
 
 import app.meetacy.backend.database.integration.invitations.get.DatabaseGetInvitationsViewsUsecaseInvitationsProvider
-import app.meetacy.backend.feature.auth.database.integration.types.UsecaseGetInvitationsViewsRepository
-import app.meetacy.backend.feature.auth.database.integration.types.UsecaseViewInvitationsRepository
+import app.meetacy.backend.database.integration.types.UsecaseGetInvitationsViewsRepository
+import app.meetacy.backend.database.integration.types.UsecaseViewInvitationsRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository

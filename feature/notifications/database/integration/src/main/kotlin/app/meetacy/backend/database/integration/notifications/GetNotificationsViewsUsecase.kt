@@ -1,7 +1,7 @@
 package app.meetacy.backend.database.integration.notifications
 
-import app.meetacy.backend.feature.auth.database.integration.types.ViewNotificationsRepository
-import app.meetacy.backend.feature.auth.database.integration.types.mapToUsecase
+import app.meetacy.backend.database.integration.types.ViewNotificationsRepository
+import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.notifications.NotificationsStorage
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsViewsUsecase

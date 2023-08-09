@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.integration.invitations.accept
 
-import app.meetacy.backend.feature.auth.database.integration.types.mapToUsecase
+import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.invitations.InvitationsStorage
 import app.meetacy.backend.database.meetings.MeetingsStorage
 import app.meetacy.backend.database.meetings.ParticipantsStorage

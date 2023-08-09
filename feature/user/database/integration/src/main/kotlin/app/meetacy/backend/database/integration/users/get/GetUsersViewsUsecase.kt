@@ -1,7 +1,7 @@
 package app.meetacy.backend.database.integration.users.get
 
-import app.meetacy.backend.feature.auth.database.integration.types.DatabaseFilesRepository
-import app.meetacy.backend.feature.auth.database.integration.types.mapToUsecase
+import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
+import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.users.UsersStorage
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.FullUser

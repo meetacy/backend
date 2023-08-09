@@ -1,7 +1,7 @@
 package app.meetacy.backend.infrastructure.database.files
 
 import app.meetacy.backend.database.files.FilesStorage
-import app.meetacy.backend.feature.auth.database.integration.types.DatabaseFilesRepository
+import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.files.upload.uploadFile
 import app.meetacy.backend.usecase.types.FilesRepository

@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.integration.invitations.deny
 
-import app.meetacy.backend.feature.auth.database.integration.types.mapToUsecase
+import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.invitations.InvitationsStorage
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase

@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.integration.updates.stream
 
-import app.meetacy.backend.feature.auth.database.integration.types.mapToUsecase
+import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.types.DatabaseUpdate
 import app.meetacy.backend.database.updates.UpdatesStorage
 import app.meetacy.backend.types.notification.NotificationId

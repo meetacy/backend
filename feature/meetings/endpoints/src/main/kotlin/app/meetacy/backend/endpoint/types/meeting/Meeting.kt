@@ -30,4 +30,3 @@ data class Meeting(
         Private
     }
 }
-

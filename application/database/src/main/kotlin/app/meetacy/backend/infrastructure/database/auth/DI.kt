@@ -1,7 +1,7 @@
 package app.meetacy.backend.infrastructure.database.auth
 
-import app.meetacy.backend.feature.auth.database.TokensStorage
-import app.meetacy.backend.feature.auth.database.integration.types.DatabaseAuthRepository
+import app.meetacy.backend.database.auth.TokensStorage
+import app.meetacy.backend.database.integration.types.DatabaseAuthRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.di.DI

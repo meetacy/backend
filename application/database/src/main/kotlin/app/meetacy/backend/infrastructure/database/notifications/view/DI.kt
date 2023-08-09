@@ -1,7 +1,7 @@
 package app.meetacy.backend.infrastructure.database.notifications.view
 
 import app.meetacy.backend.database.integration.notifications.DatabaseViewNotificationsUsecaseStorage
-import app.meetacy.backend.feature.auth.database.integration.types.UsecaseViewNotificationsRepository
+import app.meetacy.backend.database.integration.types.UsecaseViewNotificationsRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository
