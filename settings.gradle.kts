@@ -35,18 +35,20 @@ include(
     "application:database:migrations"
 )
 
-include(
-    "core",
-    "core:constants",
-    "core:database",
-    "core:endpoints",
-    "core:integration",
-    "core:types",
-    "core:types:integration",
-    "core:types-serializable",
-    "core:types-serializable:integration",
-    "core:usecase"
+val core = listOf(
+    "constants",
+    "endpoints",
+    "endpoints:integration",
+    "usecase",
+    "usecase:integration",
+    "database",
+    "integration",
+    "types",
+    "types:integration",
+    "types:serializable",
+    "types:serializable:integration",
 )
+include(core.map { "core:$it" })
 
 val libraries = listOf(
     "hash-generator",
@@ -55,8 +57,9 @@ val libraries = listOf(
     "discord-webhook",
     "discord-webhook:ktor",
     "paging",
-    "paging:types",
     "paging:database",
+    "paging:serializable",
+    "paging:serializable:integration",
     "exposed-extensions",
     "ktor-extensions",
 )

@@ -4,6 +4,8 @@ import app.meetacy.backend.stdlib.flow.chunked
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.amount.amount
+import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meters.kilometers

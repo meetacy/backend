@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.libs.paging.types)
-
+    api(projects.libs.paging)
     api(libs.exposed.core)
 }

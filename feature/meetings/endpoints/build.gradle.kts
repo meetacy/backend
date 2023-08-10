@@ -4,12 +4,12 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.typesSerializable.integration)
+    api(projects.core.types.serializable.integration)
     api(projects.feature.user.endpoints)
 
     api(projects.libs.ktorExtensions)
 
-    api(projects.libs.paging.types)
+    api(projects.libs.paging)
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.meetacy.di.core)

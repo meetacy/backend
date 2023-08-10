@@ -1,11 +1,11 @@
 package app.meetacy.backend.usecase.friends.add
 
 import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
-import app.meetacy.backend.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.GetUsersViewsRepository
-import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 
 class AddFriendUsecase(

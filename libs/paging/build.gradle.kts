@@ -3,6 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.libs.paging.types)
-    api(projects.libs.paging.database)
+    implementation(projects.core.types)
 }

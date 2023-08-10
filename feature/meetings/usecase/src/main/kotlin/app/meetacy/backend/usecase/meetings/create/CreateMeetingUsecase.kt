@@ -2,6 +2,8 @@ package app.meetacy.backend.usecase.meetings.create
 
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity

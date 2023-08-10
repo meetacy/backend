@@ -3,6 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.user.usecase)
-    api(projects.feature.meetings.usecase)
+    implementation(projects.core.usecase)
 }

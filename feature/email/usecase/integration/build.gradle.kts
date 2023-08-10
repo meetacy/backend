@@ -4,8 +4,8 @@ plugins {
 
 // usecase and endpoints dependencies
 dependencies {
-    api(projects.core.typesSerializable.integration)
-
-    api(projects.feature.email.usecase)
-    api(projects.feature.email.endpoints)
+    implementation(projects.core.integration)
+    implementation(projects.core.types.serializable.integration)
+    implementation(projects.feature.email.usecase)
+    implementation(projects.feature.email.endpoints)
 }

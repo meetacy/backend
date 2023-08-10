@@ -7,6 +7,7 @@ import app.meetacy.backend.types.BasicHashGenerator
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.file.FileId
@@ -23,6 +24,8 @@ import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.paging.PagingValue
 import app.meetacy.backend.types.paging.pagingResultLong
+import app.meetacy.backend.types.serializable.file.serializable
+import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
@@ -69,6 +72,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import java.io.File
+import app.meetacy.backend.types.serializable.file.FileIdentity as FileIdentitySerializable
 
 class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, AuthRepository,
     ConfirmEmailUsecase.Storage, GetUsersViewsRepository, GetUsersViewsUsecase.Storage,
@@ -253,7 +257,18 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         /* child = */ "files"
     ).apply { mkdirs() }.absolutePath
 
+    override suspend fun getFile(fileId: FileIdentitySerializable): GetFileResult {
+        val fileIdType = fileId.type()
 
+        val file = files.firstOrNull { it.identity == fileIdType }
+            ?: return GetFileResult.InvalidFileIdentity
+
+        return GetFileResult.Success(
+            file = File(baseDir, "${fileIdType.id.long}"),
+            fileName = file.fileName,
+            fileSize = file.size?.serializable() ?: return GetFileResult.InvalidFileIdentity
+        )
+    }
 
     private val meetings = mutableListOf<FullMeeting>()
 
@@ -778,9 +793,5 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
         invitationIds: List<InvitationId>
     ): List<FullInvitation?> {
         return invitationIds.map { id -> getInvitationOrNull(id) }
-    }
-
-    override suspend fun getFile(fileId: app.meetacy.backend.types.serializable.file.FileIdentity): GetFileResult {
-        TODO("Not yet implemented")
     }
 }

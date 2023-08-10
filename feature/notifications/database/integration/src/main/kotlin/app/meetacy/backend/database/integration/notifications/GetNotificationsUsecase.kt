@@ -11,7 +11,7 @@ import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
-import app.meetacy.backend.usecase.types.AuthRepository
+import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.usecase.types.FullNotification
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
 import app.meetacy.backend.usecase.types.GetUsersViewsRepository

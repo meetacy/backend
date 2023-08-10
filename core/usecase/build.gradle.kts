@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     api(projects.core.types)
+    api(projects.libs.paging)
 }

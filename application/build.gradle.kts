@@ -28,7 +28,7 @@ dependencies {
     // features
     implementation(projects.feature.auth)
     implementation(projects.core)
-    implementation(projects.feature.email)
+    implementation(projects.feature.email.endpoints)
     implementation(projects.feature.files)
     implementation(projects.feature.friends)
     implementation(projects.feature.invitations)
@@ -48,6 +48,7 @@ dependencies {
 
     testImplementation(libs.meetacy.sdk.api.ktor)
 
+    testImplementation(projects.feature.email.usecase)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)
 

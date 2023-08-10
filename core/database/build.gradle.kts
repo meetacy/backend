@@ -3,7 +3,9 @@ plugins {
 }
 
 dependencies {
-    api(libs.exposed.core)
-    api(projects.libs.exposedExtensions)
     api(projects.core.types)
+    api(projects.libs.paging)
+    api(libs.exposed.core)
+    api(libs.kotlinx.coroutines.core)
+    api(projects.libs.exposedExtensions)
 }

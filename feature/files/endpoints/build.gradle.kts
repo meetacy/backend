@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     api(projects.libs.ktorExtensions)
-    api(projects.core.typesSerializable.integration)
+    api(projects.core.types.serializable.integration)
     implementation(projects.core.types)
 
     implementation(libs.ktor.server.core)

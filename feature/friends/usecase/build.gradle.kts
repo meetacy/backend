@@ -5,5 +5,5 @@ plugins {
 dependencies {
     api(projects.feature.user.usecase)
     api(projects.libs.stdlibExtensions)
-    api(projects.libs.paging.types)
+    api(projects.libs.paging)
 }

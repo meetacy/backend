@@ -2,6 +2,8 @@ package app.meetacy.backend.usecase.friends.list
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId

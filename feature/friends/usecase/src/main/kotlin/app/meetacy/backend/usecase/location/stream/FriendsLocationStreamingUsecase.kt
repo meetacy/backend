@@ -3,6 +3,8 @@ package app.meetacy.backend.usecase.location.stream
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.amount.amount
+import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.user.UserId

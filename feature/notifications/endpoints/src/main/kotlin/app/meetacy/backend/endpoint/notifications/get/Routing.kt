@@ -7,8 +7,8 @@ import app.meetacy.backend.endpoint.types.notification.Notification
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
-import app.meetacy.backend.types.serialization.paging.serializable
+import app.meetacy.backend.types.paging.serializable.PagingIdSerializable
+import app.meetacy.backend.types.paging.serializable.serializable
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*

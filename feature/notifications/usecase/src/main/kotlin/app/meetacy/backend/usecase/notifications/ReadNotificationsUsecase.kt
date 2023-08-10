@@ -3,8 +3,8 @@ package app.meetacy.backend.usecase.notifications
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.authorizeWithUserId
+import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.auth.authorizeWithUserId
 
 class ReadNotificationsUsecase(
     private val authRepository: AuthRepository,

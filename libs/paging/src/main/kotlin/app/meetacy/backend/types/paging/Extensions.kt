@@ -2,6 +2,7 @@ package app.meetacy.backend.types.paging
 
 import app.meetacy.backend.types.amount.Amount
 
+
 inline fun <T> List<T>.pagingId(amount: Amount, getter: (T) -> PagingId): PagingId? {
     return if (amount.int == size) getter(last()) else null
 }

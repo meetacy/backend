@@ -5,7 +5,8 @@ plugins {
 
 dependencies {
     api(projects.core.types)
-    api(projects.core.typesSerializable)
+    api(projects.libs.paging)
+    api(projects.core.types.serializable)
 
     implementation(libs.kotlinx.serialization.json)
 }

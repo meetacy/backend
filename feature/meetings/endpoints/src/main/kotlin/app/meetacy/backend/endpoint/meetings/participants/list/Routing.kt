@@ -6,8 +6,8 @@ import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.user.User
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
-import app.meetacy.backend.types.serialization.paging.PagingIdSerializable
-import app.meetacy.backend.types.serialization.paging.PagingResultSerializable
+import app.meetacy.backend.types.paging.serializable.PagingIdSerializable
+import app.meetacy.backend.types.paging.serializable.PagingResultSerializable
 import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*

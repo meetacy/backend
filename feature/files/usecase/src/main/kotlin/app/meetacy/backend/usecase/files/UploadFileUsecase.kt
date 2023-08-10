@@ -3,12 +3,12 @@ package app.meetacy.backend.usecase.files
 import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class UploadFileUsecase(
     private val authRepository: AuthRepository,

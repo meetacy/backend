@@ -6,7 +6,7 @@ import app.meetacy.backend.endpoint.meetings.participants.list.ListParticipantsR
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.type
 import app.meetacy.backend.types.serializable.meeting.type
-import app.meetacy.backend.types.serialization.paging.serializable
+import app.meetacy.backend.types.paging.serializable.serializable
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase.Result

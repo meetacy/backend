@@ -10,7 +10,7 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.type
-import app.meetacy.backend.types.serialization.paging.serializable
+import app.meetacy.backend.types.paging.serializable.serializable
 import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*

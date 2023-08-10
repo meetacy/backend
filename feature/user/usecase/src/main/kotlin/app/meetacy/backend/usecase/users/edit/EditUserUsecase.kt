@@ -1,6 +1,8 @@
 package app.meetacy.backend.usecase.users.edit
 
 import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.optional.Optional

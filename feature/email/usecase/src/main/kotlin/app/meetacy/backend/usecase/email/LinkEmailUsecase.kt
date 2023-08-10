@@ -2,9 +2,9 @@ package app.meetacy.backend.usecase.email
 
 import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.authorizeWithUserId
 
 class LinkEmailUsecase(
     private val storage: Storage,
@@ -13,8 +13,8 @@ class LinkEmailUsecase(
     private val authRepository: AuthRepository
 ) {
     sealed interface LinkResult {
-        object Success : LinkResult
-        object TokenInvalid : LinkResult
+        data object Success : LinkResult
+        data object TokenInvalid : LinkResult
     }
 
     suspend fun linkEmail(email: String, token: AccessIdentity): LinkResult {
