@@ -1,9 +1,9 @@
 package app.meetacy.backend.feature.auth.database.integration.types
 
 import app.meetacy.backend.database.files.FilesStorage
+import app.meetacy.backend.feature.auth.usecase.types.FilesRepository
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
-import app.meetacy.backend.usecase.types.FilesRepository
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseFilesRepository(db: Database) : FilesRepository {

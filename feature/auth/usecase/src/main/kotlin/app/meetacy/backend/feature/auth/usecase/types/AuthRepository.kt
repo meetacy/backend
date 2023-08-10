@@ -1,0 +1,23 @@
+package app.meetacy.backend.feature.auth.usecase.types
+
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.user.UserId
+
+interface AuthRepository {
+    suspend fun authorize(accessIdentity: AccessIdentity): Boolean
+}
+
+suspend inline fun app.meetacy.backend.feature.auth.usecase.types.AuthRepository.authorize(
+    accessIdentity: AccessIdentity,
+    fallback: () -> Nothing
+) {
+    if(!authorize(accessIdentity)) fallback()
+}
+
+suspend inline fun app.meetacy.backend.feature.auth.usecase.types.AuthRepository.authorizeWithUserId(
+    accessIdentity: AccessIdentity,
+    fallback: () -> Nothing
+): UserId {
+    authorize(accessIdentity, fallback)
+    return accessIdentity.userId
+}

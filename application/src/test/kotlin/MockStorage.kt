@@ -30,7 +30,7 @@ import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.types.user.Username
-import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
+import app.meetacy.backend.feature.auth.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.usecase.files.UploadFileUsecase
@@ -73,7 +73,8 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import java.io.File
 
-class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, AuthRepository,
+class MockStorage : app.meetacy.backend.feature.auth.usecase.auth.GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage,
+    app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
     ConfirmEmailUsecase.Storage, GetUsersViewsRepository, GetUsersViewsUsecase.Storage,
     GetUsersViewsUsecase.ViewUserRepository, AddFriendUsecase.Storage, ListFriendsUsecase.Storage,
     DeleteFriendUsecase.Storage, ListMeetingsHistoryUsecase.Storage, GetMeetingsViewsRepository,

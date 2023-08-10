@@ -11,7 +11,7 @@ import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
-import app.meetacy.backend.usecase.types.AuthRepository
+import app.meetacy.backend.feature.auth.usecase.types.AuthRepository
 import app.meetacy.backend.usecase.types.FullNotification
 import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
 import app.meetacy.backend.usecase.types.GetUsersViewsRepository
@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.Database
 
 fun GetNotificationsUsecase(
     db: Database,
-    authRepository: AuthRepository,
+    authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
     meetingsRepository: GetMeetingsViewsRepository,
     usersRepository: GetUsersViewsRepository
 ): GetNotificationsUsecase {

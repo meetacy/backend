@@ -5,12 +5,13 @@ import app.meetacy.backend.database.integration.users.create.DatabaseCreateUserS
 import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.auth.CreateUserUsecase
-import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
+import app.meetacy.backend.feature.auth.usecase.auth.CreateUserUsecase
+import app.meetacy.backend.feature.auth.usecase.auth.GenerateTokenUsecase
 import org.jetbrains.exposed.sql.Database
 
-class DatabaseGenerateTokenStorage(hashGenerator: AccessHashGenerator, db: Database) : GenerateTokenUsecase.Storage {
-    private val createUserUsecase = CreateUserUsecase(hashGenerator, DatabaseCreateUserStorage(db))
+class DatabaseGenerateTokenStorage(hashGenerator: AccessHashGenerator, db: Database) : app.meetacy.backend.feature.auth.usecase.auth.GenerateTokenUsecase.Storage {
+    private val createUserUsecase =
+        app.meetacy.backend.feature.auth.usecase.auth.CreateUserUsecase(hashGenerator, DatabaseCreateUserStorage(db))
     private val tokensStorage = TokensStorage(db)
 
     override suspend fun createUser(nickname: String): UserId =
