@@ -2,8 +2,8 @@ package app.meetacy.backend.usecase.meetings.get
 
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.amount.amount
-import app.meetacy.backend.types.meeting.MeetingId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.types.*
 
 class ViewMeetingsUsecase(

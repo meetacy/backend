@@ -4,7 +4,7 @@ import app.meetacy.backend.feature.auth.database.TokensStorage
 import app.meetacy.backend.database.integration.users.create.DatabaseCreateUserStorage
 import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.auth.CreateUserUsecase
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import org.jetbrains.exposed.sql.Database

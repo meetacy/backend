@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.meeting.Meeting
-import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
+import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
 import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*

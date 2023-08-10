@@ -3,7 +3,7 @@ package app.meetacy.backend.usecase.meetings.get
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
-import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.meetings.MeetingIdentity
 import app.meetacy.backend.usecase.types.*
 
 class GetMeetingUsecase(

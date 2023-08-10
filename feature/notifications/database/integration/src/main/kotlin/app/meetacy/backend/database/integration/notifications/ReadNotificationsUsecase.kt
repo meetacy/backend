@@ -3,7 +3,7 @@ package app.meetacy.backend.database.integration.notifications
 import app.meetacy.backend.database.notifications.LastReadNotificationsStorage
 import app.meetacy.backend.database.notifications.NotificationsStorage
 import app.meetacy.backend.types.notification.NotificationId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
 import org.jetbrains.exposed.sql.Database
 

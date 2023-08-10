@@ -8,7 +8,7 @@ import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.file.FileSize
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 
 class UploadFileUsecase(
     private val authRepository: AuthRepository,

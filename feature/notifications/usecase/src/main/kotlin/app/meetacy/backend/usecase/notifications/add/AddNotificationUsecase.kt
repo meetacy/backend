@@ -1,9 +1,9 @@
 package app.meetacy.backend.usecase.notifications.add
 
 import app.meetacy.backend.types.datetime.DateTime
-import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.notification.NotificationId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 
 class AddNotificationUsecase(private val storage: Storage) {
     suspend fun addSubscription(

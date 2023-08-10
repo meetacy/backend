@@ -20,7 +20,7 @@ internal fun endpointsIntegrationBuildGradleKts(featureName: FeatureName) = """
     }
     
     dependencies {
-        implementation(projects.core.integration)
+        implementation(projects.core.endpoints.integration)
         implementation(projects.core.typesSerializable.integration)
         implementation(projects.feature.${featureName.camelCase}.endpoints)
         implementation(projects.feature.${featureName.camelCase}.usecase)
@@ -57,7 +57,7 @@ internal fun usecaseIntegrationBuildGradleKts(featureName: FeatureName) = """
     }
     
     dependencies {
-        implementation(projects.core.integration)
+        implementation(projects.core.usecase.integration)
         implementation(projects.feature.${featureName.camelCase}.usecase)
         implementation(projects.feature.${featureName.camelCase}.database)
     }

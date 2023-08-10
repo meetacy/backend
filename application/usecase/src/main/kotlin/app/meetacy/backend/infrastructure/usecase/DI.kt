@@ -8,7 +8,7 @@ import app.meetacy.backend.infrastructure.usecase.meetings.meetings
 import app.meetacy.backend.infrastructure.usecase.notifications.notifications
 import app.meetacy.backend.infrastructure.usecase.updates.updates
 import app.meetacy.backend.infrastructure.usecase.users.users
-import app.meetacy.backend.types.common
+import app.meetacy.backend.types.integration.common
 import app.meetacy.di.builder.DIBuilder
 
 fun DIBuilder.integrations() {

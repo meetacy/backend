@@ -2,7 +2,7 @@ package app.meetacy.backend.database.integration.email
 
 import app.meetacy.backend.feature.email.database.ConfirmationStorage
 import app.meetacy.backend.database.users.UsersStorage
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import org.jetbrains.exposed.sql.Database
 

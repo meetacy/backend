@@ -6,7 +6,7 @@ import app.meetacy.backend.database.notifications.LastReadNotificationsTable.NOT
 import app.meetacy.backend.database.notifications.LastReadNotificationsTable.USER_ID
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.notification.NotificationId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Table

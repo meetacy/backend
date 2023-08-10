@@ -4,10 +4,10 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
-import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.types.*
 
 class ListMeetingsHistoryUsecase(

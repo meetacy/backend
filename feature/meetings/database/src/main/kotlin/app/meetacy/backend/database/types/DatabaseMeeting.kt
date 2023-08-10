@@ -3,9 +3,9 @@ package app.meetacy.backend.database.types
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.meeting.MeetingId
-import app.meetacy.backend.types.meeting.MeetingIdentity
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.meetings.MeetingIdentity
+import app.meetacy.backend.types.users.UserId
 
 class DatabaseMeeting(
     val identity: MeetingIdentity,

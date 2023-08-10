@@ -18,10 +18,10 @@ import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
-import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.types.user.UserIdentity
-import app.meetacy.backend.types.user.Username
-import app.meetacy.backend.types.user.username
+import app.meetacy.backend.types.users.UserId
+import app.meetacy.backend.types.users.UserIdentity
+import app.meetacy.backend.types.users.Username
+import app.meetacy.backend.types.users.username
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction

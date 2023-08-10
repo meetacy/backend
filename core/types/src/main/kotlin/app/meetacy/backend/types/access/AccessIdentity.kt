@@ -1,6 +1,6 @@
 package app.meetacy.backend.types.access
 
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 
 // a combination of user id and access token
 @JvmInline

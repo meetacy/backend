@@ -3,11 +3,9 @@ package app.meetacy.backend.endpoint.friends.location.stream
 import app.meetacy.backend.endpoint.friends.location.stream.StreamLocationRepository.Result
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.rsocket.failRSocket
-import app.meetacy.backend.endpoint.types.user.UserLocationSnapshot
-import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serializable.location.type
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.location.Location
+import app.meetacy.backend.types.serializable.users.UserLocationSnapshot
 import io.ktor.server.routing.*
 import io.rsocket.kotlin.RSocketRequestHandler
 import io.rsocket.kotlin.ktor.server.rSocket
@@ -20,18 +18,16 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
-import app.meetacy.backend.types.serializable.location.Location as LocationSerializable
 
 @Serializable
 data class InitStreamLocation(
-    val token: AccessIdentitySerializable,
+    val token: AccessIdentity,
     val apiVersion: Int
 )
 
 @Serializable
 data class ProvideSelfLocation(
-    val location: LocationSerializable
+    val location: Location
 )
 
 interface StreamLocationRepository {
@@ -54,11 +50,11 @@ fun Route.streamFriendsLocation(
             val initial = initialPayload.decodeToInit()
 
             val selfLocation = flow.map { payload ->
-                payload.decodeToSelfLocation().location.type()
+                payload.decodeToSelfLocation().location
             }
 
             val result = repository.flow(
-                accessIdentity = initial.token.type(),
+                accessIdentity = initial.token,
                 selfLocation = selfLocation
             )
 

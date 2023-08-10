@@ -1,6 +1,6 @@
 package app.meetacy.backend.database.integration.types
 
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.invitations.get.ViewInvitationsUsecase
 import app.meetacy.backend.usecase.types.*
 

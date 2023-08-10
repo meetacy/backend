@@ -7,7 +7,7 @@ import app.meetacy.backend.types.optional.map
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.optional.type
-import app.meetacy.backend.types.serializable.user.type
+import app.meetacy.backend.types.serializable.users.type
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 

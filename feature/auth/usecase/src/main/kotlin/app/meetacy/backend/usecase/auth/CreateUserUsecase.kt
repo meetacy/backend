@@ -2,7 +2,7 @@ package app.meetacy.backend.usecase.auth
 
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.generator.AccessHashGenerator
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 
 class CreateUserUsecase(
     private val generator: AccessHashGenerator,

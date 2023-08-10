@@ -5,8 +5,8 @@ import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.meetings.MeetingsStorage
-import app.meetacy.backend.types.meeting.MeetingId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
 import app.meetacy.backend.usecase.types.FullMeeting

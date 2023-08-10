@@ -2,7 +2,7 @@ package app.meetacy.backend.infrastructure.usecase.auth.tokenGenerator
 
 import app.meetacy.backend.endpoint.auth.generate.TokenGenerateRepository
 import app.meetacy.backend.infrastructure.database.tokenGenerator.generateTokenStorage
-import app.meetacy.backend.types.DefaultUtf8Checker
+import app.meetacy.backend.types.integration.utf8Checker.DefaultUtf8Checker
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.integration.auth.UsecaseTokenGenerateRepository
 import app.meetacy.di.DI

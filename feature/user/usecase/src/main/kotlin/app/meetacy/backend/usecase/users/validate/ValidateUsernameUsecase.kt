@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.users.validate
 
-import app.meetacy.backend.types.user.Username
+import app.meetacy.backend.types.users.Username
 import app.meetacy.backend.usecase.types.ValidateRepository
 import app.meetacy.backend.usecase.types.isOccupied
 

@@ -3,14 +3,15 @@ package app.meetacy.backend.usecase.integration.meetings.participants.list
 import app.meetacy.backend.endpoint.meetings.participants.list.ListMeetingParticipantsParams
 import app.meetacy.backend.endpoint.meetings.participants.list.ListMeetingParticipantsRepository
 import app.meetacy.backend.endpoint.meetings.participants.list.ListParticipantsResult
+import app.meetacy.backend.types.paging.serializable.serializable
+import app.meetacy.backend.types.paging.serializable.type
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.type
-import app.meetacy.backend.types.serializable.meeting.type
-import app.meetacy.backend.types.paging.serializable.serializable
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.users.serializable
+import app.meetacy.backend.types.users.UserView
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
 import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase.Result
-import app.meetacy.backend.usecase.types.UserView
 
 class UsecaseListMeetingParticipantsRepository(
     val usecase: ListMeetingParticipantsUsecase
@@ -30,7 +31,7 @@ class UsecaseListMeetingParticipantsRepository(
             is Result.TokenInvalid -> ListParticipantsResult.TokenInvalid
             is Result.Success -> ListParticipantsResult.Success(
                 paging = result.paging.map { users ->
-                    users.map(UserView::mapToEndpoint)
+                    users.map(UserView::serializable)
                 }.serializable()
             )
         }

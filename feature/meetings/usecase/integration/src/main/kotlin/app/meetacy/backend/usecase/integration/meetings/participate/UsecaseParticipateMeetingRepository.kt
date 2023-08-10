@@ -4,8 +4,8 @@ import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepos
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingResult
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
-import app.meetacy.backend.types.serializable.meeting.type
+import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
+import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 
 class UsecaseParticipateMeetingRepository(

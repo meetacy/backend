@@ -3,6 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.user.database)
-    api(projects.libs.paging)
+    implementation(projects.core.database)
 }

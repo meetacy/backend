@@ -13,8 +13,8 @@ import app.meetacy.backend.database.types.DatabaseInvitation
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.invitation.InvitationId
-import app.meetacy.backend.types.meeting.MeetingId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

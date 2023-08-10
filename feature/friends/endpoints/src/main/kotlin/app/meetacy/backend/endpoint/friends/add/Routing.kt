@@ -8,7 +8,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import app.meetacy.backend.types.serializable.user.UserIdentity as UserIdentitySerializable
+import app.meetacy.backend.types.serializable.users.UserIdentity as UserIdentitySerializable
 
 interface AddFriendRepository {
     suspend fun addFriend(addFriendParams: AddFriendParams): AddFriendResult

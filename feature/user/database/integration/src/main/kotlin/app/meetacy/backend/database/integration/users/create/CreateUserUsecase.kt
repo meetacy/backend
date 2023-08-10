@@ -2,7 +2,7 @@ package app.meetacy.backend.database.integration.users.create
 
 import app.meetacy.backend.database.users.UsersStorage
 import app.meetacy.backend.types.access.AccessHash
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.auth.CreateUserUsecase
 import org.jetbrains.exposed.sql.Database
 

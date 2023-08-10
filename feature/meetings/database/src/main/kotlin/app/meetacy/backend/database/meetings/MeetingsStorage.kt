@@ -24,11 +24,11 @@ import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.meeting.MeetingId
-import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.meetings.MeetingIdentity
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow

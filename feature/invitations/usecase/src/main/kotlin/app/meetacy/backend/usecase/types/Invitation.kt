@@ -1,8 +1,8 @@
 package app.meetacy.backend.usecase.types
 
 import app.meetacy.backend.types.invitation.InvitationId
-import app.meetacy.backend.types.meeting.MeetingId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.users.UserId
 
 data class FullInvitation(
     val id: InvitationId,

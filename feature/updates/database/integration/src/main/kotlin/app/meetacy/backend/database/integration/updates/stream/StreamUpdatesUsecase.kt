@@ -1,7 +1,7 @@
 package app.meetacy.backend.database.integration.updates.stream
 
 import app.meetacy.backend.types.update.UpdateId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.usecase.types.FullUpdate
 import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository

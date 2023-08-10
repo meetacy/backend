@@ -3,11 +3,11 @@ package app.meetacy.backend.endpoint.users.edit
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.endpoint.types.user.User
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.file.FileIdentity
 import app.meetacy.backend.types.serializable.optional.Optional
-import app.meetacy.backend.types.serializable.user.Username
+import app.meetacy.backend.types.serializable.users.User
+import app.meetacy.backend.types.serializable.users.Username
 import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*

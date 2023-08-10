@@ -4,27 +4,21 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.endpoint.types.meeting.Meeting
-import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.amount.Amount
-import app.meetacy.backend.types.paging.PagingId
-import app.meetacy.backend.types.paging.PagingResult
-import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serializable.amount.type
-import app.meetacy.backend.types.paging.serializable.PagingIdSerializable
-import app.meetacy.backend.types.paging.serializable.serializable
+import app.meetacy.backend.types.paging.serializable.PagingId
+import app.meetacy.backend.types.paging.serializable.PagingResult
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
-import app.meetacy.backend.types.serializable.amount.Amount as AmountSerializable
 
 @Serializable
 data class ListParam(
-    val token: AccessIdentitySerializable,
-    val amount: AmountSerializable,
-    val pagingId: PagingIdSerializable? = null
+    val token: AccessIdentity,
+    val amount: Amount,
+    val pagingId: PagingId? = null
 )
 
 sealed interface ListMeetingsResult {
@@ -46,12 +40,12 @@ fun Route.listMeetingsHistory() = post("/list") {
     val params = call.receive<ListParam>()
     when (
         val result = listMeetingsHistoryRepository.getList(
-            accessIdentity = params.token.type(),
-            amount = params.amount.type(),
-            pagingId = params.pagingId?.type()
+            accessIdentity = params.token,
+            amount = params.amount,
+            pagingId = params.pagingId
         )
     ) {
-        is ListMeetingsResult.Success -> call.respondSuccess(result.meetings.serializable())
+        is ListMeetingsResult.Success -> call.respondSuccess(result.meetings)
         is ListMeetingsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
     }
 }

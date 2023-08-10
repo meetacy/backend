@@ -2,8 +2,8 @@ package app.meetacy.backend.database.integration.meetings.participate
 
 import app.meetacy.backend.database.meetings.ParticipantsStorage
 import app.meetacy.backend.types.amount.Amount
-import app.meetacy.backend.types.meeting.MeetingId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
 import org.jetbrains.exposed.sql.Database
 

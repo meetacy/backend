@@ -3,7 +3,7 @@ package app.meetacy.backend.endpoint.users.validate
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.serializable.user.Username
+import app.meetacy.backend.types.serializable.users.Username
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*

@@ -3,7 +3,7 @@ package app.meetacy.backend.usecase.location.stream
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

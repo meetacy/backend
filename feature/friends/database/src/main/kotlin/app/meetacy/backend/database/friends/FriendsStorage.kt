@@ -9,7 +9,7 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.paging.pagingIdLong
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter

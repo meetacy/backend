@@ -9,12 +9,12 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
 import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
+import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.usecase.types.FullNotification
-import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
-import app.meetacy.backend.usecase.types.GetUsersViewsRepository
 import org.jetbrains.exposed.sql.Database
 
 fun GetNotificationsUsecase(

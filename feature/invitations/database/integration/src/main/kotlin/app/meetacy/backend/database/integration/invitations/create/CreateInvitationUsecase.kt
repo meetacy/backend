@@ -8,8 +8,8 @@ import app.meetacy.backend.database.users.UsersStorage
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
-import app.meetacy.backend.types.meeting.MeetingId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.notifications.add.AddNotificationUsecase
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 import app.meetacy.backend.usecase.types.FullInvitation

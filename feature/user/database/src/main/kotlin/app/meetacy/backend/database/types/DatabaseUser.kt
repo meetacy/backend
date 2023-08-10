@@ -1,8 +1,8 @@
 package app.meetacy.backend.database.types
 
 import app.meetacy.backend.types.file.FileId
-import app.meetacy.backend.types.user.UserIdentity
-import app.meetacy.backend.types.user.Username
+import app.meetacy.backend.types.users.UserIdentity
+import app.meetacy.backend.types.users.Username
 
 class DatabaseUser(
     val identity: UserIdentity,

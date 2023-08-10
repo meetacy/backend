@@ -3,7 +3,7 @@ package app.meetacy.backend.usecase.auth
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.access.AccessToken
 import app.meetacy.backend.types.generator.AccessHashGenerator
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
 import app.meetacy.backend.types.utf8Checker.checkString
 

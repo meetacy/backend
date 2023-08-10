@@ -4,8 +4,8 @@ import app.meetacy.backend.endpoint.invitations.create.CreateInvitationRepositor
 import app.meetacy.backend.endpoint.invitations.create.InvitationCreatingFormSerializable
 import app.meetacy.backend.endpoint.invitations.create.InvitationsCreateResponse
 import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serializable.meeting.type
-import app.meetacy.backend.types.serializable.user.type
+import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.users.type
 import app.meetacy.backend.usecase.integration.types.toEndpoint
 import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
 

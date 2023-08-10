@@ -8,7 +8,7 @@ import app.meetacy.backend.database.updates.UpdatesTable.UPDATE_TYPE
 import app.meetacy.backend.database.updates.UpdatesTable.USER_ID
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.update.UpdateId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

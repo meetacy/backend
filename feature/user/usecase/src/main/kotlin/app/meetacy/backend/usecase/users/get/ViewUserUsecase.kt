@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.users.get
 
-import app.meetacy.backend.types.user.Relationship
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.Relationship
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.types.FilesRepository
 import app.meetacy.backend.usecase.types.FullUser
 import app.meetacy.backend.usecase.types.UserView

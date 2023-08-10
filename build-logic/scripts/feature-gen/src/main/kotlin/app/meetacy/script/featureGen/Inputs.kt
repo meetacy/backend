@@ -1,7 +1,5 @@
 package app.meetacy.script.featureGen
 
-import kotlin.system.exitProcess
-
 internal fun checkArgs(args: Array<String>) {
     if (args.size != 1) {
         failScript("""

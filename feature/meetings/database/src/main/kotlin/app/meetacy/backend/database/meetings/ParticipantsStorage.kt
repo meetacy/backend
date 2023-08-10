@@ -8,12 +8,12 @@ import app.meetacy.backend.database.meetings.ParticipantsTable.MEETING_ID
 import app.meetacy.backend.database.meetings.ParticipantsTable.USER_ID
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.amount.Amount
-import app.meetacy.backend.types.meeting.MeetingId
+import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.paging.PagingValue
 import app.meetacy.backend.types.paging.pagingIdLong
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

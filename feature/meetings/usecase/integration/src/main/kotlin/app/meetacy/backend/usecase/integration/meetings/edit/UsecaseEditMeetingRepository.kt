@@ -8,7 +8,7 @@ import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.datetime.type
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.type
-import app.meetacy.backend.types.serializable.meeting.type
+import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.backend.types.serializable.optional.type
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.integration.types.mapToFullMeeting

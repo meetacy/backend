@@ -3,7 +3,7 @@ import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
-import app.meetacy.backend.types.BasicHashGenerator
+import app.meetacy.backend.types.integration.generator.BasicHashGenerator
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
@@ -16,8 +16,8 @@ import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
-import app.meetacy.backend.types.meeting.MeetingId
-import app.meetacy.backend.types.meeting.MeetingIdentity
+import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.meetings.MeetingIdentity
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.paging.PagingId
@@ -27,9 +27,9 @@ import app.meetacy.backend.types.paging.pagingResultLong
 import app.meetacy.backend.types.serializable.file.serializable
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.update.UpdateId
-import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.types.user.UserIdentity
-import app.meetacy.backend.types.user.Username
+import app.meetacy.backend.types.users.UserId
+import app.meetacy.backend.types.users.UserIdentity
+import app.meetacy.backend.types.users.Username
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
 import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
 import app.meetacy.backend.usecase.email.LinkEmailUsecase

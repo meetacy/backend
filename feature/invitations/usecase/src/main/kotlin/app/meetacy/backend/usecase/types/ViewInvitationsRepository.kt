@@ -1,6 +1,6 @@
 package app.meetacy.backend.usecase.types
 
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 
 interface ViewInvitationsRepository {
     suspend fun viewInvitations(

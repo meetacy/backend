@@ -8,8 +8,8 @@ import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.optional.map
-import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.types.user.Username
+import app.meetacy.backend.types.users.UserId
+import app.meetacy.backend.types.users.Username
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
 import app.meetacy.backend.usecase.types.*
 

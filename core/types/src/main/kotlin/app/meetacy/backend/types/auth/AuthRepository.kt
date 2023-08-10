@@ -1,7 +1,7 @@
 package app.meetacy.backend.types.auth
 
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 
 interface AuthRepository {
     suspend fun authorize(accessIdentity: AccessIdentity): Boolean

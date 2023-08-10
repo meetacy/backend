@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PagingResult<T>(
-    val nextPagingId: PagingId?,
-    val data: List<T>
+    val data: List<T>,
+    val nextPagingId: PagingId?
 )

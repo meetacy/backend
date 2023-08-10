@@ -8,7 +8,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.datetime.Date
 import app.meetacy.backend.types.serializable.file.FileIdentity
 import app.meetacy.backend.types.serializable.location.Location
-import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
+import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
 import app.meetacy.backend.types.serializable.optional.Optional
 import app.meetacy.di.global.di
 import io.ktor.server.application.*

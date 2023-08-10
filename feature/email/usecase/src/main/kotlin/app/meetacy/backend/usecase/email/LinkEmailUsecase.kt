@@ -4,7 +4,7 @@ import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 
 class LinkEmailUsecase(
     private val storage: Storage,

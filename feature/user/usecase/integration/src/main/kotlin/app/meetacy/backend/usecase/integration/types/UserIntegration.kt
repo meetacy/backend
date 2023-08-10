@@ -7,8 +7,8 @@ import app.meetacy.backend.types.serializable.file.serializable
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.serializable
 import app.meetacy.backend.types.serializable.location.type
-import app.meetacy.backend.types.serializable.user.serializable
-import app.meetacy.backend.types.serializable.user.type
+import app.meetacy.backend.types.serializable.users.serializable
+import app.meetacy.backend.types.serializable.users.type
 import app.meetacy.backend.usecase.types.UserView
 import app.meetacy.backend.endpoint.types.user.UserLocationSnapshot as EndpointUserLocationSnapshot
 import app.meetacy.backend.usecase.types.UserLocationSnapshot as UsecaseUserLocationSnapshot

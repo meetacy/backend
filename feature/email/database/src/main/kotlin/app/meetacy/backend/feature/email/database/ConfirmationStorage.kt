@@ -7,7 +7,7 @@ import app.meetacy.backend.constants.HASH_LENGTH
 import app.meetacy.backend.feature.email.database.ConfirmationTable.CONFIRM_HASH
 import app.meetacy.backend.feature.email.database.ConfirmationTable.EMAIL
 import app.meetacy.backend.feature.email.database.ConfirmationTable.OWNER_ID
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

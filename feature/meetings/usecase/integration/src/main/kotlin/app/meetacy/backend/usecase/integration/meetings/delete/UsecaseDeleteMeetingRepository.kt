@@ -4,7 +4,7 @@ import app.meetacy.backend.endpoint.meetings.delete.DeleteMeetingParams
 import app.meetacy.backend.endpoint.meetings.delete.DeleteMeetingRepository
 import app.meetacy.backend.endpoint.meetings.delete.DeleteMeetingResult
 import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serializable.meeting.type
+import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
 
 class UsecaseDeleteMeetingRepository(

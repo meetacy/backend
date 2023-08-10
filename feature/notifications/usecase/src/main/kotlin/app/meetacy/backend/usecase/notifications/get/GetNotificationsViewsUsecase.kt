@@ -1,7 +1,7 @@
 package app.meetacy.backend.usecase.notifications.get
 
 import app.meetacy.backend.types.notification.NotificationId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.types.FullNotification
 import app.meetacy.backend.usecase.types.NotificationView
 import app.meetacy.backend.usecase.types.ViewNotificationsRepository
