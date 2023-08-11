@@ -58,6 +58,7 @@ dependencies {
     testImplementation(libs.ktor.client.mock)
 
     testImplementation(kotlin("test"))
+    testImplementation(projects.libs.paging.serializable)
 }
 
 tasks.test {

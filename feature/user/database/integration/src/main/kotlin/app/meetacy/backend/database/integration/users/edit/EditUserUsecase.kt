@@ -4,9 +4,9 @@ import app.meetacy.backend.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.users.UsersStorage
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.optional.Optional
+import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.Username
-import app.meetacy.backend.usecase.types.FullUser
 import app.meetacy.backend.usecase.users.edit.EditUserUsecase
 import org.jetbrains.exposed.sql.Database
 
