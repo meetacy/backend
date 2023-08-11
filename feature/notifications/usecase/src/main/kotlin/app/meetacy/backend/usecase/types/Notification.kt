@@ -2,8 +2,10 @@ package app.meetacy.backend.usecase.types
 
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.users.UserId
+import app.meetacy.backend.types.users.UserView
 
 sealed interface FullNotification {
     val id: NotificationId
