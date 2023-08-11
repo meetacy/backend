@@ -11,7 +11,7 @@ import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.usecase.types.*
 
 class CreateInvitationUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val storage: Storage,
     private val hashGenerator: AccessHashGenerator,
     private val invitationsRepository: GetInvitationsViewsRepository

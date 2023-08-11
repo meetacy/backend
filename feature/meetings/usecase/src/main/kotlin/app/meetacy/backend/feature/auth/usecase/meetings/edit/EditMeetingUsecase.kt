@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.auth.usecase.meetings.edit
 
+import app.meetacy.backend.feature.auth.usecase.types.*
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
@@ -11,11 +12,10 @@ import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.optional.map
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
-import app.meetacy.backend.usecase.types.*
 
 class EditMeetingUsecase(
     private val storage: Storage,
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository,
     private val viewMeetingsRepository: ViewMeetingsRepository,
     private val filesRepository: FilesRepository,

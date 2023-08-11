@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.Database
 
 fun GetNotificationsUsecase(
     db: Database,
-    authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    authRepository: AuthRepository,
     meetingsRepository: GetMeetingsViewsRepository,
     usersRepository: GetUsersViewsRepository
 ): GetNotificationsUsecase {

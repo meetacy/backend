@@ -74,7 +74,7 @@ import kotlinx.coroutines.flow.map
 import java.io.File
 
 class MockStorage : app.meetacy.backend.feature.auth.usecase.auth.GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage,
-    app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    AuthRepository,
     ConfirmEmailUsecase.Storage, GetUsersViewsRepository, GetUsersViewsUsecase.Storage,
     GetUsersViewsUsecase.ViewUserRepository, AddFriendUsecase.Storage, ListFriendsUsecase.Storage,
     DeleteFriendUsecase.Storage, ListMeetingsHistoryUsecase.Storage, GetMeetingsViewsRepository,

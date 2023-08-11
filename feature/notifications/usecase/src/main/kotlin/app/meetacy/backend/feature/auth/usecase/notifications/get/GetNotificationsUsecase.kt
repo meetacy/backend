@@ -9,7 +9,7 @@ import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.usecase.types.*
 
 class GetNotificationsUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val viewNotificationsRepository: ViewNotificationsRepository,
     private val storage: Storage
 ) {

@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.auth.usecase.meetings.create
 
+import app.meetacy.backend.feature.auth.usecase.types.*
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.datetime.Date
@@ -10,12 +11,11 @@ import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
-import app.meetacy.backend.usecase.types.*
 
 class CreateMeetingUsecase(
     private val hashGenerator: AccessHashGenerator,
     private val storage: Storage,
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val filesRepository: FilesRepository,
     private val viewMeetingRepository: ViewMeetingRepository,
     private val utf8Checker: Utf8Checker

@@ -1,8 +1,8 @@
 package app.meetacy.backend.database.integration.users.get
 
 import app.meetacy.backend.database.friends.FriendsStorage
+import app.meetacy.backend.feature.auth.usecase.users.get.ViewUserUsecase
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.users.get.ViewUserUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseViewUserStorage(db: Database): ViewUserUsecase.Storage {

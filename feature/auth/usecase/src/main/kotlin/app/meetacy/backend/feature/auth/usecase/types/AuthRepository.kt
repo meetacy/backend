@@ -7,14 +7,14 @@ interface AuthRepository {
     suspend fun authorize(accessIdentity: AccessIdentity): Boolean
 }
 
-suspend inline fun app.meetacy.backend.feature.auth.usecase.types.AuthRepository.authorize(
+suspend inline fun AuthRepository.authorize(
     accessIdentity: AccessIdentity,
     fallback: () -> Nothing
 ) {
     if(!authorize(accessIdentity)) fallback()
 }
 
-suspend inline fun app.meetacy.backend.feature.auth.usecase.types.AuthRepository.authorizeWithUserId(
+suspend inline fun AuthRepository.authorizeWithUserId(
     accessIdentity: AccessIdentity,
     fallback: () -> Nothing
 ): UserId {

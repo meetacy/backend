@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.auth.usecase.meetings.participants.list
 
+import app.meetacy.backend.feature.auth.usecase.types.*
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meeting.MeetingId
@@ -7,10 +8,9 @@ import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.*
 
 class ListMeetingParticipantsUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val checkMeetingRepository: CheckMeetingRepository,
     private val storage: Storage,
     private val getUsersViewsRepository: GetUsersViewsRepository

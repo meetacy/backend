@@ -1,14 +1,14 @@
 package app.meetacy.backend.feature.auth.usecase.meetings.delete
 
+import app.meetacy.backend.feature.auth.usecase.types.AuthRepository
+import app.meetacy.backend.feature.auth.usecase.types.GetMeetingsViewsRepository
+import app.meetacy.backend.feature.auth.usecase.types.authorizeWithUserId
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
-import app.meetacy.backend.feature.auth.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
-import app.meetacy.backend.feature.auth.usecase.types.authorizeWithUserId
 
 class DeleteMeetingUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository,
     private val storage: Storage
 ) {

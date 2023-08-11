@@ -14,7 +14,7 @@ import java.time.Instant
 import java.time.ZoneOffset
 
 class ListMeetingsMapUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository,
     private val viewMeetingsRepository: ViewMeetingsRepository,
     private val storage: Storage

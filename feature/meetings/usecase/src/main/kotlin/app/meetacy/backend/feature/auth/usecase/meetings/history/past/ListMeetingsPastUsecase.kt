@@ -12,7 +12,7 @@ import app.meetacy.backend.usecase.types.*
 import kotlinx.coroutines.flow.*
 
 class ListMeetingsPastUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val storage: Storage,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository
 ) {

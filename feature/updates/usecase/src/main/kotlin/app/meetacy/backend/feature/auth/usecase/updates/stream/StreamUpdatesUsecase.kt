@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class StreamUpdatesUsecase(
-    private val auth: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val auth: AuthRepository,
     private val storage: Storage,
     private val notificationsRepository: GetNotificationsViewsRepository
 ) {

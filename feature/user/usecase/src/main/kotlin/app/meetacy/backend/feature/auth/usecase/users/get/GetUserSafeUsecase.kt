@@ -8,7 +8,7 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.user.UserIdentity
 
 class GetUserSafeUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val usersViewsRepository: GetUsersViewsRepository
 ) {
     suspend fun getUser(params: Params): Result {

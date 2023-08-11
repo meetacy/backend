@@ -13,7 +13,7 @@ import app.meetacy.backend.types.utf8Checker.Utf8Checker
 
 class EditUserUsecase(
     private val storage: Storage,
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val filesRepository: FilesRepository,
     private val utf8Checker: Utf8Checker
 ) {

@@ -10,7 +10,7 @@ import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
 import kotlinx.coroutines.flow.Flow
 
 fun StreamUpdatesUsecase(
-    auth: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    auth: AuthRepository,
     notificationsRepository: GetNotificationsViewsRepository,
     updatesMiddleware: UpdatesMiddleware
 ): StreamUpdatesUsecase = StreamUpdatesUsecase(

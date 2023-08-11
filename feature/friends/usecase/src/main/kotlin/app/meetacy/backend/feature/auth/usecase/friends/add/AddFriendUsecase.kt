@@ -1,15 +1,14 @@
 package app.meetacy.backend.feature.auth.usecase.friends.add
 
+import app.meetacy.backend.feature.auth.usecase.types.GetUsersViewsRepository
+import app.meetacy.backend.feature.auth.usecase.types.authorizeWithUserId
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
-import app.meetacy.backend.feature.auth.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.GetUsersViewsRepository
-import app.meetacy.backend.feature.auth.usecase.types.authorizeWithUserId
 
 
 class AddFriendUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val getUsersViewsRepository: GetUsersViewsRepository,
     private val storage: Storage
 ) {

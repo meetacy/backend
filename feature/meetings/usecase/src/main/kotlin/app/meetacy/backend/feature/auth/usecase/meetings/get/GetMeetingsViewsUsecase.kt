@@ -1,10 +1,10 @@
 package app.meetacy.backend.feature.auth.usecase.meetings.get
 
+import app.meetacy.backend.feature.auth.usecase.types.FullMeeting
+import app.meetacy.backend.feature.auth.usecase.types.MeetingView
+import app.meetacy.backend.feature.auth.usecase.types.ViewMeetingsRepository
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.FullMeeting
-import app.meetacy.backend.usecase.types.MeetingView
-import app.meetacy.backend.usecase.types.ViewMeetingsRepository
 
 class GetMeetingsViewsUsecase(
     private val viewMeetingsRepository: ViewMeetingsRepository,

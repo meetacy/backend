@@ -1,11 +1,11 @@
 package app.meetacy.backend.feature.auth.usecase.meetings.get
 
+import app.meetacy.backend.feature.auth.usecase.types.*
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.meeting.MeetingIdentity
-import app.meetacy.backend.usecase.types.*
 
 class GetMeetingUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository
 ) {
     suspend fun getMeeting(
@@ -23,7 +23,7 @@ class GetMeetingUsecase(
 
     sealed interface Result {
         class Success(val meeting: MeetingView) : Result
-        object TokenInvalid : Result
-        object MeetingNotFound : Result
+        data object TokenInvalid : Result
+        data object MeetingNotFound : Result
     }
 }

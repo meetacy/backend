@@ -10,7 +10,7 @@ class LinkEmailUsecase(
     private val storage: Storage,
     private val mailer: Mailer,
     private val hashGenerator: AccessHashGenerator,
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository
+    private val authRepository: authRepository
 ) {
     sealed interface LinkResult {
         object Success : LinkResult

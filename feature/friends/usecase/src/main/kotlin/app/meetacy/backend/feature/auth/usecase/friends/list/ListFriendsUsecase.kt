@@ -1,14 +1,14 @@
 package app.meetacy.backend.feature.auth.usecase.friends.list
 
+import app.meetacy.backend.feature.auth.usecase.types.*
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.*
 
 class ListFriendsUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val storage: Storage,
     private val getUsersViewsRepository: GetUsersViewsRepository
 ) {
@@ -29,7 +29,7 @@ class ListFriendsUsecase(
     }
 
     sealed interface Result {
-        object InvalidToken : Result
+        data object InvalidToken : Result
         class Success(val paging: PagingResult<UserView>) : Result
     }
 

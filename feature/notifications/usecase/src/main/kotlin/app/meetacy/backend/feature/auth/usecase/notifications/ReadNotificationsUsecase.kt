@@ -7,7 +7,7 @@ import app.meetacy.backend.feature.auth.usecase.types.AuthRepository
 import app.meetacy.backend.feature.auth.usecase.types.authorizeWithUserId
 
 class ReadNotificationsUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val storage: Storage
 ) {
 

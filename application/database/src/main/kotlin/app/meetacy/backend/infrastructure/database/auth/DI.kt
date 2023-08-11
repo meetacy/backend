@@ -9,9 +9,9 @@ import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 
 val DI.tokensStorage: TokensStorage by Dependency
-val DI.authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository by Dependency
+val DI.authRepository: AuthRepository by Dependency
 
 fun DIBuilder.auth() {
     val tokensStorage by singleton { TokensStorage(database) }
-    val authRepository by singleton<app.meetacy.backend.feature.auth.usecase.types.AuthRepository> { DatabaseAuthRepository(database) }
+    val authRepository by singleton<AuthRepository> { DatabaseAuthRepository(database) }
 }

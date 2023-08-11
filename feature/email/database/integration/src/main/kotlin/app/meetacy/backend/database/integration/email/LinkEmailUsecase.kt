@@ -4,8 +4,8 @@ import app.meetacy.backend.database.email.ConfirmationStorage
 import app.meetacy.backend.database.email.DatabaseEmailSender
 import app.meetacy.backend.database.email.DatabaseEmailText
 import app.meetacy.backend.database.users.UsersStorage
+import app.meetacy.backend.feature.auth.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.email.LinkEmailUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseLinkEmailStorage(db: Database) : LinkEmailUsecase.Storage {

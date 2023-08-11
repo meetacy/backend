@@ -1,19 +1,19 @@
 package app.meetacy.backend.feature.auth.usecase.location.stream
 
+import app.meetacy.backend.feature.auth.usecase.types.*
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.amount.amount
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.*
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 class FriendsLocationStreamingUsecase(
-    private val authRepository: app.meetacy.backend.feature.auth.usecase.types.AuthRepository,
+    private val authRepository: AuthRepository,
     private val storage: Storage,
     private val usersViewsRepository: GetUsersViewsRepository,
     private val maxFriends: Amount = 5_000.amount
