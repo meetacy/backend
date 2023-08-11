@@ -42,8 +42,8 @@ interface DenyInvitationRepository{
 }
 
 sealed interface DenyInvitationResponse {
-    object Success: DenyInvitationResponse
-    object Unauthorized: DenyInvitationResponse
-    object NoPermissions: DenyInvitationResponse
-    object NotFound: DenyInvitationResponse
+    data object Success: DenyInvitationResponse
+    data object Unauthorized: DenyInvitationResponse
+    data object NoPermissions: DenyInvitationResponse
+    data object NotFound: DenyInvitationResponse
 }

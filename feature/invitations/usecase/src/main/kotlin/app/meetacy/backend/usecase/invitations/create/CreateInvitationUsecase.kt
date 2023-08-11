@@ -1,16 +1,21 @@
 package app.meetacy.backend.usecase.invitations.create
 
-import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
+import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.invitation.InvitationId
+import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingIdentity
+import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserIdentity
-import app.meetacy.backend.usecase.types.*
+import app.meetacy.backend.usecase.types.FullInvitation
+import app.meetacy.backend.usecase.types.GetInvitationsViewsRepository
+import app.meetacy.backend.usecase.types.InvitationView
+import app.meetacy.backend.usecase.types.getInvitationView
 
 class CreateInvitationUsecase(
     private val authRepository: AuthRepository,
@@ -20,11 +25,11 @@ class CreateInvitationUsecase(
 ) {
     sealed interface Result {
         data class Success(val invitation: InvitationView): Result
-        object Unauthorized: Result
-        object NoPermissions: Result
-        object UserNotFound: Result
-        object MeetingNotFound: Result
-        object UserAlreadyInvited: Result
+        data object Unauthorized: Result
+        data object NoPermissions: Result
+        data object UserNotFound: Result
+        data object MeetingNotFound: Result
+        data object UserAlreadyInvited: Result
     }
 
     suspend fun createInvitation(

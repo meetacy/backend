@@ -4,11 +4,13 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
+import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
 import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.meetings.MeetingView
+import app.meetacy.backend.types.meetings.getMeetingsViews
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.usecase.types.*
 
 class ListMeetingsHistoryUsecase(
     private val authRepository: AuthRepository,

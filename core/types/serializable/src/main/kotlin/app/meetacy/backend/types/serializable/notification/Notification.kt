@@ -1,11 +1,10 @@
-package app.meetacy.backend.endpoint.types.notification
+package app.meetacy.backend.types.serializable.notification
 
-import app.meetacy.backend.endpoint.types.meeting.Meeting
-import app.meetacy.backend.endpoint.types.user.User
-import app.meetacy.backend.types.serializable.datetime.DateTime as DateTimeSerializable
-import app.meetacy.backend.types.serializable.notification.NotificationId
+import app.meetacy.backend.types.serializable.meetings.Meeting
+import app.meetacy.backend.types.serializable.users.User
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import app.meetacy.backend.types.serializable.datetime.DateTime as DateTimeSerializable
 
 @Serializable
 sealed class Notification {

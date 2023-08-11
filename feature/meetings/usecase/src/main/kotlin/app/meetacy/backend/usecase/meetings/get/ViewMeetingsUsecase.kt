@@ -2,9 +2,13 @@ package app.meetacy.backend.usecase.meetings.get
 
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.amount.amount
+import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.meetings.MeetingView
+import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.usecase.types.*
+import app.meetacy.backend.types.users.getUsersViews
+import app.meetacy.backend.usecase.types.FilesRepository
 
 class ViewMeetingsUsecase(
     private val getUsersViewsRepository: GetUsersViewsRepository,

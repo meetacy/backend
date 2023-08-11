@@ -10,13 +10,13 @@ import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingIdentity
+import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
 import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
-import app.meetacy.backend.usecase.types.FullMeeting
-import app.meetacy.backend.usecase.types.MeetingView
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseCreateMeetingStorage(db: Database) : CreateMeetingUsecase.Storage {

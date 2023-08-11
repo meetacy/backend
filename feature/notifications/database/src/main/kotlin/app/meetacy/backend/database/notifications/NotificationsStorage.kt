@@ -12,6 +12,7 @@ import app.meetacy.backend.database.notifications.NotificationsTable.OWNER_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.SUBSCRIBED_ID
 import app.meetacy.backend.database.notifications.NotificationsTable.TYPE
 import app.meetacy.backend.database.notifications.NotificationsTable.Type
+import app.meetacy.backend.database.paging
 import app.meetacy.backend.database.types.DatabaseNotification
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.amount.Amount

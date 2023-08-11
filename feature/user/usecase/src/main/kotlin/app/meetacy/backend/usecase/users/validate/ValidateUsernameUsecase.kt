@@ -1,8 +1,8 @@
 package app.meetacy.backend.usecase.users.validate
 
 import app.meetacy.backend.types.users.Username
-import app.meetacy.backend.usecase.types.ValidateRepository
-import app.meetacy.backend.usecase.types.isOccupied
+import app.meetacy.backend.types.users.ValidateRepository
+import app.meetacy.backend.types.users.isOccupied
 
 class ValidateUsernameUsecase(
     private val validateRepository: ValidateRepository

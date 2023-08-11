@@ -6,8 +6,10 @@ import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
+import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.usecase.types.*
+import app.meetacy.backend.types.users.UserView
+import app.meetacy.backend.types.users.getUsersViews
 
 class ListFriendsUsecase(
     private val authRepository: AuthRepository,

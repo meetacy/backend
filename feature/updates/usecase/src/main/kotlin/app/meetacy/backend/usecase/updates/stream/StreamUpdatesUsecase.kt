@@ -1,9 +1,14 @@
 package app.meetacy.backend.usecase.updates.stream
 
 import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.update.UpdateId
-import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.*
+import app.meetacy.backend.types.users.UserId
+import app.meetacy.backend.usecase.types.FullUpdate
+import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository
+import app.meetacy.backend.usecase.types.UpdateView
+import app.meetacy.backend.usecase.types.getNotificationView
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

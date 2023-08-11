@@ -6,10 +6,10 @@ import app.meetacy.backend.database.meetings.MeetingsStorage
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
-import app.meetacy.backend.usecase.types.FullMeeting
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseEditMeetingStorage(db: Database) : EditMeetingUsecase.Storage {

@@ -2,10 +2,15 @@ package app.meetacy.backend.usecase.integration.meetings.history.past
 
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
 import app.meetacy.backend.endpoint.meetings.history.past.ListMeetingsPastRepository
-import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.amount.Amount
-import app.meetacy.backend.types.paging.PagingId
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.types.meetings.MeetingView
+import app.meetacy.backend.types.paging.serializable.PagingId
+import app.meetacy.backend.types.paging.serializable.serializable
+import app.meetacy.backend.types.paging.serializable.type
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.amount.Amount
+import app.meetacy.backend.types.serializable.amount.type
+import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 
 class UsecaseListPastMeetingsRepository(
@@ -16,14 +21,12 @@ class UsecaseListPastMeetingsRepository(
         amount: Amount,
         pagingId: PagingId?
     ): ListMeetingsResult = usecase.getPastMeetingsList(
-        accessIdentity, amount, pagingId
+        accessIdentity.type(), amount.type(), pagingId?.type()
     ).mapToEndpoint()
 
     fun ListMeetingsPastUsecase.Result.mapToEndpoint() = when (this) {
         is ListMeetingsPastUsecase.Result.Success -> ListMeetingsResult.Success(
-            meetings = paging.map { meetingViews ->
-                meetingViews.map { it.mapToEndpoint() }
-            }
+            meetings = paging.map { it.map(MeetingView::type) }.serializable()
         )
         ListMeetingsPastUsecase.Result.InvalidAccessIdentity -> ListMeetingsResult.InvalidIdentity
     }

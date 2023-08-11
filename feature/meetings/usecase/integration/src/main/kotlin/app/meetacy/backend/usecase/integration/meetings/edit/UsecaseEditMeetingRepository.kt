@@ -9,9 +9,8 @@ import app.meetacy.backend.types.serializable.datetime.type
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.type
 import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.meetings.typeFullMeeting
 import app.meetacy.backend.types.serializable.optional.type
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
-import app.meetacy.backend.usecase.integration.types.mapToFullMeeting
 import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 
 class UsecaseEditMeetingRepository(
@@ -30,7 +29,7 @@ class UsecaseEditMeetingRepository(
                 description,
                 location?.type(),
                 date?.type(),
-                visibility?.mapToFullMeeting()
+                visibility?.typeFullMeeting()
             )
         ) {
             EditMeetingUsecase.Result.InvalidAccessIdentity ->
@@ -44,7 +43,7 @@ class UsecaseEditMeetingRepository(
             EditMeetingUsecase.Result.NullEditParameters ->
                 EditMeetingResult.NullEditParameters
             is EditMeetingUsecase.Result.Success ->
-                EditMeetingResult.Success(result.meeting.mapToEndpoint())
+                EditMeetingResult.Success(result.meeting.type())
         }
     }
 }

@@ -3,7 +3,7 @@ package app.meetacy.backend.endpoint.types.updates
 import app.meetacy.backend.types.serializable.update.UpdateId
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import app.meetacy.backend.endpoint.types.notification.Notification as NotificationType
+import app.meetacy.backend.types.serializable.notification.Notification as NotificationType
 
 @Serializable
 sealed interface Update {

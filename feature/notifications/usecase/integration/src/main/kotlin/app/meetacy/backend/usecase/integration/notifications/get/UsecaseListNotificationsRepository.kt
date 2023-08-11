@@ -1,25 +1,27 @@
 package app.meetacy.backend.usecase.integration.notifications.get
 
 import app.meetacy.backend.endpoint.notifications.get.ListNotificationsRepository
-import app.meetacy.backend.types.paging.PagingId
+import app.meetacy.backend.types.paging.serializable.serializable
+import app.meetacy.backend.types.paging.serializable.type
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.amount.type
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
+import app.meetacy.backend.types.paging.serializable.PagingId as PagingIdSerializable
 
 class UsecaseListNotificationsRepository(
     private val usecase: GetNotificationsUsecase
 ) : ListNotificationsRepository {
     override suspend fun getNotifications(
         accessIdentity: AccessIdentity,
-        pagingId: PagingId?,
+        pagingId: PagingIdSerializable?,
         amount: Amount
     ): ListNotificationsRepository.Result = when (
         val result = usecase.getNotifications(
             accessIdentity = accessIdentity.type(),
-            pagingId = pagingId,
+            pagingId = pagingId?.type(),
             amount = amount.type()
         )
     ) {
@@ -27,7 +29,7 @@ class UsecaseListNotificationsRepository(
             ListNotificationsRepository.Result.Success(
                 notifications = result.notifications.mapItems { notification ->
                     notification.mapToEndpoint()
-                }
+                }.serializable()
             )
         is GetNotificationsUsecase.Result.TokenInvalid -> ListNotificationsRepository.Result.InvalidIdentity
     }

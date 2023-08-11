@@ -7,13 +7,13 @@ import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.meetings.MeetingId
-import app.meetacy.backend.types.meetings.MeetingIdentity
+import app.meetacy.backend.types.meetings.*
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.optional.map
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
-import app.meetacy.backend.usecase.types.*
+import app.meetacy.backend.usecase.types.FilesRepository
+import app.meetacy.backend.usecase.types.checkFile
 
 class EditMeetingUsecase(
     private val storage: Storage,

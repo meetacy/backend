@@ -1,10 +1,10 @@
 package app.meetacy.backend.usecase.users.get
 
+import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.types.users.Relationship
 import app.meetacy.backend.types.users.UserId
+import app.meetacy.backend.types.users.UserView
 import app.meetacy.backend.usecase.types.FilesRepository
-import app.meetacy.backend.usecase.types.FullUser
-import app.meetacy.backend.usecase.types.UserView
 
 class ViewUserUsecase(
     private val filesRepository: FilesRepository,
@@ -34,7 +34,7 @@ class ViewUserUsecase(
     suspend fun viewUser(viewerId: UserId, user: FullUser) = viewUsers(viewerId, listOf(user)).first()
 
     /**
-     * Returns relationship of 2 users
+     * Returns relationship of two users
      * @param [userId] specifies ID of related user
      * @return [Relationship.Friend] if both users are subscribed on each other,
      * [Relationship.Subscribed] if related user is subscribed on FullUser,

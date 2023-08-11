@@ -1,8 +1,7 @@
-package app.meetacy.backend.endpoint.types
+package app.meetacy.backend.types.serializable.invitation
 
-import app.meetacy.backend.endpoint.types.meeting.Meeting
-import app.meetacy.backend.endpoint.types.user.User
-import app.meetacy.backend.types.serializable.invitation.InvitationId
+import app.meetacy.backend.types.serializable.meetings.Meeting
+import app.meetacy.backend.types.serializable.users.User
 import kotlinx.serialization.Serializable
 
 @Serializable

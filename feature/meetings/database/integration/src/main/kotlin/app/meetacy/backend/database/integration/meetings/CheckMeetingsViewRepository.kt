@@ -1,8 +1,8 @@
 package app.meetacy.backend.database.integration.meetings
 
 import app.meetacy.backend.database.meetings.MeetingsStorage
+import app.meetacy.backend.types.meetings.CheckMeetingRepository
 import app.meetacy.backend.types.meetings.MeetingIdentity
-import app.meetacy.backend.usecase.types.CheckMeetingRepository
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseCheckMeetingsViewRepository(db: Database) : CheckMeetingRepository {

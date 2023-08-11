@@ -2,7 +2,7 @@ package app.meetacy.backend.usecase.updates.stream
 
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.update.UpdateId
-import app.meetacy.backend.types.user.UserId
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.usecase.types.FullUpdate
 import kotlinx.coroutines.flow.*
 

@@ -1,8 +1,8 @@
 package app.meetacy.backend.usecase.users.get
 
+import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.usecase.types.FullUser
-import app.meetacy.backend.usecase.types.UserView
+import app.meetacy.backend.types.users.UserView
 
 class GetUsersViewsUsecase(
     private val storage: Storage,

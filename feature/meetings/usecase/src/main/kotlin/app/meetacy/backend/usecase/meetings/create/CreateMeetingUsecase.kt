@@ -9,10 +9,13 @@ import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
-import app.meetacy.backend.usecase.types.*
+import app.meetacy.backend.usecase.types.FilesRepository
+import app.meetacy.backend.usecase.types.checkFileIdentity
 
 class CreateMeetingUsecase(
     private val hashGenerator: AccessHashGenerator,

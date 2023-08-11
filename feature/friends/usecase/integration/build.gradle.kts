@@ -8,4 +8,7 @@ dependencies {
     api(projects.feature.friends.endpoints)
 
     api(projects.feature.user.usecase.integration)
+
+    api(projects.libs.paging.serializable.integration)
+    api(projects.libs.paging.serializable)
 }

@@ -1,8 +1,10 @@
 package app.meetacy.backend.usecase.integration.friends.location.stream
 
 import app.meetacy.backend.endpoint.friends.location.stream.StreamLocationRepository
-import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.location.Location
+import app.meetacy.backend.types.serializable.location.type
 import app.meetacy.backend.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase.Result
@@ -18,8 +20,8 @@ class UsecaseStreamLocationRepository(
         selfLocation: Flow<Location>
     ): StreamLocationRepository.Result {
         val result = usecase.flow(
-            accessIdentity,
-            selfLocation
+            accessIdentity.type(),
+            selfLocation.map(Location::type)
         )
 
         return when (result) {

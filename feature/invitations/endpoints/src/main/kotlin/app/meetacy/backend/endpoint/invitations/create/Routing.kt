@@ -3,20 +3,20 @@ package app.meetacy.backend.endpoint.invitations.create
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.endpoint.types.Invitation
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
-import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
-import app.meetacy.backend.types.serializable.user.UserIdentity as UserIdentitySerializable
+import app.meetacy.backend.types.serializable.invitation.Invitation
+import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
+import app.meetacy.backend.types.serializable.users.UserIdentity
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 
 @Serializable
 data class InvitationCreatingFormSerializable(
     val token: AccessIdentitySerializable,
     val meetingId: MeetingIdentity,
-    val userId: UserIdentitySerializable
+    val userId: UserIdentity
 )
 
 fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationRepository) {
