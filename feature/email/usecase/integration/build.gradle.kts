@@ -6,6 +6,6 @@ plugins {
 dependencies {
     implementation(projects.core.integration)
     implementation(projects.core.types.serializable.integration)
-    implementation(projects.feature.email.usecase)
-    implementation(projects.feature.email.endpoints)
+    api(projects.feature.email.usecase)
+    api(projects.feature.email.endpoints)
 }

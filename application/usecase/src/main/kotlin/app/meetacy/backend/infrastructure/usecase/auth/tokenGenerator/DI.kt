@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.auth.tokenGenerator
 
-import app.meetacy.backend.endpoint.auth.generate.TokenGenerateRepository
+import app.meetacy.backend.feature.auth.endpoints.generate.TokenGenerateRepository
 import app.meetacy.backend.infrastructure.database.tokenGenerator.generateTokenStorage
 import app.meetacy.backend.types.integration.utf8Checker.DefaultUtf8Checker
 import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
