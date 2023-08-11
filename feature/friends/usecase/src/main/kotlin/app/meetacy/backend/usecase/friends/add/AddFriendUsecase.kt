@@ -3,9 +3,9 @@ package app.meetacy.backend.usecase.friends.add
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
+import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserIdentity
-import app.meetacy.backend.usecase.types.GetUsersViewsRepository
 
 
 class AddFriendUsecase(
@@ -34,12 +34,14 @@ class AddFriendUsecase(
 
         return Result.Success
     }
+
     sealed interface Result {
-        object Success : Result
-        object InvalidToken : Result
-        object FriendNotFound : Result
-        object FriendAlreadyAdded : Result
+        data object Success : Result
+        data object InvalidToken : Result
+        data object FriendNotFound : Result
+        data object FriendAlreadyAdded : Result
     }
+
     interface Storage {
         suspend fun addFriend(
             userId: UserId,

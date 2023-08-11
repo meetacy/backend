@@ -4,11 +4,11 @@ package app.meetacy.backend.endpoint.meetings.create
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.endpoint.types.meeting.Meeting
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.datetime.Date
 import app.meetacy.backend.types.serializable.file.FileIdentity
 import app.meetacy.backend.types.serializable.location.Location
+import app.meetacy.backend.types.serializable.meetings.Meeting
 import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*

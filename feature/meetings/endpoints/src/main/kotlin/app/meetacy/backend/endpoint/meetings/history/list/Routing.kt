@@ -3,11 +3,11 @@ package app.meetacy.backend.endpoint.meetings.history.list
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.endpoint.types.meeting.Meeting
 import app.meetacy.backend.types.paging.serializable.PagingId
 import app.meetacy.backend.types.paging.serializable.PagingResult
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.amount.Amount
+import app.meetacy.backend.types.serializable.meetings.Meeting
 import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -22,8 +22,8 @@ data class ListParam(
 )
 
 sealed interface ListMeetingsResult {
-    class Success(val meetings: PagingResult<Meeting>) : ListMeetingsResult
-    object InvalidIdentity : ListMeetingsResult
+    data class Success(val meetings: PagingResult<Meeting>) : ListMeetingsResult
+    data object InvalidIdentity : ListMeetingsResult
 }
 
 interface ListMeetingsHistoryRepository {

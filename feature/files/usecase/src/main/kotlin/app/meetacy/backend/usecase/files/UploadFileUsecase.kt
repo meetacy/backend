@@ -16,9 +16,9 @@ class UploadFileUsecase(
     private val hashGenerator: AccessHashGenerator
 ) {
     sealed interface Result {
-        class Success(val fileIdentity: FileIdentity) : Result
-        object InvalidIdentity : Result
-        class LimitSize(val filesSize: FileSize, val limitSize: FileSize) : Result
+        data class Success(val fileIdentity: FileIdentity) : Result
+        data object InvalidIdentity : Result
+        data class LimitSize(val filesSize: FileSize, val limitSize: FileSize) : Result
     }
 
     suspend fun saveFile(

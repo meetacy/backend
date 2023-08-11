@@ -21,7 +21,7 @@ internal fun endpointsIntegrationBuildGradleKts(featureName: FeatureName) = """
     
     dependencies {
         implementation(projects.core.endpoints.integration)
-        implementation(projects.core.typesSerializable.integration)
+        implementation(projects.core.types.serializable.integration)
         implementation(projects.feature.${featureName.camelCase}.endpoints)
         implementation(projects.feature.${featureName.camelCase}.usecase)
     }
