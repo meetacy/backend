@@ -1,10 +1,10 @@
-package app.meetacy.backend.usecase.integration.email.link
+package app.meetacy.backend.feature.email.usecase.integration.link
 
 import app.meetacy.backend.feature.email.endpoints.link.ConfirmHashResult
 import app.meetacy.backend.feature.email.endpoints.link.LinkEmailRepository
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.usecase.email.LinkEmailUsecase
+import app.meetacy.backend.feature.email.usecase.LinkEmailUsecase
 
 class UsecaseLinkEmailRepository(private val usecase: LinkEmailUsecase) : LinkEmailRepository {
     override suspend fun linkEmail(

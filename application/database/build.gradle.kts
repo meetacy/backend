@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.feature.auth.database.integration)
     implementation(projects.feature.email.database.integration)
     implementation(projects.feature.files.database.integration)
     implementation(projects.feature.friends.database.integration)

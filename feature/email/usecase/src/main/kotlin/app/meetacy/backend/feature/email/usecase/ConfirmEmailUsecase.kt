@@ -1,4 +1,4 @@
-package app.meetacy.backend.usecase.email
+package app.meetacy.backend.feature.email.usecase
 
 import app.meetacy.backend.types.users.UserId
 

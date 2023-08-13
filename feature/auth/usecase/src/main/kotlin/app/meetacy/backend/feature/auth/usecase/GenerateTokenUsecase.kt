@@ -1,4 +1,4 @@
-package app.meetacy.backend.usecase.auth
+package app.meetacy.backend.feature.auth.usecase
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.access.AccessToken

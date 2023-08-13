@@ -27,9 +27,9 @@ import app.meetacy.backend.types.serializable.file.serializable
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.users.*
-import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
-import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
-import app.meetacy.backend.usecase.email.LinkEmailUsecase
+import app.meetacy.backend.feature.auth.usecase.GenerateTokenUsecase
+import app.meetacy.backend.feature.email.usecase.ConfirmEmailUsecase
+import app.meetacy.backend.feature.email.usecase.LinkEmailUsecase
 import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase

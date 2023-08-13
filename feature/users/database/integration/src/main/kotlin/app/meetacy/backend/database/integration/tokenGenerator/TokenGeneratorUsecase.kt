@@ -5,8 +5,8 @@ import app.meetacy.backend.database.integration.users.create.DatabaseCreateUserS
 import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.usecase.auth.CreateUserUsecase
-import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
+import app.meetacy.backend.feature.auth.usecase.CreateUserUsecase
+import app.meetacy.backend.feature.auth.usecase.GenerateTokenUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseGenerateTokenStorage(hashGenerator: AccessHashGenerator, db: Database) : GenerateTokenUsecase.Storage {

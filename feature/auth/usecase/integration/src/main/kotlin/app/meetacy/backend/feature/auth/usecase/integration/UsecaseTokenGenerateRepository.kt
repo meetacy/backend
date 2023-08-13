@@ -1,9 +1,9 @@
-package app.meetacy.backend.usecase.integration.auth
+package app.meetacy.backend.feature.auth.usecase.integration
 
 import app.meetacy.backend.feature.auth.endpoints.generate.TokenGenerateRepository
 import app.meetacy.backend.feature.auth.endpoints.generate.TokenGenerateResult
 import app.meetacy.backend.types.serializable.access.serializable
-import app.meetacy.backend.usecase.auth.GenerateTokenUsecase
+import app.meetacy.backend.feature.auth.usecase.GenerateTokenUsecase
 
 class UsecaseTokenGenerateRepository(private val usecase: GenerateTokenUsecase): TokenGenerateRepository {
     override suspend fun generateToken(nickname: String): TokenGenerateResult {

@@ -1,8 +1,8 @@
-package app.meetacy.backend.usecase.integration.email.confirm
+package app.meetacy.backend.feature.email.usecase.integration.confirm
 
 import app.meetacy.backend.feature.email.endpoints.confirm.ConfirmEmailRepository
 import app.meetacy.backend.feature.email.endpoints.confirm.ConfirmHashResult
-import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
+import app.meetacy.backend.feature.email.usecase.ConfirmEmailUsecase
 
 class UsecaseConfirmEmailRepository(
     private val usecase: ConfirmEmailUsecase
