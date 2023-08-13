@@ -2,10 +2,10 @@ package app.meetacy.backend.endpoint
 
 import app.meetacy.backend.feature.auth.endpoints.auth
 import app.meetacy.backend.feature.files.endpoints.files
-import app.meetacy.backend.endpoint.friends.FriendsDependencies
-import app.meetacy.backend.endpoint.friends.friends
-import app.meetacy.backend.endpoint.invitations.InvitationsDependencies
-import app.meetacy.backend.endpoint.invitations.invitations
+import app.meetacy.backend.feature.friends.endpoints.FriendsDependencies
+import app.meetacy.backend.feature.friends.endpoints.friends
+import app.meetacy.backend.feature.invitations.endpoints.InvitationsDependencies
+import app.meetacy.backend.feature.invitations.endpoints.invitations
 import app.meetacy.backend.endpoint.ktor.exceptions.installExceptionsHandler
 import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
 import app.meetacy.backend.endpoint.meetings.meetings

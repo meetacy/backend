@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.database.invitations
 
-import app.meetacy.backend.database.invitations.InvitationsStorage
+import app.meetacy.backend.feature.invitations.database.invitations.InvitationsStorage
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.invitations.accept.acceptInvitation
 import app.meetacy.backend.infrastructure.database.invitations.cancel.cancelInvitation

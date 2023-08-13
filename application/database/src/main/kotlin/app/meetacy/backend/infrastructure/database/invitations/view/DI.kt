@@ -1,14 +1,14 @@
 package app.meetacy.backend.infrastructure.database.invitations.view
 
-import app.meetacy.backend.database.integration.invitations.get.DatabaseGetInvitationsViewsUsecaseInvitationsProvider
-import app.meetacy.backend.database.integration.types.UsecaseGetInvitationsViewsRepository
-import app.meetacy.backend.database.integration.types.UsecaseViewInvitationsRepository
+import app.meetacy.backend.feature.invitations.database.integration.invitations.get.DatabaseGetInvitationsViewsUsecaseInvitationsProvider
+import app.meetacy.backend.feature.invitations.database.integration.types.UsecaseGetInvitationsViewsRepository
+import app.meetacy.backend.feature.invitations.database.integration.types.UsecaseViewInvitationsRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository
-import app.meetacy.backend.usecase.invitations.get.GetInvitationsViewsUsecase
-import app.meetacy.backend.usecase.invitations.get.ViewInvitationsUsecase
-import app.meetacy.backend.usecase.types.GetInvitationsViewsRepository
+import app.meetacy.backend.feature.invitations.usecase.invitations.get.GetInvitationsViewsUsecase
+import app.meetacy.backend.feature.invitations.usecase.invitations.get.ViewInvitationsUsecase
+import app.meetacy.backend.feature.invitations.usecase.types.GetInvitationsViewsRepository
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

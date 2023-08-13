@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.database.friends
 
-import app.meetacy.backend.database.friends.FriendsStorage
+import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.friends.add.addFriend
 import app.meetacy.backend.infrastructure.database.friends.delete.deleteFriend

@@ -3,7 +3,7 @@ package app.meetacy.backend.infrastructure.usecase.friends
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
-import app.meetacy.backend.endpoint.friends.FriendsDependencies
+import app.meetacy.backend.feature.friends.endpoints.FriendsDependencies
 import app.meetacy.backend.infrastructure.usecase.friends.add.addFriendRepository
 import app.meetacy.backend.infrastructure.usecase.friends.delete.deleteFriendRepository
 import app.meetacy.backend.infrastructure.usecase.friends.list.listFriendsRepository

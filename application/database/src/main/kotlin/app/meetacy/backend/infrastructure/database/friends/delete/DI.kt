@@ -1,8 +1,8 @@
 package app.meetacy.backend.infrastructure.database.friends.delete
 
-import app.meetacy.backend.database.integration.friends.delete.DatabaseDeleteFriendStorage
+import app.meetacy.backend.feature.friends.database.integration.friends.delete.DatabaseDeleteFriendStorage
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
+import app.meetacy.backend.feature.friends.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

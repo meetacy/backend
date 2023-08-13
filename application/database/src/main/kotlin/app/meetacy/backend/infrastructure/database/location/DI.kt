@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.database.location
 
-import app.meetacy.backend.database.location.UsersLocationsStorage
+import app.meetacy.backend.feature.friends.database.location.UsersLocationsStorage
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
