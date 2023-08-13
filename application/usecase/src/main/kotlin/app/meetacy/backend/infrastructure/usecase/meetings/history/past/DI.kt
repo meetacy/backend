@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.meetings.history.past
 
 import app.meetacy.backend.feature.meetings.endpoints.history.past.ListMeetingsPastRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.infrastructure.database.meetings.history.past.listPastMeetingsStorage
 import app.meetacy.backend.feature.meetings.usecase.integration.history.past.UsecaseListPastMeetingsRepository
@@ -16,7 +15,7 @@ fun DIBuilder.listPastMeetingsRepository() {
     val listPastMeetingsRepository by singleton<ListMeetingsPastRepository> {
         UsecaseListPastMeetingsRepository(
             usecase = ListMeetingsPastUsecase(
-                authRepository,
+                authRepository = get(),
                 listPastMeetingsStorage,
                 getMeetingViewRepository
             )

@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.meetings.edit
 
 import app.meetacy.backend.feature.meetings.endpoints.edit.EditMeetingRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.files.filesRepository
 import app.meetacy.backend.infrastructure.database.meetings.edit.editMeetingStorage
 import app.meetacy.backend.infrastructure.database.meetings.view.viewMeetingRepository
@@ -20,7 +19,7 @@ fun DIBuilder.editMeetingRepository() {
         UsecaseEditMeetingRepository(
             usecase = EditMeetingUsecase(
                 editMeetingStorage,
-                authRepository,
+                authRepository = get(),
                 getMeetingViewRepository,
                 viewMeetingRepository,
                 filesRepository,

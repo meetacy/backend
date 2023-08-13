@@ -26,8 +26,8 @@ class GenerateTokenUsecase(
     }
 
     sealed interface Result {
-        class Success(val accessIdentity: AccessIdentity) : Result
-        object InvalidUtf8String : Result
+        data class Success(val accessIdentity: AccessIdentity) : Result
+        data object InvalidUtf8String : Result
     }
 
     interface Storage {

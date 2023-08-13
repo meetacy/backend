@@ -3,6 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.types)
-    implementation(libs.exposed.core)
+    implementation(projects.core.database)
 }

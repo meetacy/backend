@@ -1,4 +1,4 @@
-package app.meetacy.backend.infrastructure.usecase.auth.email.confirm
+package app.meetacy.backend.infrastructure.usecase.email.confirm
 
 import app.meetacy.backend.feature.email.endpoints.confirm.ConfirmEmailRepository
 import app.meetacy.backend.infrastructure.database.email.confirm.confirmEmailStorage

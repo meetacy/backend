@@ -1,7 +1,6 @@
-package app.meetacy.backend.infrastructure.usecase.auth.email.link
+package app.meetacy.backend.infrastructure.usecase.email.link
 
 import app.meetacy.backend.feature.email.endpoints.link.LinkEmailRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.email.link.linkEmailMailer
 import app.meetacy.backend.infrastructure.database.email.link.linkEmailStorage
 import app.meetacy.backend.feature.email.usecase.LinkEmailUsecase
@@ -19,7 +18,7 @@ fun DIBuilder.linkEmailRepository() {
                 storage = linkEmailStorage,
                 mailer = linkEmailMailer,
                 hashGenerator = get(),
-                authRepository = authRepository
+                authRepository = get()
             )
         )
     }

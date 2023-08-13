@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.files.upload
 
 import app.meetacy.backend.feature.files.endpoints.upload.SaveFileRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.files.upload.uploadFileUsecase
 import app.meetacy.backend.infrastructure.usecase.files.filesBasePath
 import app.meetacy.backend.infrastructure.usecase.files.filesLimitPerUser
@@ -17,7 +16,7 @@ fun DIBuilder.uploadFileRepository() {
     val uploadFileRepository by singleton<SaveFileRepository> {
         UsecaseUploadFileRepository(
             usecase = UploadFileUsecase(
-                authRepository = authRepository,
+                authRepository = get(),
                 storage = uploadFileUsecase,
                 hashGenerator = get()
             ),

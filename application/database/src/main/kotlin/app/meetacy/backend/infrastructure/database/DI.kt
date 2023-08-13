@@ -1,20 +1,18 @@
 package app.meetacy.backend.infrastructure.database
 
-import app.meetacy.backend.infrastructure.database.auth.auth
+import app.meetacy.backend.feature.auth.database.integration.auth
 import app.meetacy.backend.infrastructure.database.email.email
 import app.meetacy.backend.infrastructure.database.files.files
 import app.meetacy.backend.infrastructure.database.friends.friends
 import app.meetacy.backend.infrastructure.database.invitations.invitations
 import app.meetacy.backend.infrastructure.database.meetings.meetings
 import app.meetacy.backend.infrastructure.database.notifications.notifications
-import app.meetacy.backend.infrastructure.database.tokenGenerator.tokenGenerator
 import app.meetacy.backend.infrastructure.database.updates.updates
 import app.meetacy.backend.infrastructure.database.users.users
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.DatabaseConnectionAutoRegistration
 
 val DI.databaseConfig: DatabaseConfig by Dependency
 
@@ -29,14 +27,15 @@ val DI.database: Database by Dependency
 fun DIBuilder.database() {
     singleton()
     // storages
+
     auth()
+    // fixme: migrate all storages below
     email()
     files()
     friends()
     invitations()
     meetings()
     notifications()
-    tokenGenerator()
     updates()
     users()
 }

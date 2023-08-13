@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.friends.list
 
 import app.meetacy.backend.feature.friends.endpoints.list.ListFriendsRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.friends.list.listFriendsStorage
 import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository
 import app.meetacy.backend.feature.friends.usecase.friends.list.ListFriendsUsecase
@@ -16,7 +15,7 @@ fun DIBuilder.listFriendsRepository() {
     val listFriendsRepository by singleton<ListFriendsRepository> {
         UsecaseListFriendsRepository(
             usecase = ListFriendsUsecase(
-                authRepository = authRepository,
+                authRepository = get(),
                 getUsersViewsRepository = getUserViewsRepository,
                 storage = listFriendsStorage
             )

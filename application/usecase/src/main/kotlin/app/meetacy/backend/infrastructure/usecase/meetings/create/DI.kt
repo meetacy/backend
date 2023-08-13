@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.meetings.create
 
 import app.meetacy.backend.feature.meetings.endpoints.create.CreateMeetingRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.files.filesRepository
 import app.meetacy.backend.infrastructure.database.meetings.create.createMeetingStorage
 import app.meetacy.backend.infrastructure.database.meetings.create.viewMeetingRepository
@@ -21,7 +20,7 @@ fun DIBuilder.createMeetingRepository() {
             usecase = CreateMeetingUsecase(
                 hashGenerator = get(),
                 storage = createMeetingStorage,
-                authRepository = authRepository,
+                authRepository = get(),
                 viewMeetingRepository = viewMeetingRepository,
                 utf8Checker = DefaultUtf8Checker,
                 filesRepository = filesRepository

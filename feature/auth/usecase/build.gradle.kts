@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    api(projects.core.types)
+    implementation(projects.core.usecase)
 }

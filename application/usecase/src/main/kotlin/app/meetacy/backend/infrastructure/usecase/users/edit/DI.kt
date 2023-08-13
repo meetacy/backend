@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.users.edit
 
 import app.meetacy.backend.endpoint.users.edit.EditUserRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.files.filesRepository
 import app.meetacy.backend.infrastructure.database.users.edit.editUserStorage
 import app.meetacy.backend.usecase.integration.users.edit.UsecaseEditUserRepository
@@ -18,7 +17,7 @@ fun DIBuilder.editUserRepository() {
         UsecaseEditUserRepository(
             usecase = EditUserUsecase(
                 storage = editUserStorage,
-                authRepository = authRepository,
+                authRepository = get(),
                 filesRepository = filesRepository,
                 utf8Checker = DefaultUtf8Checker
             )

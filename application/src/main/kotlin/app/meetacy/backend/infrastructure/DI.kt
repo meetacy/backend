@@ -4,7 +4,8 @@ package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.infrastructure.database.DatabaseConfig
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.infrastructure.usecase.integrations
+import app.meetacy.backend.infrastructure.usecase.endpoints
+import app.meetacy.backend.infrastructure.usecase.usecase
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.di.DI
 import app.meetacy.di.builder.di
@@ -27,6 +28,7 @@ fun di(
     val filesBasePath by constant(filesBasePath)
     val filesSizeLimit by constant(filesSizeLimit)
 
+    endpoints()
+    usecase()
     database()
-    integrations()
 }

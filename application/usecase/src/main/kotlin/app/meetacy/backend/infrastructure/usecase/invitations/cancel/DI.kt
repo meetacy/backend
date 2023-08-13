@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.invitations.cancel
 
 import app.meetacy.backend.feature.invitations.endpoints.cancel.CancelInvitationRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.invitations.cancel.cancelInvitationStorage
 import app.meetacy.backend.feature.invitations.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.feature.invitations.usecase.invitations.cancel.CancelInvitationUsecase
@@ -15,7 +14,7 @@ fun DIBuilder.cancelInvitationRepository() {
     val cancelInvitationRepository by singleton<CancelInvitationRepository> {
         UsecaseCancelInvitationRepository(
             usecase = CancelInvitationUsecase(
-                authRepository,
+                authRepository = get(),
                 cancelInvitationStorage
             )
         )

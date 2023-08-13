@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.meetings.map
 
 import app.meetacy.backend.feature.meetings.endpoints.map.list.ListMeetingsMapRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.infrastructure.database.meetings.map.listMeetingsMapListStorage
 import app.meetacy.backend.infrastructure.database.meetings.view.viewMeetingRepository
@@ -13,7 +12,7 @@ fun DIBuilder.listMeetingsMapRepository() {
     val listMeetingsMapRepository by singleton<ListMeetingsMapRepository> {
         UsecaseListMeetingsMapRepository(
             usecase = ListMeetingsMapUsecase(
-                authRepository = authRepository,
+                authRepository = get(),
                 storage = listMeetingsMapListStorage,
                 getMeetingsViewsRepository = getMeetingViewRepository,
                 viewMeetingsRepository = viewMeetingRepository

@@ -24,6 +24,8 @@ internal fun File.packageDir(pkg: String) = File(this, pkg.replace('.', '/'))
 
 internal val File.integration get() = File(this, "integration")
 
+internal val File.diKt get() = File(this, "DI.kt")
+
 internal fun checkFiles(userDir: File) {
     if (!userDir.features.exists()) {
         failScript("Current working directory: ${userDir.absolutePath}\n`feature` directory does not exist, try to run program in a `project` root")

@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.invitations.create
 
 import app.meetacy.backend.feature.invitations.endpoints.create.CreateInvitationRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.invitations.create.createInvitationStorage
 import app.meetacy.backend.infrastructure.database.invitations.view.getInvitationsViewsRepository
 import app.meetacy.backend.feature.invitations.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
@@ -17,7 +16,7 @@ fun DIBuilder.createInvitationRepository() {
     val createInvitationRepository by singleton<CreateInvitationRepository> {
         UsecaseCreateInvitationRepository(
             usecase = CreateInvitationUsecase(
-                authRepository = authRepository,
+                authRepository = get(),
                 storage = createInvitationStorage,
                 hashGenerator = get(),
                 invitationsRepository = getInvitationsViewsRepository

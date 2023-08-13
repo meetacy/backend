@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.meetings.history.active
 
 import app.meetacy.backend.feature.meetings.endpoints.history.active.ListMeetingsActiveRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.infrastructure.database.meetings.history.active.listActiveMeetingsStorage
 import app.meetacy.backend.feature.meetings.usecase.integration.history.active.UsecaseListActiveMeetingsRepository
@@ -16,7 +15,7 @@ fun DIBuilder.listActiveMeetingsRepository() {
     val listActiveMeetingsRepository by singleton<ListMeetingsActiveRepository> {
         UsecaseListActiveMeetingsRepository(
             usecase = ListMeetingsActiveUsecase(
-                authRepository,
+                authRepository = get(),
                 listActiveMeetingsStorage,
                 getMeetingViewRepository
             )

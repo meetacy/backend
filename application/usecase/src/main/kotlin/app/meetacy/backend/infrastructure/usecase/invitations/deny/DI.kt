@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.invitations.deny
 
 import app.meetacy.backend.feature.invitations.endpoints.deny.DenyInvitationRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.invitations.deny.denyInvitationStorage
 import app.meetacy.backend.feature.invitations.usecase.integration.invitations.deny.UsecaseDenyInvitationRepository
 import app.meetacy.backend.feature.invitations.usecase.invitations.deny.DenyInvitationUsecase
@@ -15,7 +14,7 @@ fun DIBuilder.denyInvitationRepository() {
     val denyInvitationRepository by singleton<DenyInvitationRepository> {
         UsecaseDenyInvitationRepository(
             usecase = DenyInvitationUsecase(
-                authRepository = authRepository,
+                authRepository = get(),
                 storage = denyInvitationStorage
             )
         )

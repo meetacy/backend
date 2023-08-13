@@ -75,6 +75,18 @@ internal fun databaseBuildGradleKts() = """
     
 """.trimIndent()
 
+internal fun databaseIntegrationBuildGradleKts(featureName: FeatureName) = """
+    plugins {
+        id("backend-convention")
+    }
+    
+    dependencies {
+        implementation(projects.core.database.integration)
+        implementation(projects.feature.${featureName.camelCase}.database)
+    }
+    
+""".trimIndent()
+
 internal fun databaseStorageFile(featureName: FeatureName): String {
     val capitalized = featureName.camelCase.capitalize()
 
@@ -93,3 +105,14 @@ internal fun databaseStorageFile(featureName: FeatureName): String {
     
     """.trimIndent()
 }
+
+internal fun diIntegrationFile(module: String, featureName: FeatureName) = """
+    package app.meetacy.backend.feature.${featureName.camelCase}.$module.integration
+    
+    import app.meetacy.di.builder.DIBuilder
+    
+    fun DIBuilder.${featureName.camelCase}() {
+        
+    }
+    
+"""

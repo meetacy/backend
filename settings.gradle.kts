@@ -42,6 +42,7 @@ val core = listOf(
     "usecase",
     "usecase:integration",
     "database",
+    "database:integration",
     "integration",
     "types",
     "types:integration",
@@ -83,7 +84,5 @@ features.forEach { feature ->
     include("feature:$feature:usecase")
     include("feature:$feature:usecase:integration")
     include("feature:$feature:database")
-    // fixme: database integrations are against architecture
-    //  remove it later (shoulda move it to usecase:integration)
     include("feature:$feature:database:integration")
 }

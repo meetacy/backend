@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.friends.location.stream
 
 import app.meetacy.backend.feature.friends.endpoints.location.FriendsLocationDependencies
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.friends.location.stream.friendLocationStorage
 import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository
 import app.meetacy.backend.feature.friends.usecase.integration.location.stream.UsecaseStreamLocationRepository
@@ -17,7 +16,7 @@ fun DIBuilder.locationStreamDependencies() {
         FriendsLocationDependencies(
             streamLocationRepository = UsecaseStreamLocationRepository(
                 usecase = FriendsLocationStreamingUsecase(
-                    authRepository = authRepository,
+                    authRepository = get(),
                     storage = friendLocationStorage,
                     usersViewsRepository = getUserViewsRepository
                 )

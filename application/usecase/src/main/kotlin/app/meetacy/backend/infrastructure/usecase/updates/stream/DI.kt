@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.updates.stream
 
 import app.meetacy.backend.endpoint.updates.stream.StreamUpdatesRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.notifications.get.getNotificationViewsRepository
 import app.meetacy.backend.infrastructure.database.updates.streamUpdatesStorage
 import app.meetacy.backend.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
@@ -16,7 +15,7 @@ fun DIBuilder.streamUpdatesRepository() {
     val streamUpdatesRepository by singleton<StreamUpdatesRepository> {
         UsecaseStreamUpdatesRepository(
             usecase = StreamUpdatesUsecase(
-                auth = authRepository,
+                auth = get(),
                 notificationsRepository = getNotificationViewsRepository,
                 storage = streamUpdatesStorage
             )

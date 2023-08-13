@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.friends.delete
 
 import app.meetacy.backend.feature.friends.endpoints.delete.DeleteFriendRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.friends.delete.deleteFriendStorage
 import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository
 import app.meetacy.backend.feature.friends.usecase.friends.delete.DeleteFriendUsecase
@@ -16,7 +15,7 @@ fun DIBuilder.deleteFriendRepository() {
     val deleteFriendRepository by singleton<DeleteFriendRepository> {
         UsecaseDeleteFriendRepository(
             usecase = DeleteFriendUsecase(
-                authRepository = authRepository,
+                authRepository = get(),
                 getUsersViewsRepository = getUserViewsRepository,
                 storage = deleteFriendStorage
             )

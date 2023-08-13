@@ -26,7 +26,6 @@ dependencies {
     // implementation(ktor.client.serialization.json)
 
     // features
-    implementation(projects.feature.auth)
     implementation(projects.core)
     implementation(projects.feature.email.endpoints)
     implementation(projects.feature.files)

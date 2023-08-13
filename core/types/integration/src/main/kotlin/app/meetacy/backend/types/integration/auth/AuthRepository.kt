@@ -7,10 +7,11 @@ import app.meetacy.di.builder.DIBuilder
 import org.jetbrains.exposed.sql.Database
 
 fun DIBuilder.authRepository() {
-    val authRepository by singleton<AuthRepository> { DatabaseAuthRepository(db = get()) }
+    val authRepository by singleton<AuthRepository> {
+        DatabaseAuthRepository(tokensStorage = get())
+    }
 }
 
-class DatabaseAuthRepository(db: Database) : AuthRepository {
-    private val tokensStorage = TokensStorage(db)
+class DatabaseAuthRepository(private val tokensStorage: TokensStorage) : AuthRepository {
     override suspend fun authorize(accessIdentity: AccessIdentity) = tokensStorage.checkToken(accessIdentity)
 }

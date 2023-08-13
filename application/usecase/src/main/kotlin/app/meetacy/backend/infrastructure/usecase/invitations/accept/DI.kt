@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.invitations.accept
 
 import app.meetacy.backend.feature.invitations.endpoints.accept.AcceptInvitationRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.invitations.accept.acceptInvitationStorage
 import app.meetacy.backend.feature.invitations.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
 import app.meetacy.backend.feature.invitations.usecase.invitations.accept.AcceptInvitationUsecase
@@ -15,7 +14,7 @@ fun DIBuilder.acceptInvitationRepository() {
     val acceptInvitationRepository by singleton<AcceptInvitationRepository> {
         UsecaseAcceptInvitationRepository(
             usecase = AcceptInvitationUsecase(
-                authRepository,
+                authRepository = get(),
                 acceptInvitationStorage
             )
         )

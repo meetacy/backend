@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-
-    api(projects.feature.auth.usecase)
+    implementation(projects.core.usecase)
+    implementation(projects.feature.auth.usecase)
 }

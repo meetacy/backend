@@ -1,7 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.notifications.read
 
 import app.meetacy.backend.feature.notifications.endpoints.read.ReadNotificationsRepository
-import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.notifications.read.readNotificationStorage
 import app.meetacy.backend.feature.notifications.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.feature.notifications.usecase.notifications.ReadNotificationsUsecase
@@ -15,7 +14,7 @@ fun DIBuilder.readNotificationsRepository() {
     val readNotificationsRepository by singleton<ReadNotificationsRepository> {
         UsecaseReadNotificationsRepository(
             usecase = ReadNotificationsUsecase(
-                authRepository = authRepository,
+                authRepository = get(),
                 storage = readNotificationStorage
             )
         )

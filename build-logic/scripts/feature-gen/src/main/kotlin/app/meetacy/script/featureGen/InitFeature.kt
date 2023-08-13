@@ -66,6 +66,10 @@ private fun initEndpointsIntegration(
         .packageDir("${featureName.camelCase}.endpoints.integration")
 
     sourcesDir.mkdirs()
+
+    sourcesDir.diKt.writeText(
+        diIntegrationFile(module = "endpoints", featureName)
+    )
 }
 
 private fun initUsecase(
@@ -102,6 +106,10 @@ private fun initUsecaseIntegration(
         .packageDir("${featureName.camelCase}.usecase.integration")
 
     sourcesDir.mkdirs()
+
+    sourcesDir.diKt.writeText(
+        diIntegrationFile(module = "usecase", featureName)
+    )
 }
 
 private fun initDatabase(
@@ -121,6 +129,30 @@ private fun initDatabase(
     val storageKt = sourcesDir.storageKt(featureName)
 
     storageKt.writeText(databaseStorageFile(featureName))
+
+    initDatabaseIntegration(featureName, databaseDir)
+}
+
+private fun initDatabaseIntegration(
+    featureName: FeatureName,
+    databaseDir: File
+) {
+    val integrationDir = databaseDir.integration.apply { mkdir() }
+
+    integrationDir.buildGradleKts.writeText(
+        databaseIntegrationBuildGradleKts(featureName)
+    )
+
+    val sourcesDir = integrationDir
+        .kotlinMain
+        .featurePackage
+        .packageDir("${featureName.camelCase}.database.integration")
+
+    sourcesDir.mkdirs()
+
+    sourcesDir.diKt.writeText(
+        diIntegrationFile(module = "database", featureName)
+    )
 }
 
 private fun appendFeatureToSettingsGradle(
