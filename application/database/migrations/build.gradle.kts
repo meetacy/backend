@@ -11,7 +11,7 @@ dependencies {
     api(projects.feature.meetings.database)
     api(projects.feature.notifications.database)
     api(projects.feature.updates.database)
-    api(projects.feature.user.database)
+    api(projects.feature.users.database)
 
     implementation(libs.exposed.core)
     api(libs.meetacy.wdater.core)

@@ -16,7 +16,7 @@ dependencies {
     implementation(projects.feature.meetings.usecase.integration)
     implementation(projects.feature.notifications.usecase.integration)
     implementation(projects.feature.updates.usecase.integration)
-    implementation(projects.feature.user.usecase.integration)
+    implementation(projects.feature.users.usecase.integration)
 
     implementation(projects.libs.utf8Checker)
 }

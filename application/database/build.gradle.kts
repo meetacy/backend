@@ -11,5 +11,5 @@ dependencies {
     implementation(projects.feature.meetings.database.integration)
     implementation(projects.feature.notifications.database.integration)
     implementation(projects.feature.updates.database.integration)
-    implementation(projects.feature.user.database.integration)
+    implementation(projects.feature.users.database.integration)
 }

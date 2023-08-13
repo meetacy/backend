@@ -8,5 +8,5 @@ dependencies {
     api(projects.feature.notifications.endpoints)
 
     api(projects.feature.meetings.usecase.integration)
-    api(projects.feature.user.usecase.integration)
+    api(projects.feature.users.usecase.integration)
 }

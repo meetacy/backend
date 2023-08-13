@@ -74,7 +74,7 @@ val features = listOf(
     "meetings",
     "notifications",
     "updates",
-    "user"
+    "users"
 )
 
 features.forEach { feature ->

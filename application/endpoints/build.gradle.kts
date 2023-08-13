@@ -8,7 +8,7 @@ dependencies {
     api(projects.feature.notifications.endpoints)
     api(projects.feature.meetings.endpoints)
     api(projects.feature.files.endpoints)
-    api(projects.feature.user.endpoints)
+    api(projects.feature.users.endpoints)
     api(projects.feature.auth.endpoints)
     api(projects.feature.friends.endpoints)
     api(projects.feature.updates.endpoints)

@@ -5,6 +5,6 @@ plugins {
 dependencies {
     implementation(libs.exposed.core)
 
-    api(projects.feature.user.database)
+    api(projects.feature.users.database)
     api(projects.libs.exposedExtensions)
 }

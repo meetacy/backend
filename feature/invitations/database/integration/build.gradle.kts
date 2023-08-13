@@ -9,5 +9,5 @@ dependencies {
     api(projects.feature.friends.database)
     api(projects.feature.notifications.usecase)
     api(projects.feature.meetings.database.integration)
-    api(projects.feature.user.database.integration)
+    api(projects.feature.users.database.integration)
 }

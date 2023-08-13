@@ -35,7 +35,7 @@ dependencies {
     implementation(projects.feature.notifications)
     implementation(projects.feature.meetings)
     implementation(projects.feature.updates)
-    implementation(projects.feature.user)
+    implementation(projects.feature.users)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)

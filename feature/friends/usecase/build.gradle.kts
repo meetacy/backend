@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.user.usecase)
+    api(projects.feature.users.usecase)
     api(projects.libs.stdlibExtensions)
     api(projects.libs.paging)
 }

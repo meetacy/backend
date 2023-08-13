@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.user.usecase)
-    api(projects.feature.user.database)
+    api(projects.feature.users.usecase)
+    api(projects.feature.users.database)
     api(projects.feature.friends.database)
 
     api(projects.feature.files.database.integration)

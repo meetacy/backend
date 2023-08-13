@@ -5,5 +5,5 @@ plugins {
 dependencies {
     api(libs.exposed.core)
 
-    api(projects.feature.user.database)
+    api(projects.feature.users.database)
 }

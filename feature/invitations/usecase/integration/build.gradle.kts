@@ -7,6 +7,6 @@ dependencies {
     api(projects.feature.invitations.usecase)
     api(projects.feature.invitations.endpoints)
 
-    api(projects.feature.user.usecase.integration)
+    api(projects.feature.users.usecase.integration)
     api(projects.feature.meetings.usecase.integration)
 }
