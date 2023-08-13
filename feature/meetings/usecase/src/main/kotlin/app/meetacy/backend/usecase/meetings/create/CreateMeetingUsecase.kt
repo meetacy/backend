@@ -14,8 +14,8 @@ import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
-import app.meetacy.backend.usecase.types.FilesRepository
-import app.meetacy.backend.usecase.types.checkFileIdentity
+import app.meetacy.backend.feature.files.usecase.types.FilesRepository
+import app.meetacy.backend.feature.files.usecase.types.checkFileIdentity
 
 class CreateMeetingUsecase(
     private val hashGenerator: AccessHashGenerator,

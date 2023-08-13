@@ -1,7 +1,7 @@
 package app.meetacy.backend.database.integration.meetings.create
 
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseViewMeetingsUsecaseStorage
-import app.meetacy.backend.database.integration.types.DatabaseFilesRepository
+import app.meetacy.backend.feature.files.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.database.integration.types.mapToDatabase
 import app.meetacy.backend.database.meetings.MeetingsStorage

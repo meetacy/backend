@@ -6,7 +6,7 @@ import app.meetacy.backend.constants.DATE_TIME_MAX_LIMIT
 import app.meetacy.backend.constants.DESCRIPTION_MAX_LIMIT
 import app.meetacy.backend.constants.HASH_LENGTH
 import app.meetacy.backend.constants.MEETING_TITLE_MAX_LIMIT
-import app.meetacy.backend.database.files.FilesTable
+import app.meetacy.backend.feature.files.database.files.FilesTable
 import app.meetacy.backend.database.meetings.MeetingsTable.ACCESS_HASH
 import app.meetacy.backend.database.meetings.MeetingsTable.AVATAR_ID
 import app.meetacy.backend.database.meetings.MeetingsTable.CREATOR_ID

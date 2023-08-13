@@ -1,7 +1,7 @@
 package app.meetacy.backend.infrastructure.usecase.files.get
 
-import app.meetacy.backend.database.integration.files.DatabaseGetFileRepository
-import app.meetacy.backend.endpoint.files.download.GetFileRepository
+import app.meetacy.backend.feature.files.database.integration.files.DatabaseGetFileRepository
+import app.meetacy.backend.feature.files.endpoints.download.GetFileRepository
 import app.meetacy.backend.infrastructure.database.files.filesStorage
 import app.meetacy.backend.infrastructure.usecase.files.filesBasePath
 import app.meetacy.di.DI

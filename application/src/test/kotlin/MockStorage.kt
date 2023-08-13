@@ -1,6 +1,6 @@
 
-import app.meetacy.backend.endpoint.files.download.GetFileRepository
-import app.meetacy.backend.endpoint.files.download.GetFileResult
+import app.meetacy.backend.feature.files.endpoints.download.GetFileRepository
+import app.meetacy.backend.feature.files.endpoints.download.GetFileResult
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
 import app.meetacy.backend.types.access.AccessHash
@@ -30,7 +30,8 @@ import app.meetacy.backend.types.users.*
 import app.meetacy.backend.feature.auth.usecase.GenerateTokenUsecase
 import app.meetacy.backend.feature.email.usecase.ConfirmEmailUsecase
 import app.meetacy.backend.feature.email.usecase.LinkEmailUsecase
-import app.meetacy.backend.usecase.files.UploadFileUsecase
+import app.meetacy.backend.feature.files.usecase.files.UploadFileUsecase
+import app.meetacy.backend.feature.files.usecase.types.FilesRepository
 import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
 import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase

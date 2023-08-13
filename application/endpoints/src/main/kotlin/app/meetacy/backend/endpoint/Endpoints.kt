@@ -1,7 +1,7 @@
 package app.meetacy.backend.endpoint
 
 import app.meetacy.backend.feature.auth.endpoints.auth
-import app.meetacy.backend.endpoint.files.files
+import app.meetacy.backend.feature.files.endpoints.files
 import app.meetacy.backend.endpoint.friends.FriendsDependencies
 import app.meetacy.backend.endpoint.friends.friends
 import app.meetacy.backend.endpoint.invitations.InvitationsDependencies

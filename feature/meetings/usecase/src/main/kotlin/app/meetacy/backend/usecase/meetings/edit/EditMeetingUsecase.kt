@@ -12,8 +12,8 @@ import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.optional.map
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
-import app.meetacy.backend.usecase.types.FilesRepository
-import app.meetacy.backend.usecase.types.checkFile
+import app.meetacy.backend.feature.files.usecase.types.FilesRepository
+import app.meetacy.backend.feature.files.usecase.types.checkFile
 
 class EditMeetingUsecase(
     private val storage: Storage,

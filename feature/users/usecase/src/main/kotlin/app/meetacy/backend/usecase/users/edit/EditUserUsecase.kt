@@ -13,8 +13,8 @@ import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserView
 import app.meetacy.backend.types.users.Username
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
-import app.meetacy.backend.usecase.types.FilesRepository
-import app.meetacy.backend.usecase.types.checkFileIdentity
+import app.meetacy.backend.feature.files.usecase.types.FilesRepository
+import app.meetacy.backend.feature.files.usecase.types.checkFileIdentity
 
 class EditUserUsecase(
     private val storage: Storage,
