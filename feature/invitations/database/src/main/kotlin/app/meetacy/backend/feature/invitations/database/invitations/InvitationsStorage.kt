@@ -8,7 +8,7 @@ import app.meetacy.backend.feature.invitations.database.invitations.InvitationsT
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsTable.INVITER_USER_ID
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsTable.IS_ACCEPTED
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsTable.MEETING_ID
-import app.meetacy.backend.database.meetings.MeetingsTable
+import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable
 import app.meetacy.backend.feature.invitations.database.types.DatabaseInvitation
 import app.meetacy.backend.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash

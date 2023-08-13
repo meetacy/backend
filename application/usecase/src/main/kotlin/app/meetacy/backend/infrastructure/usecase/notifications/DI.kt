@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.usecase.notifications
 
-import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
+import app.meetacy.backend.feature.notifications.endpoints.NotificationsDependencies
 import app.meetacy.backend.infrastructure.usecase.notifications.list.listNotificationsRepository
 import app.meetacy.backend.infrastructure.usecase.notifications.read.readNotificationsRepository
 import app.meetacy.di.DI

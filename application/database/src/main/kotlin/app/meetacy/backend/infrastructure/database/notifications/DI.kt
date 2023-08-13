@@ -1,7 +1,7 @@
 package app.meetacy.backend.infrastructure.database.notifications
 
-import app.meetacy.backend.database.notifications.LastReadNotificationsStorage
-import app.meetacy.backend.database.notifications.NotificationsStorage
+import app.meetacy.backend.feature.notifications.database.notifications.LastReadNotificationsStorage
+import app.meetacy.backend.feature.notifications.database.notifications.NotificationsStorage
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.notifications.add.addNotification
 import app.meetacy.backend.infrastructure.database.notifications.get.getNotification

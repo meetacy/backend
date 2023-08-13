@@ -1,7 +1,7 @@
 package app.meetacy.backend.infrastructure.database.meetings
 
-import app.meetacy.backend.database.meetings.MeetingsStorage
-import app.meetacy.backend.database.meetings.ParticipantsStorage
+import app.meetacy.backend.feature.meetings.database.meetings.MeetingsStorage
+import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsStorage
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.meetings.check.checkMeetings
 import app.meetacy.backend.infrastructure.database.meetings.create.createMeeting

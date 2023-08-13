@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.database.meetings.check
 
-import app.meetacy.backend.database.integration.meetings.DatabaseCheckMeetingsViewRepository
+import app.meetacy.feature.meetings.database.integration.meetings.DatabaseCheckMeetingsViewRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.types.meetings.CheckMeetingRepository
 import app.meetacy.di.DI

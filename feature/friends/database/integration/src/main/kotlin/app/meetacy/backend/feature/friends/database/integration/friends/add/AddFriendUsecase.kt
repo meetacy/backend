@@ -4,7 +4,7 @@ import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.feature.friends.usecase.friends.add.AddFriendUsecase
-import app.meetacy.backend.usecase.notifications.add.AddNotificationUsecase
+import app.meetacy.backend.feature.notifications.usecase.notifications.add.AddNotificationUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseAddFriendStorage(

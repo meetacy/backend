@@ -1,8 +1,8 @@
 package app.meetacy.backend.infrastructure.database.meetings.map
 
-import app.meetacy.backend.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
+import app.meetacy.feature.meetings.database.integration.meetings.map.list.DatabaseListMeetingsMapListStorage
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
+import app.meetacy.backend.feature.meetings.usecase.map.list.ListMeetingsMapUsecase
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

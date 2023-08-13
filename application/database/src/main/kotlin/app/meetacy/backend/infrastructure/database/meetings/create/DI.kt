@@ -1,9 +1,9 @@
 package app.meetacy.backend.infrastructure.database.meetings.create
 
-import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingStorage
-import app.meetacy.backend.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
+import app.meetacy.feature.meetings.database.integration.meetings.create.DatabaseCreateMeetingStorage
+import app.meetacy.feature.meetings.database.integration.meetings.create.DatabaseCreateMeetingViewMeetingRepository
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
+import app.meetacy.backend.feature.meetings.usecase.create.CreateMeetingUsecase
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

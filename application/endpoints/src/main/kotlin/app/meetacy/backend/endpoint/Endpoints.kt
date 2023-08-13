@@ -8,9 +8,9 @@ import app.meetacy.backend.feature.invitations.endpoints.InvitationsDependencies
 import app.meetacy.backend.feature.invitations.endpoints.invitations
 import app.meetacy.backend.endpoint.ktor.exceptions.installExceptionsHandler
 import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
-import app.meetacy.backend.endpoint.meetings.meetings
-import app.meetacy.backend.endpoint.notifications.NotificationsDependencies
-import app.meetacy.backend.endpoint.notifications.notifications
+import app.meetacy.backend.feature.meetings.endpoints.meetings
+import app.meetacy.backend.feature.notifications.endpoints.NotificationsDependencies
+import app.meetacy.backend.feature.notifications.endpoints.notifications
 import app.meetacy.backend.endpoint.updates.UpdatesDependencies
 import app.meetacy.backend.endpoint.updates.updates
 import app.meetacy.backend.endpoint.users.users

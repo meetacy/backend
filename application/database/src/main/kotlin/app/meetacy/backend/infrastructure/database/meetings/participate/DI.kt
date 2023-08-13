@@ -1,10 +1,10 @@
 package app.meetacy.backend.infrastructure.database.meetings.participate
 
-import app.meetacy.backend.database.integration.meetings.participants.list.DatabaseListMeetingParticipantsStorage
-import app.meetacy.backend.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
+import app.meetacy.feature.meetings.database.integration.meetings.participants.list.DatabaseListMeetingParticipantsStorage
+import app.meetacy.feature.meetings.database.integration.meetings.participate.DatabaseParticipateMeetingStorage
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
-import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
+import app.meetacy.backend.feature.meetings.usecase.participants.list.ListMeetingParticipantsUsecase
+import app.meetacy.backend.feature.meetings.usecase.participate.ParticipateMeetingUsecase
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.database.meetings.view
 
-import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
+import app.meetacy.feature.meetings.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.types.meetings.ViewMeetingsRepository
 import app.meetacy.di.DI

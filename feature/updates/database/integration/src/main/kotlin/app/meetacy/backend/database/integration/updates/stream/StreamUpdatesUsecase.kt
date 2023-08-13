@@ -4,7 +4,7 @@ import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.usecase.types.FullUpdate
-import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository
+import app.meetacy.backend.feature.notifications.usecase.types.GetNotificationsViewsRepository
 import app.meetacy.backend.usecase.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
 import kotlinx.coroutines.flow.Flow
