@@ -1,13 +1,13 @@
 package app.meetacy.backend.database.integration.notifications
 
+import app.meetacy.backend.database.notifications.NotificationsStorage
 import app.meetacy.backend.feature.auth.database.integration.types.ViewNotificationsRepository
 import app.meetacy.backend.feature.auth.database.integration.types.mapToUsecase
-import app.meetacy.backend.database.notifications.NotificationsStorage
+import app.meetacy.backend.feature.auth.usecase.notifications.get.GetNotificationsViewsUsecase
+import app.meetacy.backend.feature.auth.usecase.types.FullNotification
+import app.meetacy.backend.feature.auth.usecase.types.GetMeetingsViewsRepository
+import app.meetacy.backend.feature.auth.usecase.types.GetUsersViewsRepository
 import app.meetacy.backend.types.notification.NotificationId
-import app.meetacy.backend.usecase.notifications.get.GetNotificationsViewsUsecase
-import app.meetacy.backend.usecase.types.FullNotification
-import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
-import app.meetacy.backend.usecase.types.GetUsersViewsRepository
 import org.jetbrains.exposed.sql.Database
 
 fun GetNotificationsViewsUsecase(

@@ -1,9 +1,6 @@
 package app.meetacy.backend.feature.auth.usecase.users.get
 
-import app.meetacy.backend.feature.auth.usecase.types.GetUsersViewsRepository
-import app.meetacy.backend.feature.auth.usecase.types.UserView
-import app.meetacy.backend.feature.auth.usecase.types.authorizeWithUserId
-import app.meetacy.backend.feature.auth.usecase.types.getUserViewOrNull
+import app.meetacy.backend.feature.auth.usecase.types.*
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.user.UserIdentity
 
@@ -35,8 +32,8 @@ class GetUserSafeUsecase(
     }
 
     sealed interface Result {
-        object InvalidToken : Result
-        object UserNotFound : Result
+        data object InvalidToken : Result
+        data object UserNotFound : Result
         class Success(val user: UserView) : Result
     }
 }

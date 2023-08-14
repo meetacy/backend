@@ -1,11 +1,15 @@
 package app.meetacy.backend.database.integration.meetings.create
 
 import app.meetacy.backend.database.integration.meetings.participate.DatabaseViewMeetingsUsecaseStorage
+import app.meetacy.backend.database.meetings.MeetingsStorage
+import app.meetacy.backend.database.meetings.ParticipantsStorage
 import app.meetacy.backend.feature.auth.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.feature.auth.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.feature.auth.database.integration.types.mapToDatabase
-import app.meetacy.backend.database.meetings.MeetingsStorage
-import app.meetacy.backend.database.meetings.ParticipantsStorage
+import app.meetacy.backend.feature.auth.usecase.meetings.create.CreateMeetingUsecase
+import app.meetacy.backend.feature.auth.usecase.meetings.get.ViewMeetingsUsecase
+import app.meetacy.backend.feature.auth.usecase.types.FullMeeting
+import app.meetacy.backend.feature.auth.usecase.types.MeetingView
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.file.FileId
@@ -13,10 +17,6 @@ import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.meeting.MeetingIdentity
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
-import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
-import app.meetacy.backend.usecase.types.FullMeeting
-import app.meetacy.backend.usecase.types.MeetingView
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseCreateMeetingStorage(db: Database) : CreateMeetingUsecase.Storage {
@@ -63,6 +63,10 @@ class DatabaseCreateMeetingViewMeetingRepository(private val db: Database) : Cre
     override suspend fun viewMeeting(
         viewer: UserId,
         meeting: FullMeeting
-    ): MeetingView = ViewMeetingsUsecase(DatabaseGetUsersViewsRepository(db), DatabaseFilesRepository(db), DatabaseViewMeetingsUsecaseStorage(db))
+    ): MeetingView = ViewMeetingsUsecase(
+        DatabaseGetUsersViewsRepository(db),
+        DatabaseFilesRepository(db),
+        DatabaseViewMeetingsUsecaseStorage(db)
+    )
         .viewMeetings(viewer, meetings = listOf(meeting)).first()
 }

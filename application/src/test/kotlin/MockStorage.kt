@@ -3,6 +3,43 @@ import app.meetacy.backend.endpoint.files.download.GetFileRepository
 import app.meetacy.backend.endpoint.files.download.GetFileResult
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsHistoryRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
+import app.meetacy.backend.feature.auth.usecase.auth.GenerateTokenUsecase
+import app.meetacy.backend.feature.auth.usecase.email.ConfirmEmailUsecase
+import app.meetacy.backend.feature.auth.usecase.email.LinkEmailUsecase
+import app.meetacy.backend.feature.auth.usecase.files.UploadFileUsecase
+import app.meetacy.backend.feature.auth.usecase.friends.add.AddFriendUsecase
+import app.meetacy.backend.feature.auth.usecase.friends.delete.DeleteFriendUsecase
+import app.meetacy.backend.feature.auth.usecase.friends.list.ListFriendsUsecase
+import app.meetacy.backend.feature.auth.usecase.invitations.accept.AcceptInvitationUsecase
+import app.meetacy.backend.feature.auth.usecase.invitations.cancel.CancelInvitationUsecase
+import app.meetacy.backend.feature.auth.usecase.invitations.create.CreateInvitationUsecase
+import app.meetacy.backend.feature.auth.usecase.invitations.deny.DenyInvitationUsecase
+import app.meetacy.backend.feature.auth.usecase.invitations.get.GetInvitationsViewsUsecase
+import app.meetacy.backend.feature.auth.usecase.invitations.get.ViewInvitationsUsecase
+import app.meetacy.backend.feature.auth.usecase.location.stream.FriendsLocationStreamingUsecase
+import app.meetacy.backend.feature.auth.usecase.location.stream.LocationsMiddleware
+import app.meetacy.backend.feature.auth.usecase.meetings.create.CreateMeetingUsecase
+import app.meetacy.backend.feature.auth.usecase.meetings.delete.DeleteMeetingUsecase
+import app.meetacy.backend.feature.auth.usecase.meetings.edit.EditMeetingUsecase
+import app.meetacy.backend.feature.auth.usecase.meetings.get.GetMeetingsViewsUsecase
+import app.meetacy.backend.feature.auth.usecase.meetings.get.ViewMeetingsUsecase
+import app.meetacy.backend.feature.auth.usecase.meetings.history.active.ListMeetingsActiveUsecase
+import app.meetacy.backend.feature.auth.usecase.meetings.history.list.ListMeetingsHistoryUsecase
+import app.meetacy.backend.feature.auth.usecase.meetings.history.past.ListMeetingsPastUsecase
+import app.meetacy.backend.feature.auth.usecase.meetings.map.list.ListMeetingsMapUsecase
+import app.meetacy.backend.feature.auth.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
+import app.meetacy.backend.feature.auth.usecase.meetings.participate.ParticipateMeetingUsecase
+import app.meetacy.backend.feature.auth.usecase.notifications.ReadNotificationsUsecase
+import app.meetacy.backend.feature.auth.usecase.notifications.add.AddNotificationUsecase
+import app.meetacy.backend.feature.auth.usecase.notifications.get.GetNotificationsUsecase
+import app.meetacy.backend.feature.auth.usecase.notifications.get.GetNotificationsViewsUsecase
+import app.meetacy.backend.feature.auth.usecase.notifications.get.ViewNotificationsUsecase
+import app.meetacy.backend.feature.auth.usecase.types.*
+import app.meetacy.backend.feature.auth.usecase.updates.stream.StreamUpdatesUsecase
+import app.meetacy.backend.feature.auth.usecase.updates.stream.UpdatesMiddleware
+import app.meetacy.backend.feature.auth.usecase.users.edit.EditUserUsecase
+import app.meetacy.backend.feature.auth.usecase.users.get.GetUsersViewsUsecase
+import app.meetacy.backend.feature.auth.usecase.users.get.ViewUserUsecase
 import app.meetacy.backend.types.BasicHashGenerator
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity
@@ -11,7 +48,6 @@ import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
-import app.meetacy.backend.types.serializable.file.FileIdentity as FileIdentitySerializable
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.location.Location
@@ -30,50 +66,14 @@ import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.user.UserId
 import app.meetacy.backend.types.user.UserIdentity
 import app.meetacy.backend.types.user.Username
-import app.meetacy.backend.feature.auth.usecase.auth.GenerateTokenUsecase
-import app.meetacy.backend.usecase.email.ConfirmEmailUsecase
-import app.meetacy.backend.usecase.email.LinkEmailUsecase
-import app.meetacy.backend.usecase.files.UploadFileUsecase
-import app.meetacy.backend.usecase.friends.add.AddFriendUsecase
-import app.meetacy.backend.usecase.friends.delete.DeleteFriendUsecase
-import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
-import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase
-import app.meetacy.backend.usecase.invitations.cancel.CancelInvitationUsecase
-import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
-import app.meetacy.backend.usecase.invitations.deny.DenyInvitationUsecase
-import app.meetacy.backend.usecase.invitations.get.GetInvitationsViewsUsecase
-import app.meetacy.backend.usecase.invitations.get.ViewInvitationsUsecase
-import app.meetacy.backend.usecase.location.stream.FriendsLocationStreamingUsecase
-import app.meetacy.backend.usecase.location.stream.LocationsMiddleware
-import app.meetacy.backend.usecase.meetings.create.CreateMeetingUsecase
-import app.meetacy.backend.usecase.meetings.delete.DeleteMeetingUsecase
-import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
-import app.meetacy.backend.usecase.meetings.get.GetMeetingsViewsUsecase
-import app.meetacy.backend.usecase.meetings.get.ViewMeetingsUsecase
-import app.meetacy.backend.usecase.meetings.history.active.ListMeetingsActiveUsecase
-import app.meetacy.backend.usecase.meetings.history.list.ListMeetingsHistoryUsecase
-import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
-import app.meetacy.backend.usecase.meetings.map.list.ListMeetingsMapUsecase
-import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
-import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
-import app.meetacy.backend.usecase.notifications.ReadNotificationsUsecase
-import app.meetacy.backend.usecase.notifications.add.AddNotificationUsecase
-import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
-import app.meetacy.backend.usecase.notifications.get.GetNotificationsViewsUsecase
-import app.meetacy.backend.usecase.notifications.get.ViewNotificationsUsecase
-import app.meetacy.backend.usecase.types.*
-import app.meetacy.backend.usecase.updates.stream.StreamUpdatesUsecase
-import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
-import app.meetacy.backend.usecase.users.edit.EditUserUsecase
-import app.meetacy.backend.usecase.users.get.GetUsersViewsUsecase
-import app.meetacy.backend.usecase.users.get.ViewUserUsecase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import java.io.File
+import app.meetacy.backend.types.serializable.file.FileIdentity as FileIdentitySerializable
 
-class MockStorage : app.meetacy.backend.feature.auth.usecase.auth.GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage,
+class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage,
     AuthRepository,
     ConfirmEmailUsecase.Storage, GetUsersViewsRepository, GetUsersViewsUsecase.Storage,
     GetUsersViewsUsecase.ViewUserRepository, AddFriendUsecase.Storage, ListFriendsUsecase.Storage,

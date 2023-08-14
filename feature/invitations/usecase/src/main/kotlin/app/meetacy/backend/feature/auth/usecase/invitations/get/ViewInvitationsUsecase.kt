@@ -1,7 +1,7 @@
 package app.meetacy.backend.feature.auth.usecase.invitations.get
 
+import app.meetacy.backend.feature.auth.usecase.types.*
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.*
 
 class ViewInvitationsUsecase(
     private val usersRepository: GetUsersViewsRepository,

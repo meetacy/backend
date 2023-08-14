@@ -1,13 +1,13 @@
 package app.meetacy.backend.feature.auth.usecase.integration.notifications.get
 
 import app.meetacy.backend.endpoint.notifications.get.ListNotificationsRepository
+import app.meetacy.backend.feature.auth.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.feature.auth.usecase.notifications.get.GetNotificationsUsecase
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.amount.type
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
-import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
 
 class UsecaseListNotificationsRepository(
     private val usecase: GetNotificationsUsecase

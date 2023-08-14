@@ -2,11 +2,11 @@ package app.meetacy.backend.feature.auth.usecase.integration.meetings.history.ac
 
 import app.meetacy.backend.endpoint.meetings.history.active.ListMeetingsActiveRepository
 import app.meetacy.backend.endpoint.meetings.history.list.ListMeetingsResult
+import app.meetacy.backend.feature.auth.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.feature.auth.usecase.meetings.history.active.ListMeetingsActiveUsecase
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.paging.PagingId
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
-import app.meetacy.backend.usecase.meetings.history.active.ListMeetingsActiveUsecase
 
 class UsecaseListActiveMeetingsRepository(
     private val usecase: ListMeetingsActiveUsecase

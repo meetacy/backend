@@ -1,10 +1,10 @@
 package app.meetacy.backend.feature.auth.usecase.integration.email.link
 
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
-import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.feature.auth.usecase.email.LinkEmailUsecase
 import app.meetacy.backend.feature.email.endpoints.link.ConfirmHashResult
 import app.meetacy.backend.feature.email.endpoints.link.LinkEmailRepository
-import app.meetacy.backend.usecase.email.LinkEmailUsecase
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 
 class UsecaseLinkEmailRepository(private val usecase: LinkEmailUsecase) : LinkEmailRepository {
     override suspend fun linkEmail(

@@ -2,7 +2,7 @@ package app.meetacy.backend.feature.auth.usecase.types
 
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.update.UpdateId
-import app.meetacy.backend.usecase.types.NotificationView as NotificationType
+import app.meetacy.backend.feature.auth.usecase.types.NotificationView as NotificationType
 
 sealed interface FullUpdate {
     val id: UpdateId

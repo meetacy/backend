@@ -3,10 +3,10 @@ package app.meetacy.backend.feature.auth.usecase.integration.users.get
 import app.meetacy.backend.endpoint.users.get.GetUserParams
 import app.meetacy.backend.endpoint.users.get.GetUserResult
 import app.meetacy.backend.endpoint.users.get.UserRepository
+import app.meetacy.backend.feature.auth.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.feature.auth.usecase.users.get.GetUserSafeUsecase
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.user.type
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
-import app.meetacy.backend.usecase.users.get.GetUserSafeUsecase
 
 class UsecaseUserRepository(private val usecase: GetUserSafeUsecase) : UserRepository {
 

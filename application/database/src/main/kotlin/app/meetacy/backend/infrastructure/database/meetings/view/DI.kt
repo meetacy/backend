@@ -1,8 +1,8 @@
 package app.meetacy.backend.infrastructure.database.meetings.view
 
 import app.meetacy.backend.database.integration.meetings.get.DatabaseGetMeetingsViewsViewMeetingsRepository
+import app.meetacy.backend.feature.auth.usecase.types.ViewMeetingsRepository
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.usecase.types.ViewMeetingsRepository
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

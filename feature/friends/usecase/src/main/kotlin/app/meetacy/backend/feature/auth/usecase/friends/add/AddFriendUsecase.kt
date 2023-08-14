@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.auth.usecase.friends.add
 
+import app.meetacy.backend.feature.auth.usecase.types.AuthRepository
 import app.meetacy.backend.feature.auth.usecase.types.GetUsersViewsRepository
 import app.meetacy.backend.feature.auth.usecase.types.authorizeWithUserId
 import app.meetacy.backend.types.access.AccessIdentity

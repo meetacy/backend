@@ -1,13 +1,13 @@
 package app.meetacy.backend.feature.auth.database.integration.types
 
 import app.meetacy.backend.database.integration.notifications.GetNotificationsViewsUsecase
+import app.meetacy.backend.feature.auth.usecase.notifications.get.GetNotificationsViewsUsecase
+import app.meetacy.backend.feature.auth.usecase.types.GetMeetingsViewsRepository
+import app.meetacy.backend.feature.auth.usecase.types.GetNotificationsViewsRepository
+import app.meetacy.backend.feature.auth.usecase.types.GetUsersViewsRepository
+import app.meetacy.backend.feature.auth.usecase.types.NotificationView
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.notifications.get.GetNotificationsViewsUsecase
-import app.meetacy.backend.usecase.types.GetMeetingsViewsRepository
-import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository
-import app.meetacy.backend.usecase.types.GetUsersViewsRepository
-import app.meetacy.backend.usecase.types.NotificationView
 import org.jetbrains.exposed.sql.Database
 
 fun GetNotificationsViewsRepository(

@@ -2,11 +2,11 @@ package app.meetacy.backend.feature.auth.usecase.integration.meetings.participat
 
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingRepository
 import app.meetacy.backend.endpoint.meetings.participate.ParticipateMeetingResult
+import app.meetacy.backend.feature.auth.usecase.meetings.participate.ParticipateMeetingUsecase
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.meeting.MeetingIdentity
 import app.meetacy.backend.types.serializable.meeting.type
-import app.meetacy.backend.usecase.meetings.participate.ParticipateMeetingUsecase
 
 class UsecaseParticipateMeetingRepository(
     private val usecase: ParticipateMeetingUsecase

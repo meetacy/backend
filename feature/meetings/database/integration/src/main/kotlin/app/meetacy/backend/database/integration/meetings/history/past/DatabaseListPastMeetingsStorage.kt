@@ -1,11 +1,11 @@
 package app.meetacy.backend.database.integration.meetings.history.past
 
 import app.meetacy.backend.database.meetings.ParticipantsStorage
+import app.meetacy.backend.feature.auth.usecase.meetings.history.past.ListMeetingsPastUsecase
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingValue
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.meetings.history.past.ListMeetingsPastUsecase
 import kotlinx.coroutines.flow.Flow
 import org.jetbrains.exposed.sql.Database
 

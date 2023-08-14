@@ -1,11 +1,11 @@
 package app.meetacy.backend.infrastructure.usecase.friends.list
 
 import app.meetacy.backend.endpoint.friends.list.ListFriendsRepository
+import app.meetacy.backend.feature.auth.usecase.friends.list.ListFriendsUsecase
+import app.meetacy.backend.feature.auth.usecase.integration.friends.get.UsecaseListFriendsRepository
 import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.friends.list.listFriendsStorage
 import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository
-import app.meetacy.backend.usecase.friends.list.ListFriendsUsecase
-import app.meetacy.backend.usecase.integration.friends.get.UsecaseListFriendsRepository
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

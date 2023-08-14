@@ -1,8 +1,8 @@
 package app.meetacy.backend.infrastructure.database.files.upload
 
 import app.meetacy.backend.feature.auth.database.integration.types.DatabaseUploadFileStorage
+import app.meetacy.backend.feature.auth.usecase.files.UploadFileUsecase
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.usecase.files.UploadFileUsecase
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

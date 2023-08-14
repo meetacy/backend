@@ -1,13 +1,13 @@
 package app.meetacy.backend.feature.auth.usecase.integration.types
 
 import app.meetacy.backend.endpoint.types.meeting.Meeting
+import app.meetacy.backend.feature.auth.usecase.types.FullMeeting
+import app.meetacy.backend.feature.auth.usecase.types.MeetingView
+import app.meetacy.backend.feature.auth.usecase.types.UserView
 import app.meetacy.backend.types.serializable.datetime.serializable
 import app.meetacy.backend.types.serializable.file.serializable
 import app.meetacy.backend.types.serializable.location.serializable
 import app.meetacy.backend.types.serializable.meeting.serializable
-import app.meetacy.backend.usecase.types.FullMeeting
-import app.meetacy.backend.usecase.types.MeetingView
-import app.meetacy.backend.usecase.types.UserView
 
 fun MeetingView.mapToEndpoint() = Meeting(
     id = identity.serializable(),

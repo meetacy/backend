@@ -3,36 +3,33 @@ package app.meetacy.backend.feature.auth.usecase.integration.meetings.participan
 import app.meetacy.backend.endpoint.meetings.participants.list.ListMeetingParticipantsParams
 import app.meetacy.backend.endpoint.meetings.participants.list.ListMeetingParticipantsRepository
 import app.meetacy.backend.endpoint.meetings.participants.list.ListParticipantsResult
+import app.meetacy.backend.feature.auth.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.feature.auth.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
+import app.meetacy.backend.feature.auth.usecase.types.UserView
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.type
 import app.meetacy.backend.types.serializable.meeting.type
 import app.meetacy.backend.types.serialization.paging.serializable
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
-import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase
-import app.meetacy.backend.usecase.meetings.participants.list.ListMeetingParticipantsUsecase.Result
-import app.meetacy.backend.usecase.types.UserView
 
 class UsecaseListMeetingParticipantsRepository(
     val usecase: ListMeetingParticipantsUsecase
 ) : ListMeetingParticipantsRepository {
     override suspend fun listParticipants(
         params: ListMeetingParticipantsParams
-    ): ListParticipantsResult = with (params) {
-        when (
-            val result = usecase.getMeetingParticipants(
-                accessIdentity = token.type(),
-                meetingIdentity = meetingId.type()!!,
-                amount = amount.type(),
-                pagingId = pagingId?.type()
-            )
-        ) {
-            is Result.MeetingNotFound -> ListParticipantsResult.MeetingNotFound
-            is Result.TokenInvalid -> ListParticipantsResult.TokenInvalid
-            is Result.Success -> ListParticipantsResult.Success(
-                paging = result.paging.map { users ->
-                    users.map(UserView::mapToEndpoint)
-                }.serializable()
-            )
-        }
+    ): ListParticipantsResult = usecase.getMeetingParticipants(
+                accessIdentity = params.token.type(),
+                meetingIdentity = params.meetingId.type()!!,
+                amount = params.amount.type(),
+                pagingId = params.pagingId?.type()
+            ).toEndpoint()
+
+    private fun ListMeetingParticipantsUsecase.Result.toEndpoint(): ListParticipantsResult = when (this) {
+        is ListMeetingParticipantsUsecase.Result.MeetingNotFound -> ListParticipantsResult.MeetingNotFound
+        is ListMeetingParticipantsUsecase.Result.TokenInvalid -> ListParticipantsResult.TokenInvalid
+        is ListMeetingParticipantsUsecase.Result.Success -> ListParticipantsResult.Success(
+            paging = this.paging.map { users ->
+                users.map(UserView::mapToEndpoint)
+            }.serializable()
+        )
     }
 }

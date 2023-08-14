@@ -1,8 +1,8 @@
 package app.meetacy.backend.feature.auth.usecase.notifications.get
 
+import app.meetacy.backend.feature.auth.usecase.types.*
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.*
 
 class ViewNotificationsUsecase(
     private val storage: Storage,

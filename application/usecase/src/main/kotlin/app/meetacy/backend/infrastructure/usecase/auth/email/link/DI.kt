@@ -1,11 +1,11 @@
 package app.meetacy.backend.infrastructure.usecase.auth.email.link
 
+import app.meetacy.backend.feature.auth.usecase.email.LinkEmailUsecase
+import app.meetacy.backend.feature.auth.usecase.integration.email.link.UsecaseLinkEmailRepository
 import app.meetacy.backend.feature.email.endpoints.link.LinkEmailRepository
 import app.meetacy.backend.infrastructure.database.auth.authRepository
 import app.meetacy.backend.infrastructure.database.email.link.linkEmailMailer
 import app.meetacy.backend.infrastructure.database.email.link.linkEmailStorage
-import app.meetacy.backend.usecase.email.LinkEmailUsecase
-import app.meetacy.backend.usecase.integration.email.link.UsecaseLinkEmailRepository
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

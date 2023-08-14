@@ -3,6 +3,9 @@ package app.meetacy.backend.feature.auth.usecase.integration.meetings.edit
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingParams
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingRepository
 import app.meetacy.backend.endpoint.meetings.edit.EditMeetingResult
+import app.meetacy.backend.feature.auth.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.feature.auth.usecase.integration.types.mapToFullMeeting
+import app.meetacy.backend.feature.auth.usecase.meetings.edit.EditMeetingUsecase
 import app.meetacy.backend.types.optional.map
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.datetime.type
@@ -10,9 +13,6 @@ import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.type
 import app.meetacy.backend.types.serializable.meeting.type
 import app.meetacy.backend.types.serializable.optional.type
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
-import app.meetacy.backend.usecase.integration.types.mapToFullMeeting
-import app.meetacy.backend.usecase.meetings.edit.EditMeetingUsecase
 
 class UsecaseEditMeetingRepository(
     private val usecase: EditMeetingUsecase

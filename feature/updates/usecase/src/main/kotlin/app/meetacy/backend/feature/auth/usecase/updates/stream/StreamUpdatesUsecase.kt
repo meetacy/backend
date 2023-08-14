@@ -1,9 +1,9 @@
 package app.meetacy.backend.feature.auth.usecase.updates.stream
 
+import app.meetacy.backend.feature.auth.usecase.types.*
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.types.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

@@ -1,7 +1,7 @@
 package app.meetacy.backend.feature.auth.database.integration.types
 
 import app.meetacy.backend.database.types.DatabaseMeeting
-import app.meetacy.backend.usecase.types.FullMeeting
+import app.meetacy.backend.feature.auth.usecase.types.FullMeeting
 
 fun FullMeeting.Visibility.mapToDatabase(): DatabaseMeeting.Visibility =
     when (this) {

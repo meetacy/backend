@@ -7,9 +7,9 @@ import app.meetacy.backend.database.meetings.ParticipantsStorage
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.invitations.accept.AcceptInvitationUsecase.Storage
-import app.meetacy.backend.usecase.types.FullInvitation
-import app.meetacy.backend.usecase.types.FullMeeting
+import app.meetacy.backend.feature.auth.usecase.invitations.accept.AcceptInvitationUsecase.Storage
+import app.meetacy.backend.feature.auth.usecase.types.FullMeeting
+import app.meetacy.backend.feature.auth.usecase.types.FullInvitation
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseAcceptInvitationStorage(db: Database): Storage {

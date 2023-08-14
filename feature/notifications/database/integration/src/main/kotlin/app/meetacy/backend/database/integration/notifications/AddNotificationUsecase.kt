@@ -1,12 +1,12 @@
 package app.meetacy.backend.database.integration.notifications
 
 import app.meetacy.backend.database.notifications.NotificationsStorage
+import app.meetacy.backend.feature.auth.usecase.notifications.add.AddNotificationUsecase
+import app.meetacy.backend.feature.auth.usecase.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.notifications.add.AddNotificationUsecase
-import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
 import org.jetbrains.exposed.sql.Database
 
 fun AddNotificationUsecase(db: Database, updatesMiddleware: UpdatesMiddleware): AddNotificationUsecase =

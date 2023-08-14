@@ -1,12 +1,12 @@
 package app.meetacy.backend.database.integration.updates.stream
 
+import app.meetacy.backend.feature.auth.usecase.types.AuthRepository
+import app.meetacy.backend.feature.auth.usecase.types.FullUpdate
+import app.meetacy.backend.feature.auth.usecase.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.feature.auth.usecase.types.AuthRepository
-import app.meetacy.backend.usecase.types.FullUpdate
-import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository
-import app.meetacy.backend.usecase.updates.stream.StreamUpdatesUsecase
-import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
+import app.meetacy.backend.feature.auth.usecase.types.GetNotificationsViewsRepository
+import app.meetacy.backend.feature.auth.usecase.updates.stream.UpdatesMiddleware
 import kotlinx.coroutines.flow.Flow
 
 fun StreamUpdatesUsecase(

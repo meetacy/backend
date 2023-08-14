@@ -3,11 +3,11 @@ package app.meetacy.backend.infrastructure.database.notifications.get
 import app.meetacy.backend.database.integration.notifications.DatabaseGetNotificationStorage
 import app.meetacy.backend.database.integration.notifications.DatabaseGetNotificationsViewsUsecaseStorage
 import app.meetacy.backend.feature.auth.database.integration.types.UsecaseGetNotificationsViewsRepository
+import app.meetacy.backend.feature.auth.usecase.notifications.get.GetNotificationsUsecase
+import app.meetacy.backend.feature.auth.usecase.notifications.get.GetNotificationsViewsUsecase
+import app.meetacy.backend.feature.auth.usecase.types.GetNotificationsViewsRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.notifications.view.viewNotificationsRepository
-import app.meetacy.backend.usecase.notifications.get.GetNotificationsUsecase
-import app.meetacy.backend.usecase.notifications.get.GetNotificationsViewsUsecase
-import app.meetacy.backend.usecase.types.GetNotificationsViewsRepository
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

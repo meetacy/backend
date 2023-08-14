@@ -1,20 +1,20 @@
 package app.meetacy.backend.database.integration.invitations.create
 
 import app.meetacy.backend.database.friends.FriendsStorage
-import app.meetacy.backend.feature.auth.database.integration.types.mapToUsecase
 import app.meetacy.backend.database.invitations.InvitationsStorage
 import app.meetacy.backend.database.meetings.MeetingsStorage
 import app.meetacy.backend.database.users.UsersStorage
+import app.meetacy.backend.feature.auth.database.integration.types.mapToUsecase
+import app.meetacy.backend.feature.auth.usecase.invitations.create.CreateInvitationUsecase
+import app.meetacy.backend.feature.auth.usecase.notifications.add.AddNotificationUsecase
+import app.meetacy.backend.feature.auth.usecase.types.FullInvitation
+import app.meetacy.backend.feature.auth.usecase.types.FullMeeting
+import app.meetacy.backend.feature.auth.usecase.types.FullUser
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meeting.MeetingId
 import app.meetacy.backend.types.user.UserId
-import app.meetacy.backend.usecase.notifications.add.AddNotificationUsecase
-import app.meetacy.backend.usecase.invitations.create.CreateInvitationUsecase
-import app.meetacy.backend.usecase.types.FullInvitation
-import app.meetacy.backend.usecase.types.FullMeeting
-import app.meetacy.backend.usecase.types.FullUser
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseCreateInvitationStorage(
@@ -55,5 +55,4 @@ class DatabaseCreateInvitationStorage(
             date = DateTime.now()
         )
     }
-
 }
