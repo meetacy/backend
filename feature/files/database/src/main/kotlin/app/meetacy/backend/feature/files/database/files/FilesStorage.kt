@@ -10,7 +10,7 @@ import app.meetacy.backend.feature.files.database.files.FilesTable.FILE_SIZE
 import app.meetacy.backend.feature.files.database.files.FilesTable.ORIGINAL_FILE_NAME
 import app.meetacy.backend.feature.files.database.files.FilesTable.USER_ID
 import app.meetacy.backend.feature.files.database.types.DatabaseFileDescription
-import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity

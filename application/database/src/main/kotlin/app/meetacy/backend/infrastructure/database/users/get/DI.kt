@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.database.users.get
 
-import app.meetacy.backend.database.integration.types.DatabaseGetUsersViewsRepository
+import app.meetacy.backend.feature.users.database.integration.types.DatabaseGetUsersViewsRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.di.DI

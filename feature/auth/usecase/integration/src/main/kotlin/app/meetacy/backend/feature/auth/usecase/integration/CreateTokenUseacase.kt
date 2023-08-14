@@ -1,6 +1,6 @@
 package app.meetacy.backend.feature.auth.usecase.integration
 
-import app.meetacy.backend.database.users.UsersStorage
+import app.meetacy.backend.feature.users.database.users.UsersStorage
 import app.meetacy.backend.feature.auth.usecase.CreateUserUsecase
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.users.UserId

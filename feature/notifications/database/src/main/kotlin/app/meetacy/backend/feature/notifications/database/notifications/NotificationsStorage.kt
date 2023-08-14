@@ -14,7 +14,7 @@ import app.meetacy.backend.feature.notifications.database.notifications.Notifica
 import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.Type
 import app.meetacy.backend.database.paging
 import app.meetacy.backend.feature.notifications.database.types.DatabaseNotification
-import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.meetings.MeetingId

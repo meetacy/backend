@@ -6,7 +6,7 @@ import app.meetacy.backend.database.exposed.query.wrapTransactionAsFlow
 import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsTable.ID
 import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsTable.MEETING_ID
 import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsTable.USER_ID
-import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.paging.PagingId

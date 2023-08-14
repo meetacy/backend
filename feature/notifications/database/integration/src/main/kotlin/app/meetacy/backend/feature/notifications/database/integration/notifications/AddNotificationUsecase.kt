@@ -6,7 +6,7 @@ import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.feature.notifications.usecase.notifications.add.AddNotificationUsecase
-import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
+import app.meetacy.backend.feature.updates.usecase.updates.stream.UpdatesMiddleware
 import org.jetbrains.exposed.sql.Database
 
 fun AddNotificationUsecase(db: Database, updatesMiddleware: UpdatesMiddleware): AddNotificationUsecase =

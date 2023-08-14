@@ -8,7 +8,7 @@ import app.meetacy.backend.types.paging.serializable.type
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.type
 import app.meetacy.backend.feature.friends.usecase.friends.list.ListFriendsUsecase
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.feature.users.usecase.integration.types.mapToEndpoint
 
 class UsecaseListFriendsRepository(
     private val usecase: ListFriendsUsecase

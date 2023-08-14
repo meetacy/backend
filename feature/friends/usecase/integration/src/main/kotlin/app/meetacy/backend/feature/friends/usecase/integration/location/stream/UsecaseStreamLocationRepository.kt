@@ -5,7 +5,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.location.type
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.feature.users.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.feature.friends.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.feature.friends.usecase.location.stream.FriendsLocationStreamingUsecase.Result
 import kotlinx.coroutines.flow.Flow

@@ -1,12 +1,12 @@
 package app.meetacy.backend.feature.invitations.database.integration.invitations.create
 
-import app.meetacy.backend.database.integration.types.mapToUsecase
+import app.meetacy.backend.feature.users.database.integration.types.mapToUsecase
 import app.meetacy.feature.meetings.database.integration.types.mapToUsecase
 import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
 import app.meetacy.backend.feature.invitations.database.integration.types.mapToUsecase
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsStorage
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsStorage
-import app.meetacy.backend.database.users.UsersStorage
+import app.meetacy.backend.feature.users.database.users.UsersStorage
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.invitation.InvitationId

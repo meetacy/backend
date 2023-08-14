@@ -4,7 +4,7 @@ package app.meetacy.backend.feature.notifications.database.notifications
 
 import app.meetacy.backend.feature.notifications.database.notifications.LastReadNotificationsTable.NOTIFICATION_ID
 import app.meetacy.backend.feature.notifications.database.notifications.LastReadNotificationsTable.USER_ID
-import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers

@@ -5,7 +5,7 @@ import app.meetacy.backend.feature.friends.endpoints.location.FriendsLocationDep
 import app.meetacy.backend.feature.invitations.endpoints.InvitationsDependencies
 import app.meetacy.backend.feature.notifications.endpoints.NotificationsDependencies
 import app.meetacy.backend.endpoint.prepareEndpoints
-import app.meetacy.backend.endpoint.updates.UpdatesDependencies
+import app.meetacy.backend.feature.updates.endpoints.updates.UpdatesDependencies
 import app.meetacy.backend.types.integration.generator.BasicHashGenerator
 import app.meetacy.backend.feature.friends.usecase.friends.add.AddFriendUsecase
 import app.meetacy.backend.feature.friends.usecase.friends.delete.DeleteFriendUsecase
@@ -20,8 +20,8 @@ import app.meetacy.backend.feature.invitations.usecase.integration.invitations.c
 import app.meetacy.backend.feature.invitations.usecase.integration.invitations.deny.UsecaseDenyInvitationRepository
 import app.meetacy.backend.feature.notifications.usecase.integration.notifications.get.UsecaseListNotificationsRepository
 import app.meetacy.backend.feature.notifications.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
-import app.meetacy.backend.usecase.integration.updates.stream.StreamUpdatesRepository
-import app.meetacy.backend.usecase.integration.users.validate.UsecaseValidateUsernameRepository
+import app.meetacy.backend.feature.updates.usecase.integration.updates.stream.StreamUpdatesRepository
+import app.meetacy.backend.feature.users.usecase.integration.users.validate.UsecaseValidateUsernameRepository
 import app.meetacy.backend.feature.invitations.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.feature.invitations.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.feature.invitations.usecase.invitations.create.CreateInvitationUsecase
@@ -30,7 +30,7 @@ import app.meetacy.backend.feature.friends.usecase.location.stream.FriendsLocati
 import app.meetacy.backend.feature.notifications.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.feature.notifications.usecase.notifications.get.GetNotificationsUsecase
 import app.meetacy.backend.feature.notifications.usecase.notifications.get.GetNotificationsViewsUsecase
-import app.meetacy.backend.usecase.users.validate.ValidateUsernameUsecase
+import app.meetacy.backend.feature.users.usecase.validate.ValidateUsernameUsecase
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
 import app.meetacy.sdk.types.annotation.UnstableApi

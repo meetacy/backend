@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.database.users.validate
 
-import app.meetacy.backend.database.integration.types.DatabaseValidateRepository
+import app.meetacy.backend.feature.users.database.integration.types.DatabaseValidateRepository
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.types.users.ValidateRepository
 import app.meetacy.di.DI

@@ -1,11 +1,11 @@
 package app.meetacy.backend.infrastructure.database.updates
 
-import app.meetacy.backend.database.integration.updates.stream.DatabaseStreamUpdatesUsecaseStorage
-import app.meetacy.backend.database.integration.updates.stream.UpdatesMiddleware
-import app.meetacy.backend.database.updates.UpdatesStorage
+import app.meetacy.backend.feature.updates.database.integration.updates.stream.DatabaseStreamUpdatesUsecaseStorage
+import app.meetacy.backend.feature.updates.database.integration.updates.stream.UpdatesMiddleware
+import app.meetacy.backend.feature.updates.database.updates.UpdatesStorage
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.usecase.updates.stream.StreamUpdatesUsecase
-import app.meetacy.backend.usecase.updates.stream.UpdatesMiddleware
+import app.meetacy.backend.feature.updates.usecase.updates.stream.StreamUpdatesUsecase
+import app.meetacy.backend.feature.updates.usecase.updates.stream.UpdatesMiddleware
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

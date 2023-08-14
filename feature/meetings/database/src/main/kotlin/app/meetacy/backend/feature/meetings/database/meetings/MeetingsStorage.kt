@@ -18,7 +18,7 @@ import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable.MEET
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable.TITLE
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable.VISIBILITY
 import app.meetacy.backend.feature.meetings.database.types.DatabaseMeeting
-import app.meetacy.backend.database.users.UsersTable
+import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date

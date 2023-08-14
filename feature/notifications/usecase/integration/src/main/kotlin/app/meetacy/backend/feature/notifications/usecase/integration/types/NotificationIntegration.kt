@@ -3,7 +3,7 @@ package app.meetacy.backend.feature.notifications.usecase.integration.types
 import app.meetacy.backend.types.serializable.datetime.serializable
 import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.backend.types.serializable.notification.serializable
-import app.meetacy.backend.usecase.integration.types.mapToEndpoint
+import app.meetacy.backend.feature.users.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.types.serializable.notification.Notification as EndpointNotification
 import app.meetacy.backend.feature.notifications.usecase.types.NotificationView as UsecaseNotification
 

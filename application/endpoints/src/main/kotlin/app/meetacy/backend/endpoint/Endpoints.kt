@@ -11,11 +11,11 @@ import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
 import app.meetacy.backend.feature.meetings.endpoints.meetings
 import app.meetacy.backend.feature.notifications.endpoints.NotificationsDependencies
 import app.meetacy.backend.feature.notifications.endpoints.notifications
-import app.meetacy.backend.endpoint.updates.UpdatesDependencies
-import app.meetacy.backend.endpoint.updates.updates
-import app.meetacy.backend.endpoint.users.users
-import app.meetacy.backend.endpoint.users.validate.ValidateUsernameRepository
-import app.meetacy.backend.endpoint.users.validate.validateUsername
+import app.meetacy.backend.feature.updates.endpoints.updates.UpdatesDependencies
+import app.meetacy.backend.feature.updates.endpoints.updates.updates
+import app.meetacy.backend.feature.users.endpoints.users
+import app.meetacy.backend.feature.users.endpoints.validate.ValidateUsernameRepository
+import app.meetacy.backend.feature.users.endpoints.validate.validateUsername
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

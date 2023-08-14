@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure.database.users
 
-import app.meetacy.backend.database.users.UsersStorage
+import app.meetacy.backend.feature.users.database.users.UsersStorage
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.users.edit.editUser
 import app.meetacy.backend.infrastructure.database.users.get.getUser
