@@ -29,7 +29,6 @@ fun DIBuilder.database() {
     // storages
 
     auth()
-    // fixme: migrate all storages below
     email()
     files()
     friends()
