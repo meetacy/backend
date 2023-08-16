@@ -2,7 +2,7 @@ package app.meetacy.backend.feature.friends.database.integration.friends.delete
 
 import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.feature.friends.usecase.friends.delete.DeleteFriendUsecase
+import app.meetacy.backend.feature.friends.usecase.delete.DeleteFriendUsecase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseDeleteFriendStorage(db: Database) : DeleteFriendUsecase.Storage {

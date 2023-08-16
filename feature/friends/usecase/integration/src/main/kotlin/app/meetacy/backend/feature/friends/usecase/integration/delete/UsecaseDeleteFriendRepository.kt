@@ -5,7 +5,7 @@ import app.meetacy.backend.feature.friends.endpoints.delete.DeleteFriendReposito
 import app.meetacy.backend.feature.friends.endpoints.delete.DeleteFriendResult
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.users.type
-import app.meetacy.backend.feature.friends.usecase.friends.delete.DeleteFriendUsecase
+import app.meetacy.backend.feature.friends.usecase.delete.DeleteFriendUsecase
 
 class UsecaseDeleteFriendRepository(
     private val usecase: DeleteFriendUsecase

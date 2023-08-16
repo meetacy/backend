@@ -32,9 +32,9 @@ import app.meetacy.backend.feature.email.usecase.ConfirmEmailUsecase
 import app.meetacy.backend.feature.email.usecase.LinkEmailUsecase
 import app.meetacy.backend.feature.files.usecase.files.UploadFileUsecase
 import app.meetacy.backend.feature.files.usecase.types.FilesRepository
-import app.meetacy.backend.feature.friends.usecase.friends.add.AddFriendUsecase
-import app.meetacy.backend.feature.friends.usecase.friends.delete.DeleteFriendUsecase
-import app.meetacy.backend.feature.friends.usecase.friends.list.ListFriendsUsecase
+import app.meetacy.backend.feature.friends.usecase.add.AddFriendUsecase
+import app.meetacy.backend.feature.friends.usecase.delete.DeleteFriendUsecase
+import app.meetacy.backend.feature.friends.usecase.list.ListFriendsUsecase
 import app.meetacy.backend.feature.invitations.usecase.invitations.accept.AcceptInvitationUsecase
 import app.meetacy.backend.feature.invitations.usecase.invitations.cancel.CancelInvitationUsecase
 import app.meetacy.backend.feature.invitations.usecase.invitations.create.CreateInvitationUsecase
@@ -42,7 +42,7 @@ import app.meetacy.backend.feature.invitations.usecase.invitations.deny.DenyInvi
 import app.meetacy.backend.feature.invitations.usecase.invitations.get.GetInvitationsViewsUsecase
 import app.meetacy.backend.feature.invitations.usecase.invitations.get.ViewInvitationsUsecase
 import app.meetacy.backend.feature.friends.usecase.location.stream.FriendsLocationStreamingUsecase
-import app.meetacy.backend.feature.friends.usecase.location.stream.LocationsMiddleware
+import app.meetacy.backend.feature.friends.usecase.location.LocationsMiddleware
 import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
 import app.meetacy.backend.feature.invitations.usecase.types.GetInvitationsViewsRepository
 import app.meetacy.backend.feature.invitations.usecase.types.InvitationView

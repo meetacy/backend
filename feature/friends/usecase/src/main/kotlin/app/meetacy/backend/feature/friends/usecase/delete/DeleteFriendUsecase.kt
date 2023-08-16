@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.friends.usecase.friends.delete
+package app.meetacy.backend.feature.friends.usecase.delete
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.auth.AuthRepository

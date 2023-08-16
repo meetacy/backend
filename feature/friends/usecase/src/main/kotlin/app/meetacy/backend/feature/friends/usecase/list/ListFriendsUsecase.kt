@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.friends.usecase.friends.list
+package app.meetacy.backend.feature.friends.usecase.list
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount

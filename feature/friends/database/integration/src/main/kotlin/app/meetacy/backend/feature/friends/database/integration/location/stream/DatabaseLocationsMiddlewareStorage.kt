@@ -4,7 +4,7 @@ import app.meetacy.backend.feature.friends.database.location.UsersLocationsStora
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.feature.friends.usecase.location.stream.LocationsMiddleware
+import app.meetacy.backend.feature.friends.usecase.location.LocationsMiddleware
 import org.jetbrains.exposed.sql.Database
 
 @Suppress("FunctionName")

@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.friends.usecase.location.stream
+package app.meetacy.backend.feature.friends.usecase.location
 
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.location.Location

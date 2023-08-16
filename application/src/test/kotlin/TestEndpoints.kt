@@ -7,9 +7,9 @@ import app.meetacy.backend.feature.notifications.endpoints.NotificationsDependen
 import app.meetacy.backend.endpoint.prepareEndpoints
 import app.meetacy.backend.feature.updates.endpoints.updates.UpdatesDependencies
 import app.meetacy.backend.types.integration.generator.BasicHashGenerator
-import app.meetacy.backend.feature.friends.usecase.friends.add.AddFriendUsecase
-import app.meetacy.backend.feature.friends.usecase.friends.delete.DeleteFriendUsecase
-import app.meetacy.backend.feature.friends.usecase.friends.list.ListFriendsUsecase
+import app.meetacy.backend.feature.friends.usecase.add.AddFriendUsecase
+import app.meetacy.backend.feature.friends.usecase.delete.DeleteFriendUsecase
+import app.meetacy.backend.feature.friends.usecase.list.ListFriendsUsecase
 import app.meetacy.backend.feature.friends.usecase.integration.add.UsecaseAddFriendRepository
 import app.meetacy.backend.feature.friends.usecase.integration.delete.UsecaseDeleteFriendRepository
 import app.meetacy.backend.feature.friends.usecase.integration.get.UsecaseListFriendsRepository

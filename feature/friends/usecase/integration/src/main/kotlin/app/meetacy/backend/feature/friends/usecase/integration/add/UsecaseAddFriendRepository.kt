@@ -5,7 +5,7 @@ import app.meetacy.backend.feature.friends.endpoints.add.AddFriendRepository
 import app.meetacy.backend.feature.friends.endpoints.add.AddFriendResult
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.users.type
-import app.meetacy.backend.feature.friends.usecase.friends.add.AddFriendUsecase
+import app.meetacy.backend.feature.friends.usecase.add.AddFriendUsecase
 
 class UsecaseAddFriendRepository(
     private val usecase: AddFriendUsecase
