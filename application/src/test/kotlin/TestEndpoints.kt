@@ -22,10 +22,10 @@ import app.meetacy.backend.feature.notifications.usecase.integration.notificatio
 import app.meetacy.backend.feature.notifications.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
 import app.meetacy.backend.feature.updates.usecase.integration.updates.stream.StreamUpdatesRepository
 import app.meetacy.backend.feature.users.usecase.integration.users.validate.UsecaseValidateUsernameRepository
-import app.meetacy.backend.feature.invitations.usecase.invitations.accept.AcceptInvitationUsecase
-import app.meetacy.backend.feature.invitations.usecase.invitations.cancel.CancelInvitationUsecase
-import app.meetacy.backend.feature.invitations.usecase.invitations.create.CreateInvitationUsecase
-import app.meetacy.backend.feature.invitations.usecase.invitations.deny.DenyInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.AcceptInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.cancel.CancelInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.create.CreateInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.deny.DenyInvitationUsecase
 import app.meetacy.backend.feature.friends.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.feature.notifications.usecase.notifications.ReadNotificationsUsecase
 import app.meetacy.backend.feature.notifications.usecase.notifications.get.GetNotificationsUsecase

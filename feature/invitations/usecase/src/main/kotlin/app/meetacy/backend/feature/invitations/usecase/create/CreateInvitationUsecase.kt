@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.invitations.usecase.invitations.create
+package app.meetacy.backend.feature.invitations.usecase.create
 
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.access.AccessIdentity

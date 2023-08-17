@@ -7,7 +7,7 @@ import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.backend.types.serializable.users.type
 import app.meetacy.backend.feature.invitations.usecase.integration.types.toEndpoint
-import app.meetacy.backend.feature.invitations.usecase.invitations.create.CreateInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.create.CreateInvitationUsecase
 
 class UsecaseCreateInvitationRepository(
     private val usecase: CreateInvitationUsecase

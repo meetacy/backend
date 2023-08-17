@@ -3,7 +3,7 @@ package app.meetacy.backend.feature.invitations.database.integration.invitations
 import app.meetacy.backend.feature.invitations.database.integration.types.mapToUsecase
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsStorage
 import app.meetacy.backend.types.invitation.InvitationId
-import app.meetacy.backend.feature.invitations.usecase.invitations.cancel.CancelInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.cancel.CancelInvitationUsecase
 import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
 import org.jetbrains.exposed.sql.Database
 

@@ -4,7 +4,7 @@ import app.meetacy.backend.feature.invitations.endpoints.create.CreateInvitation
 import app.meetacy.backend.infrastructure.database.invitations.create.createInvitationStorage
 import app.meetacy.backend.infrastructure.database.invitations.view.getInvitationsViewsRepository
 import app.meetacy.backend.feature.invitations.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
-import app.meetacy.backend.feature.invitations.usecase.invitations.create.CreateInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.create.CreateInvitationUsecase
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

@@ -1,6 +1,6 @@
 package app.meetacy.backend.feature.files.database.integration.types
 
-import app.meetacy.backend.feature.files.database.files.FilesStorage
+import app.meetacy.backend.feature.files.database.FilesStorage
 import app.meetacy.backend.types.file.FileId
 import app.meetacy.backend.types.file.FileIdentity
 import app.meetacy.backend.feature.files.usecase.types.FilesRepository

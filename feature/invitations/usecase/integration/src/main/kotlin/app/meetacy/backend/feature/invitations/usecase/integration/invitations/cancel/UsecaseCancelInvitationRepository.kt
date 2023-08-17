@@ -5,7 +5,7 @@ import app.meetacy.backend.feature.invitations.endpoints.cancel.CancelInvitation
 import app.meetacy.backend.feature.invitations.endpoints.cancel.CancelInvitationResponse
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.invitation.type
-import app.meetacy.backend.feature.invitations.usecase.invitations.cancel.CancelInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.cancel.CancelInvitationUsecase
 
 class UsecaseCancelInvitationRepository(
     private val usecase: CancelInvitationUsecase

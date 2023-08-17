@@ -2,7 +2,7 @@ package app.meetacy.backend.infrastructure.database.invitations.deny
 
 import app.meetacy.backend.feature.invitations.database.integration.invitations.deny.DatabaseDenyInvitationStorage
 import app.meetacy.backend.infrastructure.database.database
-import app.meetacy.backend.feature.invitations.usecase.invitations.deny.DenyInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.deny.DenyInvitationUsecase
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

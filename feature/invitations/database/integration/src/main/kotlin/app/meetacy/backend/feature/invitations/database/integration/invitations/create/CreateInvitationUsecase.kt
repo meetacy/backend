@@ -14,7 +14,7 @@ import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.feature.invitations.usecase.invitations.create.CreateInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.create.CreateInvitationUsecase
 import app.meetacy.backend.feature.notifications.usecase.notifications.add.AddNotificationUsecase
 import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
 import org.jetbrains.exposed.sql.Database

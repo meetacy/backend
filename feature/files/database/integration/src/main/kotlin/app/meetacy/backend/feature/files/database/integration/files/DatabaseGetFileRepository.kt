@@ -1,6 +1,6 @@
 package app.meetacy.backend.feature.files.database.integration.files
 
-import app.meetacy.backend.feature.files.database.files.FilesStorage
+import app.meetacy.backend.feature.files.database.FilesStorage
 import app.meetacy.backend.feature.files.endpoints.download.GetFileRepository
 import app.meetacy.backend.feature.files.endpoints.download.GetFileResult
 import app.meetacy.backend.types.serializable.file.FileIdentity

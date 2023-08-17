@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.invitations.usecase.invitations.deny
+package app.meetacy.backend.feature.invitations.usecase.deny
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.invitation.InvitationId

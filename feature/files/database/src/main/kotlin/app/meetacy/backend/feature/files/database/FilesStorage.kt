@@ -1,14 +1,14 @@
 @file:Suppress("PrivatePropertyName")
 
-package app.meetacy.backend.feature.files.database.files
+package app.meetacy.backend.feature.files.database
 
 import app.meetacy.backend.constants.FILE_NAME_MAX_LIMIT
 import app.meetacy.backend.constants.HASH_LENGTH
-import app.meetacy.backend.feature.files.database.files.FilesTable.ACCESS_HASH
-import app.meetacy.backend.feature.files.database.files.FilesTable.FILE_ID
-import app.meetacy.backend.feature.files.database.files.FilesTable.FILE_SIZE
-import app.meetacy.backend.feature.files.database.files.FilesTable.ORIGINAL_FILE_NAME
-import app.meetacy.backend.feature.files.database.files.FilesTable.USER_ID
+import app.meetacy.backend.feature.files.database.FilesTable.ACCESS_HASH
+import app.meetacy.backend.feature.files.database.FilesTable.FILE_ID
+import app.meetacy.backend.feature.files.database.FilesTable.FILE_SIZE
+import app.meetacy.backend.feature.files.database.FilesTable.ORIGINAL_FILE_NAME
+import app.meetacy.backend.feature.files.database.FilesTable.USER_ID
 import app.meetacy.backend.feature.files.database.types.DatabaseFileDescription
 import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash

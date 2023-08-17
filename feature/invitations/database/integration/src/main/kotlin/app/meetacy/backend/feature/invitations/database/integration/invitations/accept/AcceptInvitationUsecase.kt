@@ -9,7 +9,7 @@ import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.feature.invitations.usecase.invitations.accept.AcceptInvitationUsecase.Storage
+import app.meetacy.backend.feature.invitations.usecase.AcceptInvitationUsecase.Storage
 import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
 import org.jetbrains.exposed.sql.Database
 

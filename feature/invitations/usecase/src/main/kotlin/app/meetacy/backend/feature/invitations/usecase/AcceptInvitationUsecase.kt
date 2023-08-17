@@ -1,5 +1,6 @@
-package app.meetacy.backend.feature.invitations.usecase.invitations.accept
+package app.meetacy.backend.feature.invitations.usecase
 
+import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
@@ -7,7 +8,6 @@ import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
 
 class AcceptInvitationUsecase(
     private val authRepository: AuthRepository,

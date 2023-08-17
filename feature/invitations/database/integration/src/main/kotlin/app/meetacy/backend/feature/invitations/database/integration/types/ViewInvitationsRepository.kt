@@ -2,7 +2,7 @@ package app.meetacy.backend.feature.invitations.database.integration.types
 
 import app.meetacy.backend.feature.invitations.usecase.types.ViewInvitationsRepository
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.feature.invitations.usecase.invitations.get.ViewInvitationsUsecase
+import app.meetacy.backend.feature.invitations.usecase.get.ViewInvitationsUsecase
 import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
 import app.meetacy.backend.feature.invitations.usecase.types.InvitationView
 

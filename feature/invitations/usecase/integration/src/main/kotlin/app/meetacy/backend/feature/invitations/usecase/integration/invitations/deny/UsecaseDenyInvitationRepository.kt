@@ -5,7 +5,7 @@ import app.meetacy.backend.feature.invitations.endpoints.deny.DenyInvitationResp
 import app.meetacy.backend.feature.invitations.endpoints.deny.InvitationDenyingFormSerializable
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.invitation.type
-import app.meetacy.backend.feature.invitations.usecase.invitations.deny.DenyInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.deny.DenyInvitationUsecase
 
 class UsecaseDenyInvitationRepository(
     private val usecase: DenyInvitationUsecase

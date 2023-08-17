@@ -5,7 +5,7 @@ import app.meetacy.backend.feature.invitations.endpoints.accept.InvitationAccept
 import app.meetacy.backend.feature.invitations.endpoints.accept.InvitationAcceptResponse
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.invitation.type
-import app.meetacy.backend.feature.invitations.usecase.invitations.accept.AcceptInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.AcceptInvitationUsecase
 
 class UsecaseAcceptInvitationRepository(
     private val usecase: AcceptInvitationUsecase

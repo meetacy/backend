@@ -3,7 +3,7 @@ package app.meetacy.backend.infrastructure.database.invitations.create
 import app.meetacy.backend.feature.invitations.database.integration.invitations.create.DatabaseCreateInvitationStorage
 import app.meetacy.backend.infrastructure.database.database
 import app.meetacy.backend.infrastructure.database.notifications.add.addNotificationUsecase
-import app.meetacy.backend.feature.invitations.usecase.invitations.create.CreateInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.create.CreateInvitationUsecase
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
