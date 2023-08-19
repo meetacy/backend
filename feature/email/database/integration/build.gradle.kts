@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.email.usecase)
-    api(projects.feature.email.database)
+    implementation(projects.core.database.integration)
+    implementation(projects.feature.email.database)
 }

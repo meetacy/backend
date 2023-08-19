@@ -8,7 +8,8 @@ import org.jetbrains.exposed.sql.Database
 
 fun DIBuilder.authRepository() {
     val authRepository by singleton<AuthRepository> {
-        DatabaseAuthRepository(tokensStorage = get())
+        val tokensStorage: TokensStorage by getting
+        DatabaseAuthRepository(tokensStorage)
     }
 }
 

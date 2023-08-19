@@ -4,8 +4,8 @@ import app.meetacy.backend.types.users.UserId
 
 class ConfirmEmailUsecase(private val storage: Storage) {
     sealed interface ConfirmResult {
-        object Success : ConfirmResult
-        object LinkInvalid : ConfirmResult
+        data object Success : ConfirmResult
+        data object LinkInvalid : ConfirmResult
     }
 
     suspend fun confirm(email: String, confirmHash: String): ConfirmResult {
