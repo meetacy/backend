@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GenerateParam(val nickname: String)
 
-fun interface TokenGenerateRepository {
+interface TokenGenerateRepository {
     suspend fun generateToken(nickname: String): TokenGenerateResult
 }
 

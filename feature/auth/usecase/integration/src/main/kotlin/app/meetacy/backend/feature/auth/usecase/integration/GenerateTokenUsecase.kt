@@ -16,19 +16,13 @@ internal fun DIBuilder.generateTokenUsecase() {
         val accessHashGenerator: AccessHashGenerator by getting
         val utf8Checker: Utf8Checker by getting
 
-        val storage = DatabaseGenerateTokenStorage(tokensStorage, createUserUsecase)
+        val storage = object : GenerateTokenUsecase.Storage {
+            override suspend fun createUser(nickname: String): UserId =
+                createUserUsecase.createUser(nickname)
+            override suspend fun addToken(accessIdentity: AccessIdentity) =
+                tokensStorage.addToken(accessIdentity)
+        }
+
         GenerateTokenUsecase(storage, accessHashGenerator, utf8Checker)
     }
-}
-
-private class DatabaseGenerateTokenStorage(
-    private val tokensStorage: TokensStorage,
-    private val createUserUsecase: CreateUserUsecase
-) : GenerateTokenUsecase.Storage {
-
-    override suspend fun createUser(nickname: String): UserId =
-        createUserUsecase.createUser(nickname)
-
-    override suspend fun addToken(accessIdentity: AccessIdentity) =
-        tokensStorage.addToken(accessIdentity)
 }
