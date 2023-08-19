@@ -1,8 +1,8 @@
 package app.meetacy.backend.application.usecase.users.edit
 
 import app.meetacy.backend.feature.users.endpoints.edit.EditUserRepository
-import app.meetacy.backend.infrastructure.database.files.filesRepository
-import app.meetacy.backend.infrastructure.database.users.edit.editUserStorage
+import app.meetacy.backend.application.database.files.filesRepository
+import app.meetacy.backend.application.database.users.edit.editUserStorage
 import app.meetacy.backend.feature.users.usecase.integration.users.edit.UsecaseEditUserRepository
 import app.meetacy.backend.feature.users.usecase.edit.EditUserUsecase
 import app.meetacy.backend.types.integration.utf8Checker.DefaultUtf8Checker

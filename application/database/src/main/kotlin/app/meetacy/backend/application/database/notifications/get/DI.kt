@@ -4,7 +4,7 @@ import app.meetacy.backend.feature.notifications.database.integration.notificati
 import app.meetacy.backend.feature.notifications.database.integration.notifications.DatabaseGetNotificationsViewsUsecaseStorage
 import app.meetacy.backend.feature.notifications.database.integration.types.UsecaseGetNotificationsViewsRepository
 import app.meetacy.backend.application.database.database
-import app.meetacy.backend.infrastructure.database.notifications.view.viewNotificationsRepository
+import app.meetacy.backend.application.database.notifications.view.viewNotificationsRepository
 import app.meetacy.backend.feature.notifications.usecase.notifications.get.GetNotificationsUsecase
 import app.meetacy.backend.feature.notifications.usecase.notifications.get.GetNotificationsViewsUsecase
 import app.meetacy.backend.feature.notifications.usecase.types.GetNotificationsViewsRepository

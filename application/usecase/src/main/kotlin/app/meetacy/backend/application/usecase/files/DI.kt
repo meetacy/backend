@@ -1,7 +1,7 @@
 package app.meetacy.backend.application.usecase.files
 
-import app.meetacy.backend.infrastructure.usecase.files.get.getFileRepository
-import app.meetacy.backend.infrastructure.usecase.files.upload.uploadFileRepository
+import app.meetacy.backend.application.usecase.files.get.getFileRepository
+import app.meetacy.backend.application.usecase.files.upload.uploadFileRepository
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder

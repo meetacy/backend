@@ -1,14 +1,14 @@
 package app.meetacy.backend.application.database
 
 import app.meetacy.backend.feature.auth.database.integration.auth
-import app.meetacy.backend.infrastructure.database.email.email
-import app.meetacy.backend.infrastructure.database.files.files
-import app.meetacy.backend.infrastructure.database.friends.friends
-import app.meetacy.backend.infrastructure.database.invitations.invitations
-import app.meetacy.backend.infrastructure.database.meetings.meetings
-import app.meetacy.backend.infrastructure.database.notifications.notifications
-import app.meetacy.backend.infrastructure.database.updates.updates
-import app.meetacy.backend.infrastructure.database.users.users
+import app.meetacy.backend.application.database.email.email
+import app.meetacy.backend.application.database.files.files
+import app.meetacy.backend.application.database.friends.friends
+import app.meetacy.backend.application.database.invitations.invitations
+import app.meetacy.backend.application.database.meetings.meetings
+import app.meetacy.backend.application.database.notifications.notifications
+import app.meetacy.backend.application.database.updates.updates
+import app.meetacy.backend.application.database.users.users
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

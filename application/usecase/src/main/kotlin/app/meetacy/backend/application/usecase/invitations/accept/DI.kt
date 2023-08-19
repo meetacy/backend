@@ -1,7 +1,7 @@
 package app.meetacy.backend.application.usecase.invitations.accept
 
 import app.meetacy.backend.feature.invitations.endpoints.accept.AcceptInvitationRepository
-import app.meetacy.backend.infrastructure.database.invitations.accept.acceptInvitationStorage
+import app.meetacy.backend.application.database.invitations.accept.acceptInvitationStorage
 import app.meetacy.backend.feature.invitations.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
 import app.meetacy.backend.feature.invitations.usecase.AcceptInvitationUsecase
 import app.meetacy.di.DI

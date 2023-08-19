@@ -3,7 +3,7 @@ package app.meetacy.backend.application.database.files
 import app.meetacy.backend.feature.files.database.FilesStorage
 import app.meetacy.backend.feature.files.database.integration.types.DatabaseFilesRepository
 import app.meetacy.backend.application.database.database
-import app.meetacy.backend.infrastructure.database.files.upload.uploadFile
+import app.meetacy.backend.application.database.files.upload.uploadFile
 import app.meetacy.backend.feature.files.usecase.types.FilesRepository
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder

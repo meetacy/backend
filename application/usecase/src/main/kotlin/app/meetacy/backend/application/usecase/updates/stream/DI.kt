@@ -1,8 +1,8 @@
 package app.meetacy.backend.application.usecase.updates.stream
 
 import app.meetacy.backend.feature.updates.endpoints.updates.stream.StreamUpdatesRepository
-import app.meetacy.backend.infrastructure.database.notifications.get.getNotificationViewsRepository
-import app.meetacy.backend.infrastructure.database.updates.streamUpdatesStorage
+import app.meetacy.backend.application.database.notifications.get.getNotificationViewsRepository
+import app.meetacy.backend.application.database.updates.streamUpdatesStorage
 import app.meetacy.backend.feature.updates.usecase.integration.updates.stream.UsecaseStreamUpdatesRepository
 import app.meetacy.backend.feature.updates.usecase.updates.stream.StreamUpdatesUsecase
 import app.meetacy.di.DI

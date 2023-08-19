@@ -1,8 +1,8 @@
 package app.meetacy.backend.application.usecase.meetings.history.past
 
 import app.meetacy.backend.feature.meetings.endpoints.history.past.ListMeetingsPastRepository
-import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
-import app.meetacy.backend.infrastructure.database.meetings.history.past.listPastMeetingsStorage
+import app.meetacy.backend.application.database.meetings.get.getMeetingViewRepository
+import app.meetacy.backend.application.database.meetings.history.past.listPastMeetingsStorage
 import app.meetacy.backend.feature.meetings.usecase.integration.history.past.UsecaseListPastMeetingsRepository
 import app.meetacy.backend.feature.meetings.usecase.history.past.ListMeetingsPastUsecase
 import app.meetacy.di.DI

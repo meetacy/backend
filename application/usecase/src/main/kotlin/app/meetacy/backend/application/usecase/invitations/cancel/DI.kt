@@ -1,7 +1,7 @@
 package app.meetacy.backend.application.usecase.invitations.cancel
 
 import app.meetacy.backend.feature.invitations.endpoints.cancel.CancelInvitationRepository
-import app.meetacy.backend.infrastructure.database.invitations.cancel.cancelInvitationStorage
+import app.meetacy.backend.application.database.invitations.cancel.cancelInvitationStorage
 import app.meetacy.backend.feature.invitations.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
 import app.meetacy.backend.feature.invitations.usecase.cancel.CancelInvitationUsecase
 import app.meetacy.di.DI

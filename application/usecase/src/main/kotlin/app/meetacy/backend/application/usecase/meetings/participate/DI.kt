@@ -1,8 +1,8 @@
 package app.meetacy.backend.application.usecase.meetings.participate
 
 import app.meetacy.backend.feature.meetings.endpoints.participate.ParticipateMeetingRepository
-import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
-import app.meetacy.backend.infrastructure.database.meetings.participate.participateMeetingStorage
+import app.meetacy.backend.application.database.meetings.get.getMeetingViewRepository
+import app.meetacy.backend.application.database.meetings.participate.participateMeetingStorage
 import app.meetacy.backend.feature.meetings.usecase.integration.participate.UsecaseParticipateMeetingRepository
 import app.meetacy.backend.feature.meetings.usecase.participate.ParticipateMeetingUsecase
 import app.meetacy.di.DI

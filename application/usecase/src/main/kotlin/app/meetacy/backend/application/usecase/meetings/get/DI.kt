@@ -1,7 +1,7 @@
 package app.meetacy.backend.application.usecase.meetings.get
 
 import app.meetacy.backend.feature.meetings.endpoints.get.GetMeetingRepository
-import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
+import app.meetacy.backend.application.database.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.feature.meetings.usecase.integration.get.UsecaseGetMeetingRepository
 import app.meetacy.backend.feature.meetings.usecase.get.GetMeetingUsecase
 import app.meetacy.di.DI

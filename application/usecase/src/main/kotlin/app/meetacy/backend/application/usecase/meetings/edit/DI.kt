@@ -1,10 +1,10 @@
 package app.meetacy.backend.application.usecase.meetings.edit
 
 import app.meetacy.backend.feature.meetings.endpoints.edit.EditMeetingRepository
-import app.meetacy.backend.infrastructure.database.files.filesRepository
-import app.meetacy.backend.infrastructure.database.meetings.edit.editMeetingStorage
-import app.meetacy.backend.infrastructure.database.meetings.view.viewMeetingRepository
-import app.meetacy.backend.infrastructure.database.meetings.get.getMeetingViewRepository
+import app.meetacy.backend.application.database.files.filesRepository
+import app.meetacy.backend.application.database.meetings.edit.editMeetingStorage
+import app.meetacy.backend.application.database.meetings.view.viewMeetingRepository
+import app.meetacy.backend.application.database.meetings.get.getMeetingViewRepository
 import app.meetacy.backend.feature.meetings.usecase.integration.edit.UsecaseEditMeetingRepository
 import app.meetacy.backend.feature.meetings.usecase.edit.EditMeetingUsecase
 import app.meetacy.backend.types.integration.utf8Checker.DefaultUtf8Checker

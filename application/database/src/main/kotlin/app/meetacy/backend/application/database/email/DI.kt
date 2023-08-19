@@ -2,8 +2,8 @@ package app.meetacy.backend.application.database.email
 
 import app.meetacy.backend.feature.email.database.ConfirmationStorage
 import app.meetacy.backend.application.database.database
-import app.meetacy.backend.infrastructure.database.email.confirm.confirmEmail
-import app.meetacy.backend.infrastructure.database.email.link.linkEmail
+import app.meetacy.backend.application.database.email.confirm.confirmEmail
+import app.meetacy.backend.application.database.email.link.linkEmail
 import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency

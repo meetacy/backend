@@ -1,7 +1,7 @@
 package app.meetacy.backend.application.usecase.users.get
 
 import app.meetacy.backend.feature.users.endpoints.get.UserRepository
-import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository
+import app.meetacy.backend.application.database.users.get.getUserViewsRepository
 import app.meetacy.backend.feature.users.usecase.integration.users.get.UsecaseUserRepository
 import app.meetacy.backend.feature.users.usecase.get.GetUserSafeUsecase
 import app.meetacy.di.DI

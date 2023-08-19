@@ -1,8 +1,8 @@
 package app.meetacy.backend.application.usecase.friends.list
 
 import app.meetacy.backend.feature.friends.endpoints.list.ListFriendsRepository
-import app.meetacy.backend.infrastructure.database.friends.list.listFriendsStorage
-import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository
+import app.meetacy.backend.application.database.friends.list.listFriendsStorage
+import app.meetacy.backend.application.database.users.get.getUserViewsRepository
 import app.meetacy.backend.feature.friends.usecase.list.ListFriendsUsecase
 import app.meetacy.backend.feature.friends.usecase.integration.get.UsecaseListFriendsRepository
 import app.meetacy.di.DI

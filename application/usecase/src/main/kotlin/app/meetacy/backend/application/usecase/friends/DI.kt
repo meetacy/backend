@@ -4,11 +4,11 @@ import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.di.dependency.Dependency
 import app.meetacy.backend.feature.friends.endpoints.FriendsDependencies
-import app.meetacy.backend.infrastructure.usecase.friends.add.addFriendRepository
-import app.meetacy.backend.infrastructure.usecase.friends.delete.deleteFriendRepository
-import app.meetacy.backend.infrastructure.usecase.friends.list.listFriendsRepository
-import app.meetacy.backend.infrastructure.usecase.friends.location.stream.friendLocationDependencies
-import app.meetacy.backend.infrastructure.usecase.friends.location.stream.locationStreamDependencies
+import app.meetacy.backend.application.usecase.friends.add.addFriendRepository
+import app.meetacy.backend.application.usecase.friends.delete.deleteFriendRepository
+import app.meetacy.backend.application.usecase.friends.list.listFriendsRepository
+import app.meetacy.backend.application.usecase.friends.location.stream.friendLocationDependencies
+import app.meetacy.backend.application.usecase.friends.location.stream.locationStreamDependencies
 
 val DI.friendsDependencies: FriendsDependencies by Dependency
 

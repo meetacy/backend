@@ -1,9 +1,9 @@
 package app.meetacy.backend.application.usecase.meetings.create
 
 import app.meetacy.backend.feature.meetings.endpoints.create.CreateMeetingRepository
-import app.meetacy.backend.infrastructure.database.files.filesRepository
-import app.meetacy.backend.infrastructure.database.meetings.create.createMeetingStorage
-import app.meetacy.backend.infrastructure.database.meetings.create.viewMeetingRepository
+import app.meetacy.backend.application.database.files.filesRepository
+import app.meetacy.backend.application.database.meetings.create.createMeetingStorage
+import app.meetacy.backend.application.database.meetings.create.viewMeetingRepository
 import app.meetacy.backend.feature.meetings.usecase.integration.create.UsecaseCreateMeetingRepository
 import app.meetacy.backend.feature.meetings.usecase.create.CreateMeetingUsecase
 import app.meetacy.backend.types.integration.utf8Checker.DefaultUtf8Checker

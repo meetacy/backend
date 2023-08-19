@@ -1,9 +1,9 @@
 package app.meetacy.backend.application.usecase.files.upload
 
 import app.meetacy.backend.feature.files.endpoints.upload.SaveFileRepository
-import app.meetacy.backend.infrastructure.database.files.upload.uploadFileUsecase
-import app.meetacy.backend.infrastructure.usecase.files.filesBasePath
-import app.meetacy.backend.infrastructure.usecase.files.filesLimitPerUser
+import app.meetacy.backend.application.database.files.upload.uploadFileUsecase
+import app.meetacy.backend.application.usecase.files.filesBasePath
+import app.meetacy.backend.application.usecase.files.filesLimitPerUser
 import app.meetacy.backend.feature.files.usecase.files.UploadFileUsecase
 import app.meetacy.backend.feature.files.usecase.integration.UsecaseUploadFileRepository
 import app.meetacy.di.DI

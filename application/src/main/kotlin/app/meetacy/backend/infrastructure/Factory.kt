@@ -1,11 +1,11 @@
 package app.meetacy.backend.infrastructure
 
 import app.meetacy.backend.application.endpoints.prepareEndpoints
-import app.meetacy.backend.infrastructure.usecase.friends.friendsDependencies
-import app.meetacy.backend.infrastructure.usecase.invitations.invitationsDependencies
-import app.meetacy.backend.infrastructure.usecase.notifications.notificationsDependencies
-import app.meetacy.backend.infrastructure.usecase.updates.updatesDependencies
-import app.meetacy.backend.infrastructure.usecase.users.validate.validateUsernameRepository
+import app.meetacy.backend.application.usecase.friends.friendsDependencies
+import app.meetacy.backend.application.usecase.invitations.invitationsDependencies
+import app.meetacy.backend.application.usecase.notifications.notificationsDependencies
+import app.meetacy.backend.application.usecase.updates.updatesDependencies
+import app.meetacy.backend.application.usecase.users.validate.validateUsernameRepository
 import app.meetacy.di.DI
 
 fun prepareEndpoints(di: DI) = prepareEndpoints(

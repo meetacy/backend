@@ -1,8 +1,8 @@
 package app.meetacy.backend.application.usecase.friends.location.stream
 
 import app.meetacy.backend.feature.friends.endpoints.location.FriendsLocationDependencies
-import app.meetacy.backend.infrastructure.database.friends.location.stream.friendLocationStorage
-import app.meetacy.backend.infrastructure.database.users.get.getUserViewsRepository
+import app.meetacy.backend.application.database.friends.location.stream.friendLocationStorage
+import app.meetacy.backend.application.database.users.get.getUserViewsRepository
 import app.meetacy.backend.feature.friends.usecase.integration.location.stream.UsecaseStreamLocationRepository
 import app.meetacy.backend.feature.friends.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.di.DI
