@@ -1,6 +1,6 @@
 package app.meetacy.backend.infrastructure
 
-import app.meetacy.backend.endpoint.prepareEndpoints
+import app.meetacy.backend.application.endpoints.prepareEndpoints
 import app.meetacy.backend.infrastructure.usecase.friends.friendsDependencies
 import app.meetacy.backend.infrastructure.usecase.invitations.invitationsDependencies
 import app.meetacy.backend.infrastructure.usecase.notifications.notificationsDependencies

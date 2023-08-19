@@ -115,4 +115,4 @@ internal fun diIntegrationFile(module: String, featureName: FeatureName) = """
         
     }
     
-"""
+""".trimIndent()

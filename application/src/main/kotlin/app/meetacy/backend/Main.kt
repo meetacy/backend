@@ -1,7 +1,7 @@
 package app.meetacy.backend
 
 import app.meetacy.backend.database.initDatabase
-import app.meetacy.backend.infrastructure.database.database
+import app.meetacy.backend.application.database.database
 import app.meetacy.backend.infrastructure.di
 import app.meetacy.backend.infrastructure.prepareEndpoints
 import app.meetacy.backend.run.runProductionServer
