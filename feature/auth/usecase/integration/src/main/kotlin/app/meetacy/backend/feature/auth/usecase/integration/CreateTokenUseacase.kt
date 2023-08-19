@@ -3,17 +3,17 @@ package app.meetacy.backend.feature.auth.usecase.integration
 import app.meetacy.backend.feature.users.database.users.UsersStorage
 import app.meetacy.backend.feature.auth.usecase.CreateUserUsecase
 import app.meetacy.backend.types.access.AccessHash
+import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.di.builder.DIBuilder
 
 internal fun DIBuilder.createTokenUsecase() {
     val createTokenUsecase by singleton {
-        CreateUserUsecase(
-            generator = get(),
-            storage = DatabaseCreateUserStorage(
-                usersStorage = get()
-            )
-        )
+        val accessHashGenerator: AccessHashGenerator by getting
+        val usersStorage: UsersStorage by getting
+
+        val storage = DatabaseCreateUserStorage(usersStorage)
+        CreateUserUsecase(accessHashGenerator, storage)
     }
 }
 

@@ -4,18 +4,30 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.invitations.endpoints)
-    api(projects.feature.notifications.endpoints)
-    api(projects.feature.meetings.endpoints)
-    api(projects.feature.files.endpoints)
-    api(projects.feature.users.endpoints)
-    api(projects.feature.auth.endpoints)
-    api(projects.feature.friends.endpoints)
-    api(projects.feature.updates.endpoints)
-    api(projects.libs.ktorExtensions)
+    implementation(libs.meetacy.di.core)
 
-    api(libs.ktor.server.core)
-    api(libs.ktor.server.cio)
+    implementation(projects.feature.invitations.endpoints)
+    implementation(projects.feature.notifications.endpoints)
+    implementation(projects.feature.meetings.endpoints)
+    implementation(projects.feature.files.endpoints)
+    implementation(projects.feature.users.endpoints)
+    implementation(projects.feature.auth.endpoints.integration)
+    implementation(projects.feature.friends.endpoints)
+    implementation(projects.feature.updates.endpoints)
+
+    implementation(projects.feature.auth.usecase.integration)
+    implementation(projects.feature.email.usecase.integration)
+    implementation(projects.feature.files.usecase.integration)
+    implementation(projects.feature.files.database.integration)
+    implementation(projects.feature.friends.usecase.integration)
+    implementation(projects.feature.invitations.usecase.integration)
+    implementation(projects.feature.meetings.usecase.integration)
+    implementation(projects.feature.notifications.usecase.integration)
+    implementation(projects.feature.updates.usecase.integration)
+    implementation(projects.feature.users.usecase.integration)
+
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.cio)
 
     implementation(libs.ktor.server.websockets)
     implementation(libs.ktor.server.rsocket)

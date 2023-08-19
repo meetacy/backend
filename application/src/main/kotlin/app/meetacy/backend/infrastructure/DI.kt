@@ -2,9 +2,8 @@
 
 package app.meetacy.backend.infrastructure
 
-import app.meetacy.backend.application.database.DatabaseConfig
 import app.meetacy.backend.application.database.database
-import app.meetacy.backend.application.usecase.endpoints
+import app.meetacy.backend.application.endpoints.endpoints
 import app.meetacy.backend.application.usecase.usecase
 import app.meetacy.backend.types.file.FileSize
 import app.meetacy.di.DI
