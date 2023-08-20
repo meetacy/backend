@@ -3,11 +3,9 @@ package app.meetacy.backend.feature.files.endpoints.upload
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.file.FileIdentity
-import app.meetacy.backend.types.file.FileSize
-import app.meetacy.backend.types.serializable.file.serializable
-import app.meetacy.di.global.di
+import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.file.FileIdentity
+import app.meetacy.backend.types.serializable.file.FileSize
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -15,9 +13,9 @@ import io.ktor.server.routing.*
 import java.io.InputStream
 
 sealed interface UploadFileResult {
-    class Success(val fileIdentity: FileIdentity) : UploadFileResult
-    object InvalidIdentity : UploadFileResult
-    class LimitSize(val filesSize: FileSize, val filesSizeLimit: FileSize) : UploadFileResult
+    data class Success(val fileIdentity: FileIdentity) : UploadFileResult
+    data object InvalidIdentity : UploadFileResult
+    data class LimitSize(val filesSize: FileSize, val filesSizeLimit: FileSize) : UploadFileResult
 }
 
 interface SaveFileRepository {
@@ -28,9 +26,7 @@ interface SaveFileRepository {
     ): UploadFileResult
 }
 
-fun Route.upload() = post("/upload") {
-    val saveFileRepository: SaveFileRepository by di.getting
-
+fun Route.upload(saveFileRepository: SaveFileRepository) = post("/upload") {
     val multipartData = call.receiveMultipart()
 
     var token: AccessIdentity? = null
@@ -42,7 +38,7 @@ fun Route.upload() = post("/upload") {
     multipartData.forEachPart { part ->
         when (part) {
             is PartData.FormItem -> {
-                if (part.name == "token") token = AccessIdentity.parse(part.value)
+                if (part.name == "token") token = AccessIdentity(part.value)
             }
 
             is PartData.FileItem -> {
@@ -61,13 +57,10 @@ fun Route.upload() = post("/upload") {
     if (inputProvider == null) {
         error("Please provide file part")
     }
+
     when (val result = saveFileRepository.saveFile(token!!, fileName, inputProvider!!)) {
-        is UploadFileResult.Success -> call.respondSuccess(
-            result.fileIdentity.serializable()
-        )
-
+        is UploadFileResult.Success -> call.respondSuccess(result.fileIdentity)
         is UploadFileResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
-
         is UploadFileResult.LimitSize -> {
             val filesSizeLimit = result.filesSizeLimit
             val filesSize = result.filesSize.bytesSize

@@ -2,7 +2,7 @@ package app.meetacy.backend.feature.users.database.integration.users.edit
 
 import app.meetacy.backend.feature.users.database.integration.types.mapToUsecase
 import app.meetacy.backend.feature.users.database.users.UsersStorage
-import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.types.users.UserId

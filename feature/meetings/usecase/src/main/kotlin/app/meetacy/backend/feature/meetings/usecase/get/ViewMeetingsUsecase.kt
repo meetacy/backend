@@ -8,7 +8,7 @@ import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.getUsersViews
-import app.meetacy.backend.feature.files.usecase.types.FilesRepository
+import app.meetacy.backend.types.files.FilesRepository
 
 class ViewMeetingsUsecase(
     private val getUsersViewsRepository: GetUsersViewsRepository,

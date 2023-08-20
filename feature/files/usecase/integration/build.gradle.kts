@@ -2,8 +2,8 @@ plugins {
     id("backend-convention")
 }
 
-// usecase and endpoints dependencies
 dependencies {
+    implementation(projects.core.usecase.integration)
+    api(projects.feature.files.database)
     api(projects.feature.files.usecase)
-    api(projects.feature.files.endpoints)
 }

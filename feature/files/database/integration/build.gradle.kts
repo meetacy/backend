@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    api(projects.feature.files.usecase)
-    api(projects.feature.files.database)
-    api(projects.feature.files.endpoints)
+    implementation(projects.core.database.integration)
+    implementation(projects.feature.files.database)
 }

@@ -1,12 +1,16 @@
+@file:Suppress("NAME_SHADOWING")
+
 package app.meetacy.backend
 
+import app.meetacy.backend.application.database.DatabaseConfig
 import app.meetacy.backend.database.initDatabase
-import app.meetacy.backend.application.database.database
-import app.meetacy.backend.infrastructure.di
-import app.meetacy.backend.infrastructure.prepareEndpoints
+import app.meetacy.backend.application.endpoints.prepareEndpoints
+import app.meetacy.backend.di.di
 import app.meetacy.backend.run.runProductionServer
-import app.meetacy.backend.types.file.FileSize
+import app.meetacy.backend.types.files.FileSize
+import app.meetacy.di.builder.di
 import app.meetacy.di.global.GlobalDI
+import org.jetbrains.exposed.sql.Database
 import java.io.File
 
 suspend fun main() {
@@ -22,19 +26,22 @@ suspend fun main() {
     val webhookUrl = System.getenv("DISCORD_WEBHOOK_URL")
 
     runProductionServer(webhookUrl) {
-        val di = di(
-            port = port,
-            databaseUrl = databaseUrl,
-            databaseUser = databaseUser,
-            databasePassword = databasePassword,
-            filesBasePath = filesBasePath,
-            filesSizeLimit = FileSize(filesSizeLimit)
-        )
+        val di = di() + di {
+            val port by constant(port)
+            val databaseConfig by constant(
+                DatabaseConfig(databaseUrl, databaseUser, databasePassword)
+            )
+            val filesBasePath by constant(filesBasePath)
+            val filesSizeLimit by constant(FileSize(filesSizeLimit))
+            val deleteFilesOnExit by constant(value = true)
+        }
+
         GlobalDI.init(di)
 
-        initDatabase(di.database)
+        val database: Database by di.getting
+        initDatabase(database)
 
-        val server = prepareEndpoints(di)
+        val server = prepareEndpoints()
         initialized = true
         server.start(wait = true)
     }

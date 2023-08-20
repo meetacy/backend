@@ -1,7 +1,7 @@
 package app.meetacy.backend.feature.meetings.database.types
 
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingIdentity

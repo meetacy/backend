@@ -4,7 +4,7 @@ import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.types.users.Relationship
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserView
-import app.meetacy.backend.feature.files.usecase.types.FilesRepository
+import app.meetacy.backend.types.files.FilesRepository
 
 class ViewUserUsecase(
     private val filesRepository: FilesRepository,

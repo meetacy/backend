@@ -4,7 +4,7 @@ import app.meetacy.feature.meetings.database.integration.types.mapToDatabase
 import app.meetacy.feature.meetings.database.integration.types.mapToUsecase
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsStorage
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId

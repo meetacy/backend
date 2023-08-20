@@ -9,9 +9,9 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.datetime.DateTime
-import app.meetacy.backend.types.file.FileId
-import app.meetacy.backend.types.file.FileIdentity
-import app.meetacy.backend.types.file.FileSize
+import app.meetacy.backend.types.files.FileId
+import app.meetacy.backend.types.files.FileIdentity
+import app.meetacy.backend.types.files.FileSize
 import app.meetacy.backend.types.integration.generator.BasicHashGenerator
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.location.Location
@@ -30,8 +30,8 @@ import app.meetacy.backend.types.users.*
 import app.meetacy.backend.feature.auth.usecase.GenerateTokenUsecase
 import app.meetacy.backend.feature.email.usecase.ConfirmEmailUsecase
 import app.meetacy.backend.feature.email.usecase.LinkEmailUsecase
-import app.meetacy.backend.feature.files.usecase.files.UploadFileUsecase
-import app.meetacy.backend.feature.files.usecase.types.FilesRepository
+import app.meetacy.backend.feature.files.usecase.upload.UploadFileUsecase
+import app.meetacy.backend.types.files.FilesRepository
 import app.meetacy.backend.feature.friends.usecase.add.AddFriendUsecase
 import app.meetacy.backend.feature.friends.usecase.delete.DeleteFriendUsecase
 import app.meetacy.backend.feature.friends.usecase.list.ListFriendsUsecase

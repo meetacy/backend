@@ -1,6 +1,6 @@
 package app.meetacy.backend.feature.users.database.types
 
-import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.users.UserIdentity
 import app.meetacy.backend.types.users.Username
 

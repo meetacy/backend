@@ -4,7 +4,6 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -22,15 +21,11 @@ sealed interface TokenGenerateResult {
     data object InvalidUtf8String : TokenGenerateResult
 }
 
-fun Route.generateToken() {
-    val repository: TokenGenerateRepository by di.getting
+fun Route.generateToken(repository: TokenGenerateRepository) = post("/generate") {
+    val generateParam = call.receive<GenerateParam>()
 
-    post("/generate") {
-        val generateParam = call.receive<GenerateParam>()
-
-        when (val result = repository.generateToken(generateParam.nickname)) {
-            is TokenGenerateResult.Success -> call.respondSuccess(result.accessIdentity)
-            is TokenGenerateResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
-        }
+    when (val result = repository.generateToken(generateParam.nickname)) {
+        is TokenGenerateResult.Success -> call.respondSuccess(result.accessIdentity)
+        is TokenGenerateResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
     }
 }

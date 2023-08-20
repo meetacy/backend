@@ -22,7 +22,7 @@ import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingIdentity

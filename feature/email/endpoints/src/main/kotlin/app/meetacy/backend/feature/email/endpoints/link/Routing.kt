@@ -3,7 +3,6 @@ package app.meetacy.backend.feature.email.endpoints.link
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -25,9 +24,7 @@ interface LinkEmailRepository {
     suspend fun linkEmail(token: AccessIdentity, email: String): ConfirmHashResult
 }
 
-fun Route.linkEmail() {
-    val repository: LinkEmailRepository by di.getting
-
+fun Route.linkEmail(repository: LinkEmailRepository) {
     post("/link") {
         val parameters = call.receive<LinkParameters>()
 

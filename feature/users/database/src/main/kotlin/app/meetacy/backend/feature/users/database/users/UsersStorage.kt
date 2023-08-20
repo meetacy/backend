@@ -15,7 +15,7 @@ import app.meetacy.backend.feature.users.database.users.UsersTable.NICKNAME
 import app.meetacy.backend.feature.users.database.users.UsersTable.USERNAME
 import app.meetacy.backend.feature.users.database.users.UsersTable.USER_ID
 import app.meetacy.backend.types.access.AccessHash
-import app.meetacy.backend.types.file.FileId
+import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.users.UserId

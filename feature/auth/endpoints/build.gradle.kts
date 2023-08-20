@@ -5,5 +5,4 @@ plugins {
 
 dependencies {
     implementation(projects.core.endpoints)
-    implementation(projects.feature.email.endpoints)
 }

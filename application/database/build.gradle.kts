@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    api(projects.application.database.migrations)
     implementation(projects.feature.auth.database.integration)
     implementation(projects.feature.email.database.integration)
     implementation(projects.feature.files.database.integration)

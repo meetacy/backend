@@ -8,10 +8,10 @@ dependencies {
 
     implementation(projects.feature.auth.endpoints.integration)
     implementation(projects.feature.email.endpoints.integration)
+    implementation(projects.feature.files.endpoints.integration)
     implementation(projects.feature.invitations.endpoints)
     implementation(projects.feature.notifications.endpoints)
     implementation(projects.feature.meetings.endpoints)
-    implementation(projects.feature.files.endpoints)
     implementation(projects.feature.users.endpoints)
     implementation(projects.feature.friends.endpoints)
     implementation(projects.feature.updates.endpoints)

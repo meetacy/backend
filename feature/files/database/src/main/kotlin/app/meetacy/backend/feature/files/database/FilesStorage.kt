@@ -9,12 +9,12 @@ import app.meetacy.backend.feature.files.database.FilesTable.FILE_ID
 import app.meetacy.backend.feature.files.database.FilesTable.FILE_SIZE
 import app.meetacy.backend.feature.files.database.FilesTable.ORIGINAL_FILE_NAME
 import app.meetacy.backend.feature.files.database.FilesTable.USER_ID
-import app.meetacy.backend.feature.files.database.types.DatabaseFileDescription
 import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash
-import app.meetacy.backend.types.file.FileId
-import app.meetacy.backend.types.file.FileIdentity
-import app.meetacy.backend.types.file.FileSize
+import app.meetacy.backend.types.files.FileDescription
+import app.meetacy.backend.types.files.FileId
+import app.meetacy.backend.types.files.FileIdentity
+import app.meetacy.backend.types.files.FileSize
 import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
@@ -58,46 +58,33 @@ class FilesStorage(private val db: Database) {
             return@newSuspendedTransaction FileSize(fileSize)
         }
 
-    suspend fun getFileDescription(fileId: FileId): DatabaseFileDescription? =
+    suspend fun getFileDescription(fileId: FileId): FileDescription? =
         newSuspendedTransaction(Dispatchers.IO, db) {
-            val result = FilesTable.select { (FILE_ID eq fileId.long) }
-                .firstOrNull() ?: return@newSuspendedTransaction null
-            val userId = result[USER_ID]
-            val fileName = result[ORIGINAL_FILE_NAME]
-            val fileSize = result[FILE_SIZE]?.let { fileSize -> FileSize(fileSize) }
-            val fileIdentity = FileIdentity(
-                FileId(result[FILE_ID]),
-                AccessHash(result[ACCESS_HASH])
-            )
-            return@newSuspendedTransaction DatabaseFileDescription(UserId(userId), fileSize, fileIdentity, fileName)
+            FilesTable.select { (FILE_ID eq fileId.long) }
+                .firstOrNull()
+                ?.toDescription()
         }
 
-    suspend fun getFileIdentity(fileId: FileId): FileIdentity? =
+    suspend fun getFileIdentityList(fileIds: List<FileId>): List<FileIdentity?> =
         newSuspendedTransaction(Dispatchers.IO, db) {
-            val result = FilesTable.select { (FILE_ID eq fileId.long) }
-                    .firstOrNull() ?: return@newSuspendedTransaction null
-            return@newSuspendedTransaction FileIdentity(
-                FileId(result[FILE_ID]),
-                AccessHash(result[ACCESS_HASH])
-            )
+            val rawFileIds = fileIds.map { it.long }
+
+            val foundFiles = FilesTable.select { FILE_ID inList rawFileIds }
+                .mapNotNull { result -> result.toDescription()?.fileIdentity }
+                .associateBy { identity -> identity.id }
+
+            fileIds.map(foundFiles::get)
         }
 
-    suspend fun getFileIdentityList(fileIdList: List<FileId?>): List<FileIdentity?> =
-        newSuspendedTransaction(Dispatchers.IO, db) {
-            val rawFileIds = fileIdList.map { it?.long }
-
-            val fileIdentityList = mutableListOf<FileIdentity?>()
-
-            for (fileId in rawFileIds) {
-                if (fileId == null) {
-                    fileIdentityList.add(fileId)
-                } else {
-                    val result = FilesTable.select { FILE_ID eq fileId }
-                        .first()
-                    fileIdentityList.add(FileIdentity(FileId(fileId), AccessHash(result[ACCESS_HASH])))
-                }
-            }
-
-            return@newSuspendedTransaction fileIdentityList
-        }
+    private fun ResultRow.toDescription(): FileDescription? {
+        return FileDescription(
+            ownerId = UserId(this[USER_ID]),
+            fileSize = FileSize(bytesSize = this[FILE_SIZE] ?: return null),
+            fileIdentity = FileIdentity(
+                fileId = FileId(this[FILE_ID]),
+                accessHash = AccessHash(this[ACCESS_HASH])
+            ),
+            fileName = this[ORIGINAL_FILE_NAME]
+        )
+    }
 }

@@ -14,27 +14,10 @@ application {
 }
 
 dependencies {
+    implementation(projects.application.database)
     implementation(projects.application.endpoints)
     implementation(projects.application.usecase)
-
-
     implementation(projects.core.types.integration)
-
-    // implementation(projectsFeatureAuth)
-
-    // implementation(ktorClientSerializationJson)
-    // implementation(ktor.client.serialization.json)
-
-    // features
-    implementation(projects.core)
-    implementation(projects.feature.email.endpoints)
-    implementation(projects.feature.files)
-    implementation(projects.feature.friends)
-    implementation(projects.feature.invitations)
-    implementation(projects.feature.notifications)
-    implementation(projects.feature.meetings)
-    implementation(projects.feature.updates)
-    implementation(projects.feature.users)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
@@ -42,12 +25,10 @@ dependencies {
 
     implementation(libs.meetacy.di.core)
     implementation(libs.meetacy.di.global)
-    implementation(projects.application.database.migrations)
     implementation(projects.libs.discordWebhook.ktor)
 
     testImplementation(libs.meetacy.sdk.api.ktor)
 
-    testImplementation(projects.feature.email.usecase)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)
 

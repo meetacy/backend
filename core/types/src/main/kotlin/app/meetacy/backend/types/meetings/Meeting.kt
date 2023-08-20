@@ -1,8 +1,8 @@
 package app.meetacy.backend.types.meetings
 
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.file.FileId
-import app.meetacy.backend.types.file.FileIdentity
+import app.meetacy.backend.types.files.FileId
+import app.meetacy.backend.types.files.FileIdentity
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserView
