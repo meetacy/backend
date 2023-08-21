@@ -26,6 +26,8 @@ suspend fun main() {
     val webhookUrl = System.getenv("DISCORD_WEBHOOK_URL")
     val isTest = System.getProperty("IS_TEST").toBoolean()
 
+    println(isTest) // TODO: remove after stability check
+
     runProductionServer(webhookUrl) {
         val di = di() + di {
             val port by constant(port)

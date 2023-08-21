@@ -11,4 +11,5 @@ dependencies {
     api(projects.feature.auth.database)
 
     api(projects.core)
+    implementation(libs.exposed.core)
 }

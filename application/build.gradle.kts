@@ -46,6 +46,7 @@ tasks.test {
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL
     }
+    systemProperty("IS_TEST", true)
 }
 
 val propertiesFile: File = rootProject.file("deploy.properties")
