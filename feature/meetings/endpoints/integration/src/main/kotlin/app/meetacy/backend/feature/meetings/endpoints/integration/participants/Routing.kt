@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.meetings.endpoints.participants
+package app.meetacy.backend.feature.meetings.endpoints.integration.participants
 
 import app.meetacy.backend.feature.meetings.endpoints.participants.list.ListMeetingParticipantsRepository
 import app.meetacy.backend.feature.meetings.endpoints.participants.list.listMeetingParticipants

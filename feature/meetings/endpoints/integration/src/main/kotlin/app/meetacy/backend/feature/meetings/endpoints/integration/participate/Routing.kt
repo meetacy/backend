@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.meetings.endpoints.participate
+package app.meetacy.backend.feature.meetings.endpoints.integration.participate
 
 
 import app.meetacy.backend.endpoint.ktor.Failure
@@ -9,7 +9,6 @@ import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
 
 @Serializable
 data class ParticipateParam(

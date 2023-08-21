@@ -1,11 +1,9 @@
 package app.meetacy.feature.meetings.database.integration.meetings.create
 
-import app.meetacy.feature.meetings.database.integration.meetings.participate.DatabaseViewMeetingsUsecaseStorage
-import app.meetacy.backend.feature.files.database.integration.types.DatabaseFilesRepository
-import app.meetacy.backend.feature.users.database.integration.types.DatabaseGetUsersViewsRepository
-import app.meetacy.feature.meetings.database.integration.types.mapToDatabase
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsStorage
 import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsStorage
+import app.meetacy.backend.feature.meetings.usecase.create.CreateMeetingUsecase
+import app.meetacy.backend.feature.meetings.usecase.get.ViewMeetingsUsecase
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.files.FileId
@@ -15,8 +13,8 @@ import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingIdentity
 import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.feature.meetings.usecase.create.CreateMeetingUsecase
-import app.meetacy.backend.feature.meetings.usecase.get.ViewMeetingsUsecase
+import app.meetacy.feature.meetings.database.integration.meetings.participate.DatabaseViewMeetingsUsecaseStorage
+import app.meetacy.feature.meetings.database.integration.types.mapToDatabase
 import org.jetbrains.exposed.sql.Database
 
 class DatabaseCreateMeetingStorage(db: Database) : CreateMeetingUsecase.Storage {
