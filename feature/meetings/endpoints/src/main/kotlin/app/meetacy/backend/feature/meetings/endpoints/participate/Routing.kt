@@ -6,7 +6,6 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
-import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -19,10 +18,10 @@ data class ParticipateParam(
 )
 
 sealed interface ParticipateMeetingResult {
-    object Success : ParticipateMeetingResult
-    object InvalidIdentity : ParticipateMeetingResult
-    object MeetingNotFound : ParticipateMeetingResult
-    object MeetingAlreadyParticipate : ParticipateMeetingResult
+    data object Success : ParticipateMeetingResult
+    data object InvalidIdentity : ParticipateMeetingResult
+    data object MeetingNotFound : ParticipateMeetingResult
+    data object MeetingAlreadyParticipate : ParticipateMeetingResult
 }
 
 interface ParticipateMeetingRepository {
@@ -32,13 +31,11 @@ interface ParticipateMeetingRepository {
     ): ParticipateMeetingResult
 }
 
-fun Route.participateMeeting() = post("/participate") {
-    val participateMeetingRepository: ParticipateMeetingRepository by di.getting
-
+fun Route.participateMeeting(provider: ParticipateMeetingRepository) = post("/participate") {
     val params = call.receive<ParticipateParam>()
 
     when (
-        participateMeetingRepository.participateMeeting(
+        provider.participateMeeting(
             params.meetingId,
             params.token
         )

@@ -6,7 +6,6 @@ import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.meetings.Meeting
-import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -30,13 +29,11 @@ private data class ListMeetingsMapParams(
     val location: Location
 )
 
-fun Route.listMeetingsMap() = post("/list") {
-    val listMeetingsMapRepository: ListMeetingsMapRepository by di.getting
-
+fun Route.listMeetingsMap(provider: ListMeetingsMapRepository) = post("/list") {
     val params = call.receive<ListMeetingsMapParams>()
 
     when (
-        val result = listMeetingsMapRepository.list(params.token, params.location)
+        val result = provider.list(params.token, params.location)
     ) {
         is ListMeetingsResult.InvalidIdentity ->
             call.respondFailure(Failure.InvalidToken)

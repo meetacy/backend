@@ -8,7 +8,6 @@ import app.meetacy.backend.types.paging.serializable.PagingResult
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.meetings.Meeting
-import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -34,12 +33,11 @@ interface ListMeetingsHistoryRepository {
     ): ListMeetingsResult
 }
 
-fun Route.listMeetingsHistory() = post("/list") {
-    val listMeetingsHistoryRepository: ListMeetingsHistoryRepository by di.getting
-
+fun Route.listMeetingsHistory(provider: ListMeetingsHistoryRepository) = post("/list") {
     val params = call.receive<ListParam>()
+
     when (
-        val result = listMeetingsHistoryRepository.getList(
+        val result = provider.getList(
             accessIdentity = params.token,
             amount = params.amount,
             pagingId = params.pagingId

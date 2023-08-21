@@ -8,7 +8,6 @@ import app.meetacy.backend.feature.meetings.endpoints.history.list.ListParam
 import app.meetacy.backend.types.paging.serializable.PagingId
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.amount.Amount
-import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -22,12 +21,10 @@ interface ListMeetingsPastRepository {
 }
 
 @Suppress("DuplicatedCode")
-fun Route.meetingsHistoryPast() = get("/past") {
-    val repository: ListMeetingsPastRepository by di.getting
-
+fun Route.meetingsHistoryPast(provider: ListMeetingsPastRepository) = get("/past") {
     val params = call.receive<ListParam>()
 
-    when (val result = repository.getList(
+    when (val result = provider.getList(
             accessIdentity = params.token,
             amount = params.amount,
             pagingId = params.pagingId

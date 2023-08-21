@@ -9,7 +9,6 @@ import app.meetacy.backend.types.serializable.datetime.Date
 import app.meetacy.backend.types.serializable.file.FileIdentity
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.meetings.Meeting
-import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -37,12 +36,10 @@ interface CreateMeetingRepository {
     suspend fun createMeeting(createParam: CreateParam): CreateMeetingResult
 }
 
-fun Route.createMeeting() = post("/create") {
-    val createMeetingRepository: CreateMeetingRepository by di.getting
-
+fun Route.createMeeting(provider: CreateMeetingRepository) = post("/create") {
     val params = call.receive<CreateParam>()
 
-    when (val result = createMeetingRepository.createMeeting(params)) {
+    when (val result = provider.createMeeting(params)) {
         is CreateMeetingResult.Success -> call.respondSuccess(result.meeting)
         CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
         CreateMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)

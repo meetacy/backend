@@ -10,7 +10,6 @@ import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.meetings.Meeting
 import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
 import app.meetacy.backend.types.serializable.optional.Optional
-import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -41,12 +40,10 @@ interface EditMeetingRepository {
     suspend fun editMeeting(editMeetingParams: EditMeetingParams): EditMeetingResult
 }
 
-fun Route.editMeeting() = post("/edit") {
-    val editMeetingRepository: EditMeetingRepository by di.getting
-
+fun Route.editMeeting(provider: EditMeetingRepository) = post("/edit") {
     val params = call.receive<EditMeetingParams>()
 
-    when (val result = editMeetingRepository.editMeeting(params)) {
+    when (val result = provider.editMeeting(params)) {
         is EditMeetingResult.Success -> call.respondSuccess(result.meeting)
         EditMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
         EditMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)

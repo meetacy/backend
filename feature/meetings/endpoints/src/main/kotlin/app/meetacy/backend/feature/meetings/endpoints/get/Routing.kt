@@ -5,7 +5,6 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.meetings.Meeting
 import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
-import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -31,23 +30,17 @@ interface GetMeetingRepository {
     ): GetMeetingResult
 }
 
-fun Route.getMeetings() = post("/get") {
-    val getMeetingRepository: GetMeetingRepository by di.getting
-
+fun Route.getMeetings(provider: GetMeetingRepository) = post("/get") {
     val params = call.receive<GetMeetingsParam>()
 
     when (
-        val result = getMeetingRepository.getMeeting(
+        val result = provider.getMeeting(
             params.token,
             params.meetingId
         )
     ) {
-        is GetMeetingResult.Success -> call.respondSuccess(
-            result.meeting
-        )
-
+        is GetMeetingResult.Success -> call.respondSuccess(result.meeting)
         is GetMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
-
         is GetMeetingResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
     }
 }

@@ -8,7 +8,6 @@ import app.meetacy.backend.types.paging.serializable.PagingResult
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
 import app.meetacy.backend.types.serializable.users.User
-import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -28,18 +27,16 @@ interface ListMeetingParticipantsRepository {
 }
 
 sealed interface ListParticipantsResult {
-    object MeetingNotFound : ListParticipantsResult
-    object TokenInvalid : ListParticipantsResult
+    data object MeetingNotFound : ListParticipantsResult
+    data object TokenInvalid : ListParticipantsResult
     class Success(val paging: PagingResult<User>) : ListParticipantsResult
 }
 
-fun Route.listMeetingParticipants() = post("/list") {
-    val repository: ListMeetingParticipantsRepository by di.getting
-
+fun Route.listMeetingParticipants(provider: ListMeetingParticipantsRepository) = post("/list") {
     val params = call.receive<ListMeetingParticipantsParams>()
 
     when (
-        val result = repository.listParticipants(params)
+        val result = provider.listParticipants(params)
     ) {
         is ListParticipantsResult.Success -> call.respondSuccess(result.paging)
         is ListParticipantsResult.TokenInvalid -> call.respondFailure(Failure.InvalidToken)
