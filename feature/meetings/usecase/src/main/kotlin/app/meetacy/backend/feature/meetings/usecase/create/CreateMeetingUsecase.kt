@@ -27,10 +27,10 @@ class CreateMeetingUsecase(
 ) {
 
     sealed interface Result {
-        class Success(val meeting: MeetingView) : Result
-        object TokenInvalid : Result
-        object InvalidUtf8String : Result
-        object InvalidFileIdentity : Result
+        data class Success(val meeting: MeetingView) : Result
+        data object TokenInvalid : Result
+        data object InvalidUtf8String : Result
+        data object InvalidFileIdentity : Result
     }
 
     suspend fun createMeeting(

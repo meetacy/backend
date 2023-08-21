@@ -8,7 +8,7 @@ import app.meetacy.backend.types.serializable.location.serializable
 import app.meetacy.backend.types.serializable.users.serializable
 import app.meetacy.backend.types.users.UserView
 
-fun MeetingView.type() = Meeting(
+fun MeetingView.serializable() = Meeting(
     id = identity.serializable(),
     creator = creator.serializable(),
     date = date.serializable(),

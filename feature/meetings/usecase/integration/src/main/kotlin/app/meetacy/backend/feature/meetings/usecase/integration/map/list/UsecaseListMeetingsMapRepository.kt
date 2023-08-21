@@ -4,7 +4,7 @@ import app.meetacy.backend.feature.meetings.endpoints.map.list.ListMeetingsMapRe
 import app.meetacy.backend.feature.meetings.endpoints.map.list.ListMeetingsResult
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.location.type
-import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.meetings.serializable
 import app.meetacy.backend.feature.meetings.usecase.map.list.ListMeetingsMapUsecase
 import app.meetacy.backend.feature.meetings.usecase.map.list.ListMeetingsMapUsecase.Result
 import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
@@ -20,7 +20,7 @@ class UsecaseListMeetingsMapRepository(
         when (val result = usecase.getMeetingsList(token.type(), location.type())) {
             is Result.InvalidAccessIdentity -> ListMeetingsResult.InvalidIdentity
             is Result.Success -> ListMeetingsResult.Success(
-                meetings = result.meetings.map { it.type() }
+                meetings = result.meetings.map { it.serializable() }
             )
         }
 }

@@ -1,7 +1,7 @@
 package app.meetacy.backend.feature.notifications.usecase.integration.types
 
 import app.meetacy.backend.types.serializable.datetime.serializable
-import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.meetings.serializable
 import app.meetacy.backend.types.serializable.notification.serializable
 import app.meetacy.backend.feature.users.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.types.serializable.notification.Notification as EndpointNotification
@@ -12,7 +12,7 @@ fun UsecaseNotification.mapToEndpoint(): EndpointNotification =
         is UsecaseNotification.Invitation -> EndpointNotification.Invitation(
             id = id.serializable(),
             isNew = isNew,
-            meeting = meeting.type(),
+            meeting = meeting.serializable(),
             date = date.serializable(),
             inviter = inviter.mapToEndpoint()
         )

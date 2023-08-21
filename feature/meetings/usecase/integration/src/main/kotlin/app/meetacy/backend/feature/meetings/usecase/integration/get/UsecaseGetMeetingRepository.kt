@@ -6,6 +6,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
 import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.meetings.serializable
 import app.meetacy.backend.feature.meetings.usecase.get.GetMeetingUsecase
 
 class UsecaseGetMeetingRepository(
@@ -19,7 +20,7 @@ class UsecaseGetMeetingRepository(
 
         when (val result = usecase.getMeeting(accessIdentity.type(), meetingIdentity.type()!!)) {
             is GetMeetingUsecase.Result.Success ->
-                GetMeetingResult.Success(result.meeting.type())
+                GetMeetingResult.Success(result.meeting.serializable())
 
             GetMeetingUsecase.Result.MeetingNotFound ->
                 GetMeetingResult.MeetingNotFound

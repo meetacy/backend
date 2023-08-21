@@ -10,7 +10,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.amount.type
-import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.meetings.serializable
 import app.meetacy.backend.feature.meetings.usecase.history.active.ListMeetingsActiveUsecase
 
 class UsecaseListActiveMeetingsRepository(
@@ -26,7 +26,7 @@ class UsecaseListActiveMeetingsRepository(
 
     fun ListMeetingsActiveUsecase.Result.mapToEndpoint() = when (this) {
         is ListMeetingsActiveUsecase.Result.Success -> ListMeetingsResult.Success(
-            meetings = this.paging.map { it.map(MeetingView::type) }.serializable()
+            meetings = this.paging.map { it.map(MeetingView::serializable) }.serializable()
         )
         ListMeetingsActiveUsecase.Result.InvalidAccessIdentity -> ListMeetingsResult.InvalidIdentity
     }

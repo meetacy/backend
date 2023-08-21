@@ -9,6 +9,7 @@ import app.meetacy.backend.types.serializable.datetime.type
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.type
 import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.meetings.serializable
 import app.meetacy.backend.types.serializable.meetings.typeFullMeeting
 import app.meetacy.backend.types.serializable.optional.type
 import app.meetacy.backend.feature.meetings.usecase.edit.EditMeetingUsecase
@@ -43,7 +44,7 @@ class UsecaseEditMeetingRepository(
             EditMeetingUsecase.Result.NullEditParameters ->
                 EditMeetingResult.NullEditParameters
             is EditMeetingUsecase.Result.Success ->
-                EditMeetingResult.Success(result.meeting.type())
+                EditMeetingResult.Success(result.meeting.serializable())
         }
     }
 }

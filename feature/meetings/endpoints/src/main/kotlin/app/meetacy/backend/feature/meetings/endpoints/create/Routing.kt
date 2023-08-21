@@ -26,20 +26,20 @@ data class CreateParam(
 )
 
 sealed interface CreateMeetingResult {
-    class Success(val meeting: Meeting) : CreateMeetingResult
-    object InvalidAccessIdentity : CreateMeetingResult
-    object InvalidUtf8String : CreateMeetingResult
-    object InvalidFileIdentity : CreateMeetingResult
+    data class Success(val meeting: Meeting) : CreateMeetingResult
+    data object InvalidAccessIdentity : CreateMeetingResult
+    data object InvalidUtf8String : CreateMeetingResult
+    data object InvalidFileIdentity : CreateMeetingResult
 }
 
 interface CreateMeetingRepository {
     suspend fun createMeeting(createParam: CreateParam): CreateMeetingResult
 }
 
-fun Route.createMeeting(provider: CreateMeetingRepository) = post("/create") {
+fun Route.createMeeting(repository: CreateMeetingRepository) = post("/create") {
     val params = call.receive<CreateParam>()
 
-    when (val result = provider.createMeeting(params)) {
+    when (val result = repository.createMeeting(params)) {
         is CreateMeetingResult.Success -> call.respondSuccess(result.meeting)
         CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
         CreateMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)

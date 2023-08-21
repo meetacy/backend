@@ -9,7 +9,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.amount.type
-import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.meetings.serializable
 import app.meetacy.backend.feature.meetings.usecase.history.list.ListMeetingsHistoryUsecase
 import app.meetacy.backend.feature.meetings.usecase.history.list.ListMeetingsHistoryUsecase.Result
 
@@ -26,7 +26,7 @@ class UsecaseListMeetingsHistoryRepository(
         is Result.Success -> ListMeetingsResult.Success(
             meetings = result.paging.map { meetings ->
                 meetings.map { meeting ->
-                    meeting.type()
+                    meeting.serializable()
                 }
             }.serializable()
         )

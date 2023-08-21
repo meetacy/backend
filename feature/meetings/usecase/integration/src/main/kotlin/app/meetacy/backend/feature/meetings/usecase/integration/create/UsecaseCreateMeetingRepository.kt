@@ -7,7 +7,7 @@ import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.datetime.type
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.type
-import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.meetings.serializable
 import app.meetacy.backend.types.serializable.meetings.typeFullMeeting
 import app.meetacy.backend.feature.meetings.usecase.create.CreateMeetingUsecase
 
@@ -31,7 +31,7 @@ class UsecaseCreateMeetingRepository(
             CreateMeetingUsecase.Result.TokenInvalid ->
                 CreateMeetingResult.InvalidAccessIdentity
             is CreateMeetingUsecase.Result.Success ->
-                CreateMeetingResult.Success(result.meeting.type())
+                CreateMeetingResult.Success(result.meeting.serializable())
             CreateMeetingUsecase.Result.InvalidUtf8String ->
                 CreateMeetingResult.InvalidUtf8String
             CreateMeetingUsecase.Result.InvalidFileIdentity ->
