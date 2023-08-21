@@ -3,8 +3,8 @@
 package app.meetacy.backend
 
 import app.meetacy.backend.application.database.DatabaseConfig
-import app.meetacy.backend.database.initDatabase
 import app.meetacy.backend.application.endpoints.prepareEndpoints
+import app.meetacy.backend.database.initDatabase
 import app.meetacy.backend.di.di
 import app.meetacy.backend.run.runProductionServer
 import app.meetacy.backend.types.files.FileSize
@@ -24,12 +24,13 @@ suspend fun main() {
     ).apply { mkdirs() }.absolutePath
     val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (100L * 1024 * 1024)
     val webhookUrl = System.getenv("DISCORD_WEBHOOK_URL")
+    val isTest = System.getProperty("IS_TEST").toBoolean()
 
     runProductionServer(webhookUrl) {
         val di = di() + di {
             val port by constant(port)
             val databaseConfig by constant(
-                DatabaseConfig(databaseUrl, databaseUser, databasePassword)
+                DatabaseConfig(databaseUrl, databaseUser, databasePassword, isTest)
             )
             val filesBasePath by constant(filesBasePath)
             val filesSizeLimit by constant(FileSize(filesSizeLimit))

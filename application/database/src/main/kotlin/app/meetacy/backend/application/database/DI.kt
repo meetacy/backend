@@ -3,15 +3,14 @@ package app.meetacy.backend.application.database
 import app.meetacy.backend.feature.auth.database.integration.auth
 import app.meetacy.backend.feature.email.database.integration.email
 import app.meetacy.backend.feature.files.database.integration.files
-import app.meetacy.di.DI
 import app.meetacy.di.builder.DIBuilder
-import app.meetacy.di.dependency.Dependency
 import org.jetbrains.exposed.sql.Database
 
 data class DatabaseConfig(
     val url: String,
     val user: String,
-    val password: String
+    val password: String,
+    val isTest: Boolean
 )
 
 fun DIBuilder.database() {
