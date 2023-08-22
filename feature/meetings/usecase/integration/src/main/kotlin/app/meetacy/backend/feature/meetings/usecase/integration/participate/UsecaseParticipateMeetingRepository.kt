@@ -25,7 +25,7 @@ class UsecaseParticipateMeetingRepository(
 
             ParticipateMeetingUsecase.Result.TokenInvalid ->
                 ParticipateMeetingResult.InvalidIdentity
-            ParticipateMeetingUsecase.Result.MeetingAlreadyParticipate ->
-                ParticipateMeetingResult.MeetingAlreadyParticipate
+            ParticipateMeetingUsecase.Result.AlreadyParticipant ->
+                ParticipateMeetingResult.AlreadyParticipant
         }
 }

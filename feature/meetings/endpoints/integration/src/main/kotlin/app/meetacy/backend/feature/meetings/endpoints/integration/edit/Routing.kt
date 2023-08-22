@@ -1,54 +1,51 @@
-package app.meetacy.backend.feature.meetings.endpoints.edit
+package app.meetacy.backend.feature.meetings.endpoints.integration.edit
 
-import app.meetacy.backend.endpoint.ktor.Failure
-import app.meetacy.backend.endpoint.ktor.respondFailure
-import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.backend.types.serializable.datetime.Date
-import app.meetacy.backend.types.serializable.file.FileIdentity
-import app.meetacy.backend.types.serializable.location.Location
-import app.meetacy.backend.types.serializable.meetings.Meeting
-import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
-import app.meetacy.backend.types.serializable.optional.Optional
-import io.ktor.server.application.*
-import io.ktor.server.request.*
+import app.meetacy.backend.feature.meetings.endpoints.edit.EditMeetingParams
+import app.meetacy.backend.feature.meetings.endpoints.edit.EditMeetingRepository
+import app.meetacy.backend.feature.meetings.endpoints.edit.EditMeetingResult
+import app.meetacy.backend.feature.meetings.endpoints.edit.editMeeting
+import app.meetacy.backend.feature.meetings.usecase.edit.EditMeetingUsecase
+import app.meetacy.backend.feature.meetings.usecase.edit.EditMeetingUsecase.Result
+import app.meetacy.backend.types.optional.map
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.datetime.type
+import app.meetacy.backend.types.serializable.file.type
+import app.meetacy.backend.types.serializable.location.type
+import app.meetacy.backend.types.serializable.meetings.serializable
+import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.meetings.typeFullMeeting
+import app.meetacy.backend.types.serializable.optional.type
+import app.meetacy.di.global.di
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
 
-@Serializable
-data class EditMeetingParams(
-    val token: AccessIdentity,
-    val meetingId: MeetingIdentity,
-    val avatarId: Optional<FileIdentity?> = Optional.Undefined,
-    val title: String?,
-    val description: String?,
-    val location: Location?,
-    val date: Date?,
-    val visibility: Meeting.Visibility?
-)
+fun Route.editMeeting() {
+    val editMeetingUsecase: EditMeetingUsecase by di.getting
 
-sealed interface EditMeetingResult {
-    class Success(val meeting: Meeting) : EditMeetingResult
-    data object InvalidAccessIdentity : EditMeetingResult
-    data object InvalidUtf8String : EditMeetingResult
-    data object NullEditParameters : EditMeetingResult
-    data object InvalidMeetingId : EditMeetingResult
-    data object InvalidAvatarIdentity : EditMeetingResult
-}
-
-interface EditMeetingRepository {
-    suspend fun editMeeting(editMeetingParams: EditMeetingParams): EditMeetingResult
-}
-
-fun Route.editMeeting(provider: EditMeetingRepository) = post("/edit") {
-    val params = call.receive<EditMeetingParams>()
-
-    when (val result = provider.editMeeting(params)) {
-        is EditMeetingResult.Success -> call.respondSuccess(result.meeting)
-        EditMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
-        EditMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
-        EditMeetingResult.InvalidAvatarIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
-        EditMeetingResult.InvalidMeetingId -> call.respondFailure(Failure.InvalidMeetingIdentity)
-        EditMeetingResult.NullEditParameters -> call.respondFailure(Failure.NullEditParams)
+    val repository = object : EditMeetingRepository {
+        override suspend fun editMeeting(
+            editMeetingParams: EditMeetingParams
+        ): EditMeetingResult = with (editMeetingParams) {
+            when (
+                val result = editMeetingUsecase.editMeeting(
+                    token = token.type(),
+                    meetingIdentity = meetingId.type(),
+                    avatarIdentityOptional = avatarId.type().map { it?.type() },
+                    title = title,
+                    description = description,
+                    location = location?.type(),
+                    date = date?.type(),
+                    visibility = visibility?.typeFullMeeting()
+                )
+            ) {
+                Result.InvalidAccessIdentity -> EditMeetingResult.InvalidAccessIdentity
+                Result.InvalidAvatarIdentity -> EditMeetingResult.InvalidAvatarIdentity
+                Result.InvalidMeetingIdentity -> EditMeetingResult.InvalidMeetingId
+                Result.InvalidUtf8String -> EditMeetingResult.InvalidUtf8String
+                Result.NullEditParameters -> EditMeetingResult.NullEditParameters
+                is Result.Success -> EditMeetingResult.Success(result.meeting.serializable())
+            }
+        }
     }
+
+    editMeeting(repository)
 }

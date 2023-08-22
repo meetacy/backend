@@ -21,7 +21,7 @@ sealed interface ParticipateMeetingResult {
     data object Success : ParticipateMeetingResult
     data object InvalidIdentity : ParticipateMeetingResult
     data object MeetingNotFound : ParticipateMeetingResult
-    data object MeetingAlreadyParticipate : ParticipateMeetingResult
+    data object AlreadyParticipant : ParticipateMeetingResult
 }
 
 interface ParticipateMeetingRepository {
@@ -31,11 +31,11 @@ interface ParticipateMeetingRepository {
     ): ParticipateMeetingResult
 }
 
-fun Route.participateMeeting(provider: ParticipateMeetingRepository) = post("/participate") {
+fun Route.participateMeeting(repository: ParticipateMeetingRepository) = post("/participate") {
     val params = call.receive<ParticipateParam>()
 
     when (
-        provider.participateMeeting(
+        repository.participateMeeting(
             params.meetingId,
             params.token
         )
@@ -43,6 +43,6 @@ fun Route.participateMeeting(provider: ParticipateMeetingRepository) = post("/pa
         ParticipateMeetingResult.Success -> call.respondSuccess()
         ParticipateMeetingResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
         ParticipateMeetingResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
-        ParticipateMeetingResult.MeetingAlreadyParticipate -> call.respondFailure(Failure.MeetingAlreadyParticipate)
+        ParticipateMeetingResult.AlreadyParticipant -> call.respondFailure(Failure.MeetingAlreadyParticipate)
     }
 }

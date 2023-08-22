@@ -25,7 +25,7 @@ class EditMeetingUsecase(
 ) {
 
     sealed interface Result {
-        class Success(val meeting: MeetingView) : Result
+        data class Success(val meeting: MeetingView) : Result
         data object InvalidAccessIdentity : Result
         data object InvalidUtf8String : Result
         data object NullEditParameters : Result

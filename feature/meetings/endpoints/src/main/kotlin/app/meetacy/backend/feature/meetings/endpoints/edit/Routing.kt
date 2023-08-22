@@ -40,10 +40,10 @@ interface EditMeetingRepository {
     suspend fun editMeeting(editMeetingParams: EditMeetingParams): EditMeetingResult
 }
 
-fun Route.editMeeting(provider: EditMeetingRepository) = post("/edit") {
+fun Route.editMeeting(repository: EditMeetingRepository) = post("/edit") {
     val params = call.receive<EditMeetingParams>()
 
-    when (val result = provider.editMeeting(params)) {
+    when (val result = repository.editMeeting(params)) {
         is EditMeetingResult.Success -> call.respondSuccess(result.meeting)
         EditMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
         EditMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)

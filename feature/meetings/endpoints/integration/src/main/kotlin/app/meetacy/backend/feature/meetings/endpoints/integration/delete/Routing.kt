@@ -1,37 +1,35 @@
-package app.meetacy.backend.feature.meetings.endpoints.delete
+package app.meetacy.backend.feature.meetings.endpoints.integration.delete
 
-import app.meetacy.backend.endpoint.ktor.Failure
-import app.meetacy.backend.endpoint.ktor.respondFailure
-import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
-import io.ktor.server.application.*
-import io.ktor.server.request.*
+import app.meetacy.backend.feature.meetings.endpoints.delete.DeleteMeetingParams
+import app.meetacy.backend.feature.meetings.endpoints.delete.DeleteMeetingRepository
+import app.meetacy.backend.feature.meetings.endpoints.delete.DeleteMeetingResult
+import app.meetacy.backend.feature.meetings.endpoints.delete.deleteMeeting
+import app.meetacy.backend.feature.meetings.usecase.delete.DeleteMeetingUsecase
+import app.meetacy.backend.feature.meetings.usecase.delete.DeleteMeetingUsecase.Result
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.di.global.di
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
 
-@Serializable
-data class DeleteMeetingParams(
-    val token: AccessIdentity,
-    val meetingId: MeetingIdentity
-)
+fun Route.deleteMeeting() {
+    val deleteMeetingUsecase: DeleteMeetingUsecase by di.getting
 
-sealed interface DeleteMeetingResult {
-    data object Success : DeleteMeetingResult
-    data object InvalidIdentity : DeleteMeetingResult
-    data object MeetingNotFound : DeleteMeetingResult
-}
-
-interface DeleteMeetingRepository {
-    suspend fun deleteMeeting(deleteMeetingParams: DeleteMeetingParams): DeleteMeetingResult
-}
-
-fun Route.deleteMeeting(provider: DeleteMeetingRepository) = post("/delete") {
-    val params = call.receive<DeleteMeetingParams>()
-
-    when (provider.deleteMeeting(params)) {
-        is DeleteMeetingResult.Success -> call.respondSuccess()
-        is DeleteMeetingResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
-        is DeleteMeetingResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
+    val repository = object : DeleteMeetingRepository {
+        override suspend fun deleteMeeting(
+            deleteMeetingParams: DeleteMeetingParams
+        ): DeleteMeetingResult = with(deleteMeetingParams) {
+            when (
+                deleteMeetingUsecase.deleteMeeting(
+                    accessIdentity = token.type(),
+                    meetingIdentity = meetingId.type()
+                )
+            ) {
+                Result.InvalidIdentity -> DeleteMeetingResult.InvalidIdentity
+                Result.MeetingNotFound -> DeleteMeetingResult.MeetingNotFound
+                Result.Success -> DeleteMeetingResult.Success
+            }
+        }
     }
+
+    deleteMeeting(repository)
 }

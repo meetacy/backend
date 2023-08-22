@@ -30,11 +30,11 @@ interface GetMeetingRepository {
     ): GetMeetingResult
 }
 
-fun Route.getMeetings(provider: GetMeetingRepository) = post("/get") {
+fun Route.getMeeting(repository: GetMeetingRepository) = post("/get") {
     val params = call.receive<GetMeetingsParam>()
 
     when (
-        val result = provider.getMeeting(
+        val result = repository.getMeeting(
             params.token,
             params.meetingId
         )

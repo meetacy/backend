@@ -33,9 +33,9 @@ class DeleteMeetingUsecase(
     }
 
     sealed interface Result {
-        object Success : Result
-        object InvalidIdentity : Result
-        object MeetingNotFound : Result
+        data object Success : Result
+        data object InvalidIdentity : Result
+        data object MeetingNotFound : Result
     }
 
     interface Storage {

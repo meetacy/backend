@@ -1,7 +1,6 @@
 package app.meetacy.script.featureGen
 
 import java.io.File
-import kotlin.system.exitProcess
 import app.meetacy.script.featureGen.userDir as userDirectory
 
 fun initFeature(
@@ -43,9 +42,8 @@ private fun initEndpoints(
         .kotlinMain
         .featurePackage
         .packageDir("${featureName.camelCase}.endpoints")
-        .apply { mkdirs() }
 
-    sourcesDir.routingKt.writeText(endpointsRoutingFile(featureName))
+    sourcesDir.mkdirs()
 
     initEndpointsIntegration(featureName, endpointsDir)
 }
@@ -64,12 +62,9 @@ private fun initEndpointsIntegration(
         .kotlinMain
         .featurePackage
         .packageDir("${featureName.camelCase}.endpoints.integration")
+        .apply { mkdirs() }
 
-    sourcesDir.mkdirs()
-
-    sourcesDir.diKt.writeText(
-        diIntegrationFile(module = "endpoints", featureName)
-    )
+    sourcesDir.routingKt.writeText(endpointsIntegrationRoutingFile(featureName))
 }
 
 private fun initUsecase(
