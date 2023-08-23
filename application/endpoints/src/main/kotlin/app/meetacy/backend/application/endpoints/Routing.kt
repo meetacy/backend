@@ -1,13 +1,12 @@
 package app.meetacy.backend.application.endpoints
 
-import app.meetacy.backend.feature.auth.endpoints.integration.auth
-import app.meetacy.backend.feature.files.endpoints.files
-import app.meetacy.backend.feature.friends.endpoints.friends
-import app.meetacy.backend.feature.invitations.endpoints.invitations
 import app.meetacy.backend.endpoint.ktor.exceptions.installExceptionsHandler
 import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
+import app.meetacy.backend.feature.auth.endpoints.integration.auth
 import app.meetacy.backend.feature.files.endpoints.integration.files
-import app.meetacy.backend.feature.meetings.endpoints.meetings
+import app.meetacy.backend.feature.friends.endpoints.integration.friends
+import app.meetacy.backend.feature.invitations.endpoints.invitations
+import app.meetacy.backend.feature.meetings.endpoints.integration.meetings
 import app.meetacy.backend.feature.notifications.endpoints.notifications
 import app.meetacy.backend.feature.updates.endpoints.updates.updates
 import app.meetacy.backend.feature.users.endpoints.users
@@ -31,6 +30,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
 @OptIn(ExperimentalSerializationApi::class)
+@Suppress("ExtractKtorModule")
 fun prepareEndpoints(): ApplicationEngine {
     val port: Int by di.getting
 
