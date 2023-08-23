@@ -14,7 +14,7 @@ import app.meetacy.backend.types.users.UserId
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.feature.meetings.database.integration.types.mapToUsecase
 
-fun DIBuilder.acceptInvitation() {
+internal fun DIBuilder.acceptInvitation() {
     val acceptInvitationUsecase by singleton<AcceptInvitationUsecase> {
         val authRepository: AuthRepository by getting
         val storage = object : AcceptInvitationUsecase.Storage {

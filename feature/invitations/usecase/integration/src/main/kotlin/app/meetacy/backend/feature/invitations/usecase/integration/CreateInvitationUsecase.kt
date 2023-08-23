@@ -22,7 +22,7 @@ import app.meetacy.backend.types.users.UserId
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.feature.meetings.database.integration.types.mapToUsecase
 
-fun DIBuilder.createInvitation() {
+internal fun DIBuilder.createInvitation() {
     val createInvitationUsecase by singleton<CreateInvitationUsecase> {
         val authRepository: AuthRepository by getting
         val hashGenerator: AccessHashGenerator by getting

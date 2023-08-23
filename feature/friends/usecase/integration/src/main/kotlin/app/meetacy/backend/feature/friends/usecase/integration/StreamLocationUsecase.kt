@@ -33,7 +33,7 @@ fun DIBuilder.locationMiddleware() {
 }
 
 fun DIBuilder.locationStreamingUsecase() {
-    val locationStreamingUsecase = singleton<FriendsLocationStreamingUsecase> {
+    val locationStreamingUsecase by singleton<FriendsLocationStreamingUsecase> {
         val authRepository: AuthRepository by getting
         val getUsersViewsRepository: GetUsersViewsRepository by getting
         val storage = object : FriendsLocationStreamingUsecase.Storage {
