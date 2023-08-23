@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.invitations.database.integration.types
+package app.meetacy.backend.feature.invitations.usecase.integration.types
 
 import app.meetacy.backend.feature.invitations.database.types.DatabaseInvitation
 import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation

@@ -1,4 +1,4 @@
-package app.meetacy.feature.meetings.database.integration.types
+package app.meetacy.backend.feature.meetings.usecase.integration
 
 import app.meetacy.backend.feature.meetings.database.types.DatabaseMeeting
 import app.meetacy.backend.types.meetings.FullMeeting
