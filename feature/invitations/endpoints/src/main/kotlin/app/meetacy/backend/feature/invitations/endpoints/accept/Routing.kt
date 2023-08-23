@@ -3,12 +3,12 @@ package app.meetacy.backend.feature.invitations.endpoints.accept
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 import app.meetacy.backend.types.serializable.invitation.InvitationId
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 
 @Serializable
 data class InvitationAcceptParams(
@@ -43,8 +43,8 @@ interface AcceptInvitationRepository {
 
 
 sealed interface InvitationAcceptResponse {
-    object Success: InvitationAcceptResponse
-    object NotFound: InvitationAcceptResponse
-    object Unauthorized: InvitationAcceptResponse
-    object MeetingNotFound : InvitationAcceptResponse
+    data object Success: InvitationAcceptResponse
+    data object NotFound: InvitationAcceptResponse
+    data object Unauthorized: InvitationAcceptResponse
+    data object MeetingNotFound : InvitationAcceptResponse
 }

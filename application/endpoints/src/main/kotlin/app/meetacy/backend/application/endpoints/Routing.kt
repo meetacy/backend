@@ -5,7 +5,7 @@ import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
 import app.meetacy.backend.feature.auth.endpoints.integration.auth
 import app.meetacy.backend.feature.files.endpoints.integration.files
 import app.meetacy.backend.feature.friends.endpoints.integration.friends
-import app.meetacy.backend.feature.invitations.endpoints.invitations
+import app.meetacy.backend.feature.invitations.endpoints.integration.invitations
 import app.meetacy.backend.feature.meetings.endpoints.integration.meetings
 import app.meetacy.backend.feature.notifications.endpoints.notifications
 import app.meetacy.backend.feature.updates.endpoints.updates.updates

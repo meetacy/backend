@@ -85,6 +85,6 @@ gradle-ssh = { module = "org.hidetake:gradle-ssh-plugin", version.ref = "ssh" }
 [plugins]
 
 deploy = { id = "deploy-convention" }
-backend = { id = "backend-app-convention" }
+backend = { id = "backend-convention" }
 shadow = { id = "com.github.johnrengelman.shadow" }
 ssh = { id = "org.hidetake.ssh" }

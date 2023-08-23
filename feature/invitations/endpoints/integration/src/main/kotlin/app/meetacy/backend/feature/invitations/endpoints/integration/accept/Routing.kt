@@ -1,0 +1,28 @@
+package app.meetacy.backend.feature.invitations.endpoints.integration.accept
+
+import app.meetacy.backend.feature.invitations.endpoints.accept.AcceptInvitationRepository
+import app.meetacy.backend.feature.invitations.endpoints.accept.InvitationAcceptParams
+import app.meetacy.backend.feature.invitations.endpoints.accept.InvitationAcceptResponse
+import app.meetacy.backend.feature.invitations.endpoints.accept.invitationAccept
+import app.meetacy.backend.feature.invitations.usecase.AcceptInvitationUsecase
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.invitation.type
+import app.meetacy.di.global.di
+import io.ktor.server.routing.*
+
+fun Route.invitationAccept() {
+    val usecase: AcceptInvitationUsecase by di.getting
+    val repository = object : AcceptInvitationRepository {
+        override suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse =
+            usecase.accept(params.token.type(), params.id.type()).toEndpoint()
+
+
+        private fun AcceptInvitationUsecase.Result.toEndpoint(): InvitationAcceptResponse = when (this) {
+            AcceptInvitationUsecase.Result.NotFound -> InvitationAcceptResponse.NotFound
+            AcceptInvitationUsecase.Result.Success -> InvitationAcceptResponse.Success
+            AcceptInvitationUsecase.Result.Unauthorized -> InvitationAcceptResponse.Unauthorized
+            AcceptInvitationUsecase.Result.MeetingNotFound -> InvitationAcceptResponse.MeetingNotFound
+        }
+    }
+    invitationAccept(repository)
+}

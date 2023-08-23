@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.invitations.usecase.integration
+package app.meetacy.backend.feature.invitations.usecase.integration.create
 
 import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsStorage
