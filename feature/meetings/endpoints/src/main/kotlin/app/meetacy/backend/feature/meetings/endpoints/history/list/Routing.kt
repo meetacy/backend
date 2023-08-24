@@ -3,6 +3,7 @@ package app.meetacy.backend.feature.meetings.endpoints.history.list
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
+import app.meetacy.backend.feature.meetings.endpoints.history.list.ListMeetingsHistoryResult.*
 import app.meetacy.backend.types.paging.serializable.PagingId
 import app.meetacy.backend.types.paging.serializable.PagingResult
 import app.meetacy.backend.types.serializable.access.AccessIdentity
@@ -20,9 +21,9 @@ data class ListParam(
     val pagingId: PagingId? = null
 )
 
-sealed interface ListMeetingsResult {
-    data class Success(val meetings: PagingResult<Meeting>) : ListMeetingsResult
-    data object InvalidIdentity : ListMeetingsResult
+sealed interface ListMeetingsHistoryResult {
+    data class Success(val meetings: PagingResult<Meeting>) : ListMeetingsHistoryResult
+    data object InvalidIdentity : ListMeetingsHistoryResult
 }
 
 interface ListMeetingsHistoryRepository {
@@ -30,20 +31,20 @@ interface ListMeetingsHistoryRepository {
         accessIdentity: AccessIdentity,
         amount: Amount,
         pagingId: PagingId?
-    ): ListMeetingsResult
+    ): ListMeetingsHistoryResult
 }
 
-fun Route.listMeetingsHistory(provider: ListMeetingsHistoryRepository) = post("/list") {
+fun Route.listMeetingsHistory(repository: ListMeetingsHistoryRepository) = post("/list") {
     val params = call.receive<ListParam>()
 
     when (
-        val result = provider.getList(
+        val result = repository.getList(
             accessIdentity = params.token,
             amount = params.amount,
             pagingId = params.pagingId
         )
     ) {
-        is ListMeetingsResult.Success -> call.respondSuccess(result.meetings)
-        is ListMeetingsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
+        is Success -> call.respondSuccess(result.meetings)
+        is InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
     }
 }

@@ -1,7 +1,7 @@
 package app.meetacy.backend.feature.meetings.usecase.integration.history.active
 
+import app.meetacy.backend.feature.meetings.endpoints.history.active.ListMeetingsActiveResult
 import app.meetacy.backend.feature.meetings.endpoints.history.active.ListMeetingsActiveRepository
-import app.meetacy.backend.feature.meetings.endpoints.history.list.ListMeetingsResult
 import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.paging.serializable.PagingId
 import app.meetacy.backend.types.paging.serializable.serializable
@@ -20,14 +20,14 @@ class UsecaseListActiveMeetingsRepository(
         accessIdentity: AccessIdentity,
         amount: Amount,
         pagingId: PagingId?
-    ): ListMeetingsResult = usecase.getActiveMeetingsList(
+    ): ListMeetingsActiveResult = usecase.getActiveMeetingsList(
         accessIdentity.type(), amount.type(), pagingId?.type()
     ).mapToEndpoint()
 
     fun ListMeetingsActiveUsecase.Result.mapToEndpoint() = when (this) {
-        is ListMeetingsActiveUsecase.Result.Success -> ListMeetingsResult.Success(
+        is ListMeetingsActiveUsecase.Result.Success -> ListMeetingsActiveResult.Success(
             meetings = this.paging.map { it.map(MeetingView::serializable) }.serializable()
         )
-        ListMeetingsActiveUsecase.Result.InvalidAccessIdentity -> ListMeetingsResult.InvalidIdentity
+        ListMeetingsActiveUsecase.Result.InvalidAccessIdentity -> ListMeetingsActiveResult.InvalidIdentity
     }
 }

@@ -1,7 +1,7 @@
 package app.meetacy.backend.feature.meetings.usecase.integration.history.list
 
 import app.meetacy.backend.feature.meetings.endpoints.history.list.ListMeetingsHistoryRepository
-import app.meetacy.backend.feature.meetings.endpoints.history.list.ListMeetingsResult
+import app.meetacy.backend.feature.meetings.endpoints.history.list.ListMeetingsHistoryResult
 import app.meetacy.backend.types.paging.serializable.PagingId
 import app.meetacy.backend.types.paging.serializable.serializable
 import app.meetacy.backend.types.paging.serializable.type
@@ -20,16 +20,16 @@ class UsecaseListMeetingsHistoryRepository(
         accessIdentity: AccessIdentity,
         amount: Amount,
         pagingId: PagingId?
-    ): ListMeetingsResult = when (
+    ): ListMeetingsHistoryResult = when (
         val result = usecase.getMeetingsList(accessIdentity.type(), amount.type(), pagingId?.type())
     ) {
-        is Result.Success -> ListMeetingsResult.Success(
+        is Result.Success -> ListMeetingsHistoryResult.Success(
             meetings = result.paging.map { meetings ->
                 meetings.map { meeting ->
                     meeting.serializable()
                 }
             }.serializable()
         )
-        is Result.InvalidAccessIdentity -> ListMeetingsResult.InvalidIdentity
+        is Result.InvalidAccessIdentity -> ListMeetingsHistoryResult.InvalidIdentity
     }
 }

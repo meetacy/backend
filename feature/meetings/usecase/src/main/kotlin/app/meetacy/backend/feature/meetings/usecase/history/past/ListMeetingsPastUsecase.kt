@@ -21,8 +21,8 @@ class ListMeetingsPastUsecase(
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository
 ) {
     sealed interface Result {
-        class Success(val paging: PagingResult<MeetingView>) : Result
-        object InvalidAccessIdentity : Result
+        data class Success(val paging: PagingResult<MeetingView>) : Result
+        data object InvalidAccessIdentity : Result
     }
 
     suspend fun getPastMeetingsList(

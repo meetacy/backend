@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.libs.paging)
-    implementation(projects.libs.paging.serializable)
+    api(projects.libs.paging)
+    api(projects.libs.paging.serializable)
 }

@@ -1,36 +1,45 @@
-package app.meetacy.backend.feature.meetings.endpoints.history.active
+package app.meetacy.backend.feature.meetings.endpoints.integration.history.active
 
-import app.meetacy.backend.endpoint.ktor.Failure
-import app.meetacy.backend.endpoint.ktor.respondFailure
-import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.feature.meetings.endpoints.history.list.ListMeetingsResult
-import app.meetacy.backend.feature.meetings.endpoints.history.list.ListParam
+import app.meetacy.backend.feature.meetings.endpoints.history.active.ListMeetingsActiveResult
+import app.meetacy.backend.feature.meetings.endpoints.history.active.ListMeetingsActiveRepository
+import app.meetacy.backend.feature.meetings.endpoints.history.active.listMeetingsActive
+import app.meetacy.backend.feature.meetings.usecase.history.active.ListMeetingsActiveUsecase
+import app.meetacy.backend.feature.meetings.usecase.history.active.ListMeetingsActiveUsecase.Result
+import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.paging.serializable.PagingId
+import app.meetacy.backend.types.paging.serializable.serializable
+import app.meetacy.backend.types.paging.serializable.type
 import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.Amount
-import io.ktor.server.application.*
-import io.ktor.server.request.*
+import app.meetacy.backend.types.serializable.amount.type
+import app.meetacy.backend.types.serializable.meetings.serializable
+import app.meetacy.di.global.di
 import io.ktor.server.routing.*
 
-interface ListMeetingsActiveRepository {
-    suspend fun getList(
-        accessIdentity: AccessIdentity,
-        amount: Amount,
-        pagingId: PagingId?
-    ): ListMeetingsResult
-}
+internal fun Route.listMeetingsActive() {
+    val listMeetingsActiveUsecase: ListMeetingsActiveUsecase by di.getting
 
-fun Route.meetingsHistoryActive(provider: ListMeetingsActiveRepository) = get("/active") {
-    val params = call.receive<ListParam>()
-
-    when (
-        val result = provider.getList(
-            accessIdentity = params.token,
-            amount = params.amount,
-            pagingId = params.pagingId
-        )
-    ) {
-        is ListMeetingsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
-        is ListMeetingsResult.Success -> call.respondSuccess(result.meetings)
+    val repository = object : ListMeetingsActiveRepository {
+        override suspend fun getList(
+            accessIdentity: AccessIdentity,
+            amount: Amount,
+            pagingId: PagingId?
+        ): ListMeetingsActiveResult = when (
+            val result = listMeetingsActiveUsecase.getActiveMeetingsList(
+                accessIdentity = accessIdentity.type(),
+                amount = amount.type(),
+                pagingId = pagingId?.type()
+            )
+        ) {
+            Result.InvalidAccessIdentity -> ListMeetingsActiveResult.InvalidIdentity
+            is Result.Success -> ListMeetingsActiveResult.Success(
+                meetings = result.paging
+                    .mapItems(MeetingView::serializable)
+                    .serializable()
+            )
+        }
     }
+
+    listMeetingsActive(repository)
 }

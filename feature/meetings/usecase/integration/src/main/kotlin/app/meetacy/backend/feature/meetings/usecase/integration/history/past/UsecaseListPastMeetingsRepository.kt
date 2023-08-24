@@ -1,6 +1,6 @@
 package app.meetacy.backend.feature.meetings.usecase.integration.history.past
 
-import app.meetacy.backend.feature.meetings.endpoints.history.list.ListMeetingsResult
+import app.meetacy.backend.feature.meetings.endpoints.history.list.ListMeetingsHistoryResult
 import app.meetacy.backend.feature.meetings.endpoints.history.past.ListMeetingsPastRepository
 import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.paging.serializable.PagingId
@@ -20,14 +20,14 @@ class UsecaseListPastMeetingsRepository(
         accessIdentity: AccessIdentity,
         amount: Amount,
         pagingId: PagingId?
-    ): ListMeetingsResult = usecase.getPastMeetingsList(
+    ): ListMeetingsHistoryResult = usecase.getPastMeetingsList(
         accessIdentity.type(), amount.type(), pagingId?.type()
     ).mapToEndpoint()
 
     fun ListMeetingsPastUsecase.Result.mapToEndpoint() = when (this) {
-        is ListMeetingsPastUsecase.Result.Success -> ListMeetingsResult.Success(
+        is ListMeetingsPastUsecase.Result.Success -> ListMeetingsHistoryResult.Success(
             meetings = paging.map { it.map(MeetingView::serializable) }.serializable()
         )
-        ListMeetingsPastUsecase.Result.InvalidAccessIdentity -> ListMeetingsResult.InvalidIdentity
+        ListMeetingsPastUsecase.Result.InvalidAccessIdentity -> ListMeetingsHistoryResult.InvalidIdentity
     }
 }
