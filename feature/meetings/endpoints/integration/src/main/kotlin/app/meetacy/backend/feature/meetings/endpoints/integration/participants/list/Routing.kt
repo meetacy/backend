@@ -1,45 +1,41 @@
-package app.meetacy.backend.feature.meetings.endpoints.participants.list
+package app.meetacy.backend.feature.meetings.endpoints.integration.participants.list
 
-import app.meetacy.backend.endpoint.ktor.Failure
-import app.meetacy.backend.endpoint.ktor.respondFailure
-import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.paging.serializable.PagingId
-import app.meetacy.backend.types.paging.serializable.PagingResult
-import app.meetacy.backend.types.serializable.amount.Amount
-import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
-import app.meetacy.backend.types.serializable.users.User
-import io.ktor.server.application.*
-import io.ktor.server.request.*
+import app.meetacy.backend.feature.meetings.endpoints.participants.list.ListMeetingParticipantsRepository
+import app.meetacy.backend.feature.meetings.endpoints.participants.list.ListParticipantsResult
+import app.meetacy.backend.feature.meetings.endpoints.participants.list.listMeetingParticipants
+import app.meetacy.backend.feature.meetings.usecase.participants.list.ListMeetingParticipantsUsecase
+import app.meetacy.backend.feature.meetings.usecase.participants.list.ListMeetingParticipantsUsecase.Result
+import app.meetacy.backend.types.paging.serializable.serializable
+import app.meetacy.backend.types.paging.serializable.type
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.amount.type
+import app.meetacy.backend.types.serializable.meetings.type
+import app.meetacy.backend.types.serializable.users.serializable
+import app.meetacy.backend.types.users.UserView
+import app.meetacy.di.global.di
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 
-@Serializable
-data class ListMeetingParticipantsParams(
-    val token: AccessIdentitySerializable,
-    val meetingId: MeetingIdentity,
-    val amount: Amount,
-    val pagingId: PagingId? = null
-)
+fun Route.listMeetingParticipants() {
+    val listMeetingParticipantsUsecase: ListMeetingParticipantsUsecase by di.getting
 
-interface ListMeetingParticipantsRepository {
-    suspend fun listParticipants(params: ListMeetingParticipantsParams): ListParticipantsResult
-}
-
-sealed interface ListParticipantsResult {
-    data object MeetingNotFound : ListParticipantsResult
-    data object TokenInvalid : ListParticipantsResult
-    class Success(val paging: PagingResult<User>) : ListParticipantsResult
-}
-
-fun Route.listMeetingParticipants(provider: ListMeetingParticipantsRepository) = post("/list") {
-    val params = call.receive<ListMeetingParticipantsParams>()
-
-    when (
-        val result = provider.listParticipants(params)
-    ) {
-        is ListParticipantsResult.Success -> call.respondSuccess(result.paging)
-        is ListParticipantsResult.TokenInvalid -> call.respondFailure(Failure.InvalidToken)
-        is ListParticipantsResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)
+    val repository = ListMeetingParticipantsRepository { params ->
+        when (
+            val participants = listMeetingParticipantsUsecase.getMeetingParticipants(
+                accessIdentity = params.token.type(),
+                meetingIdentity = params.meetingId.type(),
+                amount = params.amount.type(),
+                pagingId = params.pagingId?.type()
+            )
+        ) {
+            Result.MeetingNotFound -> ListParticipantsResult.MeetingNotFound
+            Result.TokenInvalid -> TODO()
+            is Result.Success -> ListParticipantsResult.Success(
+                paging = participants.paging
+                    .mapItems(UserView::serializable)
+                    .serializable()
+            )
+        }
     }
+
+    listMeetingParticipants(repository)
 }

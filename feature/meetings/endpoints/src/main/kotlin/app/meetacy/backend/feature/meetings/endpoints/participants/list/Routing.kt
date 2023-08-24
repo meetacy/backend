@@ -22,7 +22,7 @@ data class ListMeetingParticipantsParams(
     val pagingId: PagingId? = null
 )
 
-interface ListMeetingParticipantsRepository {
+fun interface ListMeetingParticipantsRepository {
     suspend fun listParticipants(params: ListMeetingParticipantsParams): ListParticipantsResult
 }
 
@@ -32,11 +32,11 @@ sealed interface ListParticipantsResult {
     class Success(val paging: PagingResult<User>) : ListParticipantsResult
 }
 
-fun Route.listMeetingParticipants(provider: ListMeetingParticipantsRepository) = post("/list") {
+fun Route.listMeetingParticipants(repository: ListMeetingParticipantsRepository) = post("/list") {
     val params = call.receive<ListMeetingParticipantsParams>()
 
     when (
-        val result = provider.listParticipants(params)
+        val result = repository.listParticipants(params)
     ) {
         is ListParticipantsResult.Success -> call.respondSuccess(result.paging)
         is ListParticipantsResult.TokenInvalid -> call.respondFailure(Failure.InvalidToken)

@@ -65,8 +65,8 @@ class ListMeetingsMapUsecase(
     }
 
     sealed interface Result {
-        class Success(val meetings: List<MeetingView>) : Result
-        object InvalidAccessIdentity : Result
+        data class Success(val meetings: List<MeetingView>) : Result
+        data object InvalidAccessIdentity : Result
     }
 
     interface Storage {
