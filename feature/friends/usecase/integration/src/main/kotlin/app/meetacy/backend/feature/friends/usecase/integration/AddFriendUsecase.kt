@@ -14,8 +14,9 @@ fun DIBuilder.addFriendUsecase() {
         val authRepository: AuthRepository by getting
         val getUsersViewsRepository: GetUsersViewsRepository by getting
         val addNotificationUsecase: AddNotificationUsecase by getting
+        val friendsStorage: FriendsStorage by getting
+
         val storage = object : AddFriendUsecase.Storage {
-            private val friendsStorage: FriendsStorage by getting
 
             override suspend fun addFriend(userId: UserId, friendId: UserId) =
                 friendsStorage.addFriend(userId, friendId)
