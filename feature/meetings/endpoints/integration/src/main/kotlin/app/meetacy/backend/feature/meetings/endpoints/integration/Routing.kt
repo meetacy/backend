@@ -5,12 +5,13 @@ import app.meetacy.backend.feature.meetings.endpoints.integration.delete.deleteM
 import app.meetacy.backend.feature.meetings.endpoints.integration.edit.editMeeting
 import app.meetacy.backend.feature.meetings.endpoints.integration.get.getMeeting
 import app.meetacy.backend.feature.meetings.endpoints.integration.history.meetingsHistory
+import app.meetacy.backend.feature.meetings.endpoints.integration.map.meetingsMap
 import app.meetacy.backend.feature.meetings.endpoints.integration.participate.participateMeeting
 import io.ktor.server.routing.*
 
 fun Route.meetings() = route("/meetings") {
     meetingsHistory()
-//    meetingsMap(dependencies.map)
+    meetingsMap()
 //    meetingParticipants(dependencies.participants)
 
     createMeeting()

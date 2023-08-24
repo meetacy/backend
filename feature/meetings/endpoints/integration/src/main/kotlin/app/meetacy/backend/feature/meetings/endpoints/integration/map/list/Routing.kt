@@ -1,43 +1,32 @@
-package app.meetacy.backend.feature.meetings.endpoints.map.list
+package app.meetacy.backend.feature.meetings.endpoints.integration.map.list
 
-import app.meetacy.backend.endpoint.ktor.Failure
-import app.meetacy.backend.endpoint.ktor.respondFailure
-import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.backend.types.serializable.location.Location
-import app.meetacy.backend.types.serializable.meetings.Meeting
-import io.ktor.server.application.*
-import io.ktor.server.request.*
+import app.meetacy.backend.feature.meetings.endpoints.map.list.ListMeetingsMapRepository
+import app.meetacy.backend.feature.meetings.endpoints.map.list.ListMeetingsMapResult
+import app.meetacy.backend.feature.meetings.endpoints.map.list.listMeetingsMap
+import app.meetacy.backend.feature.meetings.usecase.map.list.ListMeetingsMapUsecase
+import app.meetacy.backend.feature.meetings.usecase.map.list.ListMeetingsMapUsecase.Result
+import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.location.type
+import app.meetacy.backend.types.serializable.meetings.serializable
+import app.meetacy.di.global.di
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
 
-fun interface ListMeetingsMapRepository {
-    suspend fun list(
-        token: AccessIdentity,
-        location: Location
-    ): ListMeetingsResult
-}
+fun Route.listMeetingsMap() {
+    val listMeetingsMapUsecase: ListMeetingsMapUsecase by di.getting
 
-sealed interface ListMeetingsResult {
-    class Success(val meetings: List<Meeting>) : ListMeetingsResult
-    object InvalidIdentity : ListMeetingsResult
-}
-
-@Serializable
-private data class ListMeetingsMapParams(
-    val token: AccessIdentity,
-    val location: Location
-)
-
-fun Route.listMeetingsMap(provider: ListMeetingsMapRepository) = post("/list") {
-    val params = call.receive<ListMeetingsMapParams>()
-
-    when (
-        val result = provider.list(params.token, params.location)
-    ) {
-        is ListMeetingsResult.InvalidIdentity ->
-            call.respondFailure(Failure.InvalidToken)
-        is ListMeetingsResult.Success ->
-            call.respondSuccess(result.meetings)
+    val repository = ListMeetingsMapRepository { token, location ->
+        when (
+            val result = listMeetingsMapUsecase.getMeetingsList(
+                accessIdentity = token.type(),
+                location = location.type()
+            )
+        ) {
+            Result.InvalidAccessIdentity -> ListMeetingsMapResult.InvalidIdentity
+            is Result.Success -> ListMeetingsMapResult.Success(
+                meetings = result.meetings.map { it.serializable() }
+            )
+        }
     }
+
+    listMeetingsMap(repository)
 }

@@ -15,12 +15,12 @@ fun interface ListMeetingsMapRepository {
     suspend fun list(
         token: AccessIdentity,
         location: Location
-    ): ListMeetingsResult
+    ): ListMeetingsMapResult
 }
 
-sealed interface ListMeetingsResult {
-    class Success(val meetings: List<Meeting>) : ListMeetingsResult
-    object InvalidIdentity : ListMeetingsResult
+sealed interface ListMeetingsMapResult {
+    data class Success(val meetings: List<Meeting>) : ListMeetingsMapResult
+    data object InvalidIdentity : ListMeetingsMapResult
 }
 
 @Serializable
@@ -29,15 +29,15 @@ private data class ListMeetingsMapParams(
     val location: Location
 )
 
-fun Route.listMeetingsMap(provider: ListMeetingsMapRepository) = post("/list") {
+fun Route.listMeetingsMap(repository: ListMeetingsMapRepository) = post("/list") {
     val params = call.receive<ListMeetingsMapParams>()
 
     when (
-        val result = provider.list(params.token, params.location)
+        val result = repository.list(params.token, params.location)
     ) {
-        is ListMeetingsResult.InvalidIdentity ->
+        is ListMeetingsMapResult.InvalidIdentity ->
             call.respondFailure(Failure.InvalidToken)
-        is ListMeetingsResult.Success ->
+        is ListMeetingsMapResult.Success ->
             call.respondSuccess(result.meetings)
     }
 }
