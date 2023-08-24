@@ -9,20 +9,18 @@ import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.files.FileIdentity
 import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.meetings.FullMeeting
-import app.meetacy.backend.types.meetings.MeetingId
-import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
 import app.meetacy.backend.types.files.FilesRepository
 import app.meetacy.backend.types.files.checkFileIdentity
+import app.meetacy.backend.types.meetings.*
 
 class CreateMeetingUsecase(
     private val hashGenerator: AccessHashGenerator,
     private val storage: Storage,
     private val authRepository: AuthRepository,
     private val filesRepository: FilesRepository,
-    private val viewMeetingRepository: ViewMeetingRepository,
+    private val viewMeetingsRepository: ViewMeetingsRepository,
     private val utf8Checker: Utf8Checker
 ) {
 
@@ -49,12 +47,12 @@ class CreateMeetingUsecase(
         }
 
         val creatorId = authRepository.authorizeWithUserId(token) { return Result.TokenInvalid }
-
         val accessHash = AccessHash(hashGenerator.generate())
-
         val fullMeeting = storage.addMeeting(accessHash, creatorId, date, location, title, description, visibility, avatarIdentity?.id)
+
         storage.addParticipant(creatorId, fullMeeting.id)
-        val meetingView = viewMeetingRepository.viewMeeting(creatorId, fullMeeting)
+
+        val meetingView = viewMeetingsRepository.viewMeeting(creatorId, fullMeeting)
 
         return Result.Success(meetingView)
     }
@@ -72,8 +70,5 @@ class CreateMeetingUsecase(
         ): FullMeeting
 
         suspend fun addParticipant(participantId: UserId, meetingId: MeetingId)
-    }
-    interface ViewMeetingRepository {
-        suspend fun viewMeeting(viewer: UserId, meeting: FullMeeting): MeetingView
     }
 }

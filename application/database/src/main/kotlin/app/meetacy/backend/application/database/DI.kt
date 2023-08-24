@@ -5,6 +5,7 @@ import app.meetacy.backend.feature.email.database.integration.email
 import app.meetacy.backend.feature.files.database.integration.files
 import app.meetacy.backend.feature.friends.usecase.integration.friends
 import app.meetacy.backend.feature.invitations.usecase.integration.invitations
+import app.meetacy.backend.feature.meetings.database.integration.meetings
 import app.meetacy.backend.feature.users.database.integration.types.getUsersViewsRepository
 import app.meetacy.di.builder.DIBuilder
 import org.jetbrains.exposed.sql.Database
@@ -25,7 +26,7 @@ fun DIBuilder.database() {
     files()
     friends()
     invitations()
-    getUsersViewsRepository() // TODO: move into users DI
+    meetings()
 }
 
 private fun DIBuilder.databaseSingleton() {

@@ -13,7 +13,7 @@ import app.meetacy.di.builder.DIBuilder
 fun DIBuilder.uploadFileUsecase() {
     val uploadFileUsecase by singleton {
         val authRepository: AuthRepository by getting
-        val hashGenerator: AccessHashGenerator by getting
+        val accessHashGenerator: AccessHashGenerator by getting
         val filesStorage: FilesStorage by getting
 
         val storage = object : UploadFileUsecase.Storage {

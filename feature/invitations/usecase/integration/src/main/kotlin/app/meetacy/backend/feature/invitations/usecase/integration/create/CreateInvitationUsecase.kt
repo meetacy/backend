@@ -20,12 +20,11 @@ import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.di.builder.DIBuilder
-import app.meetacy.feature.meetings.database.integration.types.mapToUsecase
 
 internal fun DIBuilder.createInvitation() {
     val createInvitationUsecase by singleton<CreateInvitationUsecase> {
         val authRepository: AuthRepository by getting
-        val hashGenerator: AccessHashGenerator by getting
+        val accessHashGenerator: AccessHashGenerator by getting
         val invitationsRepository: GetInvitationsViewsRepository by getting
         val storage = object : CreateInvitationUsecase.Storage {
             private val friendsStorage: FriendsStorage by getting
@@ -38,10 +37,10 @@ internal fun DIBuilder.createInvitation() {
                 friendsStorage.isSubscribed(authorId, subscriberId)
 
             override suspend fun getMeeting(meetingId: MeetingId): FullMeeting? =
-                meetingsStorage.getMeetingOrNull(meetingId)?.mapToUsecase()
+                meetingsStorage.getMeetingOrNull(meetingId)
 
             override suspend fun getUser(id: UserId): FullUser? =
-                usersStorage.getUsersOrNull(listOf(id)).singleOrNull()?.mapToUsecase()
+                usersStorage.getUsersOrNull(listOf(id)).singleOrNull()
 
             override suspend fun getInvitationsFrom(authorId: UserId): List<FullInvitation> =
                 invitationTable.getInvitationsFrom(authorId)
@@ -64,6 +63,6 @@ internal fun DIBuilder.createInvitation() {
                 )
             }
         }
-        CreateInvitationUsecase(authRepository, storage, hashGenerator, invitationsRepository)
+        CreateInvitationUsecase(authRepository, storage, accessHashGenerator, invitationsRepository)
     }
 }

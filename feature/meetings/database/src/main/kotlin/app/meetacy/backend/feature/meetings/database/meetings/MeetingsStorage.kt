@@ -17,13 +17,13 @@ import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable.LONG
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable.MEETING_ID
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable.TITLE
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable.VISIBILITY
-import app.meetacy.backend.feature.meetings.database.types.DatabaseMeeting
 import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingIdentity
 import app.meetacy.backend.types.optional.Optional
@@ -48,7 +48,7 @@ object MeetingsTable : Table() {
     val TITLE = varchar("TITLE", length = MEETING_TITLE_MAX_LIMIT).nullable()
     val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT).nullable()
     val AVATAR_ID = reference("AVATAR_ID", FilesTable.FILE_ID).nullable()
-    val VISIBILITY = enumeration("VISIBILITY", klass = DatabaseMeeting.Visibility::class)
+    val VISIBILITY = enumeration("VISIBILITY", klass = FullMeeting.Visibility::class)
 
     override val primaryKey = PrimaryKey(MEETING_ID)
 }
@@ -61,7 +61,7 @@ class MeetingsStorage(private val db: Database) {
         location: Location,
         title: String?,
         description: String?,
-        visibility: DatabaseMeeting.Visibility,
+        visibility: FullMeeting.Visibility,
         avatarId: FileId?
     ): MeetingId =
         newSuspendedTransaction(Dispatchers.IO, db) {
@@ -79,18 +79,18 @@ class MeetingsStorage(private val db: Database) {
             return@newSuspendedTransaction MeetingId(meetingId)
         }
 
-    suspend fun getMeeting(id: MeetingId): DatabaseMeeting =
+    suspend fun getMeeting(id: MeetingId): FullMeeting =
         getMeetingOrNull(id) ?: error("Cannot find a meeting with id $id")
 
-    suspend fun getMeetingOrNull(id: MeetingId): DatabaseMeeting? =
+    suspend fun getMeetingOrNull(id: MeetingId): FullMeeting? =
         getMeetingsOrNull(listOf(id)).first()
 
-    suspend fun getMeetingsOrNull(meetingIds: List<MeetingId>): List<DatabaseMeeting?> =
+    suspend fun getMeetingsOrNull(meetingIds: List<MeetingId>): List<FullMeeting?> =
         newSuspendedTransaction(Dispatchers.IO, db) {
             val rawMeetingIds = meetingIds.map { it.long }
 
             val foundMeetings = MeetingsTable.select { MEETING_ID inList rawMeetingIds }
-                .map { it.toDatabaseMeeting() }
+                .map { it.toFullMeeting() }
                 .associateBy { it.id }
 
             return@newSuspendedTransaction meetingIds.map { foundMeetings[it] }
@@ -99,7 +99,7 @@ class MeetingsStorage(private val db: Database) {
     suspend fun getCreatorMeetings(creatorId: UserId): List<MeetingId> =
         newSuspendedTransaction(Dispatchers.IO, db) {
             val result = MeetingsTable.select { (CREATOR_ID eq creatorId.long) }
-                .map { statement -> statement.toDatabaseMeeting() }
+                .map { statement -> statement.toFullMeeting() }
             return@newSuspendedTransaction result.filter { it.creatorId == creatorId }.map { it.id }
         }
 
@@ -115,8 +115,8 @@ class MeetingsStorage(private val db: Database) {
         description: String?,
         location: Location?,
         date: Date?,
-        visibility: DatabaseMeeting.Visibility?
-    ): DatabaseMeeting = newSuspendedTransaction(Dispatchers.IO, db) {
+        visibility: FullMeeting.Visibility?
+    ): FullMeeting = newSuspendedTransaction(Dispatchers.IO, db) {
         MeetingsTable.update({ MEETING_ID eq meetingId.long }) { statement ->
             title?.let { statement[TITLE] = it }
             description?.let { statement[DESCRIPTION] = it }
@@ -133,21 +133,21 @@ class MeetingsStorage(private val db: Database) {
 
         return@newSuspendedTransaction MeetingsTable.select { MEETING_ID eq meetingId.long }
             .first()
-            .toDatabaseMeeting()
+            .toFullMeeting()
     }
 
-    fun getPublicMeetingsFlow(): Flow<DatabaseMeeting> = channelFlow {
+    fun getPublicMeetingsFlow(): Flow<FullMeeting> = channelFlow {
         newSuspendedTransaction(Dispatchers.IO, db) {
-            MeetingsTable.select { VISIBILITY eq DatabaseMeeting.Visibility.Public }
+            MeetingsTable.select { VISIBILITY eq FullMeeting.Visibility.Public }
                 .asFlow()
-                .map { it.toDatabaseMeeting() }
+                .map { it.toFullMeeting() }
                 .collect(::send)
         }
     }
 
     @OptIn(UnsafeConstructor::class)
-    private fun ResultRow.toDatabaseMeeting(): DatabaseMeeting =
-        DatabaseMeeting(
+    private fun ResultRow.toFullMeeting(): FullMeeting =
+        FullMeeting(
             identity = MeetingIdentity(
                 meetingId = MeetingId(this[MEETING_ID]),
                 accessHash = AccessHash(this[ACCESS_HASH])

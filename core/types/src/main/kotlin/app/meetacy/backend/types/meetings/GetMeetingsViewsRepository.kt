@@ -2,7 +2,7 @@ package app.meetacy.backend.types.meetings
 
 import app.meetacy.backend.types.users.UserId
 
-interface GetMeetingsViewsRepository {
+fun interface GetMeetingsViewsRepository {
     suspend fun getMeetingsViewsOrNull(viewerId: UserId, meetingIds: List<MeetingId>): List<MeetingView?>
 }
 

@@ -54,8 +54,7 @@ class EditMeetingUsecase(
         val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
 
         val meetingCreator = getMeetingsViewsRepository
-            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.id))
-            .first()
+            .getMeetingViewOrNull(userId, meetingIdentity.id)
             ?.creator
             ?.identity
             ?: return Result.InvalidMeetingIdentity

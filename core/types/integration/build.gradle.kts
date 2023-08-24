@@ -9,6 +9,10 @@ dependencies {
 
     implementation(projects.feature.auth.database)
     implementation(projects.feature.files.database)
+    implementation(projects.feature.meetings.database)
+
+    implementation(projects.feature.meetings.usecase)
+    implementation(projects.feature.users.usecase)
 
     implementation(libs.meetacy.di.global)
     implementation(libs.meetacy.di.core)

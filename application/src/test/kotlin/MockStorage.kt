@@ -89,7 +89,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     ReadNotificationsUsecase.Storage, GetFileRepository, ViewMeetingsUsecase.Storage, ListMeetingsHistoryRepository,
     ViewMeetingsRepository, GetMeetingsViewsUsecase.MeetingsProvider,
     ListMeetingsMapUsecase.Storage, EditMeetingUsecase.Storage, EditUserUsecase.Storage,
-    ListMeetingParticipantsUsecase.Storage, CheckMeetingRepository, UploadFileUsecase.Storage, FriendsLocationStreamingUsecase.Storage,
+    ListMeetingParticipantsUsecase.Storage, MeetingExistsRepository, UploadFileUsecase.Storage, FriendsLocationStreamingUsecase.Storage,
     CreateInvitationUsecase.Storage, AcceptInvitationUsecase.Storage, DenyInvitationUsecase.Storage,
     CancelInvitationUsecase.Storage, ViewUserUsecase.Storage, GetInvitationsViewsRepository,
     ListMeetingsActiveUsecase.Storage, ListMeetingsPastUsecase.Storage, ValidateRepository,
@@ -588,7 +588,7 @@ class MockStorage : GenerateTokenUsecase.Storage, LinkEmailUsecase.Storage, Auth
     override suspend fun viewUser(viewerId: UserId, user: FullUser): UserView =
         viewUserUsecase.viewUser(viewerId, user)
 
-    override suspend fun checkMeetingIdentity(identity: MeetingIdentity): Boolean =
+    override suspend fun meetingExists(identity: MeetingIdentity): Boolean =
         meetings.any { it.identity == identity }
 
     override suspend fun getMeetingParticipants(

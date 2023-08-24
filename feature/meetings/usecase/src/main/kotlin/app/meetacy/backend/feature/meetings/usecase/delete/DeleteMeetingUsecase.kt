@@ -6,6 +6,7 @@ import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingIdentity
+import app.meetacy.backend.types.meetings.getMeetingViewOrNull
 
 class DeleteMeetingUsecase(
     private val authRepository: AuthRepository,
@@ -19,8 +20,7 @@ class DeleteMeetingUsecase(
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidIdentity }
 
         val meeting = getMeetingsViewsRepository
-            .getMeetingsViewsOrNull(userId, listOf(meetingIdentity.id))
-            .first()
+            .getMeetingViewOrNull(userId, meetingIdentity.id)
             ?: return Result.MeetingNotFound
 
         if (meetingIdentity.accessHash != meeting.identity.accessHash)

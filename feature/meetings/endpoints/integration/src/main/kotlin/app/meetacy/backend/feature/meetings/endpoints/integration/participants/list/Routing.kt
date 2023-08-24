@@ -15,7 +15,7 @@ import app.meetacy.backend.types.users.UserView
 import app.meetacy.di.global.di
 import io.ktor.server.routing.*
 
-fun Route.listMeetingParticipants() {
+internal fun Route.listMeetingParticipants() {
     val listMeetingParticipantsUsecase: ListMeetingParticipantsUsecase by di.getting
 
     val repository = ListMeetingParticipantsRepository { params ->

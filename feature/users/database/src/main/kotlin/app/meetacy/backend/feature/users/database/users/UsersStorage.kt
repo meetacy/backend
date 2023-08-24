@@ -6,7 +6,7 @@ import app.meetacy.backend.constants.EMAIL_MAX_LIMIT
 import app.meetacy.backend.constants.HASH_LENGTH
 import app.meetacy.backend.constants.NICKNAME_MAX_LIMIT
 import app.meetacy.backend.constants.USERNAME_MAX_LIMIT
-import app.meetacy.backend.feature.users.database.types.DatabaseUser
+import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.feature.users.database.users.UsersTable.ACCESS_HASH
 import app.meetacy.backend.feature.users.database.users.UsersTable.AVATAR_ID
 import app.meetacy.backend.feature.users.database.users.UsersTable.EMAIL
@@ -43,14 +43,14 @@ class UsersStorage(private val db: Database) {
     suspend fun addUser(
         accessHash: AccessHash,
         nickname: String
-    ): DatabaseUser = newSuspendedTransaction(Dispatchers.IO, db) {
+    ): FullUser = newSuspendedTransaction(Dispatchers.IO, db) {
         val result = UsersTable.insert { statement ->
             statement[ACCESS_HASH] = accessHash.string
             statement[NICKNAME] = nickname
         }
         val avatarId = result[AVATAR_ID]
 
-        return@newSuspendedTransaction DatabaseUser(
+        return@newSuspendedTransaction FullUser(
             UserIdentity(
                 UserId(result[USER_ID]),
                 AccessHash(result[ACCESS_HASH])
@@ -63,7 +63,7 @@ class UsersStorage(private val db: Database) {
         )
     }
 
-    suspend fun getUsersOrNull(userIds: List<UserId>): List<DatabaseUser?> = newSuspendedTransaction(Dispatchers.IO, db) {
+    suspend fun getUsersOrNull(userIds: List<UserId>): List<FullUser?> = newSuspendedTransaction(Dispatchers.IO, db) {
         val rawUserIds = userIds.map { it.long }
 
         val foundUsers = UsersTable.select { USER_ID inList rawUserIds }
@@ -80,9 +80,9 @@ class UsersStorage(private val db: Database) {
        return@newSuspendedTransaction result != null
     }
 
-    private fun ResultRow.toUser(): DatabaseUser {
+    private fun ResultRow.toUser(): FullUser {
         val avatarId = this[AVATAR_ID]
-        return DatabaseUser(
+        return FullUser(
             UserIdentity(
                 UserId(this[USER_ID]),
                 AccessHash(this[ACCESS_HASH])
@@ -114,7 +114,7 @@ class UsersStorage(private val db: Database) {
         nickname: Optional<String>,
         username: Optional<Username?>,
         avatarId: Optional<FileId?>,
-    ): DatabaseUser = newSuspendedTransaction(Dispatchers.IO, db) {
+    ): FullUser = newSuspendedTransaction(Dispatchers.IO, db) {
         UsersTable.update({ USER_ID eq userId.long }) { statement ->
             nickname.ifPresent {
                 statement[NICKNAME] = it

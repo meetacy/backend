@@ -7,5 +7,5 @@ dependencies {
     implementation(projects.feature.auth.usecase.integration)
     implementation(projects.feature.email.usecase.integration)
     implementation(projects.feature.files.usecase.integration)
-    implementation(projects.libs.utf8Checker)
+    implementation(projects.feature.meetings.usecase.integration)
 }

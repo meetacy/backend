@@ -11,7 +11,7 @@ import app.meetacy.backend.types.serializable.meetings.serializable
 import app.meetacy.di.global.di
 import io.ktor.server.routing.*
 
-fun Route.listMeetingsMap() {
+internal fun Route.listMeetingsMap() {
     val listMeetingsMapUsecase: ListMeetingsMapUsecase by di.getting
 
     val repository = ListMeetingsMapRepository { token, location ->
