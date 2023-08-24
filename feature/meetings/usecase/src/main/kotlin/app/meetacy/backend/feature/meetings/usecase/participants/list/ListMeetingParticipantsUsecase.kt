@@ -17,7 +17,7 @@ import app.meetacy.backend.types.users.getUsersViews
 
 class ListMeetingParticipantsUsecase(
     private val authRepository: AuthRepository,
-    private val checkMeetingRepository: MeetingExistsRepository,
+    private val meetingExistsRepository: MeetingExistsRepository,
     private val storage: Storage,
     private val getUsersViewsRepository: GetUsersViewsRepository
 ) {
@@ -32,7 +32,7 @@ class ListMeetingParticipantsUsecase(
             return Result.TokenInvalid
         }
 
-        val meetingId = checkMeetingRepository.meetingExists(meetingIdentity) {
+        val meetingId = meetingExistsRepository.meetingExists(meetingIdentity) {
             return Result.MeetingNotFound
         }
 

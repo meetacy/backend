@@ -38,10 +38,10 @@ class ParticipateMeetingUsecase(
     }
 
     sealed interface Result {
-        object Success : Result
-        object TokenInvalid : Result
-        object MeetingNotFound : Result
-        object AlreadyParticipant : Result
+        data object Success : Result
+        data object TokenInvalid : Result
+        data object MeetingNotFound : Result
+        data object AlreadyParticipant : Result
     }
 
     interface Storage {
@@ -54,5 +54,4 @@ class ParticipateMeetingUsecase(
             meetingId: MeetingId, userId: UserId
         ): Boolean
     }
-
 }
