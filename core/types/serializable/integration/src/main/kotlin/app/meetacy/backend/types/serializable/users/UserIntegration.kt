@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.users.usecase.integration.types
+package app.meetacy.backend.types.serializable.users
 
 import app.meetacy.backend.types.serializable.datetime.serializable
 import app.meetacy.backend.types.serializable.datetime.type
@@ -6,9 +6,6 @@ import app.meetacy.backend.types.serializable.file.serializable
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.serializable
 import app.meetacy.backend.types.serializable.location.type
-import app.meetacy.backend.types.serializable.users.User
-import app.meetacy.backend.types.serializable.users.serializable
-import app.meetacy.backend.types.serializable.users.type
 import app.meetacy.backend.types.users.UserView
 import app.meetacy.backend.types.serializable.users.UserLocationSnapshot as EndpointUserLocationSnapshot
 import app.meetacy.backend.types.users.UserLocationSnapshot as UsecaseUserLocationSnapshot

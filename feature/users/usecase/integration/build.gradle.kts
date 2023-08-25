@@ -5,10 +5,11 @@ plugins {
 // usecase and endpoints dependencies
 dependencies {
     api(projects.feature.users.usecase)
-    api(projects.core.types.serializable.integration)
-    api(projects.feature.users.endpoints)
+    api(projects.feature.users.database)
 
     api(projects.feature.files.usecase)
+    api(projects.feature.friends.database)
 
+    api(projects.core.types)
     api(projects.core)
 }

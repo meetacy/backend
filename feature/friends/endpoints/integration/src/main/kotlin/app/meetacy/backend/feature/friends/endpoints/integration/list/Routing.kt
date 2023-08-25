@@ -5,11 +5,11 @@ import app.meetacy.backend.feature.friends.endpoints.list.ListFriendsRepository
 import app.meetacy.backend.feature.friends.endpoints.list.ListFriendsResult
 import app.meetacy.backend.feature.friends.endpoints.list.listFriends
 import app.meetacy.backend.feature.friends.usecase.list.ListFriendsUsecase
-import app.meetacy.backend.feature.users.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.types.paging.serializable.serializable
 import app.meetacy.backend.types.paging.serializable.type
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.type
+import app.meetacy.backend.types.serializable.users.mapToEndpoint
 import app.meetacy.di.global.di
 import io.ktor.server.routing.*
 

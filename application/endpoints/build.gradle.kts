@@ -12,7 +12,7 @@ dependencies {
     implementation(projects.feature.invitations.endpoints.integration)
     implementation(projects.feature.notifications.endpoints)
     implementation(projects.feature.meetings.endpoints.integration)
-    implementation(projects.feature.users.endpoints)
+    implementation(projects.feature.users.endpoints.integration)
     implementation(projects.feature.friends.endpoints.integration)
     implementation(projects.feature.updates.endpoints)
 

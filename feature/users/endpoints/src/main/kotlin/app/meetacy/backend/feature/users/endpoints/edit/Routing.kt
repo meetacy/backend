@@ -8,7 +8,6 @@ import app.meetacy.backend.types.serializable.file.FileIdentity
 import app.meetacy.backend.types.serializable.optional.Optional
 import app.meetacy.backend.types.serializable.users.User
 import app.meetacy.backend.types.serializable.users.Username
-import app.meetacy.di.global.di
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -35,12 +34,10 @@ interface EditUserRepository {
     suspend fun editUser(editUserParams: EditUserParams): EditUserResult
 }
 
-fun Route.editUser() = post("/edit") {
-    val editUserRepository: EditUserRepository by di.getting
-
+fun Route.editUser(provider: EditUserRepository) = post("/edit") {
     val params = call.receive<EditUserParams>()
 
-    when (val result = editUserRepository.editUser(params)) {
+    when (val result = provider.editUser(params)) {
         is EditUserResult.Success -> call.respondSuccess(result.user)
         EditUserResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
         EditUserResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)

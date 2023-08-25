@@ -9,8 +9,7 @@ import app.meetacy.backend.feature.invitations.endpoints.integration.invitations
 import app.meetacy.backend.feature.meetings.endpoints.integration.meetings
 import app.meetacy.backend.feature.notifications.endpoints.notifications
 import app.meetacy.backend.feature.updates.endpoints.updates.updates
-import app.meetacy.backend.feature.users.endpoints.users
-import app.meetacy.backend.feature.users.endpoints.validate.validateUsername
+import app.meetacy.backend.feature.users.endpoints.integration.users
 import app.meetacy.di.global.di
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -64,9 +63,8 @@ fun prepareEndpoints(): ApplicationEngine {
             users()
             meetings()
             friends()
-            notifications()
             invitations()
-            validateUsername()
+            notifications()
             updates()
         }
     }

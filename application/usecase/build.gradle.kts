@@ -8,4 +8,5 @@ dependencies {
     implementation(projects.feature.email.usecase.integration)
     implementation(projects.feature.files.usecase.integration)
     implementation(projects.feature.meetings.usecase.integration)
+    implementation(projects.feature.users.usecase.integration)
 }

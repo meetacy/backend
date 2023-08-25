@@ -4,11 +4,11 @@ import app.meetacy.backend.feature.friends.endpoints.location.FriendsLocationDep
 import app.meetacy.backend.feature.friends.endpoints.location.friendsLocation
 import app.meetacy.backend.feature.friends.endpoints.location.stream.StreamLocationRepository
 import app.meetacy.backend.feature.friends.usecase.location.stream.FriendsLocationStreamingUsecase
-import app.meetacy.backend.feature.users.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.location.type
+import app.meetacy.backend.types.serializable.users.mapToEndpoint
 import app.meetacy.di.global.di
 import io.ktor.server.routing.*
 import kotlinx.coroutines.flow.Flow
