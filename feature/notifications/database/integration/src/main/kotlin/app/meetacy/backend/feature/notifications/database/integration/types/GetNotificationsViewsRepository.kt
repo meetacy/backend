@@ -6,7 +6,7 @@ import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.feature.notifications.usecase.notifications.get.GetNotificationsViewsUsecase
-import app.meetacy.backend.feature.notifications.usecase.types.GetNotificationsViewsRepository
+import app.meetacy.backend.types.notification.GetNotificationsViewsRepository
 import app.meetacy.backend.feature.notifications.usecase.types.NotificationView
 import org.jetbrains.exposed.sql.Database
 

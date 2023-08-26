@@ -1,7 +1,7 @@
 package app.meetacy.backend.feature.updates.usecase.updates.stream
 
-import app.meetacy.backend.feature.notifications.usecase.types.GetNotificationsViewsRepository
-import app.meetacy.backend.feature.notifications.usecase.types.getNotificationView
+import app.meetacy.backend.types.notification.GetNotificationsViewsRepository
+import app.meetacy.backend.types.notification.getNotificationView
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId

@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.notifications.usecase.types
+package app.meetacy.backend.types.notification
 
 import app.meetacy.backend.types.users.UserId
 

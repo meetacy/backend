@@ -5,7 +5,7 @@ import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.update.UpdateId
 import app.meetacy.backend.types.serializable.update.type
 import app.meetacy.backend.types.auth.AuthRepository
-import app.meetacy.backend.feature.notifications.usecase.types.GetNotificationsViewsRepository
+import app.meetacy.backend.types.notification.GetNotificationsViewsRepository
 import app.meetacy.backend.feature.updates.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.feature.updates.usecase.types.UpdateView
 import app.meetacy.backend.feature.updates.usecase.updates.stream.StreamUpdatesUsecase

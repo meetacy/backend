@@ -4,7 +4,7 @@ import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.feature.notifications.usecase.types.FullNotification
 import app.meetacy.backend.feature.notifications.usecase.types.NotificationView
-import app.meetacy.backend.feature.notifications.usecase.types.ViewNotificationsRepository
+import app.meetacy.backend.types.notification.ViewNotificationsRepository
 
 class GetNotificationsViewsUsecase(
     private val storage: Storage,

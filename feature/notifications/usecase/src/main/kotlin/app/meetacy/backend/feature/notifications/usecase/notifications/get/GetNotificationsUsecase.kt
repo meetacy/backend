@@ -2,7 +2,7 @@ package app.meetacy.backend.feature.notifications.usecase.notifications.get
 
 import app.meetacy.backend.feature.notifications.usecase.types.FullNotification
 import app.meetacy.backend.feature.notifications.usecase.types.NotificationView
-import app.meetacy.backend.feature.notifications.usecase.types.ViewNotificationsRepository
+import app.meetacy.backend.types.notification.ViewNotificationsRepository
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.auth.AuthRepository
