@@ -1,11 +1,11 @@
 package app.meetacy.backend.feature.notifications.database.integration.notifications
 
-import app.meetacy.backend.feature.notifications.database.notifications.LastReadNotificationsStorage
+import app.meetacy.backend.feature.notifications.database.LastReadNotificationsStorage
 import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.feature.notifications.usecase.notifications.get.ViewNotificationsUsecase
+import app.meetacy.backend.feature.notifications.usecase.get.ViewNotificationsUsecase
 import org.jetbrains.exposed.sql.Database
 
 fun ViewNotificationsUsecase(

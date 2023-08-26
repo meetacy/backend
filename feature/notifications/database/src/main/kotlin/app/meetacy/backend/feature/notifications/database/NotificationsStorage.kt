@@ -1,18 +1,18 @@
 @file:Suppress("PrivatePropertyName", "OPT_IN_USAGE")
 
-package app.meetacy.backend.feature.notifications.database.notifications
+package app.meetacy.backend.feature.notifications.database
 
 import app.meetacy.backend.constants.DATE_TIME_MAX_LIMIT
 import app.meetacy.backend.database.paging
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable
-import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.DATE
-import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.INVITER_ID
-import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.MEETING_ID
-import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.NOTIFICATION_ID
-import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.OWNER_ID
-import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.SUBSCRIBED_ID
-import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.TYPE
-import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.Type
+import app.meetacy.backend.feature.notifications.database.NotificationsTable.DATE
+import app.meetacy.backend.feature.notifications.database.NotificationsTable.INVITER_ID
+import app.meetacy.backend.feature.notifications.database.NotificationsTable.MEETING_ID
+import app.meetacy.backend.feature.notifications.database.NotificationsTable.NOTIFICATION_ID
+import app.meetacy.backend.feature.notifications.database.NotificationsTable.OWNER_ID
+import app.meetacy.backend.feature.notifications.database.NotificationsTable.SUBSCRIBED_ID
+import app.meetacy.backend.feature.notifications.database.NotificationsTable.TYPE
+import app.meetacy.backend.feature.notifications.database.NotificationsTable.Type
 import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.datetime.DateTime

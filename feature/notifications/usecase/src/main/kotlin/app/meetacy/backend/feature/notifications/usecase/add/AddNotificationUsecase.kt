@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.notifications.usecase.notifications.add
+package app.meetacy.backend.feature.notifications.usecase.add
 
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.meetings.MeetingId

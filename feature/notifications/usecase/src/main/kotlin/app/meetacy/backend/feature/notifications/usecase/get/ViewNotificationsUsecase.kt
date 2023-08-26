@@ -1,10 +1,10 @@
-package app.meetacy.backend.feature.notifications.usecase.notifications.get
+package app.meetacy.backend.feature.notifications.usecase.get
 
-import app.meetacy.backend.feature.notifications.usecase.types.FullNotification
-import app.meetacy.backend.feature.notifications.usecase.types.NotificationView
 import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
 import app.meetacy.backend.types.meetings.getMeetingsViews
+import app.meetacy.backend.types.notification.FullNotification
 import app.meetacy.backend.types.notification.NotificationId
+import app.meetacy.backend.types.notification.NotificationView
 import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.getUsersViews

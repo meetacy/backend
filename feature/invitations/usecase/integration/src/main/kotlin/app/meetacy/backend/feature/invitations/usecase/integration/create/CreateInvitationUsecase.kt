@@ -7,7 +7,7 @@ import app.meetacy.backend.feature.invitations.usecase.integration.types.mapToUs
 import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
 import app.meetacy.backend.feature.invitations.usecase.types.GetInvitationsViewsRepository
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsStorage
-import app.meetacy.backend.feature.notifications.usecase.notifications.add.AddNotificationUsecase
+import app.meetacy.backend.feature.notifications.usecase.add.AddNotificationUsecase
 import app.meetacy.backend.feature.users.database.users.UsersStorage
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.auth.AuthRepository

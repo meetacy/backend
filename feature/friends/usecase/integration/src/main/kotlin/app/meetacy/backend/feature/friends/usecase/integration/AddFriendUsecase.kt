@@ -2,7 +2,7 @@ package app.meetacy.backend.feature.friends.usecase.integration
 
 import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
 import app.meetacy.backend.feature.friends.usecase.add.AddFriendUsecase
-import app.meetacy.backend.feature.notifications.usecase.notifications.add.AddNotificationUsecase
+import app.meetacy.backend.feature.notifications.usecase.add.AddNotificationUsecase
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.users.GetUsersViewsRepository

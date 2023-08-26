@@ -8,7 +8,7 @@ import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.amount.type
 import app.meetacy.backend.feature.notifications.usecase.integration.types.mapToEndpoint
-import app.meetacy.backend.feature.notifications.usecase.notifications.get.GetNotificationsUsecase
+import app.meetacy.backend.feature.notifications.usecase.get.GetNotificationsUsecase
 import app.meetacy.backend.types.paging.serializable.PagingId as PagingIdSerializable
 
 class UsecaseListNotificationsRepository(

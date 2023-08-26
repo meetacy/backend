@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.notifications.usecase.notifications
+package app.meetacy.backend.feature.notifications.usecase.read
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.notification.NotificationId

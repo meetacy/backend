@@ -2,15 +2,15 @@ package app.meetacy.backend.feature.notifications.database.integration.notificat
 
 import app.meetacy.backend.feature.notifications.database.integration.types.ViewNotificationsRepository
 import app.meetacy.backend.feature.notifications.database.integration.types.mapToUsecase
-import app.meetacy.backend.feature.notifications.database.notifications.LastReadNotificationsStorage
-import app.meetacy.backend.feature.notifications.database.notifications.NotificationsStorage
+import app.meetacy.backend.feature.notifications.database.LastReadNotificationsStorage
+import app.meetacy.backend.feature.notifications.database.NotificationsStorage
 import app.meetacy.backend.feature.notifications.database.types.DatabaseNotification
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.feature.notifications.usecase.notifications.get.GetNotificationsUsecase
+import app.meetacy.backend.feature.notifications.usecase.get.GetNotificationsUsecase
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
 import app.meetacy.backend.types.users.GetUsersViewsRepository

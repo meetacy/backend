@@ -1,7 +1,7 @@
 package app.meetacy.backend.feature.notifications.database.integration.types
 
 import app.meetacy.backend.feature.notifications.database.integration.notifications.ViewNotificationsUsecase
-import app.meetacy.backend.feature.notifications.usecase.notifications.get.ViewNotificationsUsecase
+import app.meetacy.backend.feature.notifications.usecase.get.ViewNotificationsUsecase
 import app.meetacy.backend.types.notification.ViewNotificationsRepository
 import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
 import app.meetacy.backend.types.notification.FullNotification

@@ -1,9 +1,9 @@
 @file:Suppress("PrivatePropertyName")
 
-package app.meetacy.backend.feature.notifications.database.notifications
+package app.meetacy.backend.feature.notifications.database
 
-import app.meetacy.backend.feature.notifications.database.notifications.LastReadNotificationsTable.NOTIFICATION_ID
-import app.meetacy.backend.feature.notifications.database.notifications.LastReadNotificationsTable.USER_ID
+import app.meetacy.backend.feature.notifications.database.LastReadNotificationsTable.NOTIFICATION_ID
+import app.meetacy.backend.feature.notifications.database.LastReadNotificationsTable.USER_ID
 import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.users.UserId

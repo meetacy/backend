@@ -5,7 +5,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.notification.NotificationId
 import app.meetacy.backend.types.serializable.notification.type
-import app.meetacy.backend.feature.notifications.usecase.notifications.ReadNotificationsUsecase
+import app.meetacy.backend.feature.notifications.usecase.read.ReadNotificationsUsecase
 
 class UsecaseReadNotificationsRepository(
     private val usecase: ReadNotificationsUsecase
