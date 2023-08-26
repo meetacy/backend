@@ -1,7 +1,7 @@
 package app.meetacy.backend.feature.invitations.usecase.integration.accept
 
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsStorage
-import app.meetacy.backend.feature.invitations.usecase.AcceptInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.accept.AcceptInvitationUsecase
 import app.meetacy.backend.feature.invitations.usecase.integration.types.mapToUsecase
 import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsStorage
@@ -12,7 +12,6 @@ import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.di.builder.DIBuilder
-import app.meetacy.feature.meetings.database.integration.types.mapToUsecase
 
 internal fun DIBuilder.acceptInvitation() {
     val acceptInvitationUsecase by singleton<AcceptInvitationUsecase> {
@@ -23,7 +22,7 @@ internal fun DIBuilder.acceptInvitation() {
             private val meetingsStorage: MeetingsStorage by getting
 
             override suspend fun getMeetingOrNull(id: MeetingId): FullMeeting? =
-                meetingsStorage.getMeetingOrNull(id)?.mapToUsecase()
+                meetingsStorage.getMeetingOrNull(id)
 
             override suspend fun getInvitationOrNull(id: InvitationId): FullInvitation? =
                 invitationsStorage.getInvitationsOrNull(listOf(id)).singleOrNull()?.mapToUsecase()

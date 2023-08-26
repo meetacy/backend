@@ -3,6 +3,7 @@
 package app.meetacy.backend.feature.notifications.database.notifications
 
 import app.meetacy.backend.constants.DATE_TIME_MAX_LIMIT
+import app.meetacy.backend.database.paging
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable
 import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.DATE
 import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.INVITER_ID
@@ -12,12 +13,11 @@ import app.meetacy.backend.feature.notifications.database.notifications.Notifica
 import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.SUBSCRIBED_ID
 import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.TYPE
 import app.meetacy.backend.feature.notifications.database.notifications.NotificationsTable.Type
-import app.meetacy.backend.database.paging
-import app.meetacy.backend.feature.notifications.database.types.DatabaseNotification
 import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.meetings.MeetingId
+import app.meetacy.backend.types.notification.DatabaseNotification
 import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult

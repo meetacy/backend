@@ -1,12 +1,12 @@
 package app.meetacy.backend.feature.updates.database.updates
 
 import app.meetacy.backend.database.exposed.query.wrapTransactionAsFlow
-import app.meetacy.backend.feature.updates.database.types.DatabaseUpdate
 import app.meetacy.backend.feature.updates.database.updates.UpdatesTable.UNDERLYING_ID
 import app.meetacy.backend.feature.updates.database.updates.UpdatesTable.UPDATE_ID
 import app.meetacy.backend.feature.updates.database.updates.UpdatesTable.UPDATE_TYPE
 import app.meetacy.backend.feature.updates.database.updates.UpdatesTable.USER_ID
 import app.meetacy.backend.feature.users.database.users.UsersTable
+import app.meetacy.backend.types.update.DatabaseUpdate
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers

@@ -4,7 +4,7 @@ import app.meetacy.backend.feature.invitations.endpoints.accept.AcceptInvitation
 import app.meetacy.backend.feature.invitations.endpoints.accept.InvitationAcceptParams
 import app.meetacy.backend.feature.invitations.endpoints.accept.InvitationAcceptResponse
 import app.meetacy.backend.feature.invitations.endpoints.accept.invitationAccept
-import app.meetacy.backend.feature.invitations.usecase.AcceptInvitationUsecase
+import app.meetacy.backend.feature.invitations.usecase.accept.AcceptInvitationUsecase
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.invitation.type
 import app.meetacy.di.global.di
