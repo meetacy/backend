@@ -9,4 +9,6 @@ dependencies {
 
     api(projects.feature.meetings.usecase.integration)
     api(projects.feature.users.usecase.integration)
+
+    api(projects.libs.paging.serializable.integration)
 }

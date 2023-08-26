@@ -1,7 +1,7 @@
 package app.meetacy.backend.feature.notifications.database.integration.types
 
-import app.meetacy.backend.feature.notifications.database.types.DatabaseNotification
-import app.meetacy.backend.feature.notifications.usecase.types.FullNotification
+import app.meetacy.backend.types.notification.DatabaseNotification
+import app.meetacy.backend.types.notification.FullNotification
 
 fun DatabaseNotification.mapToUsecase(): FullNotification =
     when (this) {
