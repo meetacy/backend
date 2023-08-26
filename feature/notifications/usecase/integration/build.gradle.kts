@@ -4,11 +4,12 @@ plugins {
 
 // usecase and endpoints dependencies
 dependencies {
-    api(projects.feature.notifications.usecase)
-    api(projects.feature.notifications.endpoints)
+    implementation(projects.core.usecase.integration)
 
-    api(projects.feature.meetings.usecase.integration)
-    api(projects.feature.users.usecase.integration)
+    api(projects.feature.notifications.database)
+    api(projects.feature.notifications.usecase)
+
+    api(projects.feature.updates.usecase)
 
     api(projects.libs.paging.serializable.integration)
 }

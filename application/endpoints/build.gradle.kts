@@ -10,7 +10,7 @@ dependencies {
     implementation(projects.feature.email.endpoints.integration)
     implementation(projects.feature.files.endpoints.integration)
     implementation(projects.feature.invitations.endpoints.integration)
-    implementation(projects.feature.notifications.endpoints)
+    implementation(projects.feature.notifications.endpoints.integration)
     implementation(projects.feature.meetings.endpoints.integration)
     implementation(projects.feature.users.endpoints.integration)
     implementation(projects.feature.friends.endpoints.integration)

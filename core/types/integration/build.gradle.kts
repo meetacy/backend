@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.feature.meetings.database)
 
     implementation(projects.feature.meetings.usecase)
+    implementation(projects.feature.notifications.usecase)
     implementation(projects.feature.users.usecase)
 
     implementation(libs.meetacy.di.global)

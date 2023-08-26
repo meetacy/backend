@@ -1,9 +1,9 @@
 package app.meetacy.backend.feature.updates.usecase.updates.stream
 
 import app.meetacy.backend.types.notification.NotificationId
+import app.meetacy.backend.types.update.FullUpdate
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.feature.updates.usecase.types.FullUpdate
 import kotlinx.coroutines.flow.*
 
 class UpdatesMiddleware(private val storage: Storage) {
