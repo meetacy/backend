@@ -7,7 +7,7 @@ import app.meetacy.backend.application.usecase.usecase
 import app.meetacy.backend.types.integration.types
 import app.meetacy.di.builder.di
 
-fun di() = di {
+fun di() = di(checkDependencies = false) {
     usecase()
     database()
     types()

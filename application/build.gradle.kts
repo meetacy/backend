@@ -18,6 +18,8 @@ dependencies {
     implementation(projects.application.endpoints)
     implementation(projects.application.usecase)
     implementation(projects.core.types.integration)
+    api(libs.ktor.server.core)
+    api(libs.ktor.server.cio)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
