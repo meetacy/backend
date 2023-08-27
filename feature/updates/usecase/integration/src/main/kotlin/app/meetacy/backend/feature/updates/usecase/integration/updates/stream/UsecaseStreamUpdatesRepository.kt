@@ -1,13 +1,13 @@
 package app.meetacy.backend.feature.updates.usecase.integration.updates.stream
 
 import app.meetacy.backend.feature.updates.endpoints.updates.stream.StreamUpdatesRepository
-import app.meetacy.backend.feature.updates.usecase.integration.types.mapToEndpoint
 import app.meetacy.backend.feature.updates.usecase.updates.stream.StreamUpdatesUsecase
 import app.meetacy.backend.feature.updates.usecase.updates.stream.StreamUpdatesUsecase.Result
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.notification.GetNotificationsViewsRepository
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.update.UpdateId
+import app.meetacy.backend.types.serializable.update.mapToEndpoint
 import app.meetacy.backend.types.serializable.update.type
 import app.meetacy.backend.types.update.UpdateView
 import kotlinx.coroutines.flow.map

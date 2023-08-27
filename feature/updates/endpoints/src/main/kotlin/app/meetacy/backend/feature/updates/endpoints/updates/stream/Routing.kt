@@ -2,7 +2,7 @@ package app.meetacy.backend.feature.updates.endpoints.updates.stream
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.rsocket.failRSocket
-import app.meetacy.backend.feature.updates.endpoints.types.updates.Update
+import app.meetacy.backend.types.serializable.update.Update
 import app.meetacy.backend.feature.updates.endpoints.updates.stream.StreamUpdatesRepository.Result
 import app.meetacy.backend.types.serializable.update.UpdateId
 import io.ktor.server.routing.*

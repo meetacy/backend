@@ -1,6 +1,5 @@
-package app.meetacy.backend.feature.updates.endpoints.types.updates
+package app.meetacy.backend.types.serializable.update
 
-import app.meetacy.backend.types.serializable.update.UpdateId
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import app.meetacy.backend.types.serializable.notification.Notification as NotificationType

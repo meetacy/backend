@@ -4,10 +4,6 @@ import app.meetacy.backend.feature.updates.endpoints.updates.stream.StreamUpdate
 import app.meetacy.backend.feature.updates.endpoints.updates.stream.streamUpdates
 import io.ktor.server.routing.*
 
-class UpdatesDependencies(
-    val streamUpdatesRepository: StreamUpdatesRepository
-)
-
-fun Route.updates(dependencies: UpdatesDependencies) = route("/updates") {
-    streamUpdates(dependencies.streamUpdatesRepository)
+fun Route.updates(dependency: StreamUpdatesRepository) = route("/updates") {
+    streamUpdates(dependency)
 }

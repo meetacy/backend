@@ -8,7 +8,7 @@ import app.meetacy.backend.feature.friends.endpoints.integration.friends
 import app.meetacy.backend.feature.invitations.endpoints.integration.invitations
 import app.meetacy.backend.feature.meetings.endpoints.integration.meetings
 import app.meetacy.backend.feature.notifications.endpoints.integration.notifications
-import app.meetacy.backend.feature.updates.endpoints.updates.updates
+import app.meetacy.backend.feature.updates.endpoints.integration.updates
 import app.meetacy.backend.feature.users.endpoints.integration.users
 import app.meetacy.di.global.di
 import io.ktor.http.*

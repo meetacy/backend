@@ -14,7 +14,7 @@ dependencies {
     implementation(projects.feature.meetings.endpoints.integration)
     implementation(projects.feature.users.endpoints.integration)
     implementation(projects.feature.friends.endpoints.integration)
-    implementation(projects.feature.updates.endpoints)
+    implementation(projects.feature.updates.endpoints.integration)
 
     implementation(projects.feature.auth.usecase.integration)
     implementation(projects.feature.email.usecase.integration)

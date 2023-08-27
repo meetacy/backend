@@ -1,13 +1,13 @@
 package app.meetacy.backend.feature.updates.database.integration.updates.stream
 
 import app.meetacy.backend.feature.updates.database.integration.types.mapToUsecase
-import app.meetacy.backend.feature.updates.database.types.DatabaseUpdate
 import app.meetacy.backend.feature.updates.database.updates.UpdatesStorage
+import app.meetacy.backend.feature.updates.usecase.updates.stream.UpdatesMiddleware
 import app.meetacy.backend.types.notification.NotificationId
+import app.meetacy.backend.types.update.DatabaseUpdate
+import app.meetacy.backend.types.update.FullUpdate
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.feature.updates.usecase.types.FullUpdate
-import app.meetacy.backend.feature.updates.usecase.updates.stream.UpdatesMiddleware
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.jetbrains.exposed.sql.Database

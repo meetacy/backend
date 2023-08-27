@@ -38,7 +38,7 @@ fun DIBuilder.uploadFileUsecase() {
         UploadFileUsecase(
             authRepository = authRepository,
             storage = storage,
-            hashGenerator = hashGenerator
+            hashGenerator = accessHashGenerator
         )
     }
 }
