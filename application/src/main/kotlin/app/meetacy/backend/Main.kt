@@ -10,11 +10,16 @@ import app.meetacy.backend.run.runProductionServer
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.di.builder.di
 import app.meetacy.di.global.GlobalDI
+import io.ktor.server.engine.*
 import org.jetbrains.exposed.sql.Database
 import java.io.File
 
 suspend fun main() {
-    val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
+    runServer().start(true)
+}
+
+suspend fun runServer(): ApplicationEngine {
+    val port = System.getenv("PORT")?.toIntOrNull() ?: 8079
     val databaseUrl = System.getenv("DATABASE_URL") ?: error("Please provide a database url")
     val databaseUser = System.getenv("DATABASE_USER") ?: ""
     val databasePassword = System.getenv("DATABASE_PASSWORD") ?: ""
@@ -22,14 +27,15 @@ suspend fun main() {
         /* parent = */ System.getenv("user.dir"),
         /* child = */ "files"
     ).apply { mkdirs() }.absolutePath
-    val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (100L * 1024 * 1024)
+    val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (99L * 1024 * 1024)
     val webhookUrl = System.getenv("DISCORD_WEBHOOK_URL")
+    val isTest = System.getenv("IS_TEST").toBoolean()
 
-    runProductionServer(webhookUrl) {
+    return runProductionServer(webhookUrl) {
         val di = di {
             val port by constant(port)
             val databaseConfig by constant(
-                DatabaseConfig(databaseUrl, databaseUser, databasePassword)
+                DatabaseConfig(databaseUrl, databaseUser, databasePassword, isTest)
             )
             val filesBasePath by constant(filesBasePath)
             val filesSizeLimit by constant(FileSize(filesSizeLimit))
@@ -43,6 +49,6 @@ suspend fun main() {
 
         val server = prepareEndpoints()
         initialized = true
-        server.start(wait = true)
+        return@runProductionServer server
     }
 }

@@ -1,189 +1,61 @@
-//
-//import app.meetacy.backend.feature.notifications.database.integration.types.UsecaseGetNotificationsViewsRepository
-//import app.meetacy.backend.feature.friends.endpoints.FriendsDependencies
-//import app.meetacy.backend.feature.friends.endpoints.location.FriendsLocationDependencies
-//import app.meetacy.backend.feature.invitations.endpoints.InvitationsDependencies
-//import app.meetacy.backend.feature.notifications.endpoints.NotificationsDependencies
-//import app.meetacy.backend.application.endpoints.prepareEndpoints
-//import app.meetacy.backend.feature.updates.endpoints.updates.UpdatesDependencies
-//import app.meetacy.backend.types.integration.generator.BasicHashGenerator
-//import app.meetacy.backend.feature.friends.usecase.add.AddFriendUsecase
-//import app.meetacy.backend.feature.friends.usecase.delete.DeleteFriendUsecase
-//import app.meetacy.backend.feature.friends.usecase.list.ListFriendsUsecase
-//import app.meetacy.backend.feature.friends.usecase.integration.add.UsecaseAddFriendRepository
-//import app.meetacy.backend.feature.friends.usecase.integration.delete.UsecaseDeleteFriendRepository
-//import app.meetacy.backend.feature.friends.usecase.integration.get.UsecaseListFriendsRepository
-//import app.meetacy.backend.feature.friends.usecase.integration.location.stream.UsecaseStreamLocationRepository
-//import app.meetacy.backend.feature.invitations.usecase.integration.invitations.accept.UsecaseAcceptInvitationRepository
-//import app.meetacy.backend.feature.invitations.usecase.integration.invitations.cancel.UsecaseCancelInvitationRepository
-//import app.meetacy.backend.feature.invitations.usecase.integration.invitations.create.UsecaseCreateInvitationRepository
-//import app.meetacy.backend.feature.invitations.usecase.integration.invitations.deny.UsecaseDenyInvitationRepository
-//import app.meetacy.backend.feature.notifications.usecase.integration.notifications.get.UsecaseListNotificationsRepository
-//import app.meetacy.backend.feature.notifications.usecase.integration.notifications.read.UsecaseReadNotificationsRepository
-//import app.meetacy.backend.feature.updates.usecase.integration.updates.stream.StreamUpdatesRepository
-//import app.meetacy.backend.feature.users.usecase.integration.users.validate.UsecaseValidateUsernameRepository
-//import app.meetacy.backend.feature.invitations.usecase.AcceptInvitationUsecase
-//import app.meetacy.backend.feature.invitations.usecase.cancel.CancelInvitationUsecase
-//import app.meetacy.backend.feature.invitations.usecase.create.CreateInvitationUsecase
-//import app.meetacy.backend.feature.invitations.usecase.deny.DenyInvitationUsecase
-//import app.meetacy.backend.feature.friends.usecase.location.stream.FriendsLocationStreamingUsecase
-//import app.meetacy.backend.feature.notifications.usecase.notifications.ReadNotificationsUsecase
-//import app.meetacy.backend.feature.notifications.usecase.notifications.get.GetNotificationsUsecase
-//import app.meetacy.backend.feature.notifications.usecase.notifications.get.GetNotificationsViewsUsecase
-//import app.meetacy.backend.feature.users.usecase.validate.ValidateUsernameUsecase
-//import app.meetacy.sdk.MeetacyApi
-//import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
-//import app.meetacy.sdk.types.annotation.UnstableApi
-//import app.meetacy.sdk.types.auth.Token
-//import app.meetacy.sdk.types.datetime.Date
-//import app.meetacy.sdk.types.location.Location
-//import app.meetacy.sdk.types.url.url
-//import app.meetacy.sdk.users.AuthorizedSelfUserRepository
-//import io.ktor.client.*
-//import io.ktor.client.plugins.logging.*
-//import kotlinx.coroutines.ExperimentalCoroutinesApi
-//import kotlinx.coroutines.test.TestScope
-//import kotlinx.coroutines.test.runTest
-//
-//@OptIn(UnstableApi::class)
-//val testApi = MeetacyApi(
-//    baseUrl = "http://localhost:8080".url,
-//    httpClient = HttpClient {
-//        Logging {
-//            level = LogLevel.NONE
-////            level = LogLevel.ALL
-//        }
-//        expectSuccess = true
-//        developmentMode = true
-//    }
-//)
-//
-//suspend fun generateTestAccount(
-//    postfix: String? = null
-//): AuthorizedSelfUserRepository {
-//    val newClient = testApi.auth.generateAuthorizedApi(
-//        nickname = listOfNotNull("Test Account", postfix)
-//            .joinToString(separator = " ")
-//    )
-//
-//    return newClient.getMe()
-//}
-//
-//val InvalidToken: Token = Token("1:_INVALID_TOKEN_qD3Z0uM0iqE7g1J8VxkuzGe0CAXXDyHdfUGmj2xBPhuMYGFcHVawNvrK1KB9F9rgoeLa8Go2lqPDnzKYJg4EFbJUyQ6qu6P3iGg5Ytl4w1tpO1nja1aFxNtneq07uFERxSSsR7jd5YAe1Y0urlx9KDKxoQdIdGVvWGuc7dv3IStQUCZQziSmzjuxrVrUF9ywvg1bM8GiR2TU5nUItRPDhDyebeMzQcC7vwRYTdbUIIh4dYX4y")
-//
-//fun InvalidId(id: String): String = "$id:_INVALID_ID_qD3qD3Z0uM0iqE7g1J8VxkuzGe0CAXXDyHdfUGmj2xBPhuMYGFcHVawNvrK1KB9F9rgoeLa8Go2lqPDnzKYJg4EFbJUyQ6qu6P3iGg5Ytl4w1tpO1nja1aFxNtneq07uFERxSSsR7jd5YAe1Y0urlx9KDKxoQdIdGVvWGuc7dv3IStQUCZQziSmzjuxrVrUF9ywvg1bM8GiR2TU5nUItRPDhDyebeMzQcC7vwRYTdbUIIh4dYX4y"
-//
-//suspend fun AuthorizedMeetingsApi.createTestMeeting(title: String = "Test Meeting") =
-//    create(
-//        title = title,
-//        date = Date.today(),
-//        location = Location.NullIsland
-//    )
-//
-//@OptIn(ExperimentalCoroutinesApi::class)
-//fun runTestServer(
-//    port: Int = 8080,
-//    wait: Boolean = false,
-//    block: suspend TestScope.() -> Unit
-//) = runTest {
-//    val mockStorage = MockStorage()
-//
-//    val server = prepareEndpoints(
-//        port = port,
-//        friendsDependencies = FriendsDependencies(
-//            friendsLocationDependencies = FriendsLocationDependencies(
-//                streamLocationRepository = UsecaseStreamLocationRepository(
-//                    usecase = FriendsLocationStreamingUsecase(
-//                        authRepository = mockStorage,
-//                        storage = mockStorage,
-//                        usersViewsRepository = mockStorage
-//                    )
-//                )
-//            ),
-//            addFriendRepository = UsecaseAddFriendRepository(
-//                usecase = AddFriendUsecase(
-//                    authRepository = mockStorage,
-//                    getUsersViewsRepository = mockStorage,
-//                    storage = mockStorage
-//                )
-//            ),
-//            listFriendsRepository = UsecaseListFriendsRepository(
-//                usecase = ListFriendsUsecase(
-//                    authRepository = mockStorage,
-//                    storage = mockStorage,
-//                    getUsersViewsRepository = mockStorage
-//                )
-//            ),
-//            deleteFriendRepository = UsecaseDeleteFriendRepository(
-//                usecase = DeleteFriendUsecase(
-//                    authRepository = mockStorage,
-//                    storage = mockStorage,
-//                    getUsersViewsRepository = mockStorage
-//                )
-//            )
-//        ),
-//        notificationsDependencies = NotificationsDependencies(
-//            listNotificationsRepository = UsecaseListNotificationsRepository(
-//                usecase = GetNotificationsUsecase(
-//                    authRepository = mockStorage,
-//                    storage = mockStorage,
-//                    viewNotificationsRepository = mockStorage
-//                )
-//            ),
-//            readNotificationsRepository = UsecaseReadNotificationsRepository(
-//                usecase = ReadNotificationsUsecase(
-//                    authRepository = mockStorage,
-//                    storage = mockStorage
-//                )
-//            )
-//        ),
-//        invitationsDependencies = InvitationsDependencies(
-//            invitationsCreateRepository = UsecaseCreateInvitationRepository(
-//                usecase = CreateInvitationUsecase(
-//                    authRepository = mockStorage,
-//                    storage = mockStorage,
-//                    hashGenerator = BasicHashGenerator,
-//                    invitationsRepository = mockStorage
-//                )
-//            ),
-//            invitationsAcceptRepository = UsecaseAcceptInvitationRepository(
-//                usecase = AcceptInvitationUsecase(
-//                    authRepository = mockStorage,
-//                    storage = mockStorage
-//                )
-//            ),
-//            invitationsDenyRepository = UsecaseDenyInvitationRepository(
-//                usecase = DenyInvitationUsecase(
-//                    authRepository = mockStorage,
-//                    storage = mockStorage
-//                ),
-//            ),
-//            invitationCancelRepository = UsecaseCancelInvitationRepository(
-//                usecase = CancelInvitationUsecase(
-//                    authRepository = mockStorage,
-//                    storage = mockStorage
-//                ),
-//            ),
-//        ),
-//        validateUsernameRepository = UsecaseValidateUsernameRepository(
-//            usecase = ValidateUsernameUsecase(
-//                validateRepository = mockStorage
-//            )
-//        ),
-//        updatesDependencies = UpdatesDependencies(
-//            streamUpdatesRepository = StreamUpdatesRepository(
-//                auth = mockStorage,
-//                storage = mockStorage,
-//                notificationsRepository = UsecaseGetNotificationsViewsRepository(
-//                    usecase = GetNotificationsViewsUsecase(
-//                        storage = mockStorage,
-//                        viewRepository = mockStorage
-//                    )
-//                )
-//            )
-//        )
-//    ).start(wait)
-//    // TODO: migrate this fuckery to the new DI
-//    block()
-//    server.stop()
-//}
+
+import app.meetacy.backend.runServer
+import app.meetacy.sdk.MeetacyApi
+import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
+import app.meetacy.sdk.types.annotation.UnstableApi
+import app.meetacy.sdk.types.auth.Token
+import app.meetacy.sdk.types.datetime.Date
+import app.meetacy.sdk.types.location.Location
+import app.meetacy.sdk.types.url.url
+import app.meetacy.sdk.users.AuthorizedSelfUserRepository
+import io.ktor.client.*
+import io.ktor.client.plugins.logging.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
+
+@OptIn(UnstableApi::class)
+val testApi = MeetacyApi(
+    baseUrl = "http://localhost:8080".url,
+    httpClient = HttpClient {
+        Logging {
+            level = LogLevel.NONE
+//            level = LogLevel.ALL
+        }
+        expectSuccess = true
+        developmentMode = true
+    }
+)
+
+suspend fun generateTestAccount(
+    postfix: String? = null
+): AuthorizedSelfUserRepository {
+    val newClient = testApi.auth.generateAuthorizedApi(
+        nickname = listOfNotNull("Test Account", postfix)
+            .joinToString(separator = " ")
+    )
+
+    return newClient.getMe()
+}
+
+val InvalidToken: Token = Token("1:_INVALID_TOKEN_qD3Z0uM0iqE7g1J8VxkuzGe0CAXXDyHdfUGmj2xBPhuMYGFcHVawNvrK1KB9F9rgoeLa8Go2lqPDnzKYJg4EFbJUyQ6qu6P3iGg5Ytl4w1tpO1nja1aFxNtneq07uFERxSSsR7jd5YAe1Y0urlx9KDKxoQdIdGVvWGuc7dv3IStQUCZQziSmzjuxrVrUF9ywvg1bM8GiR2TU5nUItRPDhDyebeMzQcC7vwRYTdbUIIh4dYX4y")
+
+fun InvalidId(id: String): String = "$id:_INVALID_ID_qD3qD3Z0uM0iqE7g1J8VxkuzGe0CAXXDyHdfUGmj2xBPhuMYGFcHVawNvrK1KB9F9rgoeLa8Go2lqPDnzKYJg4EFbJUyQ6qu6P3iGg5Ytl4w1tpO1nja1aFxNtneq07uFERxSSsR7jd5YAe1Y0urlx9KDKxoQdIdGVvWGuc7dv3IStQUCZQziSmzjuxrVrUF9ywvg1bM8GiR2TU5nUItRPDhDyebeMzQcC7vwRYTdbUIIh4dYX4y"
+
+suspend fun AuthorizedMeetingsApi.createTestMeeting(title: String = "Test Meeting") =
+    create(
+        title = title,
+        date = Date.today(),
+        location = Location.NullIsland
+    )
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun runTestServer(
+    wait: Boolean = false,
+    block: suspend TestScope.() -> Unit
+) = runTest {
+    val server = runServer()
+    server.start(wait)
+    block()
+    server.stop()
+}

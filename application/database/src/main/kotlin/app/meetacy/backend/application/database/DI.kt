@@ -13,7 +13,8 @@ import org.jetbrains.exposed.sql.Database
 data class DatabaseConfig(
     val url: String,
     val user: String,
-    val password: String
+    val password: String,
+    val isTest: Boolean
 )
 
 fun DIBuilder.database() {
@@ -36,7 +37,7 @@ private fun DIBuilder.databaseSingleton() {
 
         with(databaseConfig) {
             Database.connect(
-                url = url,
+                url = if (isTest) "jdbc:h2:mem:test" else url,
                 user = user,
                 password = password
             )
