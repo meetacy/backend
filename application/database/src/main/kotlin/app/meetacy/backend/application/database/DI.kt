@@ -7,6 +7,8 @@ import app.meetacy.backend.feature.friends.usecase.integration.friends
 import app.meetacy.backend.feature.invitations.usecase.integration.invitations
 import app.meetacy.backend.feature.meetings.database.integration.meetings
 import app.meetacy.backend.feature.notifications.database.integration.notifications
+import app.meetacy.backend.feature.updates.database.integration.updates
+import app.meetacy.backend.feature.users.database.integration.users
 import app.meetacy.di.builder.DIBuilder
 import org.jetbrains.exposed.sql.Database
 
@@ -28,7 +30,8 @@ fun DIBuilder.database() {
     invitations()
     meetings()
     notifications()
-//    users()
+    updates()
+    users()
 }
 
 private fun DIBuilder.databaseSingleton() {
