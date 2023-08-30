@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    api(projects.core.database.integration)
     api(projects.feature.updates.usecase)
     api(projects.feature.updates.database)
 }
