@@ -11,7 +11,7 @@ value class FeatureName private constructor(val dashCase: String) {
         val Regex: Regex = Regex("[a-z]+(-[a-z]+)*")
 
         fun parse(dashCase: String): FeatureName {
-            return parseOrNull(dashCase) ?: error(
+            return parseOrNull(dashCase) ?: failScript(
                 """
                     This feature has invalid name.
                     Consider to use [a-z] (no uppercase symbols) and **single** dashes (-) as dividers

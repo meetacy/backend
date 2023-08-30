@@ -9,7 +9,6 @@ import app.meetacy.backend.di.di
 import app.meetacy.backend.run.runProductionServer
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.di.builder.di
-import app.meetacy.di.checkDependencies
 import app.meetacy.di.global.GlobalDI
 import org.jetbrains.exposed.sql.Database
 import java.io.File
@@ -39,8 +38,6 @@ suspend fun main() {
             val filesSizeLimit by constant(FileSize(filesSizeLimit))
             val deleteFilesOnExit by constant(value = true)
         } + di()
-
-        di.checkDependencies()
 
         GlobalDI.init(di)
 

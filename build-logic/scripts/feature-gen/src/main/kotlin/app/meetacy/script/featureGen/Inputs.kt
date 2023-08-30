@@ -9,17 +9,6 @@ internal fun checkArgs(args: Array<String>) {
     }
 }
 
-internal inline fun parseFeatureName(
+internal fun parseFeatureName(
     name: String
-): FeatureName {
-    val featureName = FeatureName.parseOrNull(name)
-
-    if (featureName == null) {
-        failScript("""
-            This feature has invalid name.
-            Consider to use [a-z] (no uppercase symbols) and **single** dashes (-) as dividers
-        """.trimIndent())
-    }
-
-    return featureName
-}
+): FeatureName = FeatureName.parse(name)
