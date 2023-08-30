@@ -24,15 +24,12 @@ suspend fun main() {
     ).apply { mkdirs() }.absolutePath
     val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (100L * 1024 * 1024)
     val webhookUrl = System.getenv("DISCORD_WEBHOOK_URL")
-    val isTest = System.getProperty("IS_TEST").toBoolean()
-
-    println(isTest) // TODO: remove after stability check
 
     runProductionServer(webhookUrl) {
         val di = di {
             val port by constant(port)
             val databaseConfig by constant(
-                DatabaseConfig(databaseUrl, databaseUser, databasePassword, isTest)
+                DatabaseConfig(databaseUrl, databaseUser, databasePassword)
             )
             val filesBasePath by constant(filesBasePath)
             val filesSizeLimit by constant(FileSize(filesSizeLimit))

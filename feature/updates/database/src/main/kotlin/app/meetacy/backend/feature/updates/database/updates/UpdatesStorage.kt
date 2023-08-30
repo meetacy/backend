@@ -6,6 +6,7 @@ import app.meetacy.backend.feature.updates.database.updates.UpdatesTable.UPDATE_
 import app.meetacy.backend.feature.updates.database.updates.UpdatesTable.UPDATE_TYPE
 import app.meetacy.backend.feature.updates.database.updates.UpdatesTable.USER_ID
 import app.meetacy.backend.feature.users.database.users.UsersTable
+import app.meetacy.backend.types.notification.NotificationId
 import app.meetacy.backend.types.update.FullUpdate
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.users.UserId
@@ -18,7 +19,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 object UpdatesTable : Table() {
     val UPDATE_ID = long("UPDATE_ID").autoIncrement()
     val USER_ID = long("USER_ID")
-    val UPDATE_TYPE = enumeration<FullUpdate.Type>("UPDATE_TYPE")
+    val UPDATE_TYPE = enumeration<DatabaseUpdateType>("UPDATE_TYPE")
     val UNDERLYING_ID = long("UNDERLYING_ID")
 
     override val primaryKey = PrimaryKey(UPDATE_ID)
@@ -27,13 +28,13 @@ object UpdatesTable : Table() {
 class UpdatesStorage(private val db: Database) {
     suspend fun addUpdate(
         userId: UserId,
-        updateType: FullUpdate,
+        type: DatabaseUpdateType,
         underlyingId: Long
     ): UpdateId {
         val long = newSuspendedTransaction(Dispatchers.IO, db) {
             UpdatesTable.insert { statement ->
                 statement[USER_ID] = userId.long
-                statement[UPDATE_TYPE] = updateType
+                statement[UPDATE_TYPE] = type
                 statement[UNDERLYING_ID] = underlyingId
             }[UPDATE_ID]
         }
@@ -45,11 +46,12 @@ class UpdatesStorage(private val db: Database) {
         UsersTable.select {
             (USER_ID eq userId.long) and (UPDATE_ID greater fromId.long)
         }.wrapTransactionAsFlow(db).map { result ->
-            FullUpdate(
-                id = UpdateId(result[UPDATE_ID]),
-                type = result[UPDATE_TYPE],
-                underlyingId = result[UNDERLYING_ID]
-            )
+            when (result[UPDATE_TYPE]) {
+                DatabaseUpdateType.Notification -> FullUpdate.Notification(
+                    id = UpdateId(result[UPDATE_ID]),
+                    notificationId = NotificationId(result[UNDERLYING_ID])
+                )
+            }
         }
 
 }

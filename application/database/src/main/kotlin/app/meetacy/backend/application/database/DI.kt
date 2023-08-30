@@ -13,8 +13,7 @@ import org.jetbrains.exposed.sql.Database
 data class DatabaseConfig(
     val url: String,
     val user: String,
-    val password: String,
-    val isTest: Boolean
+    val password: String
 )
 
 fun DIBuilder.database() {
