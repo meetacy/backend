@@ -13,16 +13,6 @@ sealed interface FullUpdate {
     ) : FullUpdate
 }
 
-data class DatabaseUpdate(
-    val id: UpdateId,
-    val type: Type,
-    val underlyingId: Long
-) {
-    enum class Type {
-        Notification
-    }
-}
-
 sealed interface UpdateView {
     val id: UpdateId
 

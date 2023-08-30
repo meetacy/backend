@@ -6,7 +6,7 @@ import app.meetacy.backend.feature.updates.database.updates.UpdatesTable.UPDATE_
 import app.meetacy.backend.feature.updates.database.updates.UpdatesTable.UPDATE_TYPE
 import app.meetacy.backend.feature.updates.database.updates.UpdatesTable.USER_ID
 import app.meetacy.backend.feature.users.database.users.UsersTable
-import app.meetacy.backend.types.update.DatabaseUpdate
+import app.meetacy.backend.types.update.FullUpdate
 import app.meetacy.backend.types.update.UpdateId
 import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 object UpdatesTable : Table() {
     val UPDATE_ID = long("UPDATE_ID").autoIncrement()
     val USER_ID = long("USER_ID")
-    val UPDATE_TYPE = enumeration<DatabaseUpdate.Type>("UPDATE_TYPE")
+    val UPDATE_TYPE = enumeration<FullUpdate.Type>("UPDATE_TYPE")
     val UNDERLYING_ID = long("UNDERLYING_ID")
 
     override val primaryKey = PrimaryKey(UPDATE_ID)
@@ -27,7 +27,7 @@ object UpdatesTable : Table() {
 class UpdatesStorage(private val db: Database) {
     suspend fun addUpdate(
         userId: UserId,
-        updateType: DatabaseUpdate.Type,
+        updateType: FullUpdate,
         underlyingId: Long
     ): UpdateId {
         val long = newSuspendedTransaction(Dispatchers.IO, db) {
@@ -41,14 +41,15 @@ class UpdatesStorage(private val db: Database) {
         return UpdateId(long)
     }
 
-    fun getPastUpdatesFlow(userId: UserId, fromId: UpdateId): Flow<DatabaseUpdate> =
+    fun getPastUpdatesFlow(userId: UserId, fromId: UpdateId): Flow<FullUpdate> =
         UsersTable.select {
             (USER_ID eq userId.long) and (UPDATE_ID greater fromId.long)
         }.wrapTransactionAsFlow(db).map { result ->
-            DatabaseUpdate(
+            FullUpdate(
                 id = UpdateId(result[UPDATE_ID]),
                 type = result[UPDATE_TYPE],
                 underlyingId = result[UNDERLYING_ID]
             )
         }
+
 }
