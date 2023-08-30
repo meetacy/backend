@@ -13,7 +13,7 @@ import io.ktor.server.routing.*
 fun Route.download() {
     val getFileUsecase: GetFileUsecase by di.getting
 
-    val getFileRepository = object : GetFileRepository {
+    val repository = object : GetFileRepository {
         override suspend fun getFile(
             fileId: FileIdentity
         ): GetFileResult = when (val result = getFileUsecase.getFile(fileId.type())) {
@@ -26,5 +26,5 @@ fun Route.download() {
         }
     }
 
-    download(getFileRepository)
+    download(repository)
 }

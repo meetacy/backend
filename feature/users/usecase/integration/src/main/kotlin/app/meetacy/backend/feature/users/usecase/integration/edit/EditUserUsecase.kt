@@ -12,8 +12,8 @@ import app.meetacy.backend.types.users.Username
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
 import app.meetacy.di.builder.DIBuilder
 
-internal fun DIBuilder.editUser() {
-    val usecase by singleton<EditUserUsecase> {
+internal fun DIBuilder.editUserUsecase() {
+    val editUserUsecase by singleton {
         val authRepository: AuthRepository by getting
         val filesRepository: FilesRepository by getting
         val utf8Checker: Utf8Checker by getting

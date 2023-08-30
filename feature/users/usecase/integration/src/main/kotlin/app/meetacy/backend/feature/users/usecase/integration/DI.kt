@@ -1,12 +1,14 @@
 package app.meetacy.backend.feature.users.usecase.integration
 
-import app.meetacy.backend.feature.users.usecase.integration.edit.editUser
-import app.meetacy.backend.feature.users.usecase.integration.get.getUser
-import app.meetacy.backend.feature.users.usecase.integration.get.viewUser
+import app.meetacy.backend.feature.users.usecase.integration.edit.editUserUsecase
+import app.meetacy.backend.feature.users.usecase.integration.get.getUserSafeUsecase
+import app.meetacy.backend.feature.users.usecase.integration.get.getUsersViewsUsecase
+import app.meetacy.backend.feature.users.usecase.integration.get.viewUserUsecase
 import app.meetacy.di.builder.DIBuilder
 
 fun DIBuilder.users() {
-    editUser()
-    getUser()
-    viewUser()
+    editUserUsecase()
+    getUserSafeUsecase()
+    getUsersViewsUsecase()
+    viewUserUsecase()
 }

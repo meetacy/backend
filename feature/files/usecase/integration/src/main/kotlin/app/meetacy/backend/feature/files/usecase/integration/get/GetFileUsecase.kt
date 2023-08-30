@@ -6,7 +6,7 @@ import app.meetacy.backend.types.files.FileId
 import app.meetacy.di.builder.DIBuilder
 import java.io.File
 
-fun DIBuilder.getFileUsecase() {
+internal fun DIBuilder.getFileUsecase() {
     val getFileUsecase by singleton {
         val filesBasePath: String by getting
         val filesStorage: FilesStorage by getting

@@ -10,7 +10,7 @@ import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.di.builder.DIBuilder
 
-fun DIBuilder.uploadFileUsecase() {
+internal fun DIBuilder.uploadFileUsecase() {
     val uploadFileUsecase by singleton {
         val authRepository: AuthRepository by getting
         val accessHashGenerator: AccessHashGenerator by getting

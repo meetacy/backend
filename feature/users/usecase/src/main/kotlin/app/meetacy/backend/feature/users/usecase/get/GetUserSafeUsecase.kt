@@ -36,8 +36,8 @@ class GetUserSafeUsecase(
     }
 
     sealed interface Result {
-        object InvalidToken : Result
-        object UserNotFound : Result
-        class Success(val user: UserView) : Result
+        data object InvalidToken : Result
+        data object UserNotFound : Result
+        data class Success(val user: UserView) : Result
     }
 }
