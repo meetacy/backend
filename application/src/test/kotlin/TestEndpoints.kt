@@ -13,6 +13,7 @@ import io.ktor.client.plugins.logging.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import java.net.BindException
 
 @OptIn(UnstableApi::class)
 val testApi = MeetacyApi(
@@ -58,4 +59,17 @@ fun runTestServer(
     server.start(wait)
     block()
     server.stop()
+}
+
+private inline fun bruteForcePort(block: (port: Int) -> Unit) {
+    val range = 10_000..60_000
+
+    var success = false
+
+    while (!success) {
+        try {
+            block(range.random())
+            success = true
+        } catch (_: BindException) { }
+    }
 }

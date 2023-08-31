@@ -38,7 +38,7 @@ suspend fun runServer(): ApplicationEngine {
             )
             val filesBasePath by constant(filesBasePath)
             val filesSizeLimit by constant(FileSize(filesSizeLimit))
-            val deleteFilesOnExit by constant(value = true)
+            val deleteFilesOnExit by constant(value = false)
         } + di()
 
         val database: Database by di.getting
