@@ -10,7 +10,7 @@ import app.meetacy.backend.feature.meetings.endpoints.integration.meetings
 import app.meetacy.backend.feature.notifications.endpoints.integration.notifications
 import app.meetacy.backend.feature.updates.endpoints.integration.updates
 import app.meetacy.backend.feature.users.endpoints.integration.users
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -30,7 +30,7 @@ import kotlinx.serialization.json.Json
 
 @OptIn(ExperimentalSerializationApi::class)
 @Suppress("ExtractKtorModule")
-fun prepareEndpoints(): ApplicationEngine {
+fun prepareEndpoints(di: DI): ApplicationEngine {
     val port: Int by di.getting
 
     return embeddedServer(CIO, host = "localhost", port = port) {
@@ -58,15 +58,15 @@ fun prepareEndpoints(): ApplicationEngine {
                 resources()
             }
             swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
-            auth()
-            files()
-            users()
-            meetings()
-            friends()
-            invitations()
-            notifications()
-            updates()
-            users()
+            auth(di)
+            files(di)
+            users(di)
+            meetings(di)
+            friends(di)
+            invitations(di)
+            notifications(di)
+            updates(di)
+            users(di)
         }
     }
 }

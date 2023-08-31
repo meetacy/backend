@@ -26,7 +26,6 @@ dependencies {
     implementation(libs.postgres.jdbc)
 
     implementation(libs.meetacy.di.core)
-    implementation(libs.meetacy.di.global)
     implementation(projects.libs.discordWebhook.ktor)
 
     testImplementation(libs.meetacy.sdk.api.ktor)

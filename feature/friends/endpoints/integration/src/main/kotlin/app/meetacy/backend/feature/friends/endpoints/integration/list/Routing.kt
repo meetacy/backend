@@ -10,10 +10,10 @@ import app.meetacy.backend.types.paging.serializable.type
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.type
 import app.meetacy.backend.types.serializable.users.mapToEndpoint
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-fun Route.listFriends() {
+fun Route.listFriends(di: DI) {
     val usecase: ListFriendsUsecase by di.getting
     val repository = object : ListFriendsRepository {
         override suspend fun getFriends(token: ListFriendsBody): ListFriendsResult =

@@ -5,10 +5,10 @@ import app.meetacy.backend.feature.auth.endpoints.generate.TokenGenerateResult
 import app.meetacy.backend.feature.auth.endpoints.generate.generateToken
 import app.meetacy.backend.feature.auth.usecase.GenerateTokenUsecase
 import app.meetacy.backend.types.serializable.access.serializable
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-internal fun Route.generateToken() {
+internal fun Route.generateToken(di: DI) {
     val generateTokenUsecase: GenerateTokenUsecase by di.getting
 
     val tokenGenerateRepository = object : TokenGenerateRepository {

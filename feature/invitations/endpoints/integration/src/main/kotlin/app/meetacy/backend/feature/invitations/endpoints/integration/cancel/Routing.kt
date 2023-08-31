@@ -7,10 +7,10 @@ import app.meetacy.backend.feature.invitations.endpoints.cancel.invitationCancel
 import app.meetacy.backend.feature.invitations.usecase.cancel.CancelInvitationUsecase
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.invitation.type
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-fun Route.invitationCancel() {
+internal fun Route.invitationCancel(di: DI) {
     val usecase: CancelInvitationUsecase by di.getting
     val repository = object : CancelInvitationRepository {
         override suspend fun cancel(form: CancelInvitationForm): CancelInvitationResponse =

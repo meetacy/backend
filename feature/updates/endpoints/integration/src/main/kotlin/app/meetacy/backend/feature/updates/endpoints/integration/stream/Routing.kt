@@ -9,11 +9,11 @@ import app.meetacy.backend.types.serializable.update.UpdateId
 import app.meetacy.backend.types.serializable.update.mapToEndpoint
 import app.meetacy.backend.types.serializable.update.type
 import app.meetacy.backend.types.update.UpdateView
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 import kotlinx.coroutines.flow.map
 
-internal fun Route.streamUpdates() {
+internal fun Route.streamUpdates(di: DI) {
     val streamUpdatesUsecase: StreamUpdatesUsecase by di.getting
 
     val repository = object : StreamUpdatesRepository {

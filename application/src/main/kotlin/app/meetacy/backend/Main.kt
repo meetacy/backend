@@ -9,7 +9,6 @@ import app.meetacy.backend.di.di
 import app.meetacy.backend.run.runProductionServer
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.di.builder.di
-import app.meetacy.di.global.GlobalDI
 import io.ktor.server.engine.*
 import org.jetbrains.exposed.sql.Database
 import java.io.File
@@ -42,12 +41,10 @@ suspend fun runServer(): ApplicationEngine {
             val deleteFilesOnExit by constant(value = true)
         } + di()
 
-        GlobalDI.init(di)
-
         val database: Database by di.getting
         initDatabase(database)
 
-        val server = prepareEndpoints()
+        val server = prepareEndpoints(di)
         initialized = true
         return@runProductionServer server
     }

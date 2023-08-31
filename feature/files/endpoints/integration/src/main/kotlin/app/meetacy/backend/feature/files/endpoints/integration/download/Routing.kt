@@ -7,10 +7,10 @@ import app.meetacy.backend.feature.files.usecase.get.GetFileUsecase
 import app.meetacy.backend.types.serializable.file.FileIdentity
 import app.meetacy.backend.types.serializable.file.serializable
 import app.meetacy.backend.types.serializable.file.type
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-fun Route.download() {
+fun Route.download(di: DI) {
     val getFileUsecase: GetFileUsecase by di.getting
 
     val repository = object : GetFileRepository {

@@ -6,10 +6,10 @@ import app.meetacy.backend.feature.email.endpoints.link.linkEmail
 import app.meetacy.backend.feature.email.usecase.LinkEmailUsecase
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-internal fun Route.linkEmail() {
+internal fun Route.linkEmail(di: DI) {
     val linkEmailUsecase: LinkEmailUsecase by di.getting
 
     val linkEmailRepository = object : LinkEmailRepository {

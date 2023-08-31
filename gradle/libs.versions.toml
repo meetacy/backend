@@ -15,7 +15,7 @@ shadow = "7.0.0"
 
 wdater = "0.0.2"
 meetacySdk = "0.0.58"
-meetacyDi = "0.0.24"
+meetacyDi = "0.0.25"
 
 [libraries]
 
@@ -27,7 +27,6 @@ meetacy-sdk-api = { module = "app.meetacy.sdk:api", version.ref = "meetacySdk" }
 
 ## di
 meetacy-di-core = { module = "app.meetacy.di:core", version.ref = "meetacyDi" }
-meetacy-di-global = { module = "app.meetacy.di:global", version.ref = "meetacyDi" }
 
 ## wdater
 meetacy-wdater-core = { module = "app.meetacy.wdater:wdater", version.ref = "wdater" }

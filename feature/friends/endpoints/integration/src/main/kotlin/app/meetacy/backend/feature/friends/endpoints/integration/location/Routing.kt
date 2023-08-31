@@ -9,12 +9,12 @@ import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.location.type
 import app.meetacy.backend.types.serializable.users.mapToEndpoint
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-fun Route.location() {
+fun Route.location(di: DI) {
     val usecase: FriendsLocationStreamingUsecase by di.getting
     val repository = object : StreamLocationRepository {
         override suspend fun flow(

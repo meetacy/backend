@@ -7,10 +7,10 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.notification.NotificationId
 import app.meetacy.backend.types.serializable.notification.type
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-fun Route.read() {
+internal fun Route.read(di: DI) {
     val usecase: ReadNotificationsUsecase by di.getting
     val repository = object : ReadNotificationsRepository {
         override suspend fun read(

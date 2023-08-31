@@ -12,10 +12,10 @@ import app.meetacy.backend.types.serializable.amount.type
 import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.backend.types.serializable.users.serializable
 import app.meetacy.backend.types.users.UserView
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-internal fun Route.listMeetingParticipants() {
+internal fun Route.listMeetingParticipants(di: DI) {
     val listMeetingParticipantsUsecase: ListMeetingParticipantsUsecase by di.getting
 
     val repository = ListMeetingParticipantsRepository { params ->

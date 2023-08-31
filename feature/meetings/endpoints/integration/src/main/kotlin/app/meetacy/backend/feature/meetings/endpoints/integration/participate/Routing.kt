@@ -9,10 +9,10 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
 import app.meetacy.backend.types.serializable.meetings.type
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-fun Route.participateMeeting() {
+fun Route.participateMeeting(di: DI) {
     val participateMeetingUsecase: ParticipateMeetingUsecase by di.getting
 
     val repository = object : ParticipateMeetingRepository {

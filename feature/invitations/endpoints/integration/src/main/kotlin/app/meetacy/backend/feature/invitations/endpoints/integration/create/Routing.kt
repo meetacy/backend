@@ -9,10 +9,10 @@ import app.meetacy.backend.feature.invitations.usecase.create.CreateInvitationUs
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.backend.types.serializable.users.type
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-fun Route.invitationCreate() {
+internal fun Route.invitationCreate(di: DI) {
     val usecase: CreateInvitationUsecase by di.getting
     val repository = object : CreateInvitationRepository {
         override suspend fun createInvitation(form: InvitationCreatingFormSerializable): InvitationsCreateResponse {

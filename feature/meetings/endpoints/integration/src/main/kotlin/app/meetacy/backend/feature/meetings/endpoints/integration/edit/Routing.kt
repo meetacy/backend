@@ -15,10 +15,10 @@ import app.meetacy.backend.types.serializable.meetings.serializable
 import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.backend.types.serializable.meetings.typeFullMeeting
 import app.meetacy.backend.types.serializable.optional.type
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-fun Route.editMeeting() {
+fun Route.editMeeting(di: DI) {
     val editMeetingUsecase: EditMeetingUsecase by di.getting
 
     val repository = object : EditMeetingRepository {

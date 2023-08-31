@@ -12,10 +12,10 @@ import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.type
 import app.meetacy.backend.types.serializable.meetings.serializable
 import app.meetacy.backend.types.serializable.meetings.typeFullMeeting
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-internal fun Route.createMeeting() {
+internal fun Route.createMeeting(di: DI) {
     val createMeetingUsecase: CreateMeetingUsecase by di.getting
 
     val repository = object : CreateMeetingRepository {

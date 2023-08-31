@@ -11,10 +11,10 @@ import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.optional.type
 import app.meetacy.backend.types.serializable.users.serializable
 import app.meetacy.backend.types.serializable.users.type
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-internal fun Route.editUser() {
+internal fun Route.editUser(di: DI) {
     val usecase: EditUserUsecase by di.getting
     val repository = object : EditUserRepository {
         override suspend fun editUser(editUserParams: EditUserParams): EditUserResult = when (

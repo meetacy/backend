@@ -10,6 +10,5 @@ dependencies {
 
     api(projects.feature.users.usecase.integration) // fixme: move users usecase integration to endpoints
 
-    api(libs.meetacy.di.global)
     api(libs.ktor.server.core)
 }

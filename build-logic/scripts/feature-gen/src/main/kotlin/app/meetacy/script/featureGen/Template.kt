@@ -32,8 +32,9 @@ internal fun endpointsIntegrationRoutingFile(featureName: FeatureName) = """
     package app.meetacy.backend.feature.${featureName.camelCase}.endpoints
     
     import io.ktor.server.routing.*
+    import app.meetacy.di.DI
     
-    fun Route.${featureName.camelCase}() = route("/${featureName.camelCase}") {
+    fun Route.${featureName.camelCase}(di: DI) = route("/${featureName.camelCase}") {
         
     }
     

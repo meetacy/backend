@@ -10,12 +10,12 @@ import app.meetacy.backend.types.files.FileSize
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.file.serializable
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 import java.io.File
 import java.io.InputStream
 
-fun Route.upload() {
+fun Route.upload(di: DI) {
     val filesSizeLimit: FileSize by di.getting
     val filesBasePath: String by di.getting
     val deleteFilesOnExit: Boolean by di.getting

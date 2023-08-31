@@ -8,10 +8,10 @@ import app.meetacy.backend.feature.users.usecase.get.GetUserSafeUsecase
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.users.serializable
 import app.meetacy.backend.types.serializable.users.type
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-internal fun Route.getUser() {
+internal fun Route.getUser(di: DI) {
     val usecase: GetUserSafeUsecase by di.getting
     val repository = object : UserRepository {
         override suspend fun getUser(params: GetUserParams): GetUserResult =

@@ -5,10 +5,10 @@ import app.meetacy.backend.feature.users.endpoints.validate.ValidateUsernameResu
 import app.meetacy.backend.feature.users.endpoints.validate.validateUsername
 import app.meetacy.backend.feature.users.usecase.validate.ValidateUsernameUsecase
 import app.meetacy.backend.types.serializable.users.serializable
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-internal fun Route.validate() {
+internal fun Route.validate(di: DI) {
     val repository = object : ValidateUsernameRepository {
         val usecase: ValidateUsernameUsecase by di.getting
         override suspend fun validateUsername(username: String): ValidateUsernameResult = when (val result = usecase.validateUsername(username)) {

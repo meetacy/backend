@@ -8,10 +8,10 @@ import app.meetacy.backend.feature.meetings.usecase.delete.DeleteMeetingUsecase
 import app.meetacy.backend.feature.meetings.usecase.delete.DeleteMeetingUsecase.Result
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.meetings.type
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-fun Route.deleteMeeting() {
+fun Route.deleteMeeting(di: DI) {
     val deleteMeetingUsecase: DeleteMeetingUsecase by di.getting
 
     val repository = object : DeleteMeetingRepository {

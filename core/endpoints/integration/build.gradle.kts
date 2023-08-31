@@ -8,5 +8,4 @@ dependencies {
     api(projects.libs.paging.serializable.integration)
     api(libs.ktor.server.core)
     api(libs.meetacy.di.core)
-    api(libs.meetacy.di.global)
-}
+    }

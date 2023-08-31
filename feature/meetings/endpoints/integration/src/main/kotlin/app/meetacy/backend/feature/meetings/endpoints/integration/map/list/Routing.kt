@@ -8,10 +8,10 @@ import app.meetacy.backend.feature.meetings.usecase.map.list.ListMeetingsMapUsec
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.location.type
 import app.meetacy.backend.types.serializable.meetings.serializable
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-internal fun Route.listMeetingsMap() {
+internal fun Route.listMeetingsMap(di: DI) {
     val listMeetingsMapUsecase: ListMeetingsMapUsecase by di.getting
 
     val repository = ListMeetingsMapRepository { token, location ->

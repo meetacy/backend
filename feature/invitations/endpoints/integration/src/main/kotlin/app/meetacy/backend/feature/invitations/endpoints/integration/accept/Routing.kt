@@ -7,10 +7,10 @@ import app.meetacy.backend.feature.invitations.endpoints.accept.invitationAccept
 import app.meetacy.backend.feature.invitations.usecase.accept.AcceptInvitationUsecase
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.invitation.type
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-fun Route.invitationAccept() {
+internal fun Route.invitationAccept(di: DI) {
     val usecase: AcceptInvitationUsecase by di.getting
     val repository = object : AcceptInvitationRepository {
         override suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse =

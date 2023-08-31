@@ -14,10 +14,10 @@ import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.amount.type
 import app.meetacy.backend.types.serializable.meetings.serializable
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-fun Route.listMeetingsPast() {
+fun Route.listMeetingsPast(di: DI) {
     val listMeetingsPastUsecase: ListMeetingsPastUsecase by di.getting
 
     val repository = object : ListMeetingsPastRepository {

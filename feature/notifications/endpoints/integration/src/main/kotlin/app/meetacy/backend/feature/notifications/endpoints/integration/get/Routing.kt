@@ -11,10 +11,10 @@ import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.amount.type
 import app.meetacy.backend.types.serializable.notification.mapToEndpoint
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-fun Route.list() {
+internal fun Route.list(di: DI) {
     val usecase: GetNotificationsUsecase by di.getting
     val repository = object : ListNotificationsRepository {
         override suspend fun getNotifications(

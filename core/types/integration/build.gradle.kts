@@ -15,7 +15,6 @@ dependencies {
     implementation(projects.feature.notifications.usecase)
     implementation(projects.feature.users.usecase)
 
-    implementation(libs.meetacy.di.global)
     implementation(libs.meetacy.di.core)
     implementation(libs.exposed.core)
 }

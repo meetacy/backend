@@ -4,10 +4,10 @@ import app.meetacy.backend.feature.email.endpoints.confirm.ConfirmEmailRepositor
 import app.meetacy.backend.feature.email.endpoints.confirm.ConfirmHashResult
 import app.meetacy.backend.feature.email.endpoints.confirm.confirmEmail
 import app.meetacy.backend.feature.email.usecase.ConfirmEmailUsecase
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
-internal fun Route.confirmEmail() {
+internal fun Route.confirmEmail(di: DI) {
     val confirmEmailUsecase: ConfirmEmailUsecase by di.getting
     
     val confirmEmailRepository = object : ConfirmEmailRepository {

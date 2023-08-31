@@ -9,10 +9,10 @@ import app.meetacy.backend.types.serializable.update.UpdateId
 import app.meetacy.backend.types.serializable.update.mapToEndpoint
 import app.meetacy.backend.types.serializable.update.type
 import app.meetacy.backend.types.update.UpdateView
-import app.meetacy.di.global.di
+import app.meetacy.di.DI
 import io.ktor.server.routing.*
 import kotlinx.coroutines.flow.map
 
-fun Route.updates() {
-    streamUpdates()
+fun Route.updates(di: DI) {
+    streamUpdates(di)
 }
