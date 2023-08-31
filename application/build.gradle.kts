@@ -40,6 +40,7 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation(projects.libs.paging.serializable)
+    testImplementation(projects.libs.ktorExtensions)
 }
 
 tasks.test {

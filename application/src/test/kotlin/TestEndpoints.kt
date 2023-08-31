@@ -54,8 +54,7 @@ fun runTestServer(
     wait: Boolean = false,
     block: suspend TestScope.() -> Unit
 ) = runTest {
-    val server = runServer()
-    server.start(wait)
+    val server = runServer().start(wait)
     block()
     server.stop()
 }
