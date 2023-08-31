@@ -66,6 +66,7 @@ fun prepareEndpoints(): ApplicationEngine {
             invitations()
             notifications()
             updates()
+            users()
         }
     }
 }
