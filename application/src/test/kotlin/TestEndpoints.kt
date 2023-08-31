@@ -15,9 +15,24 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import java.net.BindException
 
+@OptIn(ExperimentalCoroutinesApi::class)
+fun runTestServer(
+    wait: Boolean = false,
+    block: suspend TestScope.() -> Unit
+) = runTest {
+    bruteForcePort {
+        port = it
+        val server = runServer(port).start(wait)
+        block()
+        server.stop()
+    }
+}
+
+var port: Int = 8080
+
 @OptIn(UnstableApi::class)
-val testApi = MeetacyApi(
-    baseUrl = "http://localhost:8080".url,
+val testApi get() = MeetacyApi(
+    baseUrl = "http://localhost:$port".url,
     httpClient = HttpClient {
         Logging {
             level = LogLevel.NONE
@@ -50,16 +65,6 @@ suspend fun AuthorizedMeetingsApi.createTestMeeting(title: String = "Test Meetin
         location = Location.NullIsland
     )
 
-@OptIn(ExperimentalCoroutinesApi::class)
-fun runTestServer(
-    wait: Boolean = false,
-    block: suspend TestScope.() -> Unit
-) = runTest {
-    val server = runServer().start(wait)
-    block()
-    server.stop()
-}
-
 private inline fun bruteForcePort(block: (port: Int) -> Unit) {
     val range = 10_000..60_000
 
@@ -71,4 +76,5 @@ private inline fun bruteForcePort(block: (port: Int) -> Unit) {
             success = true
         } catch (_: BindException) { }
     }
+
 }

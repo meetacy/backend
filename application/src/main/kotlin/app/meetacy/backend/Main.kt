@@ -14,38 +14,38 @@ import org.jetbrains.exposed.sql.Database
 import java.io.File
 
 suspend fun main() {
-    runServer().start(true)
+    val webhookUrl = System.getenv("DISCORD_WEBHOOK_URL")
+    runProductionServer(webhookUrl) {
+        val server = runServer()
+        initialized = true
+        server.start(wait = true)
+    }
 }
 
-suspend fun runServer(): ApplicationEngine {
-    val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
-    val databaseUrl = System.getenv("DATABASE_URL") ?: error("Please provide a database url")
-    val databaseUser = System.getenv("DATABASE_USER") ?: ""
-    val databasePassword = System.getenv("DATABASE_PASSWORD") ?: ""
-    val filesBasePath = System.getenv("FILES_BASE_PATH") ?: File(
+suspend fun runServer(
+    port: Int = System.getenv("PORT")?.toIntOrNull() ?: 8080,
+    databaseUrl: String = System.getenv("DATABASE_URL") ?: error("Please provide a database url"),
+    databaseUser: String = System.getenv("DATABASE_USER") ?: "",
+    databasePassword: String = System.getenv("DATABASE_PASSWORD") ?: "",
+    filesBasePath: String = System.getenv("FILES_BASE_PATH") ?: File(
         /* parent = */ System.getenv("user.dir"),
         /* child = */ "files"
-    ).apply { mkdirs() }.absolutePath
-    val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (99L * 1024 * 1024)
-    val webhookUrl = System.getenv("DISCORD_WEBHOOK_URL")
-    val isTest = System.getenv("IS_TEST").toBoolean()
+    ).apply { mkdirs() }.absolutePath,
+    filesSizeLimit: Long = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (99L * 1024 * 1024),
+    isTest: Boolean = System.getenv("IS_TEST").toBoolean(),
+): ApplicationEngine {
+    val di = di {
+        val port by constant(port)
+        val databaseConfig by constant(
+            DatabaseConfig(databaseUrl, databaseUser, databasePassword, isTest)
+        )
+        val filesBasePath by constant(filesBasePath)
+        val filesSizeLimit by constant(FileSize(filesSizeLimit))
+        val deleteFilesOnExit by constant(value = false)
+    } + di()
 
-    return runProductionServer(webhookUrl) {
-        val di = di {
-            val port by constant(port)
-            val databaseConfig by constant(
-                DatabaseConfig(databaseUrl, databaseUser, databasePassword, isTest)
-            )
-            val filesBasePath by constant(filesBasePath)
-            val filesSizeLimit by constant(FileSize(filesSizeLimit))
-            val deleteFilesOnExit by constant(value = false)
-        } + di()
+    val database: Database by di.getting
+    initDatabase(database)
 
-        val database: Database by di.getting
-        initDatabase(database)
-
-        val server = prepareEndpoints(di)
-        initialized = true
-        return@runProductionServer server
-    }
+    return prepareEndpoints(di)
 }

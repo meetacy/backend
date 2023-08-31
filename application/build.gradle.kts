@@ -30,6 +30,8 @@ dependencies {
 
     testImplementation(libs.meetacy.sdk.api.ktor)
 
+    testImplementation(libs.h2.jdbc)
+
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)
 
@@ -48,7 +50,9 @@ tasks.test {
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL
     }
-    systemProperty("IS_TEST", true)
+//    systemProperty("IS_TEST", true)
+    setEnvironment("IS_TEST" to true)
+    setEnvironment("DATABASE_URL" to "jdbc:h2:mem:test")
 }
 
 val propertiesFile: File = rootProject.file("deploy.properties")
