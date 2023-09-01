@@ -50,9 +50,8 @@ tasks.test {
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL
     }
-//    systemProperty("IS_TEST", true)
     setEnvironment("IS_TEST" to true)
-    setEnvironment("DATABASE_URL" to "jdbc:h2:mem:test")
+    setEnvironment("DATABASE_URL" to "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
 }
 
 val propertiesFile: File = rootProject.file("deploy.properties")

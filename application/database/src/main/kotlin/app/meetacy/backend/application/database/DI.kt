@@ -3,8 +3,8 @@ package app.meetacy.backend.application.database
 import app.meetacy.backend.feature.auth.database.integration.auth
 import app.meetacy.backend.feature.email.database.integration.email
 import app.meetacy.backend.feature.files.database.integration.files
-import app.meetacy.backend.feature.friends.usecase.integration.friends
-import app.meetacy.backend.feature.invitations.usecase.integration.invitations
+import app.meetacy.backend.feature.friends.database.integration.friends
+import app.meetacy.backend.feature.invitations.database.integration.invitations
 import app.meetacy.backend.feature.meetings.database.integration.meetings
 import app.meetacy.backend.feature.notifications.database.integration.notifications
 import app.meetacy.backend.feature.updates.database.integration.updates
@@ -40,7 +40,7 @@ private fun DIBuilder.databaseSingleton() {
 
         with(databaseConfig) {
             Database.connect(
-                url = if (isTest) "jdbc:h2:mem:test" else url,
+                url = url,
                 user = user,
                 password = password
             )
