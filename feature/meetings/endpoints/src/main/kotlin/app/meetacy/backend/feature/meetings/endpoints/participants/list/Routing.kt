@@ -32,8 +32,13 @@ sealed interface ListParticipantsResult {
     class Success(val paging: PagingResult<User>) : ListParticipantsResult
 }
 
+var count = 0
+
 fun Route.listMeetingParticipants(repository: ListMeetingParticipantsRepository) = post("/list") {
     val params = call.receive<ListMeetingParticipantsParams>()
+
+    count++
+    println("request #$count")
 
     when (
         val result = repository.listParticipants(params)

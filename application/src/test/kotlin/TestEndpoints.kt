@@ -10,6 +10,7 @@ import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
+import io.ktor.server.engine.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -20,11 +21,18 @@ fun runTestServer(
     wait: Boolean = false,
     block: suspend TestScope.() -> Unit
 ) = runTest {
-    bruteForcePort {
-        port = it
-        val server = runServer(port).start(wait)
-        block()
-        server.stop()
+    ServerContainer.run(wait)
+    block()
+}
+
+object ServerContainer {
+    private var server: ApplicationEngine? = null
+
+    suspend fun run(wait: Boolean): ApplicationEngine {
+        if (server == null) {
+            server = runServer(port = port).start(wait)
+        }
+        return server!!
     }
 }
 

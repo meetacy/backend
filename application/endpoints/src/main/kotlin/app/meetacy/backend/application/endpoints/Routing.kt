@@ -54,9 +54,7 @@ fun prepareEndpoints(di: DI): ApplicationEngine {
         install(RSocketSupport)
 
         routing {
-            static("/") {
-                resources()
-            }
+            staticResources("/", null)
             swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
             auth(di)
             files(di)

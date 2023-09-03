@@ -33,7 +33,7 @@ internal fun DIBuilder.createInvitation() {
             private val addNotificationUsecase: AddNotificationUsecase by getting
 
             override suspend fun isSubscriberOf(subscriberId: UserId, authorId: UserId): Boolean =
-                friendsStorage.isSubscribed(authorId, subscriberId)
+                friendsStorage.isSubscribed(subscriberId, authorId)
 
             override suspend fun getMeeting(meetingId: MeetingId): FullMeeting? =
                 meetingsStorage.getMeetingOrNull(meetingId)
