@@ -13,6 +13,6 @@ import app.meetacy.di.DI
 import io.ktor.server.routing.*
 import kotlinx.coroutines.flow.map
 
-fun Route.updates(di: DI) {
+fun Route.updates(di: DI) = route("/updates") {
     streamUpdates(di)
 }

@@ -4,7 +4,7 @@ plugins {
 
 // usecase and endpoints dependencies
 dependencies {
-    api(projects.feature.updates.usecase)
-    api(projects.feature.updates.endpoints)
-    api(projects.feature.notifications.usecase.integration)
+    api(projects.core.usecase.integration)
+    implementation(projects.feature.updates.usecase)
+    implementation(projects.feature.updates.database)
 }
