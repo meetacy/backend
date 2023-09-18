@@ -1,32 +1,88 @@
+rootProject.name = "meetacy-backend"
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
-        gradlePluginPortal()
+        mavenCentral()
         google()
+        gradlePluginPortal()
     }
 }
 
-rootProject.name = "Meetacy Backend Application"
+dependencyResolutionManagement {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+        maven {
+            url = uri("https://maven.pkg.github.com/meetacy/maven")
+            credentials {
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
 
-includeBuild("buildUtils/dependencies")
-includeBuild("buildUtils/configuration")
-includeBuild("buildUtils/service-deploy")
+includeBuild("build-logic")
 
 include(
     "application",
-    "endpoints",
-    "usecase",
-    "usecase:endpoints-integration",
-    "database",
-    "database:usecase-integration",
-    "database:endpoints-integration",
-    "types",
-    "types:serialization-integration",
-    "libs:hash-generator",
-    "libs:hash-generator:usecase-integration",
-    "libs:utf8-checker",
-    "libs:utf8-checker:usecase-integration",
-    "libs:stdlib-extensions",
-    "libs:di",
-    "libs:discord-webhook",
-    "libs:discord-webhook:ktor"
+    "application:endpoints",
+    "application:usecase",
+    "application:database",
+    "application:database:migrations"
 )
+
+val core = listOf(
+    "constants",
+    "endpoints",
+    "endpoints:integration",
+    "usecase",
+    "usecase:integration",
+    "database",
+    "database:integration",
+    "integration",
+    "types",
+    "types:integration",
+    "types:serializable",
+    "types:serializable:integration",
+)
+include(core.map { "core:$it" })
+
+val libraries = listOf(
+    "hash-generator",
+    "utf8-checker",
+    "stdlib-extensions",
+    "discord-webhook",
+    "discord-webhook:ktor",
+    "paging",
+    "paging:database",
+    "paging:serializable",
+    "paging:serializable:integration",
+    "exposed-extensions",
+    "ktor-extensions",
+)
+include(libraries.map { "libs:$it" })
+
+val features = listOf(
+    "auth",
+    "email",
+    "files",
+    "friends",
+    "invitations",
+    "meetings",
+    "notifications",
+    "updates",
+    "users"
+)
+
+features.forEach { feature ->
+    include("feature:$feature:endpoints")
+    include("feature:$feature:endpoints:integration")
+    include("feature:$feature:usecase")
+    include("feature:$feature:usecase:integration")
+    include("feature:$feature:database")
+    include("feature:$feature:database:integration")
+}

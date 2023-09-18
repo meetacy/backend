@@ -1,0 +1,91 @@
+[versions]
+
+kotlin = "1.9.0"
+coroutines = "1.6.0"
+serialization = "1.3.2"
+ktor = "2.3.4"
+rsocket = "0.15.4"
+exposed = "0.41.1"
+
+postgresql = "42.2.27"
+h2 = "2.2.220"
+slf4jJ = "1.7.32"
+logback = "1.2.6"
+ssh = "2.10.1"
+shadow = "7.0.0"
+
+wdater = "0.0.2"
+meetacySdk = "0.0.58"
+meetacyDi = "0.0.25"
+
+[libraries]
+
+# meetacy libs
+
+## sdk
+meetacy-sdk-api-ktor = { module = "app.meetacy.sdk:api-ktor", version.ref = "meetacySdk" }
+meetacy-sdk-api = { module = "app.meetacy.sdk:api", version.ref = "meetacySdk" }
+
+## di
+meetacy-di-core = { module = "app.meetacy.di:core", version.ref = "meetacyDi" }
+
+## wdater
+meetacy-wdater-core = { module = "app.meetacy.wdater:wdater", version.ref = "wdater" }
+meetacy-wdater-autoMigrations = { module = "app.meetacy.wdater:auto-migrations", version.ref = "wdater" }
+
+# slf4j
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jJ" }
+
+# kotlinx libs
+
+## coroutines
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+
+## serialization
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+
+# exposed
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+postgres-jdbc = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+h2-jdbc = { module = "com.h2database:h2", version.ref = "h2" }
+
+# ktor
+
+## ktor-client
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-serializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+
+## ktor-server
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+ktor-server-rsocket = { module = "io.rsocket.kotlin:rsocket-ktor-server", version.ref = "rsocket" }
+ktor-server-websockets = { module = "io.ktor:ktor-server-websockets", version.ref = "ktor" }
+ktor-server-contentNegotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
+ktor-server-serializationJson = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-server-statusPages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
+ktor-server-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
+ktor-server-partialContent = { module = "io.ktor:ktor-server-partial-content", version.ref = "ktor" }
+ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
+ktor-server-autoHead = { module = "io.ktor:ktor-server-auto-head-response", version.ref = "ktor" }
+ktor-server-requestValidation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
+ktor-server-serverStatusPage = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
+
+# gradle
+
+gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+gradle-kotlinx-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+gradle-shadow = { module = "gradle.plugin.com.github.jengelman.gradle.plugins:shadow", version.ref = "shadow" }
+gradle-ssh = { module = "org.hidetake:gradle-ssh-plugin", version.ref = "ssh" }
+
+[plugins]
+
+deploy = { id = "deploy-convention" }
+backend = { id = "backend-convention" }
+shadow = { id = "com.github.johnrengelman.shadow" }
+ssh = { id = "org.hidetake.ssh" }

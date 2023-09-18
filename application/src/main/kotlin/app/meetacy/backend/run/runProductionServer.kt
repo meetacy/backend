@@ -1,6 +1,7 @@
 package app.meetacy.backend.run
 
 import app.meetacy.discord.webhook.ktor.failure.reportFailure
+import io.ktor.server.engine.*
 
 class ProductionContext {
     var initialized: Boolean = false
@@ -8,19 +9,21 @@ class ProductionContext {
 
 suspend fun runProductionServer(
     webhookUrl: String?,
-    block: suspend ProductionContext.() -> Unit
-) {
+    block: suspend ProductionContext.() -> ApplicationEngine
+): ApplicationEngine {
     val context = ProductionContext()
 
     try {
         if (webhookUrl == null) {
-            block(context)
+            return block(context)
         } else reportFailure(webhookUrl) {
-            block(context)
+            return block(context)
         }
     } catch (throwable: Throwable) {
         if (context.initialized) {
-            runProductionServer(webhookUrl, block)
+            return runProductionServer(webhookUrl, block)
+        } else {
+            throw throwable
         }
     }
 }

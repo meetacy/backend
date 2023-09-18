@@ -1,29 +1,48 @@
+import deploy.default
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.util.GUtil.loadProperties
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.konan.properties.loadProperties
 
 plugins {
-    id(Deps.Plugins.Configuration.Kotlin.Jvm)
-    id(Deps.Plugins.Deploy.Id)
+    application
+    id("backend-convention")
+    id("deploy-convention")
+}
+
+application {
+    mainClass = "app.meetacy.backend.MainKt"
 }
 
 dependencies {
-    implementation(project(Deps.Projects.Endpoints))
-    implementation(project(Deps.Projects.UsecaseEndpoints))
-    implementation(project(Deps.Projects.DatabaseUsecase))
-    implementation(project(Deps.Projects.DatabaseEndpoints))
-    implementation(project(Deps.Projects.HashGeneratorUsecase))
-    implementation(project(Deps.Projects.Utf8CheckerUsecase))
-    implementation(project(Deps.Projects.DI))
-    implementation(project(Deps.Projects.DiscordWebhookKtor))
+    implementation(projects.application.database)
+    implementation(projects.application.endpoints)
+    implementation(projects.application.usecase)
+    implementation(projects.core.types.integration)
+    api(libs.ktor.server.core)
+    api(libs.ktor.server.cio)
 
-    testImplementation(Deps.Libs.Meetacy.Sdk.ApiKtor)
-    testImplementation(Deps.Libs.Kotlinx.CoroutinesTest)
-    testImplementation(Deps.Libs.Ktor.Client.Core)
-    testImplementation(Deps.Libs.Ktor.Client.Cio)
-    testImplementation(Deps.Libs.Ktor.Client.Logging)
-    testImplementation(Deps.Libs.Ktor.Client.Mock)
-    testImplementation(Deps.Libs.Ktor.Client.Cio)
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.postgres.jdbc)
+
+    implementation(libs.meetacy.di.core)
+    implementation(projects.libs.discordWebhook.ktor)
+
+    testImplementation(libs.meetacy.sdk.api.ktor)
+
+    testImplementation(libs.h2.jdbc)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlinx.serialization.json)
+
+    testImplementation(libs.ktor.client.core)
+    testImplementation(libs.ktor.client.cio)
+    testImplementation(libs.ktor.client.logging)
+    testImplementation(libs.ktor.client.mock)
+
     testImplementation(kotlin("test"))
+    testImplementation(projects.libs.paging.serializable)
+    testImplementation(projects.libs.ktorExtensions)
 }
 
 tasks.test {
@@ -31,13 +50,15 @@ tasks.test {
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL
     }
+    setEnvironment("IS_TEST" to true)
+    setEnvironment("DATABASE_URL" to "jdbc:h2:mem:test;DB_CLOSE_DELAY=60000")
 }
 
-val propertiesFile = rootProject.file("deploy.properties")
+val propertiesFile: File = rootProject.file("deploy.properties")
 
 deploy {
     val isRunner = System.getenv("IS_RUNNER")?.toBoolean() == true
-    val properties = if (propertiesFile.exists()) loadProperties(propertiesFile) else null
+    val properties = if (propertiesFile.exists()) loadProperties(propertiesFile.absolutePath) else null
 
     if (!isRunner && properties == null) return@deploy
 
@@ -58,9 +79,13 @@ deploy {
 }
 
 application {
-    mainClass.set("app.meetacy.backend.MainKt")
+    mainClass = "app.meetacy.backend.MainKt"
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.freeCompilerArgs += "-opt-in=kotlinx.serialization.ExperimentalSerializationApi"
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.languageVersion = "2.0"
 }

@@ -2,8 +2,8 @@
 
 import app.meetacy.backend.hash.HashGenerator
 import app.meetacy.sdk.exception.MeetacyUsernameAlreadyOccupiedException
-import app.meetacy.sdk.types.user.username
 import app.meetacy.sdk.types.optional.Optional
+import app.meetacy.sdk.types.user.username
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 
@@ -12,7 +12,7 @@ class TestUsers {
     fun `test if user can be edited`() = runTestServer {
         val user = generateTestAccount()
 
-        val newNickname = HashGenerator.generate()
+        val newNickname = HashGenerator.generate((1..100).random())
 
         val editedUser = user.edited(
             nickname = Optional.Present(newNickname)
@@ -29,7 +29,7 @@ class TestUsers {
     fun `test usernames edit`() = runTestServer {
         val user = generateTestAccount()
 
-        val newUsername = ("username_" + HashGenerator.generate().take(10)).username
+        val newUsername = ("username_" + HashGenerator.generate((1..20).random()).take(10)).username
 
         val editedUser = user.edited(username = Optional.Present(newUsername))
 
@@ -42,7 +42,7 @@ class TestUsers {
 
     @Test
     fun `existing username test`() = runTestServer {
-        val username = ("username_" + HashGenerator.generate().take(10)).username
+        val username = ("username_" + HashGenerator.generate((1..20).random()).take(10)).username
 
         generateTestAccount()
             .edited(username = Optional.Present(username))

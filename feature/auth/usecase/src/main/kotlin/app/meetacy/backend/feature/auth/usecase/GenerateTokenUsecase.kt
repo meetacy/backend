@@ -1,0 +1,37 @@
+package app.meetacy.backend.feature.auth.usecase
+
+import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.access.AccessToken
+import app.meetacy.backend.types.generator.AccessHashGenerator
+import app.meetacy.backend.types.users.UserId
+import app.meetacy.backend.types.utf8Checker.Utf8Checker
+import app.meetacy.backend.types.utf8Checker.checkString
+
+
+class GenerateTokenUsecase(
+    private val storage: Storage,
+    private val tokenGenerator: AccessHashGenerator,
+    private val utf8Checker: Utf8Checker
+) {
+
+    suspend fun generateToken(nickname: String): Result {
+        utf8Checker.checkString(nickname) { return Result.InvalidUtf8String }
+        val newUserId = storage.createUser(nickname)
+        val token = AccessIdentity(
+            newUserId,
+            AccessToken(tokenGenerator.generate())
+        )
+        storage.addToken(token)
+        return Result.Success(token)
+    }
+
+    sealed interface Result {
+        data class Success(val accessIdentity: AccessIdentity) : Result
+        data object InvalidUtf8String : Result
+    }
+
+    interface Storage {
+        suspend fun createUser(nickname: String): UserId
+        suspend fun addToken(accessIdentity: AccessIdentity)
+    }
+}

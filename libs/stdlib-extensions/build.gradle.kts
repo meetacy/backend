@@ -1,7 +1,7 @@
 plugins {
-    id(Deps.Plugins.Configuration.Kotlin.Jvm)
+    id("backend-convention")
 }
 
 dependencies {
-    api(Deps.Libs.Kotlinx.Coroutines)
+    api(libs.kotlinx.coroutines.core)
 }
