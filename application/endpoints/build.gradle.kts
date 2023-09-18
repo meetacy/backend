@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation(libs.meetacy.di.core)
+    implementation(projects.application.database)
 
     implementation(projects.feature.auth.endpoints.integration)
     implementation(projects.feature.email.endpoints.integration)

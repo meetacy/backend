@@ -12,12 +12,15 @@ import app.meetacy.backend.feature.users.database.integration.users
 import app.meetacy.di.builder.DIBuilder
 import org.jetbrains.exposed.sql.Database
 
-data class DatabaseConfig(
-    val url: String,
-    val user: String,
-    val password: String,
-    val isTest: Boolean
-)
+sealed interface DatabaseConfig {
+    data class Connection(
+        val url: String,
+        val user: String,
+        val password: String
+    ) : DatabaseConfig
+
+    data class Mock(val port: Int) : DatabaseConfig
+}
 
 fun DIBuilder.database() {
     databaseSingleton()
@@ -39,11 +42,17 @@ private fun DIBuilder.databaseSingleton() {
         val databaseConfig: DatabaseConfig by getting
 
         with(databaseConfig) {
-            Database.connect(
-                url = url,
-                user = user,
-                password = password
-            )
+            when (this) {
+                is DatabaseConfig.Connection -> Database.connect(
+                    url = url,
+                    user = user,
+                    password = password
+                )
+                is DatabaseConfig.Mock -> Database.connect(
+                    url = "jdbc:h2:mem:$port;DB_CLOSE_DELAY=-1",
+                    driver = "org.h2.Driver"
+                )
+            }
         }
     }
 }

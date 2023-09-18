@@ -1,5 +1,9 @@
 
-import app.meetacy.backend.runServer
+import app.meetacy.backend.application.database.DatabaseConfig
+import app.meetacy.backend.application.endpoints.prepareEndpoints
+import app.meetacy.backend.di.buildDI
+import app.meetacy.backend.types.files.FileSize
+import app.meetacy.di.DI
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
 import app.meetacy.sdk.types.annotation.UnstableApi
@@ -13,25 +17,47 @@ import io.ktor.client.plugins.logging.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import org.jetbrains.exposed.sql.Database
+import java.io.File
 import java.net.BindException
 
-class TestServerScope(
+class TestServerContext(
     val testScope: TestScope,
     val testApi: MeetacyApi
 ) : CoroutineScope by testScope
 
 fun runTestServer(
-    wait: Boolean = false,
-    block: suspend TestServerScope.() -> Unit
+    block: suspend TestServerContext.() -> Unit
 ) = runTest {
     bruteForcePort { port ->
-        val testServerScope = TestServerScope(
+        val di = buildDI(port)
+        val fileBasePath: String by di.getting
+        val context = TestServerContext(
             testScope = this,
             testApi = testApi(port)
         )
-        runServer(port = port).start(wait)
-        block(testServerScope)
+
+        try {
+            prepareEndpoints(di).start(wait = false)
+            block(context)
+        } finally {
+            File(fileBasePath).deleteRecursively()
+        }
     }
+}
+
+private fun buildDI(port: Int): DI {
+    val fileBasePath = File(
+        /* parent = */ System.getenv("user.dir"),
+        /* child = */ "files-$port-test"
+    ).apply { mkdirs() }.absolutePath
+
+    return buildDI(
+        port = port,
+        databaseConfig = DatabaseConfig.Mock(port),
+        fileBasePath = fileBasePath,
+        fileSizeLimit = FileSize(bytesSize = 99L * 1024 * 1024)
+    )
 }
 
 private inline fun <T> bruteForcePort(
@@ -58,7 +84,7 @@ fun testApi(port: Int) = MeetacyApi(
     }
 )
 
-suspend fun TestServerScope.generateTestAccount(
+suspend fun TestServerContext.generateTestAccount(
     postfix: String? = null
 ): AuthorizedSelfUserRepository {
     val newClient = testApi.auth.generateAuthorizedApi(

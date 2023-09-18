@@ -18,7 +18,6 @@ import java.io.InputStream
 fun Route.upload(di: DI) {
     val filesSizeLimit: FileSize by di.getting
     val filesBasePath: String by di.getting
-    val deleteFilesOnExit: Boolean by di.getting
     val uploadFileUsecase: UploadFileUsecase by di.getting
 
     val saveFileRepository = object : SaveFileRepository {
@@ -32,9 +31,7 @@ fun Route.upload(di: DI) {
                     fileId: FileId,
                     userFilesFreeLimit: FileSize
                 ): FileSize? {
-                    val file = File(filesBasePath, "${fileId.long}").apply {
-                        if (deleteFilesOnExit) deleteOnExit()
-                    }
+                    val file = File(filesBasePath, "${fileId.long}")
 
                     return JvmFileUploader.upload(
                         inputStream = inputProvider(),
