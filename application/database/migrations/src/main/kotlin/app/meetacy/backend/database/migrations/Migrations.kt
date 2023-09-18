@@ -13,9 +13,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 private val migrations = listOf(`Migration 0-1`, `Migration 1-2`)
 
 suspend fun runMigrations(db: Database) {
-    transaction(db) {
-        execInBatch(SchemaUtils.createStatements(WdaterTable(name = "migrations")).also(::println))
-    }
     val wdater = Wdater {
         database = db
         storage = tableStorage(database = db)

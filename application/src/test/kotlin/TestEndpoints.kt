@@ -1,3 +1,4 @@
+@file:OptIn(UnsafeConstructor::class)
 
 import app.meetacy.backend.application.database.DatabaseConfig
 import app.meetacy.backend.application.endpoints.prepareEndpoints
@@ -6,6 +7,7 @@ import app.meetacy.backend.types.files.FileSize
 import app.meetacy.di.DI
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
+import app.meetacy.sdk.types.annotation.UnsafeConstructor
 import app.meetacy.sdk.types.annotation.UnstableApi
 import app.meetacy.sdk.types.auth.Token
 import app.meetacy.sdk.types.datetime.Date
