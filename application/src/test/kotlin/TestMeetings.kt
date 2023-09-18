@@ -82,27 +82,23 @@ class TestMeetings {
 
     @Test
     fun `test of meetings on map`() = runTestServer {
-
         val self = generateTestAccount()
 
+        val firstMeetings = self.meetings.map.list(Location.NullIsland)
+        println(firstMeetings.map { it.data })
+        require(firstMeetings.isEmpty()) { "Account was just created, there is no meetings on map" }
 
         self.meetings.create(
             title = "Test Meeting #1",
             date = Instant.now().minus(Duration.ofDays(2)).meetacyDate,
             location = Location.NullIsland
         )
-        val firstMeetings = self.meetings.map.list(Location.NullIsland)
-        require(firstMeetings.isEmpty()) { "Account was just created, there is no meetings on map" }
-
 
         self.meetings.create(
             title = "Test Meeting #2",
             date = Date.today(),
             location = Location.NullIsland
         )
-
-        val secondMeetings = self.meetings.map.list(Location.NullIsland)
-        require(secondMeetings.isEmpty())
 
         self.meetings.create(
             title = "Test Meeting #3",
@@ -111,6 +107,9 @@ class TestMeetings {
         )
 
         val secondAccount = generateTestAccount(postfix = "#2")
+
+        val secondMeetings = self.meetings.map.list(Location.NullIsland)
+        require(secondMeetings.isEmpty())
 
         val meeting = secondAccount.meetings.create(
             title = "Test Meeting #4",

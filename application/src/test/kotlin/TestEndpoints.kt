@@ -10,36 +10,43 @@ import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
-import io.ktor.server.engine.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import java.net.BindException
 
-@OptIn(ExperimentalCoroutinesApi::class)
+class TestServerScope(
+    val testScope: TestScope,
+    val testApi: MeetacyApi
+) : CoroutineScope by testScope
+
 fun runTestServer(
     wait: Boolean = false,
-    block: suspend TestScope.() -> Unit
+    block: suspend TestServerScope.() -> Unit
 ) = runTest {
-    ServerContainer.run(wait)
-    block()
-}
-
-object ServerContainer {
-    private var server: ApplicationEngine? = null
-
-    suspend fun run(wait: Boolean): ApplicationEngine {
-        if (server == null) {
-            server = runServer(port = port).start(wait)
-        }
-        return server!!
+    bruteForcePort { port ->
+        val testServerScope = TestServerScope(
+            testScope = this,
+            testApi = testApi(port)
+        )
+        runServer(port = port).start(wait)
+        block(testServerScope)
     }
 }
 
-var port: Int = 8080
+private inline fun <T> bruteForcePort(
+    range: IntRange = 10_000..60_000,
+    block: (port: Int) -> T
+): T {
+    while (true) {
+        try {
+            return block(range.random())
+        } catch (_: BindException) { }
+    }
+}
 
 @OptIn(UnstableApi::class)
-val testApi get() = MeetacyApi(
+fun testApi(port: Int) = MeetacyApi(
     baseUrl = "http://localhost:$port".url,
     httpClient = HttpClient {
         Logging {
@@ -51,7 +58,7 @@ val testApi get() = MeetacyApi(
     }
 )
 
-suspend fun generateTestAccount(
+suspend fun TestServerScope.generateTestAccount(
     postfix: String? = null
 ): AuthorizedSelfUserRepository {
     val newClient = testApi.auth.generateAuthorizedApi(
@@ -72,17 +79,3 @@ suspend fun AuthorizedMeetingsApi.createTestMeeting(title: String = "Test Meetin
         date = Date.today(),
         location = Location.NullIsland
     )
-
-private inline fun bruteForcePort(block: (port: Int) -> Unit) {
-    val range = 10_000..60_000
-
-    var success = false
-
-    while (!success) {
-        try {
-            block(range.random())
-            success = true
-        } catch (_: BindException) { }
-    }
-
-}
