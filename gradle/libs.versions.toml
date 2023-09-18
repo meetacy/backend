@@ -8,7 +8,7 @@ rsocket = "0.15.4"
 exposed = "0.41.1"
 
 postgresql = "42.2.27"
-h2 = "2.2.220"
+h2 = "2.2.224"
 slf4jJ = "1.7.32"
 logback = "1.2.6"
 ssh = "2.10.1"

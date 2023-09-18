@@ -1,9 +1,5 @@
 
-import app.meetacy.backend.application.database.DatabaseConfig
-import app.meetacy.backend.application.endpoints.prepareEndpoints
-import app.meetacy.backend.di.buildDI
-import app.meetacy.backend.types.files.FileSize
-import app.meetacy.di.DI
+import app.meetacy.backend.runServer
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
 import app.meetacy.sdk.types.annotation.UnstableApi
@@ -14,65 +10,29 @@ import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import org.jetbrains.exposed.sql.Database
-import java.io.File
-import java.net.BindException
-
-class TestServerContext(
-    val testScope: TestScope,
-    val testApi: MeetacyApi
-) : CoroutineScope by testScope
+import java.io.IOException
+import java.net.ServerSocket
 
 fun runTestServer(
-    block: suspend TestServerContext.() -> Unit
+    wait: Boolean = false,
+    block: suspend TestScope.() -> Unit
 ) = runTest {
-    bruteForcePort { port ->
-        val di = buildDI(port)
-        val fileBasePath: String by di.getting
-        val context = TestServerContext(
-            testScope = this,
-            testApi = testApi(port)
-        )
-
-        try {
-            prepareEndpoints(di).start(wait = false)
-            block(context)
-        } finally {
-            File(fileBasePath).deleteRecursively()
-        }
+    bruteForcePort {
+        runServer(
+            port = it,
+            databaseUrl = "jdbc:h2:mem:test_${testNum++};DB_CLOSE_DELAY=60000",
+        ).start(wait)
+        block()
     }
 }
 
-private fun buildDI(port: Int): DI {
-    val fileBasePath = File(
-        /* parent = */ System.getenv("user.dir"),
-        /* child = */ "files-$port-test"
-    ).apply { mkdirs() }.absolutePath
-
-    return buildDI(
-        port = port,
-        databaseConfig = DatabaseConfig.Mock(port),
-        fileBasePath = fileBasePath,
-        fileSizeLimit = FileSize(bytesSize = 99L * 1024 * 1024)
-    )
-}
-
-private inline fun <T> bruteForcePort(
-    range: IntRange = 10_000..60_000,
-    block: (port: Int) -> T
-): T {
-    while (true) {
-        try {
-            return block(range.random())
-        } catch (_: BindException) { }
-    }
-}
+var port: Int = 1024
+var testNum: UInt = 0U
 
 @OptIn(UnstableApi::class)
-fun testApi(port: Int) = MeetacyApi(
+val testApi get() = MeetacyApi(
     baseUrl = "http://localhost:$port".url,
     httpClient = HttpClient {
         Logging {
@@ -84,7 +44,7 @@ fun testApi(port: Int) = MeetacyApi(
     }
 )
 
-suspend fun TestServerContext.generateTestAccount(
+suspend fun generateTestAccount(
     postfix: String? = null
 ): AuthorizedSelfUserRepository {
     val newClient = testApi.auth.generateAuthorizedApi(
@@ -105,3 +65,24 @@ suspend fun AuthorizedMeetingsApi.createTestMeeting(title: String = "Test Meetin
         date = Date.today(),
         location = Location.NullIsland
     )
+
+private fun isPortFree(port: Int): Boolean {
+    var serverSocket: ServerSocket? = null
+
+    try {
+        serverSocket = ServerSocket(port) // server sockets are way faster to start and fail than our server
+    } catch (e: IOException) {
+        return false
+    } finally {
+        serverSocket?.close()
+    }
+
+    return true
+}
+
+private inline fun bruteForcePort(block: (Int) -> Unit) {
+    while (!isPortFree(port)) {
+        port++
+    }
+    block(port)
+}
