@@ -85,8 +85,12 @@ class TestMeetings {
         val self = generateTestAccount()
 
         val firstMeetings = self.meetings.map.list(Location.NullIsland)
-        println(firstMeetings.map { it.data })
         require(firstMeetings.isEmpty()) { "Account was just created, there is no meetings on map" }
+
+        val secondAccount = generateTestAccount(postfix = "#2")
+
+        val secondMeetings = self.meetings.map.list(Location.NullIsland)
+        require(secondMeetings.isEmpty())
 
         self.meetings.create(
             title = "Test Meeting #1",
@@ -105,11 +109,6 @@ class TestMeetings {
             date = Instant.now().plus(Duration.ofDays(1)).meetacyDate,
             location = Location.NullIsland
         )
-
-        val secondAccount = generateTestAccount(postfix = "#2")
-
-        val secondMeetings = self.meetings.map.list(Location.NullIsland)
-        require(secondMeetings.isEmpty())
 
         val meeting = secondAccount.meetings.create(
             title = "Test Meeting #4",

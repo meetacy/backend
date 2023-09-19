@@ -5,8 +5,11 @@ import app.meetacy.backend.application.endpoints.prepareEndpoints
 import app.meetacy.backend.di.buildDI
 import app.meetacy.backend.run.runProductionServer
 import app.meetacy.backend.types.files.FileSize
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.debug.DebugProbes
 import java.io.File
 
+@OptIn(ExperimentalCoroutinesApi::class)
 suspend fun main() {
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
     val databaseUrl = System.getenv("DATABASE_URL")
@@ -29,6 +32,8 @@ suspend fun main() {
             password = databasePassword
         )
     }
+
+    DebugProbes.install()
 
     runProductionServer(webhookUrl) {
         val di = buildDI(

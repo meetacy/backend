@@ -2,6 +2,7 @@ package app.meetacy.backend.application.endpoints
 
 import app.meetacy.backend.database.initDatabase
 import app.meetacy.backend.endpoint.ktor.exceptions.installExceptionsHandler
+import app.meetacy.backend.endpoint.ktor.rsocket.installRSocket
 import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
 import app.meetacy.backend.feature.auth.endpoints.integration.auth
 import app.meetacy.backend.feature.files.endpoints.integration.files
@@ -55,8 +56,7 @@ suspend fun prepareEndpoints(di: DI): ApplicationEngine {
         install(PartialContent)
         install(AutoHeadResponse)
         installExceptionsHandler()
-        install(WebSockets)
-        install(RSocketSupport)
+        installRSocket()
 
         routing {
             staticResources("/", null)

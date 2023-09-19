@@ -24,13 +24,13 @@ dependencies {
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
     implementation(libs.postgres.jdbc)
+    implementation(libs.h2.jdbc)
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.6.0")
     implementation(libs.meetacy.di.core)
     implementation(projects.libs.discordWebhook.ktor)
 
     testImplementation(libs.meetacy.sdk.api.ktor)
-
-    testImplementation(libs.h2.jdbc)
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)

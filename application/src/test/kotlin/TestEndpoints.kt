@@ -16,6 +16,7 @@ import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
+import io.rsocket.kotlin.ktor.server.RSocketSupport
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
