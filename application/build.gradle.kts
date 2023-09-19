@@ -26,7 +26,6 @@ dependencies {
     implementation(libs.postgres.jdbc)
     implementation(libs.h2.jdbc)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.6.0")
     implementation(libs.meetacy.di.core)
     implementation(projects.libs.discordWebhook.ktor)
 
