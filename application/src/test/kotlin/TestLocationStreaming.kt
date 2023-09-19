@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 import app.meetacy.sdk.exception.MeetacyUnauthorizedException
 import app.meetacy.sdk.types.location.Location
 import kotlinx.coroutines.*
