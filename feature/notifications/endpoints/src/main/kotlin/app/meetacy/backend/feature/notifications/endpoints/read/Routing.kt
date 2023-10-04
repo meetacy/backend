@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.notifications.endpoints.read
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -13,7 +14,6 @@ import app.meetacy.backend.types.serializable.notification.NotificationId
 
 @Serializable
 private data class RequestBody(
-    val token: AccessIdentity,
     val lastNotificationId: NotificationId
 )
 
@@ -29,7 +29,9 @@ interface ReadNotificationsRepository {
 
 fun Route.read(repository: ReadNotificationsRepository) = post("/read") {
     val requestBody = call.receive<RequestBody>()
-    when (repository.read(requestBody.token, requestBody.lastNotificationId)) {
+    val token = call.accessIdentity()
+
+    when (repository.read(token, requestBody.lastNotificationId)) {
 
         ReadNotificationsRepository.Result.Success -> call.respondSuccess()
 

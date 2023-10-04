@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.users.endpoints.edit
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -15,7 +16,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EditUserParams(
-    val token: AccessIdentity,
     val nickname: Optional<String> = Optional.Undefined,
     val username: Optional<Username?> = Optional.Undefined,
     val avatarId: Optional<FileIdentity?> = Optional.Undefined,
@@ -31,13 +31,26 @@ sealed interface EditUserResult {
 }
 
 interface EditUserRepository {
-    suspend fun editUser(editUserParams: EditUserParams): EditUserResult
+    suspend fun editUser(
+        token: AccessIdentity,
+        nickname: Optional<String>,
+        username: Optional<Username?>,
+        avatarId: Optional<FileIdentity?>
+    ): EditUserResult
 }
 
 fun Route.editUser(provider: EditUserRepository) = post("/edit") {
     val params = call.receive<EditUserParams>()
+    val token = call.accessIdentity()
 
-    when (val result = provider.editUser(params)) {
+    when (
+        val result = provider.editUser(
+            token,
+            params.nickname,
+            params.username,
+            params.avatarId
+        )
+    ) {
         is EditUserResult.Success -> call.respondSuccess(result.user)
         EditUserResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
         EditUserResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)

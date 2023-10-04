@@ -1,6 +1,7 @@
 package app.meetacy.backend.feature.meetings.endpoints.participate
 
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -13,8 +14,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ParticipateParam(
-    val meetingId: MeetingIdentity,
-    val token: AccessIdentity
+    val meetingId: MeetingIdentity
 )
 
 sealed interface ParticipateMeetingResult {
@@ -33,11 +33,12 @@ interface ParticipateMeetingRepository {
 
 fun Route.participateMeeting(repository: ParticipateMeetingRepository) = post("/participate") {
     val params = call.receive<ParticipateParam>()
+    val token = call.accessIdentity()
 
     when (
         repository.participateMeeting(
             params.meetingId,
-            params.token
+            token
         )
     ) {
         ParticipateMeetingResult.Success -> call.respondSuccess()
