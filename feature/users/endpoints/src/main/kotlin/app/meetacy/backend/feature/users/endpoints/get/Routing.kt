@@ -1,11 +1,10 @@
 package app.meetacy.backend.feature.users.endpoints.get
 
+import accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
-import app.meetacy.backend.endpoint.ktor.accessIdentity
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.backend.types.serializable.access.AccessToken
 import app.meetacy.backend.types.serializable.users.User
 import app.meetacy.backend.types.serializable.users.UserIdentity
 import io.ktor.server.application.*
@@ -30,7 +29,7 @@ sealed interface GetUserResult {
 
 fun Route.getUser(provider: UserRepository) = post("/get") {
     val id = call.receive<GetUserParams>().id
-    val token = AccessIdentity(call.accessIdentity { return@post })
+    val token = call.accessIdentity { return@post }
     when (val result = provider.getUser(id, token)) {
         is GetUserResult.Success -> call.respondSuccess(result.user)
         GetUserResult.UserNotFound -> call.respondFailure(Failure.UserNotFound)
