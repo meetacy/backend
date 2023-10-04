@@ -27,7 +27,7 @@ interface LinkEmailRepository {
 fun Route.linkEmail(repository: LinkEmailRepository) {
     post("/link") {
         val parameter = call.receive<LinkParameters>()
-        val token = call.accessIdentity { return@post }
+        val token = call.accessIdentity()
 
         when (repository.linkEmail(token, parameter.email)) {
             is ConfirmHashResult.Success -> call.respondSuccess()

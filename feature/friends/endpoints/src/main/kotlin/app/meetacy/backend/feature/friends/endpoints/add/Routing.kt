@@ -30,7 +30,7 @@ sealed interface AddFriendResult {
 
 fun Route.addFriend(provider: AddFriendRepository) = post("/add") {
     val param = call.receive<AddFriendParam>()
-    val token = call.accessIdentity { return@post }
+    val token = call.accessIdentity()
     when (provider.addFriend(token, param.friendId)) {
         AddFriendResult.Success -> call.respondSuccess()
         AddFriendResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)

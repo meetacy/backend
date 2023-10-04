@@ -29,7 +29,7 @@ sealed interface GetUserResult {
 
 fun Route.getUser(provider: UserRepository) = post("/get") {
     val id = call.receive<GetUserParams>().id
-    val token = call.accessIdentity { return@post }
+    val token = call.accessIdentity()
     when (val result = provider.getUser(id, token)) {
         is GetUserResult.Success -> call.respondSuccess(result.user)
         GetUserResult.UserNotFound -> call.respondFailure(Failure.UserNotFound)
