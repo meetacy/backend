@@ -1,6 +1,6 @@
 package app.meetacy.backend.feature.friends.endpoints.add
 
-import accessIdentity
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess

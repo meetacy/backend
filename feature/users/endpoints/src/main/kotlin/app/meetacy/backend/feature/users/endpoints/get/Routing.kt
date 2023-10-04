@@ -1,6 +1,6 @@
 package app.meetacy.backend.feature.users.endpoints.get
 
-import accessIdentity
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess

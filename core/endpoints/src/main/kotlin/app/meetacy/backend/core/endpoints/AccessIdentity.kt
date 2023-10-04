@@ -1,3 +1,5 @@
+package app.meetacy.backend.core.endpoints
+
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.types.serializable.access.AccessIdentity
