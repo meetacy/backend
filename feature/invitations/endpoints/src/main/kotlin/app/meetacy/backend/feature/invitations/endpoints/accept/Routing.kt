@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.invitations.endpoints.accept
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -8,19 +9,19 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
 
 @Serializable
 data class InvitationAcceptParams(
-    val token: AccessIdentitySerializable,
     val id: InvitationId,
 )
 
 fun Route.invitationAccept(invitationsAcceptRepository: AcceptInvitationRepository) {
     post("/accept") {
-        val acceptParams: InvitationAcceptParams = call.receive()
+        val acceptParam: InvitationAcceptParams = call.receive()
+        val token = call.accessIdentity()
 
-        when (invitationsAcceptRepository.acceptInvitation(acceptParams)) {
+        when (invitationsAcceptRepository.acceptInvitation(token, acceptParam.id)) {
             InvitationAcceptResponse.Success -> {
                 call.respondSuccess()
             }
@@ -38,7 +39,7 @@ fun Route.invitationAccept(invitationsAcceptRepository: AcceptInvitationReposito
 }
 
 interface AcceptInvitationRepository {
-    suspend fun acceptInvitation(params: InvitationAcceptParams): InvitationAcceptResponse
+    suspend fun acceptInvitation(token: AccessIdentity, id: InvitationId): InvitationAcceptResponse
 }
 
 

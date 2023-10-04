@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.invitations.endpoints.cancel
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -12,15 +13,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CancelInvitationForm(
-    val token: AccessIdentitySerializable,
     val id: InvitationId
 )
 
 fun Route.invitationCancel(invitationCancelRepository: CancelInvitationRepository) = post("/cancel") {
     val form: CancelInvitationForm = call.receive()
+    val token = call.accessIdentity()
 
     with(invitationCancelRepository) {
-        when (cancel(form)) {
+        when (cancel(token, form.id)) {
             CancelInvitationResponse.Success -> {
                 call.respondSuccess()
             }
@@ -35,11 +36,11 @@ fun Route.invitationCancel(invitationCancelRepository: CancelInvitationRepositor
 }
 
 interface CancelInvitationRepository {
-    suspend fun cancel(form: CancelInvitationForm): CancelInvitationResponse
+    suspend fun cancel(token: AccessIdentitySerializable, id: InvitationId): CancelInvitationResponse
 }
 
 sealed interface CancelInvitationResponse {
-    object Success : CancelInvitationResponse
-    object Unauthorized : CancelInvitationResponse
-    object NotFound : CancelInvitationResponse
+    data object Success : CancelInvitationResponse
+    data object Unauthorized : CancelInvitationResponse
+    data object NotFound : CancelInvitationResponse
 }
