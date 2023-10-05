@@ -4,6 +4,7 @@ import app.meetacy.backend.feature.users.usecase.integration.edit.editUserUsecas
 import app.meetacy.backend.feature.users.usecase.integration.get.getUserSafeUsecase
 import app.meetacy.backend.feature.users.usecase.integration.get.getUsersViewsUsecase
 import app.meetacy.backend.feature.users.usecase.integration.get.viewUserUsecase
+import app.meetacy.backend.feature.users.usecase.integration.validate.validateUsernameUsecase
 import app.meetacy.di.builder.DIBuilder
 
 fun DIBuilder.users() {
@@ -11,4 +12,5 @@ fun DIBuilder.users() {
     getUserSafeUsecase()
     getUsersViewsUsecase()
     viewUserUsecase()
+    validateUsernameUsecase()
 }
