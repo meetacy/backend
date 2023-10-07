@@ -1142,12 +1142,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Token
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       summary: Validate username
       tags:
