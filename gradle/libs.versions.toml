@@ -15,7 +15,7 @@ ssh = "2.10.1"
 shadow = "7.0.0"
 
 wdater = "0.0.2"
-meetacySdk = "0.0.53-buildb4eade6"
+meetacySdk = "0.0.53-build3c47b57"
 meetacyDi = "0.0.25"
 
 [libraries]

@@ -100,6 +100,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
+      security:
+        - token: []
   /auth/generate:
     parameters:
       - name: Api-Version
@@ -136,6 +138,7 @@ paths:
                 status: false
                 errorCode: 1
                 errorMessage: "Please provide a valid nickname"
+
   /files/download:
     parameters:
       - name: Api-Version
@@ -224,6 +227,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 LimitSize:
                   $ref: '#/components/examples/FileSizeLimit'
+      security:
+        - token: []
   /friends/add:
     parameters:
       - name: Api-Version
@@ -269,6 +274,8 @@ paths:
                   $ref: '#/components/examples/FriendNotFound'
                 FriendAlreadyAdded:
                   $ref: '#/components/examples/FriendAlreadyAdded'
+      security:
+        - token: []
   /friends/delete:
     parameters:
       - name: Api-Version
@@ -312,6 +319,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 FriendNotFound:
                   $ref: '#/components/examples/FriendNotFound'
+      security:
+        - token: []
   /friends/list:
     parameters:
       - name: Api-Version
@@ -350,6 +359,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
+      security:
+        - token: []
   /invitations/create:
     parameters:
       - name: Api-Version
@@ -391,6 +402,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 FriendNotFound:
                   $ref: '#/components/examples/FriendNotFound'
+      security:
+        - token: []
   /invitations/accept:
     description: Accept an invitation
     parameters:
@@ -434,6 +447,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /invitations/cancel:
     description: Cancel an invitation
     parameters:
@@ -477,6 +492,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /invitations/deny:
     description: Deny an invitation
     parameters:
@@ -520,6 +537,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /meetings/edit:
     parameters:
       - name: Api-Version
@@ -568,6 +587,8 @@ paths:
                   $ref:  '#/components/examples/InvalidMeetingId'
                 NullEditParameters:
                   $ref: '#/components/examples/NullEditParameters'
+      security:
+        - token: []
   /meetings/create:
     parameters:
       - name: Api-Version
@@ -611,6 +632,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 InvalidUtf8String:
                   $ref: '#/components/examples/InvalidNickname'
+      security:
+        - token: []
   /meetings/delete:
     parameters:
       - name: Api-Version
@@ -654,6 +677,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 MeetingNotFound:
                   $ref: '#/components/examples/InvalidMeetingId'
+      security:
+        - token: []
   /meetings/get:
     parameters:
       - name: Api-Version
@@ -697,6 +722,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 MeetingNotFound:
                   $ref: '#/components/examples/InvalidMeetingId'
+      security:
+        - token: []
   /meetings/history/list:
     parameters:
       - name: Api-Version
@@ -738,6 +765,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /meetings/history/active:
     parameters:
       - name: Api-Version
@@ -779,6 +808,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /meetings/history/past:
     parameters:
       - name: Api-Version
@@ -820,6 +851,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /meetings/map/list:
     parameters:
       - name: Api-Version
@@ -860,6 +893,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /meetings/participants/list:
     parameters:
       - name: Api-Version
@@ -903,6 +938,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 MeetingNotFound:
                   $ref: '#/components/examples/InvalidMeetingId'
+      security:
+        - token: []
   /meetings/participate:
     parameters:
       - name: Api-Version
@@ -948,6 +985,8 @@ paths:
                   $ref: '#/components/examples/InvalidMeetingId'
                 MeetingAlreadyParticipate:
                   $ref: '#/components/examples/MeetingAlreadyParticipate'
+      security:
+        - token: []
   /notifications/list:
     parameters:
       - name: Api-Version
@@ -988,6 +1027,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /notifications/read:
     parameters:
       - name: Api-Version
@@ -1029,17 +1070,13 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 LastNotificationIdInvalid:
                   $ref: '#/components/examples/LastNotificationIdInvalid'
+      security:
+        - token: []
   /users/get:
     parameters:
       - name: Api-Version
         in: header
         description: The version of API to invoke request with
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Token auth
         required: true
         schema:
           type: string
@@ -1085,6 +1122,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 UserNotFound:
                   $ref: '#/components/examples/UserNotFound'
+      security:
+        - token: []
   /users/edit:
     parameters:
       - name: Api-Version
@@ -1134,7 +1173,9 @@ paths:
                   $ref: '#/components/examples/InvalidFileId'
                 InvalidNickname:
                   $ref: '#/components/examples/InvalidNickname'
-  /users/validate:
+      security:
+        - token: []
+  /users/username/available:
     parameters:
       - name: Api-Version
         in: header
@@ -1143,21 +1184,21 @@ paths:
         schema:
           type: string
     post:
-      summary: Validate username
+      summary: Check if username available
       tags:
         - user
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ValidateUsernameRequest'
+              $ref: '#/components/schemas/UsernameAvailableRequest'
       responses:
         "200":
           description: An example of a successful generated response with an token
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidateUsernameRequest'
+                $ref: '#/components/schemas/UsernameAvailableRequest'
               example:
                 value:
                   status: true
@@ -1174,6 +1215,11 @@ paths:
                 InvalidUtf8String:
                   $ref: '#/components/examples/InvalidUtf8String'
 components:
+  securitySchemes:
+    token:
+      type: "apiKey"
+      name: "authorization"
+      in: "header"
   examples:
     ExpiredLink:
       value:
@@ -1766,7 +1812,7 @@ components:
           example: "1:rXfskQTJuGm7U0UvDNpojpDhvrwhfkOfPqRlHRwg2R6EMA9aMtp5iZB2t6JLRTxAJp2LhZIIVrmj3uYpjKzji46krsK4GgtG3Uw3TRudeslGdtL4ye2N6LTWRy8WYN1giGOBgRFZLjwQ4hoEdVIJqmmHCRQZNhHpMAsdWUYdoWStgMumTkCTKbXcraZYMpGESqFcaFfstyjCMVZtuXcl23IusOkEzGPcmWy6ykbiHa4D7lhcq4szdSmpksBo2mov"
       required:
         - token
-    ValidateUsernameRequest:
+    UsernameAvailableRequest:
       type: object
       properties:
         username:
