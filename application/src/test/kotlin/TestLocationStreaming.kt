@@ -1,14 +1,10 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 import app.meetacy.sdk.exception.MeetacyUnauthorizedException
 import app.meetacy.sdk.types.location.Location
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import kotlin.test.Test
 
 class TestLocationStreaming {

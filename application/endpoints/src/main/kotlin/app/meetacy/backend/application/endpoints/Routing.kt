@@ -1,6 +1,8 @@
 package app.meetacy.backend.application.endpoints
 
+import app.meetacy.backend.database.initDatabase
 import app.meetacy.backend.endpoint.ktor.exceptions.installExceptionsHandler
+import app.meetacy.backend.endpoint.ktor.rsocket.installRSocket
 import app.meetacy.backend.endpoint.ktor.versioning.ApiVersion
 import app.meetacy.backend.feature.auth.endpoints.integration.auth
 import app.meetacy.backend.feature.files.endpoints.integration.files
@@ -27,11 +29,15 @@ import io.ktor.server.websocket.*
 import io.rsocket.kotlin.ktor.server.RSocketSupport
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import org.jetbrains.exposed.sql.Database
 
 @OptIn(ExperimentalSerializationApi::class)
 @Suppress("ExtractKtorModule")
-fun prepareEndpoints(di: DI): ApplicationEngine {
+suspend fun prepareEndpoints(di: DI): ApplicationEngine {
     val port: Int by di.getting
+    val database: Database by di.getting
+
+    initDatabase(database)
 
     return embeddedServer(CIO, host = "localhost", port = port) {
         install(ContentNegotiation) {
@@ -50,8 +56,7 @@ fun prepareEndpoints(di: DI): ApplicationEngine {
         install(PartialContent)
         install(AutoHeadResponse)
         installExceptionsHandler()
-        install(WebSockets)
-        install(RSocketSupport)
+        installRSocket()
 
         routing {
             staticResources("/", null)

@@ -88,6 +88,7 @@ class TestMeetings {
         require(firstMeetings.isEmpty()) { "Account was just created, there is no meetings on map" }
 
         val secondAccount = generateTestAccount(postfix = "#2")
+
         val secondMeetings = self.meetings.map.list(Location.NullIsland)
         require(secondMeetings.isEmpty())
 

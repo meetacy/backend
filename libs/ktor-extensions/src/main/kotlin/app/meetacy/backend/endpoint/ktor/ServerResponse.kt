@@ -47,7 +47,6 @@ data class Failure(
         val InvitationNotFound = Failure(false, 22, "Invitation you are requested for is not found ¬_¬")
 
         fun UnhandledException(throwable: Throwable): Failure {
-            System.err.println(throwable.stackTraceToString())
             return Failure(
                 status = false,
                 errorCode = 15,

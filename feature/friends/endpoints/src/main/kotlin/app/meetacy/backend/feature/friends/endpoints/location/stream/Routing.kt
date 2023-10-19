@@ -1,8 +1,8 @@
 package app.meetacy.backend.feature.friends.endpoints.location.stream
 
-import app.meetacy.backend.feature.friends.endpoints.location.stream.StreamLocationRepository.Result
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.rsocket.failRSocket
+import app.meetacy.backend.feature.friends.endpoints.location.stream.StreamLocationRepository.Result
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.users.UserLocationSnapshot

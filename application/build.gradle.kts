@@ -24,13 +24,12 @@ dependencies {
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
     implementation(libs.postgres.jdbc)
+    implementation(libs.h2.jdbc)
 
     implementation(libs.meetacy.di.core)
     implementation(projects.libs.discordWebhook.ktor)
 
     testImplementation(libs.meetacy.sdk.api.ktor)
-
-    testImplementation(libs.h2.jdbc)
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)
@@ -46,12 +45,11 @@ dependencies {
 }
 
 tasks.test {
+    maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
     useJUnitPlatform()
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL
     }
-    setEnvironment("IS_TEST" to true)
-    setEnvironment("DATABASE_URL" to "jdbc:h2:mem:test;DB_CLOSE_DELAY=60000")
 }
 
 val propertiesFile: File = rootProject.file("deploy.properties")

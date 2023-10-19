@@ -10,8 +10,6 @@ import io.ktor.utils.io.*
 fun Application.installExceptionsHandler() {
     install(StatusPages) {
         exception { call: ApplicationCall, throwable: Throwable ->
-            logError(call, throwable)
-            throwable.printStack()
             call.respondFailure(Failure.UnhandledException(throwable))
         }
     }
