@@ -70,12 +70,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       tags:
         - auth
@@ -183,12 +177,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       summary: Uploading a file to the server
       tags:
@@ -237,12 +225,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       tags:
         - friends
@@ -281,12 +263,6 @@ paths:
       - name: Api-Version
         in: header
         description: The version of API to invoke request with
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Token auth
         required: true
         schema:
           type: string
@@ -329,12 +305,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       summary: Get list of friends
       tags:
@@ -366,12 +336,6 @@ paths:
       - name: Api-Version
         in: header
         description: The version of API to invoke request with
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Token auth
         required: true
         schema:
           type: string
@@ -410,12 +374,6 @@ paths:
       - name: Api-Version
         in: header
         description: The version of API to invoke request with
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Token auth
         required: true
         schema:
           type: string
@@ -458,12 +416,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       summary: Cancel an invitation
       tags:
@@ -503,12 +455,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       summary: Deny an invitation
       tags:
@@ -544,12 +490,6 @@ paths:
       - name: Api-Version
         in: header
         description: The version of API to invoke request with
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Token auth
         required: true
         schema:
           type: string
@@ -597,12 +537,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       summary: Creating a meeting
       tags:
@@ -639,12 +573,6 @@ paths:
       - name: Api-Version
         in: header
         description: The version of API to invoke request with
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Token auth
         required: true
         schema:
           type: string
@@ -687,12 +615,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       summary: Getting meeting information
       tags:
@@ -729,12 +651,6 @@ paths:
       - name: Api-Version
         in: header
         description: The version of API to invoke request with
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Token auth
         required: true
         schema:
           type: string
@@ -775,12 +691,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     get:
       summary: Getting a list of active meetings
       tags:
@@ -815,12 +725,6 @@ paths:
       - name: Api-Version
         in: header
         description: The version of API to invoke request with
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Token auth
         required: true
         schema:
           type: string
@@ -861,12 +765,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       summary: "Meetings on Map"
       tags:
@@ -900,12 +798,6 @@ paths:
       - name: Api-Version
         in: header
         description: The version of API to invoke request with
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Token auth
         required: true
         schema:
           type: string
@@ -945,12 +837,6 @@ paths:
       - name: Api-Version
         in: header
         description: The version of API to invoke request with
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Token auth
         required: true
         schema:
           type: string
@@ -995,12 +881,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       summary: "List past notifications"
       requestBody:
@@ -1034,12 +914,6 @@ paths:
       - name: Api-Version
         in: header
         description: The version of API to invoke request with
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Token auth
         required: true
         schema:
           type: string
@@ -1132,12 +1006,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Token auth
-        required: true
-        schema:
-          type: string
     post:
       summary: Editing user object
       tags:
@@ -1218,7 +1086,7 @@ components:
   securitySchemes:
     token:
       type: "apiKey"
-      name: "authorization"
+      name: "Authorization"
       in: "header"
   examples:
     ExpiredLink:
