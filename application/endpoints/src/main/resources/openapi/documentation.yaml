@@ -1733,26 +1733,26 @@ components:
     AcceptInvitationRequest:
       type: object
       properties:
-        id:
+        invitationId:
           type: string
       required:
         - token
-        - invitationIdentity
+        - invitationId
     DenyInvitationRequest:
       type: object
       properties:
-        id:
+        invitationId:
           type: string
       required:
-        - "id"
+        - "invitationId"
         - "token"
     CancelInvitationRequest:
       type: object
       properties:
-        id:
+        invitationId:
           type: string
       required:
-        - "id"
+        - "invitationId"
         - "token"
     ReadNotificationRequest:
       type: "object"
