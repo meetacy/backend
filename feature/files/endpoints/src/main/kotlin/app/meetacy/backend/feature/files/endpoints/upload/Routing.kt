@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.files.endpoints.upload
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -29,7 +30,7 @@ interface SaveFileRepository {
 fun Route.upload(saveFileRepository: SaveFileRepository) = post("/upload") {
     val multipartData = call.receiveMultipart()
 
-    var token: AccessIdentity? = null
+    val token = call.accessIdentity()
     var inputProvider: (() -> InputStream)? = null
     var fileName = "unnamed"
 
@@ -37,28 +38,20 @@ fun Route.upload(saveFileRepository: SaveFileRepository) = post("/upload") {
 
     multipartData.forEachPart { part ->
         when (part) {
-            is PartData.FormItem -> {
-                if (part.name == "token") token = AccessIdentity(part.value)
-            }
-
             is PartData.FileItem -> {
                 inputProvider = part.streamProvider
                 fileName = part.originalFileName ?: fileName
             }
-
             else -> {}
         }
         partsToDispose += part
     }
 
-    if (token == null) {
-        error("Please provide token")
-    }
     if (inputProvider == null) {
         error("Please provide file part")
     }
 
-    when (val result = saveFileRepository.saveFile(token!!, fileName, inputProvider!!)) {
+    when (val result = saveFileRepository.saveFile(token, fileName, inputProvider!!)) {
         is UploadFileResult.Success -> call.respondSuccess(result.fileIdentity)
         is UploadFileResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
         is UploadFileResult.LimitSize -> {

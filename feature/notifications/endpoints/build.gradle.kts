@@ -12,4 +12,5 @@ dependencies {
 
     implementation(libs.ktor.server.core)
     implementation(libs.kotlinx.serialization.json)
+    implementation(projects.core.endpoints)
 }

@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.meetings.endpoints.edit
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -17,7 +18,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EditMeetingParams(
-    val token: AccessIdentity,
     val meetingId: MeetingIdentity,
     val avatarId: Optional<FileIdentity?> = Optional.Undefined,
     val title: String?,
@@ -37,13 +37,34 @@ sealed interface EditMeetingResult {
 }
 
 interface EditMeetingRepository {
-    suspend fun editMeeting(editMeetingParams: EditMeetingParams): EditMeetingResult
+    suspend fun editMeeting(
+        token: AccessIdentity,
+        meetingId: MeetingIdentity,
+        avatarId: Optional<FileIdentity?>,
+        title: String?,
+        description: String?,
+        location: Location?,
+        date: Date?,
+        visibility: Meeting.Visibility?
+    ): EditMeetingResult
 }
 
 fun Route.editMeeting(repository: EditMeetingRepository) = post("/edit") {
     val params = call.receive<EditMeetingParams>()
+    val token = call.accessIdentity()
 
-    when (val result = repository.editMeeting(params)) {
+    when (
+        val result = repository.editMeeting(
+            token,
+            params.meetingId,
+            params.avatarId,
+            params.title,
+            params.description,
+            params.location,
+            params.date,
+            params.visibility
+        )
+    ) {
         is EditMeetingResult.Success -> call.respondSuccess(result.meeting)
         EditMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
         EditMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)

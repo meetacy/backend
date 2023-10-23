@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.friends.endpoints.list
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -15,13 +16,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ListFriendsBody(
-    val token: AccessIdentity,
     val amount: Amount,
     val pagingId: PagingId? = null
 )
 
 interface ListFriendsRepository {
-    suspend fun getFriends(token: ListFriendsBody): ListFriendsResult
+    suspend fun getFriends(token: AccessIdentity, amount: Amount, pagingId: PagingId?): ListFriendsResult
 }
 
 sealed interface ListFriendsResult {
@@ -31,8 +31,9 @@ sealed interface ListFriendsResult {
 }
 
 fun Route.listFriends(getProvider: ListFriendsRepository) = post("/list") {
-    val friendToken = call.receive<ListFriendsBody>()
-    when (val result = getProvider.getFriends(friendToken)) {
+    val params = call.receive<ListFriendsBody>()
+    val token = call.accessIdentity()
+    when (val result = getProvider.getFriends(token, params.amount, params.pagingId)) {
         is ListFriendsResult.Success -> call.respondSuccess(result.paging)
         is ListFriendsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
     }

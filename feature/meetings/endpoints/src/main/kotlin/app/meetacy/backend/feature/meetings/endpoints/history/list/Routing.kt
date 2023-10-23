@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.meetings.endpoints.history.list
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -16,7 +17,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ListParam(
-    val token: AccessIdentity,
     val amount: Amount,
     val pagingId: PagingId? = null
 )
@@ -36,10 +36,11 @@ interface ListMeetingsHistoryRepository {
 
 fun Route.listMeetingsHistory(repository: ListMeetingsHistoryRepository) = post("/list") {
     val params = call.receive<ListParam>()
+    val token = call.accessIdentity()
 
     when (
         val result = repository.getList(
-            accessIdentity = params.token,
+            accessIdentity = token,
             amount = params.amount,
             pagingId = params.pagingId
         )

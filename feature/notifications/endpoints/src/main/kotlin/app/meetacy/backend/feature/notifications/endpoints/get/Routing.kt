@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.notifications.endpoints.get
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -15,30 +16,29 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 private data class RequestBody(
-    val token: AccessIdentity,
     val pagingId: PagingId? = null,
     val amount: Amount
 )
 
 interface ListNotificationsRepository {
     suspend fun getNotifications(
-        accessIdentity: AccessIdentity,
+        token: AccessIdentity,
         pagingId: PagingId?,
         amount: Amount
     ): Result
 
     sealed interface Result {
-        object InvalidIdentity : Result
+        data object InvalidIdentity : Result
         class Success(val notifications: PagingResult<Notification>) : Result
     }
 }
 
 fun Route.list(repository: ListNotificationsRepository) = post("/list") {
     val requestBody = call.receive<RequestBody>()
-
+    val token = call.accessIdentity()
     when (
         val result = repository.getNotifications(
-            accessIdentity = requestBody.token,
+            token = token,
             pagingId = requestBody.pagingId,
             amount = requestBody.amount
         )
