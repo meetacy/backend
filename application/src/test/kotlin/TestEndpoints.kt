@@ -59,7 +59,8 @@ private fun buildDI(port: Int): DI {
         port = port,
         databaseConfig = DatabaseConfig.Mock(port),
         fileBasePath = fileBasePath,
-        fileSizeLimit = FileSize(bytesSize = 99L * 1024 * 1024)
+        fileSizeLimit = FileSize(bytesSize = 99L * 1024 * 1024),
+        discordWebhook = null
     )
 }
 
