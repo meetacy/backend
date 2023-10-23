@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.meetings.endpoints.map.list
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -25,15 +26,15 @@ sealed interface ListMeetingsMapResult {
 
 @Serializable
 private data class ListMeetingsMapParams(
-    val token: AccessIdentity,
     val location: Location
 )
 
 fun Route.listMeetingsMap(repository: ListMeetingsMapRepository) = post("/list") {
     val params = call.receive<ListMeetingsMapParams>()
+    val token = call.accessIdentity()
 
     when (
-        val result = repository.list(params.token, params.location)
+        val result = repository.list(token, params.location)
     ) {
         is ListMeetingsMapResult.InvalidIdentity ->
             call.respondFailure(Failure.InvalidToken)

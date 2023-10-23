@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.meetings.endpoints.history.active
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -29,10 +30,11 @@ interface ListMeetingsActiveRepository {
 
 fun Route.listMeetingsActive(repository: ListMeetingsActiveRepository) = get("/active") {
     val params = call.receive<ListParam>()
+    val token = call.accessIdentity()
 
     when (
         val result = repository.getList(
-            accessIdentity = params.token,
+            accessIdentity = token,
             amount = params.amount,
             pagingId = params.pagingId
         )

@@ -1,11 +1,12 @@
 package app.meetacy.backend.feature.meetings.endpoints.history.past
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.feature.meetings.endpoints.history.list.ListMeetingsHistoryResult
 import app.meetacy.backend.feature.meetings.endpoints.history.list.ListParam
-import app.meetacy.backend.feature.meetings.endpoints.history.past.ListMeetingsPastResult.*
+import app.meetacy.backend.feature.meetings.endpoints.history.past.ListMeetingsPastResult.InvalidIdentity
+import app.meetacy.backend.feature.meetings.endpoints.history.past.ListMeetingsPastResult.Success
 import app.meetacy.backend.types.paging.serializable.PagingId
 import app.meetacy.backend.types.paging.serializable.PagingResult
 import app.meetacy.backend.types.serializable.access.AccessIdentity
@@ -31,10 +32,11 @@ interface ListMeetingsPastRepository {
 @Suppress("DuplicatedCode")
 fun Route.listMeetingsPast(repository: ListMeetingsPastRepository) = get("/past") {
     val params = call.receive<ListParam>()
+    val token = call.accessIdentity()
 
     when (
         val result = repository.getList(
-            accessIdentity = params.token,
+            accessIdentity = token,
             amount = params.amount,
             pagingId = params.pagingId
         )

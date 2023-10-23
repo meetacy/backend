@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.meetings.endpoints.get
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -9,33 +10,33 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
 
 @Serializable
 data class GetMeetingsParam(
-    val token: AccessIdentitySerializable,
     val meetingId: MeetingIdentity
 )
 
 sealed interface GetMeetingResult {
     class Success(val meeting: Meeting) : GetMeetingResult
-    object InvalidAccessIdentity : GetMeetingResult
-    object MeetingNotFound : GetMeetingResult
+    data object InvalidAccessIdentity : GetMeetingResult
+    data object MeetingNotFound : GetMeetingResult
 }
 
 interface GetMeetingRepository {
     suspend fun getMeeting(
-        accessIdentity: AccessIdentitySerializable,
+        accessIdentity: AccessIdentity,
         meetingIdentity: MeetingIdentity
     ): GetMeetingResult
 }
 
 fun Route.getMeeting(repository: GetMeetingRepository) = post("/get") {
     val params = call.receive<GetMeetingsParam>()
+    val token = call.accessIdentity()
 
     when (
         val result = repository.getMeeting(
-            params.token,
+            token,
             params.meetingId
         )
     ) {

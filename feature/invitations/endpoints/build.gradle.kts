@@ -9,4 +9,5 @@ dependencies {
     api(projects.core.types.serializable)
 
     implementation(libs.kotlinx.serialization.json)
+    implementation(projects.core.endpoints)
 }

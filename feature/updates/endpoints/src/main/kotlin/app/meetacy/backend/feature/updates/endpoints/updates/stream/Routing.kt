@@ -17,18 +17,18 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
 
 @Serializable
 data class InitStreamUpdates(
-    val token: AccessIdentitySerializable,
+    val token: AccessIdentity,
     val fromId: UpdateId?,
     val apiVersion: Int
 )
 
 interface StreamUpdatesRepository {
     suspend fun flow(
-        token: AccessIdentitySerializable,
+        token: AccessIdentity,
         fromId: UpdateId?
     ): Result
 
