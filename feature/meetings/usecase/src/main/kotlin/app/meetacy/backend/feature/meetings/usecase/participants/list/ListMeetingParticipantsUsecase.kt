@@ -43,7 +43,7 @@ class ListMeetingParticipantsUsecase(
         ).map { users ->
             getUsersViewsRepository.getUsersViews(
                 viewerId = userId,
-                userIdentities = users
+                userIds = users
             )
         }
 

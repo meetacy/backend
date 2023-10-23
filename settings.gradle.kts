@@ -80,7 +80,8 @@ val features = listOf(
     "meetings",
     "notifications",
     "updates",
-    "users"
+    "users",
+    "search"
 )
 
 features.forEach { feature ->

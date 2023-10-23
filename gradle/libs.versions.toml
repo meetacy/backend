@@ -75,6 +75,7 @@ ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
 ktor-server-autoHead = { module = "io.ktor:ktor-server-auto-head-response", version.ref = "ktor" }
 ktor-server-requestValidation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
 ktor-server-serverStatusPage = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
+ktor-server-doubleReceive = { module = "io.ktor:ktor-server-double-receive", version.ref = "ktor" }
 
 # gradle
 

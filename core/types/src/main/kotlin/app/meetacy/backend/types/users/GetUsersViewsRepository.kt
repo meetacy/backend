@@ -4,12 +4,12 @@ fun interface GetUsersViewsRepository {
     suspend fun getUsersViewsOrNull(viewerId: UserId, userIdentities: List<UserId>): List<UserView?>
 }
 
-suspend fun GetUsersViewsRepository.getUsersViews(viewerId: UserId, userIdentities: List<UserId>) =
-    getUsersViewsOrNull(viewerId, userIdentities)
+suspend fun GetUsersViewsRepository.getUsersViews(viewerId: UserId, userIds: List<UserId>) =
+    getUsersViewsOrNull(viewerId, userIds)
         .filterNotNull()
         .apply {
-            require(size == userIdentities.size) {
-                "Cannot find every user ($userIdentities). If it is a normal case, please consider to use getUsersViewsOrNull"
+            require(size == userIds.size) {
+                "Cannot find every user ($userIds). If it is a normal case, please consider to use getUsersViewsOrNull"
             }
         }
 

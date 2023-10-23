@@ -7,6 +7,7 @@ dependencies {
     api(libs.ktor.server.core)
     api(libs.ktor.server.cio)
     api(libs.ktor.server.rsocket)
+    implementation(projects.libs.discordWebhook)
 
     implementation(libs.ktor.server.websockets)
     implementation(libs.ktor.server.swagger)
