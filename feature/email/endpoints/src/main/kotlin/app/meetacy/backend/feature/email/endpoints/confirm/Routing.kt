@@ -28,7 +28,6 @@ interface ConfirmEmailRepository {
 
 fun Route.confirmEmail(repository: ConfirmEmailRepository) = post("/confirm") {
     val parameters = call.receive<ConfirmParams>()
-    throw IllegalStateException("Crash Report")
 
     when (repository.checkConfirmHash(parameters.email, parameters.confirmHash)) {
         ConfirmHashResult.LinkExpired -> call.respondFailure(Failure.ExpiredLink)
