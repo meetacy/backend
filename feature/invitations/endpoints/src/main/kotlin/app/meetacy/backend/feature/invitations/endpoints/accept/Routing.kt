@@ -13,7 +13,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 
 @Serializable
 data class InvitationAcceptParams(
-    val id: InvitationId,
+    val invitationId: InvitationId
 )
 
 fun Route.invitationAccept(invitationsAcceptRepository: AcceptInvitationRepository) {
@@ -21,7 +21,7 @@ fun Route.invitationAccept(invitationsAcceptRepository: AcceptInvitationReposito
         val acceptParam: InvitationAcceptParams = call.receive()
         val token = call.accessIdentity()
 
-        when (invitationsAcceptRepository.acceptInvitation(token, acceptParam.id)) {
+        when (invitationsAcceptRepository.acceptInvitation(token, acceptParam.invitationId)) {
             InvitationAcceptResponse.Success -> {
                 call.respondSuccess()
             }
@@ -39,7 +39,7 @@ fun Route.invitationAccept(invitationsAcceptRepository: AcceptInvitationReposito
 }
 
 interface AcceptInvitationRepository {
-    suspend fun acceptInvitation(token: AccessIdentity, id: InvitationId): InvitationAcceptResponse
+    suspend fun acceptInvitation(token: AccessIdentity, invitationId: InvitationId): InvitationAcceptResponse
 }
 
 

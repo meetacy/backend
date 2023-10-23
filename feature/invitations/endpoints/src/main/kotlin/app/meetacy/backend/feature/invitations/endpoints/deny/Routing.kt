@@ -1,6 +1,5 @@
 package app.meetacy.backend.feature.invitations.endpoints.deny
 
-import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -9,19 +8,19 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import app.meetacy.backend.types.serializable.access.AccessIdentity
+import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
 
 @Serializable
-data class InvitationDenyingForm(
-    val id: InvitationId
+data class InvitationDenyingFormSerializable(
+    val invitationId: InvitationId,
+    val token: AccessIdentitySerializable
 )
 
 fun Route.invitationDeny(invitationsDenyRepository: DenyInvitationRepository) {
     post("/deny") {
-        val form  = call.receive<InvitationDenyingForm>()
-        val token = call.accessIdentity()
+        val form: InvitationDenyingFormSerializable = call.receive()
 
-        when (invitationsDenyRepository.denyInvitation(token, form.id)) {
+        when (invitationsDenyRepository.denyInvitation(form)) {
             DenyInvitationResponse.Success -> {
                 call.respondSuccess()
             }
@@ -39,7 +38,7 @@ fun Route.invitationDeny(invitationsDenyRepository: DenyInvitationRepository) {
 }
 
 interface DenyInvitationRepository{
-    suspend fun denyInvitation(token: AccessIdentity, id: InvitationId): DenyInvitationResponse
+    suspend fun denyInvitation(form: InvitationDenyingFormSerializable): DenyInvitationResponse
 }
 
 sealed interface DenyInvitationResponse {

@@ -14,8 +14,8 @@ import io.ktor.server.routing.*
 internal fun Route.invitationCancel(di: DI) {
     val usecase: CancelInvitationUsecase by di.getting
     val repository = object : CancelInvitationRepository {
-        override suspend fun cancel(token: AccessIdentity, id: InvitationId): CancelInvitationResponse =
-            usecase.cancel(token.type(), id.type()).toEndpoint()
+        override suspend fun cancel(token: AccessIdentity, invitationId: InvitationId): CancelInvitationResponse =
+            usecase.cancel(token.type(), invitationId.type()).toEndpoint()
 
         private fun CancelInvitationUsecase.Result.toEndpoint(): CancelInvitationResponse = when (this) {
             CancelInvitationUsecase.Result.NotFound -> CancelInvitationResponse.NotFound
@@ -23,5 +23,6 @@ internal fun Route.invitationCancel(di: DI) {
             CancelInvitationUsecase.Result.Unauthorized -> CancelInvitationResponse.Unauthorized
         }
     }
+
     invitationCancel(repository)
 }
