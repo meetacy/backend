@@ -5,6 +5,7 @@ import app.meetacy.backend.application.endpoints.prepareEndpoints
 import app.meetacy.backend.di.buildDI
 import app.meetacy.backend.run.runProductionServer
 import app.meetacy.backend.types.files.FileSize
+import app.meetacy.discord.webhook.ktor.DiscordWebhook
 import java.io.File
 
 suspend fun main() {
@@ -18,7 +19,7 @@ suspend fun main() {
     ).apply { mkdirs() }.absolutePath
     val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (99L * 1024 * 1024)
     val useMockDatabase = System.getenv("USE_MOCK_DATABASE")?.toBoolean() ?: (databaseUrl == null)
-    val webhookUrl = System.getenv("DISCORD_WEBHOOK_URL")
+    val discordWebhook = System.getenv("DISCORD_WEBHOOK_URL")?.let(::DiscordWebhook)
 
     val databaseConfig = if (useMockDatabase) {
         DatabaseConfig.Mock(port)
@@ -30,12 +31,13 @@ suspend fun main() {
         )
     }
 
-    runProductionServer(webhookUrl) {
+    runProductionServer(discordWebhook) {
         val di = buildDI(
             port = port,
             databaseConfig = databaseConfig,
             fileBasePath = filesBasePath,
-            fileSizeLimit = FileSize(filesSizeLimit)
+            fileSizeLimit = FileSize(filesSizeLimit),
+            discordWebhook = discordWebhook
         )
 
         val server = prepareEndpoints(di)

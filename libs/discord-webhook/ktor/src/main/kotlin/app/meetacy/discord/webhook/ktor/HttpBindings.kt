@@ -5,12 +5,11 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.addJsonObject
-import kotlinx.serialization.json.buildJsonArray
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.*
 
 internal class HttpBindings(client: HttpClient) {
 
@@ -47,6 +46,7 @@ internal class HttpBindings(client: HttpClient) {
                 val embedsArray = buildJsonArray {
                     for (embed in embeds.list) with (embed) {
                         addJsonObject {
+                            put("type", "rich")
                             if (title != null) put("title", title)
                             if (description != null) put("description", description)
                             if (color != null) put("color", color)
@@ -60,6 +60,6 @@ internal class HttpBindings(client: HttpClient) {
             }
 
             setBody(json)
-        }.body<String>()
+        }.bodyAsText()
     }
 }

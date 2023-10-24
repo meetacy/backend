@@ -29,7 +29,7 @@ internal fun endpointsIntegrationBuildGradleKts(featureName: FeatureName) = """
 """.trimIndent()
 
 internal fun endpointsIntegrationRoutingFile(featureName: FeatureName) = """
-    package app.meetacy.backend.feature.${featureName.camelCase}.endpoints
+    package app.meetacy.backend.feature.${featureName.camelCase}.endpoints.integration
     
     import io.ktor.server.routing.*
     import app.meetacy.di.DI

@@ -22,31 +22,24 @@ import io.ktor.server.http.content.*
 import io.ktor.server.plugins.autohead.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.plugins.doublereceive.*
 import io.ktor.server.plugins.partialcontent.*
 import io.ktor.server.plugins.swagger.*
 import io.ktor.server.routing.*
-import io.ktor.server.websocket.*
-import io.rsocket.kotlin.ktor.server.RSocketSupport
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.Database
 
-@OptIn(ExperimentalSerializationApi::class)
 @Suppress("ExtractKtorModule")
 suspend fun prepareEndpoints(di: DI): ApplicationEngine {
     val port: Int by di.getting
     val database: Database by di.getting
+    val exceptionsHandler: ExceptionsHandler by di.getting
 
     initDatabase(database)
 
     return embeddedServer(CIO, host = "localhost", port = port) {
-        install(ContentNegotiation) {
-            json(
-                Json {
-                    explicitNulls = false
-                }
-            )
-        }
+        installJson()
         install(CORS) {
             allowCredentials = true
             anyHost()
@@ -55,7 +48,8 @@ suspend fun prepareEndpoints(di: DI): ApplicationEngine {
         }
         install(PartialContent)
         install(AutoHeadResponse)
-        installExceptionsHandler()
+        install(DoubleReceive)
+        installExceptionsHandler(exceptionsHandler.map())
         installRSocket()
 
         routing {

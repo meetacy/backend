@@ -1,4 +1,4 @@
-package app.meetacy.discord.webhook.failure
+package app.meetacy.backend.discord
 
 import app.meetacy.discord.webhook.DiscordWebhook
 import app.meetacy.discord.webhook.embed.DiscordEmbed
@@ -11,7 +11,7 @@ suspend inline fun <T> reportFailure(webhook: DiscordWebhook, block: () -> T): T
         val embed = DiscordEmbed(
             title = "УВАГА, ТРИВОГА. БЕКЕНД ВПАВ. Ось стектрейс:",
             description = throwable.stackTraceToString(),
-            color = 0xED4245
+            color = EmbedColorFailure
         )
 
         webhook.execute(embed)

@@ -37,8 +37,10 @@ sealed interface ListParticipantsResult {
     class Success(val paging: PagingResult<User>) : ListParticipantsResult
 }
 
+
 fun Route.listMeetingParticipants(repository: ListMeetingParticipantsRepository) = post("/list") {
     val params = call.receive<ListMeetingParticipantsParams>()
+
     val token = call.accessIdentity()
 
     when (
