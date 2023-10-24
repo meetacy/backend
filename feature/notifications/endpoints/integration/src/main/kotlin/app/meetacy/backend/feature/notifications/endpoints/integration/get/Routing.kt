@@ -18,12 +18,12 @@ internal fun Route.list(di: DI) {
     val usecase: GetNotificationsUsecase by di.getting
     val repository = object : ListNotificationsRepository {
         override suspend fun getNotifications(
-            accessIdentity: AccessIdentity,
+            token: AccessIdentity,
             pagingId: PagingId?,
             amount: Amount
         ): ListNotificationsRepository.Result = when (
             val result = usecase.getNotifications(
-                accessIdentity = accessIdentity.type(),
+                accessIdentity = token.type(),
                 pagingId = pagingId?.type(),
                 amount = amount.type()
             )

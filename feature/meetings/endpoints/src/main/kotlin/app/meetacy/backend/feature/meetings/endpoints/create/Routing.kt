@@ -1,6 +1,7 @@
 
 package app.meetacy.backend.feature.meetings.endpoints.create
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -16,7 +17,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateParam(
-    val token: AccessIdentity,
     val title: String?,
     val description: String?,
     val date: Date,
@@ -33,16 +33,37 @@ sealed interface CreateMeetingResult {
 }
 
 interface CreateMeetingRepository {
-    suspend fun createMeeting(createParam: CreateParam): CreateMeetingResult
+    suspend fun createMeeting(
+        token: AccessIdentity,
+        title: String?,
+        description: String?,
+        date: Date,
+        location: Location,
+        visibility: Meeting.Visibility,
+        avatarId: FileIdentity?
+    ): CreateMeetingResult
 }
 
 fun Route.createMeeting(repository: CreateMeetingRepository) = post("/create") {
     val params = call.receive<CreateParam>()
+    val token = call.accessIdentity()
 
-    when (val result = repository.createMeeting(params)) {
-        is CreateMeetingResult.Success -> call.respondSuccess(result.meeting)
-        CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
-        CreateMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
-        CreateMeetingResult.InvalidFileIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
+    with(params) {
+        when (
+            val result = repository.createMeeting(
+                token,
+                title,
+                description,
+                date,
+                location,
+                visibility,
+                avatarId
+            )
+        ) {
+            is CreateMeetingResult.Success -> call.respondSuccess(result.meeting)
+            CreateMeetingResult.InvalidAccessIdentity -> call.respondFailure(Failure.InvalidToken)
+            CreateMeetingResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
+            CreateMeetingResult.InvalidFileIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
+        }
     }
 }

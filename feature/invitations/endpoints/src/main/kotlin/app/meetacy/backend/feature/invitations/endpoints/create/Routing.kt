@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.invitations.endpoints.create
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -10,20 +11,20 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
-import app.meetacy.backend.types.serializable.access.AccessIdentity as AccessIdentitySerializable
+import app.meetacy.backend.types.serializable.access.AccessIdentity
 
 @Serializable
-data class InvitationCreatingFormSerializable(
-    val token: AccessIdentitySerializable,
+data class InvitationCreatingForm(
     val meetingId: MeetingIdentity,
     val userId: UserIdentity
 )
 
 fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationRepository) {
     post("/create") {
-        val invitationCreatingForm: InvitationCreatingFormSerializable = call.receive()
+        val form: InvitationCreatingForm = call.receive()
+        val token = call.accessIdentity()
 
-        when (val response = invitationsCreateRepository.createInvitation(invitationCreatingForm)) {
+        when (val response = invitationsCreateRepository.createInvitation(token, form.meetingId, form.userId)) {
             is InvitationsCreateResponse.Success -> {
                 call.respondSuccess(response.response)
             }
@@ -47,14 +48,14 @@ fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationReposito
 }
 
 interface CreateInvitationRepository {
-    suspend fun createInvitation(form: InvitationCreatingFormSerializable): InvitationsCreateResponse
+    suspend fun createInvitation(token: AccessIdentity, meetingId: MeetingIdentity, userId: UserIdentity): InvitationsCreateResponse
 }
 
 sealed interface InvitationsCreateResponse {
     @Serializable data class Success(val response: Invitation) : InvitationsCreateResponse
-    object Unauthorized : InvitationsCreateResponse
-    object NoPermissions : InvitationsCreateResponse
-    object UserAlreadyInvited : InvitationsCreateResponse
-    object UserNotFound : InvitationsCreateResponse
-    object MeetingNotFound : InvitationsCreateResponse
+    data object Unauthorized : InvitationsCreateResponse
+    data object NoPermissions : InvitationsCreateResponse
+    data object UserAlreadyInvited : InvitationsCreateResponse
+    data object UserNotFound : InvitationsCreateResponse
+    data object MeetingNotFound : InvitationsCreateResponse
 }

@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.meetings.endpoints.delete
 
+import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -11,8 +12,7 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DeleteMeetingParams(
-    val token: AccessIdentity,
+data class DeleteMeetingParam(
     val meetingId: MeetingIdentity
 )
 
@@ -23,13 +23,13 @@ sealed interface DeleteMeetingResult {
 }
 
 interface DeleteMeetingRepository {
-    suspend fun deleteMeeting(deleteMeetingParams: DeleteMeetingParams): DeleteMeetingResult
+    suspend fun deleteMeeting(token: AccessIdentity, meetingId: MeetingIdentity): DeleteMeetingResult
 }
 
 fun Route.deleteMeeting(repository: DeleteMeetingRepository) = post("/delete") {
-    val params = call.receive<DeleteMeetingParams>()
-
-    when (repository.deleteMeeting(params)) {
+    val param = call.receive<DeleteMeetingParam>()
+    val token = call.accessIdentity()
+    when (repository.deleteMeeting(token, param.meetingId)) {
         is DeleteMeetingResult.Success -> call.respondSuccess()
         is DeleteMeetingResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
         is DeleteMeetingResult.MeetingNotFound -> call.respondFailure(Failure.InvalidMeetingIdentity)

@@ -94,6 +94,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
+      security:
+        - token: []
   /auth/generate:
     parameters:
       - name: Api-Version
@@ -130,6 +132,7 @@ paths:
                 status: false
                 errorCode: 1
                 errorMessage: "Please provide a valid nickname"
+
   /files/download:
     parameters:
       - name: Api-Version
@@ -185,8 +188,6 @@ paths:
             schema:
               type: object
               properties: # Request parts
-                token:
-                  type: string
                 file:
                   type: string
                   format: binary
@@ -214,6 +215,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 LimitSize:
                   $ref: '#/components/examples/FileSizeLimit'
+      security:
+        - token: []
   /friends/add:
     parameters:
       - name: Api-Version
@@ -253,6 +256,8 @@ paths:
                   $ref: '#/components/examples/FriendNotFound'
                 FriendAlreadyAdded:
                   $ref: '#/components/examples/FriendAlreadyAdded'
+      security:
+        - token: []
   /friends/delete:
     parameters:
       - name: Api-Version
@@ -290,6 +295,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 FriendNotFound:
                   $ref: '#/components/examples/FriendNotFound'
+      security:
+        - token: []
   /friends/list:
     parameters:
       - name: Api-Version
@@ -322,6 +329,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InvalidResponse'
+      security:
+        - token: []
   /invitations/create:
     parameters:
       - name: Api-Version
@@ -357,6 +366,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 FriendNotFound:
                   $ref: '#/components/examples/FriendNotFound'
+      security:
+        - token: []
   /invitations/accept:
     description: Accept an invitation
     parameters:
@@ -394,6 +405,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /invitations/cancel:
     description: Cancel an invitation
     parameters:
@@ -431,6 +444,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /invitations/deny:
     description: Deny an invitation
     parameters:
@@ -468,6 +483,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /meetings/edit:
     parameters:
       - name: Api-Version
@@ -510,6 +527,8 @@ paths:
                   $ref:  '#/components/examples/InvalidMeetingId'
                 NullEditParameters:
                   $ref: '#/components/examples/NullEditParameters'
+      security:
+        - token: []
   /meetings/create:
     parameters:
       - name: Api-Version
@@ -547,6 +566,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 InvalidUtf8String:
                   $ref: '#/components/examples/InvalidNickname'
+      security:
+        - token: []
   /meetings/delete:
     parameters:
       - name: Api-Version
@@ -584,6 +605,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 MeetingNotFound:
                   $ref: '#/components/examples/InvalidMeetingId'
+      security:
+        - token: []
   /meetings/get:
     parameters:
       - name: Api-Version
@@ -621,6 +644,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 MeetingNotFound:
                   $ref: '#/components/examples/InvalidMeetingId'
+      security:
+        - token: []
   /meetings/history/list:
     parameters:
       - name: Api-Version
@@ -656,6 +681,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /meetings/history/active:
     parameters:
       - name: Api-Version
@@ -691,6 +718,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /meetings/history/past:
     parameters:
       - name: Api-Version
@@ -726,6 +755,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /meetings/map/list:
     parameters:
       - name: Api-Version
@@ -760,6 +791,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /meetings/participants/list:
     parameters:
       - name: Api-Version
@@ -797,6 +830,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 MeetingNotFound:
                   $ref: '#/components/examples/InvalidMeetingId'
+      security:
+        - token: []
   /meetings/participate:
     parameters:
       - name: Api-Version
@@ -836,6 +871,8 @@ paths:
                   $ref: '#/components/examples/InvalidMeetingId'
                 MeetingAlreadyParticipate:
                   $ref: '#/components/examples/MeetingAlreadyParticipate'
+      security:
+        - token: []
   /notifications/list:
     parameters:
       - name: Api-Version
@@ -870,6 +907,8 @@ paths:
               examples:
                 InvalidAccessIdentity:
                   $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: []
   /notifications/read:
     parameters:
       - name: Api-Version
@@ -905,6 +944,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 LastNotificationIdInvalid:
                   $ref: '#/components/examples/LastNotificationIdInvalid'
+      security:
+        - token: []
   /users/get:
     parameters:
       - name: Api-Version
@@ -955,6 +996,8 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
                 UserNotFound:
                   $ref: '#/components/examples/UserNotFound'
+      security:
+        - token: []
   /users/edit:
     parameters:
       - name: Api-Version
@@ -998,7 +1041,53 @@ paths:
                   $ref: '#/components/examples/InvalidFileId'
                 InvalidNickname:
                   $ref: '#/components/examples/InvalidNickname'
+      security:
+        - token: []
+  /users/username/available:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Check if username available
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsernameAvailableRequest'
+      responses:
+        "200":
+          description: An example of a successful generated response with an token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsernameAvailableRequest'
+              example:
+                value:
+                  status: true
+                  username: fiveletterwordormore
+        "400":
+          description: An example of a successful generated response with an token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                AlreadyOccupiedUsername:
+                  $ref: '#/components/examples/AlreadyOccupiedUsername'
+                InvalidUtf8String:
+                  $ref: '#/components/examples/InvalidUtf8String'
 components:
+  securitySchemes:
+    token:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
   examples:
     ExpiredLink:
       value:
@@ -1080,6 +1169,11 @@ components:
         status: false
         errorCode: 9
         errorMessage: "Please provide a valid string"
+    AlreadyOccupiedUsername:
+      value:
+        status: false
+        errorCode: 6
+        errorMessage: "This username is not a unique username"
   schemas:
     GenerateIdentityRequest:
       type: "object"
@@ -1106,9 +1200,6 @@ components:
     AccessMeetingIdRequest:
       type: "object"
       properties:
-        token:
-          type: string
-          example: "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         meetingId:
           type: string
           example: "8:wtzbOPJqX8SVCDQj4UMavNoKJId5UylyL4GRZAkacc2PcGnyu8TCqZCLYvFnG4kb75HOVz6TIeRxXbarsdQZBdrB1rDbHSGD7yCW0EOTbRhxs5qRGncOjG5DmTrAULbWlWMiUkt2RiDRNTkoGJunQgtP63FEZ1MrYJPPdyX1Qn3xpIW6joZZ5p2XahuGGAE13UceQYz6bWO5ZWSJiWjwrA0xOvqf6ad0FHuEXcQaWbJBbBfEA9oGm4KsDHfnkvCT"
@@ -1119,8 +1210,6 @@ components:
     ListMeetingParticipantsRequest:
       type: "object"
       properties:
-        token:
-          type: string
         meetingId:
           type: string
         amount:
@@ -1157,10 +1246,6 @@ components:
     ListMapMeetingsRequest:
       type: object
       properties:
-        token:
-          type: string
-          example:
-            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         location:
           $ref: '#/components/schemas/Location'
       required:
@@ -1197,28 +1282,20 @@ components:
           example:
             - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
       required:
-        - "token"
         - "id"
       additionalProperties: false
     AccessFriendRequest:
       type: "object"
       properties:
-        token:
-          type: string
-          example: "4:Nf7knMA3Oj3cAgrFjLSZEm7iIkyJbHxalO3c224qKsm8Sod01jnWPGlV7zGokTAgMpvhzOKSpZYx8WFE0ABlgf9DGxE8cqqvvovonRpfnl3TXQXmPNMemIfgGuvhvQsLKLEpTpflOT7be3VyeQWzLHjZQtlVgB6eeEaL4OlI1etzBY4z2jMyQKr89BFo9ztcXEVycDUVvI2m62sWS1NIQyKZXOWXYsxocJ4O1L2WB3y0EW8r7uTmosK4lCXTlka6"
         friendId:
           type: string
           example: "5:PjvgzvEu2YsHIm5OP4L0apfqtQV9Ck9I02ZuhJxDqJ4VeS9SwQJGpBRV0QhvbaDJjsTaMZRVRzsM3yn9uSvBffdY1ul9k3J7IDgWqgbQXHlI0quTL0ORJAUONHzzRfLHs6sOmTAf7AlRP4AmGu9aqwN6hALE9MeDITcY3LlNJR6HPE5z3SK1aE5OC2YKpjhX0xQLBQd6wlkdeoCPhyJRevx60u1T1kVIhpnjBLyXQZwbHYGPCIVJ5ryeVByQCQI8"
       required:
-        - "token"
         - "friendId"
       additionalProperties: false
     ListFriendsRequest:
       type: "object"
       properties:
-        token:
-          type: string
-          example: "6:47ioG3IwdRg9PmEAVsG8B54Ka742J5KDpVl1T8NZ5RkAskxhfpCmeRG1USNswsors49wcpR5Iw5YFxKmLghKddzQSDGKM6KanFa1pzETfmxMHN5EqHZACkeHvvytOxjCprZGWvJSjKRkiHLrnXxc1LAYQOhoN4iojsH4QJH0LmP295TfyZgchhTZx9kZ6O0D9x116DWbj5yO6KJrklUz0R0ND0XEvnOZi8KJcLub3snY0PMCiurQdb0CTZbJV2Dl"
         pagingId:
           type: string
           example: "10"
@@ -1231,9 +1308,6 @@ components:
     ListMeetingsRequest:
       type: "object"
       properties:
-        token:
-          type: string
-          example: "7:jiNM2w0xhtIxfmBsHiQ8Ai3tkexOA9715hxlmahXLxvnrSJGybv9oMDvJ8PvxHOMJNqgtAVFU7C4VHiDFDyvIPxUux1R1MLJxRF1xK5cJp0B7U0hEHChtkhc1nuIhcIDRt4fFFwcYCGc1ugmd6m8cYeaGev5ZbnffAQua4Bkz3Clu2hjqNWA5Z5tnEoBlvGYrpbYD3YW1KwemrZPqDo58dQh5DDDBrXGXvFo0vkRsgERiW8rUVxl5eEszb2iIgnH"
         pagingId:
           type: string
           example: "8"
@@ -1261,15 +1335,10 @@ components:
       properties:
         email:
           type: string
-          example:
-            - "gerald123@gmail.com"
-        token:
-          type: string
-          example:
-            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
+          example: "gerald123@meetacy.com"
       required:
         - "email"
-        - "accessIdentity"
+        - "token"
       additionalProperties: false
     AccessAvatarRequest:
       type: "object"
@@ -1289,10 +1358,6 @@ components:
     CreateMeetingRequest:
       type: "object"
       properties:
-        "token":
-          type: string
-          example:
-            "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         "avatarId":
           type: string
           example: "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
@@ -1336,10 +1401,6 @@ components:
     EditMeetingRequest:
       type: "object"
       properties:
-        "token":
-          type: string
-          example:
-            "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
         "meetingId":
           type: string
           example:
@@ -1602,18 +1663,12 @@ components:
         id:
           type: string
           example: "8:bqLhYy1hjNTL0wXcN0dnmSeyZDMt2akkGYMDdaa81oc8fPhOHBWTuFWzMdWNqu7gTHHrfhvC64RE2ZEtngYD5YVpOAGz8Nx1ii7l6BxpBCfHgaL6hHzkEqsmuGlea2gijOEZFkDEhebZ9lwkav13DMTdWJUm4GMm0VQgXzX8s3B528XsMxkXiu5ps9JrRB4m2m4vnZHEaskq9SXEGfhxzeuVft4d2eHWlp5V06NPmfhuyehq9J3GwWxYSkN3Doun"
-        token:
-          type: string
-          example: "8:PmP14Ai8NFskTUwjOw0mXjhWIAPECsoYenhp8ECesY1DikwjPXrfk5ZGM8Bue0MGgMF0tWD3iI9TijFAGeDRXltuwREAyGW7AVe4gXfrrIBeVBIuY9lYH3WiO65kzKCmeg5wLEICWzFjjO7j2fQL5OUwQPVm5futMEcJmYo4EGTyDSYEcaVjx5lqMkMWPLN52N9jwTVXAowIvGPqxSJubwrobhz4tQCYi2Gzj4YzLFeSdnTorqdaRGPAs3z10Lge"
       required:
         - token
       additionalProperties: false
     EditUserRequest:
       type: object
       properties:
-        token:
-          type: string
-          example: "9:UjXlL2TeJLWtAoKM1qX6Lv2GjMOvumOzn7Pi9j0q9n28LCCN1WDkFsW7OUi7n2osONPQegFXq9iK3painNnQZeU4J34bBD4DVC5jp4vTK4rdIU28IMEcC0FQdeu3CTbMKXCJWcZXMNIiihJqYOlki5WmjtsWAL84XN0ym1rWFMPrP8yok4jkYAUvPS6APaDU8gHhj5YMARAKdWN4wvTzQ5BbTNrKmmO5d3QdDWNcIH6lGWHPtHXCPjkyFA62iNC5"
         nickname:
           type: string
           example: "Alexander"
@@ -1625,6 +1680,14 @@ components:
           example: "1:rXfskQTJuGm7U0UvDNpojpDhvrwhfkOfPqRlHRwg2R6EMA9aMtp5iZB2t6JLRTxAJp2LhZIIVrmj3uYpjKzji46krsK4GgtG3Uw3TRudeslGdtL4ye2N6LTWRy8WYN1giGOBgRFZLjwQ4hoEdVIJqmmHCRQZNhHpMAsdWUYdoWStgMumTkCTKbXcraZYMpGESqFcaFfstyjCMVZtuXcl23IusOkEzGPcmWy6ykbiHa4D7lhcq4szdSmpksBo2mov"
       required:
         - token
+    UsernameAvailableRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: fiveletterwordormore
+      required:
+        - username
     Invitation:
       type: object
       properties:
@@ -1647,8 +1710,6 @@ components:
     CreateInvitationRequest:
       type: object
       properties:
-        token:
-          type: string
         meetingId:
           type: string
           example: "6:EBnp2woyRmY4snRvZaiEtuOIfk4eEXgWdzy8psVPL60Mz92Ts8qIdaoAHVTpvl9hTygMpfUYjNHJpjwpK0txBKRWl7EqCgmnZjm57pIWnlRIo2WoH856AibK8xmCdgOlENPUsmBGLPa7EVOtd43rnGVdeC3wUfHSNV9PT3S0Q3mXCpHF0tOfssQTnKKbBSy9V19Euo7VzpjS4WXI82ILzPVfLqTaRGEUabXw9issiVZhK97zZhBXrV3CFO26pAZa"
@@ -1672,51 +1733,39 @@ components:
     AcceptInvitationRequest:
       type: object
       properties:
-        token:
-          type: string
-        id:
+        invitationId:
           type: string
       required:
         - token
-        - invitationIdentity
+        - invitationId
     DenyInvitationRequest:
       type: object
       properties:
-        id:
-          type: string
-        token:
+        invitationId:
           type: string
       required:
-        - "id"
+        - "invitationId"
         - "token"
     CancelInvitationRequest:
       type: object
       properties:
-        id:
-          type: string
-        token:
+        invitationId:
           type: string
       required:
-        - "id"
+        - "invitationId"
         - "token"
     ReadNotificationRequest:
       type: "object"
       properties:
-        token:
-          type: string
-          example: "7:jiNM2w0xhtIxfmBsHiQ8Ai3tkexOA9715hxlmahXLxvnrSJGybv9oMDvJ8PvxHOMJNqgtAVFU7C4VHiDFDyvIPxUux1R1MLJxRF1xK5cJp0B7U0hEHChtkhc1nuIhcIDRt4fFFwcYCGc1ugmd6m8cYeaGev5ZbnffAQua4Bkz3Clu2hjqNWA5Z5tnEoBlvGYrpbYD3YW1KwemrZPqDo58dQh5DDDBrXGXvFo0vkRsgERiW8rUVxl5eEszb2iIgnH"
         lastNotificationId:
           type: string
           example: "8"
       required:
         - "token"
-        - "amount"
+        - "lastNotificationId"
     ListNotificationsRequest:
       type: "object"
       properties:
-        token:
-          type: string
-          example: "7:jiNM2w0xhtIxfmBsHiQ8Ai3tkexOA9715hxlmahXLxvnrSJGybv9oMDvJ8PvxHOMJNqgtAVFU7C4VHiDFDyvIPxUux1R1MLJxRF1xK5cJp0B7U0hEHChtkhc1nuIhcIDRt4fFFwcYCGc1ugmd6m8cYeaGev5ZbnffAQua4Bkz3Clu2hjqNWA5Z5tnEoBlvGYrpbYD3YW1KwemrZPqDo58dQh5DDDBrXGXvFo0vkRsgERiW8rUVxl5eEszb2iIgnH"
         pagingId:
           type: string
           example: "8"
