@@ -1,6 +1,8 @@
 package app.meetacy.backend.types.address
 
-@JvmInline
-value class Address(
-    val string: String
+data class Address(
+    val country: String,
+    val city: String,
+    val street: String,
+    val placeName: String?
 )

@@ -16,11 +16,9 @@ import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
-import io.rsocket.kotlin.ktor.server.RSocketSupport
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import org.jetbrains.exposed.sql.Database
 import java.io.File
 import java.net.BindException
 
@@ -53,14 +51,18 @@ private fun buildDI(port: Int): DI {
     val fileBasePath = File(
         /* parent = */ System.getenv("user.dir"),
         /* child = */ "files-$port-test"
-    ).apply { mkdirs() }.absolutePath
+    ).apply {
+        mkdirs()
+        deleteOnExit()
+    }.absolutePath
 
     return buildDI(
         port = port,
         databaseConfig = DatabaseConfig.Mock(port),
         fileBasePath = fileBasePath,
         fileSizeLimit = FileSize(bytesSize = 99L * 1024 * 1024),
-        discordWebhook = null
+        discordWebhook = null,
+        googlePlacesToken = null
     )
 }
 
