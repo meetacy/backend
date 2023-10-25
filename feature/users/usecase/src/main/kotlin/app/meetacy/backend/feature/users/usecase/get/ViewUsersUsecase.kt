@@ -6,7 +6,7 @@ import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserView
 import app.meetacy.backend.types.files.FilesRepository
 
-class ViewUserUsecase(
+class ViewUsersUsecase(
     private val filesRepository: FilesRepository,
     private val storage: Storage
 ) {

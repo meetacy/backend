@@ -4,13 +4,11 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.address.Address
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
-import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
-import app.meetacy.backend.types.meetings.MeetingId
-import app.meetacy.backend.types.meetings.getMeetingsViews
-import app.meetacy.backend.types.search.SearchResult
-import app.meetacy.backend.types.users.GetUsersViewsRepository
-import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.types.users.getUsersViews
+import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.meetings.*
+import app.meetacy.backend.types.place.Place
+import app.meetacy.backend.types.search.SearchItem
+import app.meetacy.backend.types.users.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -18,12 +16,14 @@ import kotlinx.coroutines.coroutineScope
 class SearchUsecase(
     private val storage: Storage,
     private val authRepository: AuthRepository,
-    private val meetingsRepository: GetMeetingsViewsRepository,
-    private val usersRepository: GetUsersViewsRepository
+    private val meetingsRepository: ViewMeetingsRepository,
+    private val usersRepository: ViewUsersRepository
 ) {
     suspend fun search(
         accessIdentity: AccessIdentity,
-        prompt: String
+        location: Location,
+        prompt: String,
+        categoryLimit: Int = 5
     ): Result = coroutineScope {
         val viewerId = authRepository.authorizeWithUserId(accessIdentity) {
             return@coroutineScope Result.InvalidAccessIdentity
@@ -32,35 +32,36 @@ class SearchUsecase(
         val resultsAsync = listOf(
             async {
                 storage
-                    .getMeetings(prompt)
-                    .let { meetingIds -> meetingsRepository.getMeetingsViews(viewerId, meetingIds) }
-                    .map { meeting -> SearchResult.Meeting(meeting) }
+                    .getMeetings(prompt, categoryLimit)
+                    .let { meetings -> meetingsRepository.viewMeetings(viewerId, meetings) }
+                    .map { meeting -> SearchItem.Meeting(meeting) }
             },
             async {
                 storage
-                    .getUsers(prompt)
-                    .let { userIds -> usersRepository.getUsersViews(viewerId, userIds) }
-                    .map { user -> SearchResult.User(user) }
+                    .getUsers(prompt, categoryLimit)
+                    .let { users -> usersRepository.viewUsers(viewerId, users) }
+                    .map { user -> SearchItem.User(user) }
             },
             async {
                 storage
-                    .getAddresses(prompt)
-                    .map { address -> SearchResult.Place(address) }
+                    .getAddresses(prompt, location, categoryLimit)
+                    .map { place -> SearchItem.Place(place) }
             }
         )
+
 
         val results = resultsAsync.awaitAll().flatten()
         Result.Success(results)
     }
 
     interface Storage {
-        suspend fun getMeetings(titlePrefix: String): List<MeetingId>
-        suspend fun getUsers(nicknamePrefix: String): List<UserId>
-        suspend fun getAddresses(prompt: String): List<Address>
+        suspend fun getMeetings(titlePrefix: String, limit: Int): List<FullMeeting>
+        suspend fun getUsers(nicknamePrefix: String, limit: Int): List<FullUser>
+        suspend fun getAddresses(prompt: String, location: Location, limit: Int): List<Place>
     }
 
     sealed interface Result {
-        data class Success(val results: List<SearchResult>) : Result
+        data class Success(val results: List<SearchItem>) : Result
         data object InvalidAccessIdentity : Result
     }
 }

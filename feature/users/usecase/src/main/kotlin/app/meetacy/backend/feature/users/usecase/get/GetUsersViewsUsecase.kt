@@ -8,8 +8,8 @@ class GetUsersViewsUsecase(
     private val storage: Storage,
     private val viewUserRepository: ViewUserRepository
 ) {
-    suspend fun viewUsers(viewerId: UserId, userIdentities: List<UserId>): List<UserView?> =
-        storage.getUsers(userIdentities)
+    suspend fun viewUsers(viewerId: UserId, userIds: List<UserId>): List<UserView?> =
+        storage.getUsers(userIds)
             .map { user ->
                 user ?: return@map null
                 // fixme: create batch request instead of converting

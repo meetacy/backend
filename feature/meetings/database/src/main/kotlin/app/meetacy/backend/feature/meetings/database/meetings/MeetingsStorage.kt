@@ -136,6 +136,13 @@ class MeetingsStorage(private val db: Database) {
             .toFullMeeting()
     }
 
+    suspend fun searchMeetings(prefix: String, limit: Int): List<FullMeeting> =
+        newSuspendedTransaction(Dispatchers.IO, db) {
+            MeetingsTable.select {
+                TITLE like "%" + LikePattern.ofLiteral(prefix).pattern + "%"
+            }.limit(limit).map { statement -> statement.toFullMeeting() }
+        }
+
     fun getPublicMeetingsFlow(): Flow<FullMeeting> = channelFlow {
         newSuspendedTransaction(Dispatchers.IO, db) {
             MeetingsTable.select { VISIBILITY eq FullMeeting.Visibility.Public }

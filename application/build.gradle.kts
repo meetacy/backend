@@ -27,7 +27,10 @@ dependencies {
     implementation(libs.h2.jdbc)
 
     implementation(libs.meetacy.di.core)
+
+    implementation(libs.ktor.client.core)
     implementation(projects.libs.discordWebhook.ktor)
+    implementation(projects.libs.googleMaps.ktor)
 
     testImplementation(libs.meetacy.sdk.api.ktor)
 

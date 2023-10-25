@@ -6,8 +6,10 @@ import app.meetacy.backend.endpoint.ktor.exceptions.ExceptionsHandler as KtorExc
 fun interface ExceptionsHandler {
     suspend fun handle(call: ApplicationCall, throwable: Throwable)
 
-    object NoOp : ExceptionsHandler {
-        override suspend fun handle(call: ApplicationCall, throwable: Throwable) {}
+    object Simple : ExceptionsHandler {
+        override suspend fun handle(call: ApplicationCall, throwable: Throwable) {
+            throwable.printStackTrace()
+        }
     }
 }
 

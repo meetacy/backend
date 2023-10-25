@@ -7,7 +7,7 @@ import app.meetacy.backend.feature.notifications.usecase.integration.view.getNot
 import app.meetacy.backend.feature.notifications.usecase.integration.view.viewNotification
 import app.meetacy.di.builder.DIBuilder
 
-fun DIBuilder.notification() {
+fun DIBuilder.notifications() {
     addNotification()
     getNotification()
     getNotificationViews()
