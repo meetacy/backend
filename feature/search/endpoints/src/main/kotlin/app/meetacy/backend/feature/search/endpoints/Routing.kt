@@ -11,10 +11,9 @@ import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import app.meetacy.backend.types.serializable.search.SearchItem as SearchItem
-
-@Serializable
-data class SearchParams(val prompt: String)
 
 interface SearchRepository {
     suspend fun search(
@@ -29,7 +28,6 @@ sealed interface SearchResult {
     data class Success(val items: List<SearchItem>) : SearchResult
 }
 
-// 3:h4AbB3TamW6R0mfWR7KJNv7spfcFMSYan9tEOdvakqoaxyRn6yzVGHuwOVfLG9jFFaORdInkKo3JsS6XybNaRJj1D4oMpWgdluWjwAF3f24RtCnO3BDTujWTqGJLqcGSo1f8Lx7o4LCfzRms7eBvJUYGD6UsysBbWOQqDZbxdibyzaTAp6d1Sy3z7WJFbGIflDaek3csAau5Kz2iQkEMpunwLcrmhPTlLaer4z3Qj4YgWmG0ckOvN0wqiAHyVI0x
 fun Route.search(repository: SearchRepository) = get("/search") {
     val token = call.accessIdentity()
 
