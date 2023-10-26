@@ -82,8 +82,8 @@ fun testApi(port: Int) = MeetacyApi(
     baseUrl = "http://localhost:$port".url,
     httpClient = HttpClient {
         Logging {
-            level = LogLevel.NONE
-//            level = LogLevel.ALL
+//            level = LogLevel.NONE
+            level = LogLevel.ALL
         }
         expectSuccess = true
         developmentMode = true
