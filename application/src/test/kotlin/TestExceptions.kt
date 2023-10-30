@@ -10,7 +10,6 @@ import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class TestExceptions {
 
     @Test

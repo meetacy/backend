@@ -28,6 +28,7 @@ class TestUsers {
     @Test
     fun `test usernames edit`() = runTestServer {
         val user = generateTestAccount()
+        println(user.toString())
 
         val newUsername = ("username_" + HashGenerator.generate((1..20).random()).take(10)).username
 
