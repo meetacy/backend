@@ -74,6 +74,7 @@ include(libraries.map { "libs:$it" })
 val features = listOf(
     "auth",
     "auth:email",
+    "auth:telegram",
     "files",
     "friends",
     "invitations",
