@@ -15,10 +15,16 @@ import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
+import io.ktor.client.request.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.http.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.net.BindException
 
@@ -84,6 +90,16 @@ fun testApi(port: Int) = MeetacyApi(
         Logging {
 //            level = LogLevel.NONE
             level = LogLevel.ALL
+        }
+        install(ContentNegotiation) {
+            json(
+                Json {
+                    ignoreUnknownKeys = true
+                }
+            )
+        }
+        defaultRequest {
+            header(HttpHeaders.ContentType, ContentType.Application.Json.toString())
         }
         expectSuccess = true
         developmentMode = true

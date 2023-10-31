@@ -36,6 +36,8 @@ dependencies {
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)
+    testImplementation("io.ktor:ktor-client-content-negotiation:2.3.5")
+    testImplementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
 
     testImplementation(libs.ktor.client.core)
     testImplementation(libs.ktor.client.cio)

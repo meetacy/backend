@@ -216,7 +216,7 @@ class TestMeetings {
 
         val newTitle = HashGenerator.generate((1..100).random())
 
-        val edited = meeting.edited(title = Optional.Present(newTitle))
+        val edited = meeting.edited(title = newTitle)
 
         require(edited.title == newTitle)
 

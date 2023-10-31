@@ -23,6 +23,14 @@ class TestExceptions {
     }
 
     @Test
+    fun `authorization test success`() = runTestServer {
+        val me = generateTestAccount()
+        val token = me.token
+        println(token.string)
+        require(token.string.isNotEmpty())
+    }
+
+    @Test
     fun `no internet test`() = runTestServer {
         val noNetworkApi = MeetacyApi(
             baseUrl = "http://localhost:8080".url,
