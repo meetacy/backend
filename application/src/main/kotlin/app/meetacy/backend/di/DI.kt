@@ -7,6 +7,7 @@ import app.meetacy.backend.application.database.database
 import app.meetacy.backend.application.usecase.usecase
 import app.meetacy.backend.discord.discord
 import app.meetacy.backend.google.google
+import app.meetacy.backend.ktor.ktor
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.backend.types.integration.types
 import app.meetacy.di.builder.di
@@ -19,7 +20,7 @@ fun buildDI(
     fileSizeLimit: FileSize,
     discordWebhook: DiscordWebhook?,
     googlePlacesToken: String?
-) = di(checkDependencies = false) {
+) = di {
     val port by constant(port)
     val databaseConfig by constant(databaseConfig)
     val fileBasePath by constant(fileBasePath)
@@ -30,6 +31,8 @@ fun buildDI(
     usecase()
     database()
     types()
+    // libs
+    ktor()
     discord()
     google()
 }

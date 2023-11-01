@@ -1,12 +1,10 @@
 package app.meetacy.backend.feature.users.endpoints.integration.get
 
-import app.meetacy.backend.feature.users.endpoints.get.GetUserParams
 import app.meetacy.backend.feature.users.endpoints.get.GetUserResult
 import app.meetacy.backend.feature.users.endpoints.get.UserRepository
 import app.meetacy.backend.feature.users.endpoints.get.getUser
 import app.meetacy.backend.feature.users.usecase.get.GetUserSafeUsecase
 import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.backend.types.serializable.access.AccessToken
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.users.UserIdentity
 import app.meetacy.backend.types.serializable.users.serializable

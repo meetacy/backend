@@ -91,17 +91,6 @@ fun testApi(port: Int) = MeetacyApi(
 //            level = LogLevel.NONE
             level = LogLevel.ALL
         }
-        install(ContentNegotiation) {
-            json(
-                Json {
-                    ignoreUnknownKeys = true
-                }
-            )
-        }
-        defaultRequest {
-            header(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-        }
-        expectSuccess = true
         developmentMode = true
     }
 )

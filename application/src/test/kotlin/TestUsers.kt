@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 import app.meetacy.backend.hash.HashGenerator
 import app.meetacy.sdk.exception.MeetacyUsernameAlreadyOccupiedException
 import app.meetacy.sdk.types.optional.Optional
@@ -28,7 +26,6 @@ class TestUsers {
     @Test
     fun `test usernames edit`() = runTestServer {
         val user = generateTestAccount()
-        println(user.toString())
 
         val newUsername = ("username_" + HashGenerator.generate((1..20).random()).take(10)).username
 
