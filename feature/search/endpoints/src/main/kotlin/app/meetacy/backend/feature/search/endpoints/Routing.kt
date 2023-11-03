@@ -6,14 +6,10 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.location.Location
+import app.meetacy.backend.types.serializable.search.SearchItem
 import io.ktor.server.application.*
-import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import app.meetacy.backend.types.serializable.search.SearchItem as SearchItem
 
 interface SearchRepository {
     suspend fun search(
@@ -31,9 +27,9 @@ sealed interface SearchResult {
 fun Route.search(repository: SearchRepository) = get("/search") {
     val token = call.accessIdentity()
 
-    val prompt: String by call.parameters
     val latitude: Double by call.parameters
     val longitude: Double by call.parameters
+    val prompt: String by call.parameters
 
     when (val result = repository.search(token, Location(latitude, longitude), prompt)) {
         is SearchResult.TokenInvalid -> call.respondFailure(Failure.InvalidToken)
