@@ -1,4 +1,4 @@
-package app.meetacy.backend.types.prelogin
+package app.meetacy.backend.types.auth.telegram
 
 @JvmInline
 value class TemporaryTelegramHash(val string: String) {
