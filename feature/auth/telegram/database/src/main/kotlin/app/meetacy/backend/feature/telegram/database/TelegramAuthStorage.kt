@@ -1,6 +1,7 @@
 package app.meetacy.backend.feature.telegram.database
 
 import app.meetacy.backend.types.access.AccessHash
+import app.meetacy.backend.types.access.AccessToken
 import app.meetacy.backend.types.prelogin.TemporaryTelegramHash
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
@@ -16,7 +17,7 @@ object TelegramAuthTable : Table() {
 class TelegramAuthStorage(private val db: Database) {
 
     suspend fun saveTelegramAuthInfo(
-        temporalToken: AccessHash,
+        temporalToken: AccessToken,
         telegramHash: TemporaryTelegramHash
     ) {
         newSuspendedTransaction(Dispatchers.IO, db) {

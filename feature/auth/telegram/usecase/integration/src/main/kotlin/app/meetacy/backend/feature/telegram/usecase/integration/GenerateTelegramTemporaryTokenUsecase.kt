@@ -3,7 +3,7 @@ package app.meetacy.backend.feature.telegram.usecase.integration
 import app.meetacy.backend.feature.telegram.database.TelegramAuthStorage
 import app.meetacy.backend.feature.telegram.usecase.GenerateTelegramTemporaryTokenUsecase
 import app.meetacy.backend.hash.HashGenerator
-import app.meetacy.backend.types.access.AccessHash
+import app.meetacy.backend.types.access.AccessToken
 import app.meetacy.backend.types.generator.AccessHashGenerator
 import app.meetacy.backend.types.prelogin.TemporaryTelegramHash
 import app.meetacy.di.builder.DIBuilder
@@ -15,7 +15,7 @@ internal fun DIBuilder.generateTelegramTemporaryTokenUsecase() {
         val telegramAuthBotUsername: String? by getting
 
         val storage = object : GenerateTelegramTemporaryTokenUsecase.Storage {
-            override suspend fun saveTemporalToken(temporalToken: AccessHash, telegramHash: TemporaryTelegramHash) {
+            override suspend fun saveTemporalToken(temporalToken: AccessToken, telegramHash: TemporaryTelegramHash) {
                 telegramAuthStorage.saveTelegramAuthInfo(temporalToken, telegramHash)
             }
         }
@@ -38,7 +38,7 @@ internal fun DIBuilder.generateTelegramTemporaryTokenUsecase() {
             storage = storage,
             telegramHashGenerator = telegramHashGenerator,
             linkProvider = linkProvider,
-            accessHashGenerator = accessHashGenerator,
+            tokenGenerator = accessHashGenerator,
         )
     }
 }
