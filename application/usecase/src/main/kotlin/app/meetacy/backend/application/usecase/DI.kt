@@ -7,6 +7,7 @@ import app.meetacy.backend.feature.friends.usecase.integration.friends
 import app.meetacy.backend.feature.invitations.usecase.integration.invitations
 import app.meetacy.backend.feature.meetings.usecase.integration.meetings
 import app.meetacy.backend.feature.notifications.usecase.integration.notification
+import app.meetacy.backend.feature.telegram.usecase.integration.telegram
 import app.meetacy.backend.feature.updates.usecase.integration.updates
 import app.meetacy.backend.feature.users.usecase.integration.users
 import app.meetacy.di.builder.DIBuilder
@@ -14,6 +15,7 @@ import app.meetacy.di.builder.DIBuilder
 fun DIBuilder.usecase() {
     auth()
     email()
+    telegram()
     files()
     friends()
     invitations()

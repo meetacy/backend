@@ -16,13 +16,15 @@ fun buildDI(
     databaseConfig: DatabaseConfig,
     fileBasePath: String,
     fileSizeLimit: FileSize,
-    discordWebhook: DiscordWebhook?
+    discordWebhook: DiscordWebhook?,
+    telegramAuthBotUsername: String?
 ) = di(checkDependencies = false) {
     val port by constant(port)
     val databaseConfig by constant(databaseConfig)
     val fileBasePath by constant(fileBasePath)
     val fileSizeLimit by constant(fileSizeLimit)
     val discordWebhook by constant(discordWebhook)
+    val telegramAuthBotUsername by constant(telegramAuthBotUsername)
 
     usecase()
     database()

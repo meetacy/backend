@@ -7,6 +7,7 @@ import app.meetacy.backend.feature.friends.database.integration.friends
 import app.meetacy.backend.feature.invitations.database.integration.invitations
 import app.meetacy.backend.feature.meetings.database.integration.meetings
 import app.meetacy.backend.feature.notifications.database.integration.notifications
+import app.meetacy.backend.feature.telegram.database.integration.telegram
 import app.meetacy.backend.feature.updates.database.integration.updates
 import app.meetacy.backend.feature.users.database.integration.users
 import app.meetacy.di.builder.DIBuilder
@@ -28,6 +29,7 @@ fun DIBuilder.database() {
 
     auth()
     email()
+    telegram()
     files()
     friends()
     invitations()

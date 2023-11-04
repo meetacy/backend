@@ -1,4 +1,15 @@
 package app.meetacy.backend.types.access
 
+import app.meetacy.backend.constants.HASH_LENGTH
+
 @JvmInline
-value class AccessHash(val string: String)
+value class AccessHash(val string: String) {
+
+    init {
+        require(string.length == LENGTH) { "Telegram token length must be $LENGTH, but was ${string.length}" }
+    }
+
+    companion object {
+        const val LENGTH = HASH_LENGTH
+    }
+}

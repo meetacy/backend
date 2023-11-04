@@ -5,6 +5,7 @@ plugins {
 dependencies {
     api(projects.feature.auth.database)
     api(projects.feature.auth.email.database)
+    api(projects.feature.auth.telegram.database)
     api(projects.feature.files.database)
     api(projects.feature.friends.database)
     api(projects.feature.invitations.database)

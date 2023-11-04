@@ -20,6 +20,7 @@ suspend fun main() {
     val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (99L * 1024 * 1024)
     val useMockDatabase = System.getenv("USE_MOCK_DATABASE")?.toBoolean() ?: (databaseUrl == null)
     val discordWebhook = System.getenv("DISCORD_WEBHOOK_URL")?.let(::DiscordWebhook)
+    val telegramAuthBotUsername = System.getenv("TELEGRAM_AUTH_BOT_USERNAME")
 
     val databaseConfig = if (useMockDatabase) {
         DatabaseConfig.Mock(port)
@@ -37,7 +38,8 @@ suspend fun main() {
             databaseConfig = databaseConfig,
             fileBasePath = filesBasePath,
             fileSizeLimit = FileSize(filesSizeLimit),
-            discordWebhook = discordWebhook
+            discordWebhook = discordWebhook,
+            telegramAuthBotUsername = telegramAuthBotUsername
         )
 
         val server = prepareEndpoints(di)
