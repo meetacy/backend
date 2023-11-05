@@ -1,10 +1,7 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.paging.asFlow
 import app.meetacy.sdk.types.paging.flatten
 import app.meetacy.sdk.types.user.Relationship
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -12,7 +9,6 @@ import kotlin.test.assertNull
 
 class TestFriends {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `pagination test of friends`() = runTestServer {
         val friendsAmount = (0..20).random()

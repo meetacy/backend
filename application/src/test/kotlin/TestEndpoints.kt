@@ -15,18 +15,13 @@ import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
-import io.ktor.client.request.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.http.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.json.Json
 import java.io.File
 import java.net.BindException
+import java.util.*
 
 class TestServerContext(
     val testScope: TestScope,
@@ -73,13 +68,15 @@ private fun buildDI(port: Int): DI {
 }
 
 private inline fun <T> bruteForcePort(
-    range: IntRange = 10_000..60_000,
+    range: IntRange = 20000..30000,
     block: (port: Int) -> T
 ): T {
     while (true) {
         try {
-            return block(range.random())
-        } catch (_: BindException) { }
+            val random = range.random()
+            return block(random)
+        } catch (_: BindException) {
+        }
     }
 }
 
@@ -116,3 +113,15 @@ suspend fun AuthorizedMeetingsApi.createTestMeeting(title: String = "Test Meetin
         date = Date.today(),
         location = Location.NullIsland
     )
+
+fun main() {
+    val timer = Timer()
+    val task = object : TimerTask() {
+        override fun run() {
+            Runtime.getRuntime().exec(".\\gradlew application:test\n")
+        }
+    }
+
+    // Запускаем задачу каждые 2 минуты
+    timer.schedule(task, 0, 2 * 60 * 1000)
+}
