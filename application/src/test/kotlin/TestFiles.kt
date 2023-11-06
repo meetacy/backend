@@ -1,11 +1,9 @@
 import app.meetacy.sdk.files.download
 import app.meetacy.sdk.files.upload
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.io.File
 import kotlin.test.Test
 
 class TestFiles {
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `test uploading and downloading files`() = runTestServer {
         val user = generateTestAccount()
