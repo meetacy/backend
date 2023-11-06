@@ -1750,7 +1750,7 @@ components:
         result:
           type: array
           items:
-            $ref: '#components/schemas/SearchItem'
+            $ref: '#/components/schemas/SearchItem'
       required:
         - "status"
         - "result"
@@ -1762,7 +1762,7 @@ components:
               type: string
               example: "meeting"
             meeting:
-              $ref: '#components/schemas/Meeting'
+              $ref: '#/components/schemas/Meeting'
           required:
             - "type"
             - "meeting"
@@ -1772,7 +1772,7 @@ components:
               type: string
               example: "user"
             user:
-              $ref: '#components/schemas/User'
+              $ref: '#/components/schemas/User'
           required:
             - "type"
             - "user"
@@ -1782,7 +1782,7 @@ components:
               type: string
               example: "place"
             place:
-              $ref: '#components/schemas/Place'
+              $ref: '#/components/schemas/Place'
           required:
             - "type"
             - "place"
@@ -1790,7 +1790,7 @@ components:
       type: object
       properties:
         address:
-          $ref: '#components/schemas/Address'
+          $ref: '#/components/schemas/Address'
         location:
           $ref: '#/components/schemas/Location'
       required:
