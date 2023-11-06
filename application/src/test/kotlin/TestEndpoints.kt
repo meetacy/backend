@@ -17,10 +17,7 @@ import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import java.io.File
 import java.net.BindException
@@ -122,15 +119,3 @@ suspend fun AuthorizedMeetingsApi.createTestMeeting(title: String = "Test Meetin
         date = Date.today(),
         location = Location.NullIsland
     )
-
-fun main() {
-    val timer = Timer()
-    val task = object : TimerTask() {
-        override fun run() {
-            Runtime.getRuntime().exec(".\\gradlew application:test\n")
-        }
-    }
-
-    // Запускаем задачу каждые 2 минуты
-    timer.schedule(task, 0, 2 * 60 * 1000)
-}
