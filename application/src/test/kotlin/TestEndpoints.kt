@@ -35,8 +35,6 @@ fun runTestServer(
     block: suspend TestServerContext.() -> Unit
 ) = runTest {
     bruteForcePort { port ->
-        // All exceptions thrown by server jobs
-        // including BindException will be thrown here
         coroutineScope {
             val di = buildDI(port, coroutineScope = this)
             val fileBasePath: String by di.getting
@@ -47,8 +45,10 @@ fun runTestServer(
             )
 
             try {
-                prepareEndpoints(di).start(wait = false)
+                val server = prepareEndpoints(di)
+                server.start(wait = false)
                 block(context)
+                server.stop()
             } finally {
                 File(fileBasePath).deleteRecursively()
             }
