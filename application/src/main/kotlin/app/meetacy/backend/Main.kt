@@ -6,9 +6,10 @@ import app.meetacy.backend.di.buildDI
 import app.meetacy.backend.run.runProductionServer
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.discord.webhook.ktor.DiscordWebhook
+import kotlinx.coroutines.coroutineScope
 import java.io.File
 
-suspend fun main() {
+suspend fun main(): Unit = coroutineScope {
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
     val databaseUrl = System.getenv("DATABASE_URL")
     val databaseUser = System.getenv("DATABASE_USER") ?: ""
@@ -35,6 +36,7 @@ suspend fun main() {
     runProductionServer(discordWebhook) {
         val di = buildDI(
             port = port,
+            coroutineScope = this@coroutineScope,
             databaseConfig = databaseConfig,
             fileBasePath = filesBasePath,
             fileSizeLimit = FileSize(filesSizeLimit),
