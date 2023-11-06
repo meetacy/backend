@@ -17,6 +17,9 @@ import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import java.io.File
@@ -24,7 +27,7 @@ import java.net.BindException
 import java.util.*
 
 class TestServerContext(
-    val testScope: TestScope,
+    val testScope: CoroutineScope,
     val testApi: MeetacyApi
 ) : CoroutineScope by testScope
 
@@ -32,23 +35,28 @@ fun runTestServer(
     block: suspend TestServerContext.() -> Unit
 ) = runTest {
     bruteForcePort { port ->
-        val di = buildDI(port)
-        val fileBasePath: String by di.getting
-        val context = TestServerContext(
-            testScope = this,
-            testApi = testApi(port)
-        )
+        // All exceptions thrown by server jobs
+        // including BindException will be thrown here
+        coroutineScope {
+            val di = buildDI(port, coroutineScope = this)
+            val fileBasePath: String by di.getting
 
-        try {
-            prepareEndpoints(di).start(wait = false)
-            block(context)
-        } finally {
-            File(fileBasePath).deleteRecursively()
+            val context = TestServerContext(
+                testScope = this,
+                testApi = testApi(port)
+            )
+
+            try {
+                prepareEndpoints(di).start(wait = false)
+                block(context)
+            } finally {
+                File(fileBasePath).deleteRecursively()
+            }
         }
     }
 }
 
-private fun buildDI(port: Int): DI {
+private fun buildDI(port: Int, coroutineScope: CoroutineScope): DI {
     val fileBasePath = File(
         /* parent = */ System.getenv("user.dir"),
         /* child = */ "files-$port-test"
@@ -59,6 +67,7 @@ private fun buildDI(port: Int): DI {
 
     return buildDI(
         port = port,
+        coroutineScope = coroutineScope,
         databaseConfig = DatabaseConfig.Mock(port),
         fileBasePath = fileBasePath,
         fileSizeLimit = FileSize(bytesSize = 99L * 1024 * 1024),
@@ -68,7 +77,7 @@ private fun buildDI(port: Int): DI {
 }
 
 private inline fun <T> bruteForcePort(
-    range: IntRange = 20000..30000,
+    range: IntRange = 20_000..30_000,
     block: (port: Int) -> T
 ): T {
     while (true) {

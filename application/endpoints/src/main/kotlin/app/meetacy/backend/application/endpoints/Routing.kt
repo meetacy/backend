@@ -25,6 +25,7 @@ import io.ktor.server.plugins.doublereceive.*
 import io.ktor.server.plugins.partialcontent.*
 import io.ktor.server.plugins.swagger.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.exposed.sql.Database
 
 @Suppress("ExtractKtorModule")
@@ -32,10 +33,11 @@ suspend fun prepareEndpoints(di: DI): ApplicationEngine {
     val port: Int by di.getting
     val database: Database by di.getting
     val exceptionsHandler: ExceptionsHandler by di.getting
+    val coroutineScope: CoroutineScope by di.getting
 
     initDatabase(database)
 
-    return embeddedServer(CIO, host = "localhost", port = port) {
+    return coroutineScope.embeddedServer(CIO, host = "localhost", port = port) {
         installJson()
         install(CORS) {
             allowCredentials = true

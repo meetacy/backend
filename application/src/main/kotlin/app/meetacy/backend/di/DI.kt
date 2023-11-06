@@ -12,9 +12,11 @@ import app.meetacy.backend.types.files.FileSize
 import app.meetacy.backend.types.integration.types
 import app.meetacy.di.builder.di
 import app.meetacy.discord.webhook.DiscordWebhook
+import kotlinx.coroutines.CoroutineScope
 
 fun buildDI(
     port: Int,
+    coroutineScope: CoroutineScope,
     databaseConfig: DatabaseConfig,
     fileBasePath: String,
     fileSizeLimit: FileSize,
@@ -27,6 +29,7 @@ fun buildDI(
     val fileSizeLimit by constant(fileSizeLimit)
     val discordWebhook by constant(discordWebhook)
     val googlePlacesToken by constant(googlePlacesToken)
+    val coroutineScope by constant(coroutineScope)
 
     usecase()
     database()
