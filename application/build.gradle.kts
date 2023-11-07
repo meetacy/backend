@@ -18,8 +18,11 @@ dependencies {
     implementation(projects.application.endpoints)
     implementation(projects.application.usecase)
     implementation(projects.core.types.integration)
-    api(libs.ktor.server.core)
-    api(libs.ktor.server.cio)
+
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.cio)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
@@ -27,15 +30,18 @@ dependencies {
     implementation(libs.h2.jdbc)
 
     implementation(libs.meetacy.di.core)
+
+    implementation(libs.ktor.client.core)
     implementation(projects.libs.discordWebhook.ktor)
+    implementation(projects.libs.googleMaps.ktor)
 
     testImplementation(libs.meetacy.sdk.api.ktor)
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kotlinx.serialization.json)
+    testImplementation("io.ktor:ktor-client-content-negotiation:2.3.5")
+    testImplementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
 
-    testImplementation(libs.ktor.client.core)
-    testImplementation(libs.ktor.client.cio)
     testImplementation(libs.ktor.client.logging)
     testImplementation(libs.ktor.client.mock)
 

@@ -6,9 +6,10 @@ import app.meetacy.backend.di.buildDI
 import app.meetacy.backend.run.runProductionServer
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.discord.webhook.ktor.DiscordWebhook
+import kotlinx.coroutines.coroutineScope
 import java.io.File
 
-suspend fun main() {
+suspend fun main(): Unit = coroutineScope {
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8080
     val databaseUrl = System.getenv("DATABASE_URL")
     val databaseUser = System.getenv("DATABASE_USER") ?: ""
@@ -20,6 +21,7 @@ suspend fun main() {
     val filesSizeLimit = System.getenv("FILES_SIZE_LIMIT")?.toLongOrNull() ?: (99L * 1024 * 1024)
     val useMockDatabase = System.getenv("USE_MOCK_DATABASE")?.toBoolean() ?: (databaseUrl == null)
     val discordWebhook = System.getenv("DISCORD_WEBHOOK_URL")?.let(::DiscordWebhook)
+    val googlePlacesToken = System.getenv("GOOGLE_PLACES_TOKEN")
 
     val databaseConfig = if (useMockDatabase) {
         DatabaseConfig.Mock(port)
@@ -34,10 +36,12 @@ suspend fun main() {
     runProductionServer(discordWebhook) {
         val di = buildDI(
             port = port,
+            coroutineScope = this@coroutineScope,
             databaseConfig = databaseConfig,
             fileBasePath = filesBasePath,
             fileSizeLimit = FileSize(filesSizeLimit),
-            discordWebhook = discordWebhook
+            discordWebhook = discordWebhook,
+            googlePlacesToken = googlePlacesToken
         )
 
         val server = prepareEndpoints(di)

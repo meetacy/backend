@@ -1,15 +1,27 @@
 package app.meetacy.backend.discord
 
 import app.meetacy.backend.application.endpoints.ExceptionsHandler
+import app.meetacy.di.builder.DIBuilder
 import app.meetacy.discord.webhook.DiscordWebhook
 import app.meetacy.discord.webhook.embed.DiscordEmbed
-import app.meetacy.discord.webhook.embed.DiscordEmbeds
 import app.meetacy.discord.webhook.execute
 import io.ktor.server.application.*
 import io.ktor.server.logging.*
 import io.ktor.server.request.*
 
-class DiscordExceptionsHandler(
+fun DIBuilder.exceptionsHandler() {
+    val exceptionsHandler by singleton<ExceptionsHandler> {
+        val discordWebhook: DiscordWebhook? by getting
+        val webhook = discordWebhook
+        if (webhook == null) {
+            ExceptionsHandler.Simple
+        } else {
+            DiscordExceptionsHandler(webhook)
+        }
+    }
+}
+
+private class DiscordExceptionsHandler(
     private val webhook: DiscordWebhook
 ) : ExceptionsHandler {
     override suspend fun handle(call: ApplicationCall, throwable: Throwable) {

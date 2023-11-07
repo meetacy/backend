@@ -5,6 +5,7 @@ import app.meetacy.backend.application.endpoints.prepareEndpoints
 import app.meetacy.backend.di.buildDI
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.di.DI
+import app.meetacy.google.maps.GooglePlacesTextSearch
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
 import app.meetacy.sdk.types.annotation.UnsafeConstructor
@@ -16,62 +17,83 @@ import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.*
 import io.ktor.client.plugins.logging.*
-import io.rsocket.kotlin.ktor.server.RSocketSupport
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.test.runTest
-import org.jetbrains.exposed.sql.Database
 import java.io.File
 import java.net.BindException
 
 class TestServerContext(
-    val testScope: TestScope,
+    val testScope: CoroutineScope,
     val testApi: MeetacyApi
 ) : CoroutineScope by testScope
 
 fun runTestServer(
+    mockGooglePlacesSearch: GooglePlacesTextSearch = GooglePlacesTextSearch.NoOp,
     block: suspend TestServerContext.() -> Unit
 ) = runTest {
     bruteForcePort { port ->
-        val di = buildDI(port)
-        val fileBasePath: String by di.getting
-        val context = TestServerContext(
-            testScope = this,
-            testApi = testApi(port)
-        )
+        coroutineScope {
+            val di = buildDI(
+                port = port,
+                coroutineScope = this,
+                mockGooglePlacesSearch = mockGooglePlacesSearch
+            )
 
-        try {
-            prepareEndpoints(di).start(wait = false)
-            block(context)
-        } finally {
-            File(fileBasePath).deleteRecursively()
+            val fileBasePath: String by di.getting
+
+            val context = TestServerContext(
+                testScope = this,
+                testApi = testApi(port)
+            )
+
+            try {
+                val server = prepareEndpoints(di)
+                server.start(wait = false)
+                block(context)
+                server.stop()
+            } finally {
+                File(fileBasePath).deleteRecursively()
+            }
         }
     }
 }
 
-private fun buildDI(port: Int): DI {
+private fun buildDI(
+    port: Int,
+    coroutineScope: CoroutineScope,
+    mockGooglePlacesSearch: GooglePlacesTextSearch?
+): DI {
     val fileBasePath = File(
         /* parent = */ System.getenv("user.dir"),
         /* child = */ "files-$port-test"
-    ).apply { mkdirs() }.absolutePath
+    ).apply {
+        mkdirs()
+        deleteOnExit()
+    }.absolutePath
 
     return buildDI(
         port = port,
+        coroutineScope = coroutineScope,
         databaseConfig = DatabaseConfig.Mock(port),
         fileBasePath = fileBasePath,
         fileSizeLimit = FileSize(bytesSize = 99L * 1024 * 1024),
-        discordWebhook = null
+        discordWebhook = null,
+        googlePlacesToken = null,
+        mockGooglePlacesSearch = mockGooglePlacesSearch
     )
 }
 
 private inline fun <T> bruteForcePort(
-    range: IntRange = 10_000..60_000,
+    range: IntRange = 20_000..30_000,
     block: (port: Int) -> T
 ): T {
     while (true) {
         try {
-            return block(range.random())
-        } catch (_: BindException) { }
+            val random = range.random()
+            return block(random)
+        } catch (_: BindException) {
+        }
     }
 }
 
@@ -80,10 +102,9 @@ fun testApi(port: Int) = MeetacyApi(
     baseUrl = "http://localhost:$port".url,
     httpClient = HttpClient {
         Logging {
-            level = LogLevel.NONE
-//            level = LogLevel.ALL
+//            level = LogLevel.NONE
+            level = LogLevel.ALL
         }
-        expectSuccess = true
         developmentMode = true
     }
 )

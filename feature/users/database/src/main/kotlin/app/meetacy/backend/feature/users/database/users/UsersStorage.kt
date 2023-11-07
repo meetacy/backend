@@ -16,6 +16,7 @@ import app.meetacy.backend.feature.users.database.users.UsersTable.USERNAME
 import app.meetacy.backend.feature.users.database.users.UsersTable.USER_ID
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.files.FileId
+import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.users.UserId
@@ -71,6 +72,16 @@ class UsersStorage(private val db: Database) {
             .associateBy { user -> user.identity.id }
 
         return@newSuspendedTransaction userIds.map { foundUsers[it] }
+    }
+
+    suspend fun searchUsers(
+        prefix: String,
+        limit: Int
+    ): List<FullUser> = newSuspendedTransaction(Dispatchers.IO, db) {
+        UsersTable.select {
+            (NICKNAME like "%" + LikePattern.ofLiteral(prefix).pattern + "%") or
+                    (USERNAME like "%" + LikePattern.ofLiteral(prefix).pattern + "%")
+        }.limit(limit).map { result -> result.toUser() }
     }
 
     suspend fun isEmailOccupied(

@@ -6,7 +6,7 @@ import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserView
 import app.meetacy.backend.types.files.FilesRepository
 
-class ViewUserUsecase(
+class ViewUsersUsecase(
     private val filesRepository: FilesRepository,
     private val storage: Storage
 ) {
@@ -37,7 +37,7 @@ class ViewUserUsecase(
      * Returns relationship of two users
      * @param [userId] specifies ID of related user
      * @return [Relationship.Friend] if both users are subscribed on each other,
-     * [Relationship.Subscribed] if related user is subscribed on FullUser,
+     * [Relationship.Subscription] if related user is subscribed on FullUser,
      * [Relationship.Subscriber] if FullUser is subscribed on related user,
      * null if user tries to get relationship of themselves
      */
@@ -47,7 +47,7 @@ class ViewUserUsecase(
         val isSubscribed = storage.isSubscriber(userId, identity.id)
         return when {
             isSubscribed && isSubscriber -> Relationship.Friend
-            isSubscribed -> Relationship.Subscribed
+            isSubscribed -> Relationship.Subscription
             isSubscriber -> Relationship.Subscriber
             else -> Relationship.None
         }
