@@ -11,15 +11,16 @@ fun DIBuilder.google() {
     val googlePlacesTextSearch by singleton<GooglePlacesTextSearch> {
         val googlePlacesToken: String? by getting
         val httpClient: HttpClient by getting
-        val token = googlePlacesToken
+        val mockGooglePlacesTextSearch: GooglePlacesTextSearch? by getting
 
-        if (token == null) {
-            GooglePlacesTextSearch.NoOp
-        } else {
+        val token = googlePlacesToken
+        val search = mockGooglePlacesTextSearch
+
+        if (token != null) {
             KtorGooglePlacesTextSearch(
                 token = token,
                 httpClient = httpClient
             )
-        }
+        } else search ?: GooglePlacesTextSearch.NoOp
     }
 }

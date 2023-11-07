@@ -12,6 +12,7 @@ import app.meetacy.backend.types.files.FileSize
 import app.meetacy.backend.types.integration.types
 import app.meetacy.di.builder.di
 import app.meetacy.discord.webhook.DiscordWebhook
+import app.meetacy.google.maps.GooglePlacesTextSearch
 import kotlinx.coroutines.CoroutineScope
 
 fun buildDI(
@@ -21,7 +22,8 @@ fun buildDI(
     fileBasePath: String,
     fileSizeLimit: FileSize,
     discordWebhook: DiscordWebhook?,
-    googlePlacesToken: String?
+    googlePlacesToken: String?,
+    mockGooglePlacesSearch: GooglePlacesTextSearch? = null
 ) = di {
     val port by constant(port)
     val databaseConfig by constant(databaseConfig)
@@ -30,6 +32,7 @@ fun buildDI(
     val discordWebhook by constant(discordWebhook)
     val googlePlacesToken by constant(googlePlacesToken)
     val coroutineScope by constant(coroutineScope)
+    val mockGooglePlacesSearch by constant(mockGooglePlacesSearch)
 
     usecase()
     database()

@@ -12,6 +12,7 @@ import app.meetacy.backend.types.users.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import java.util.Comparator
 
 class SearchUsecase(
     private val storage: Storage,

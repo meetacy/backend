@@ -5,6 +5,7 @@ import app.meetacy.backend.application.endpoints.prepareEndpoints
 import app.meetacy.backend.di.buildDI
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.di.DI
+import app.meetacy.google.maps.GooglePlacesTextSearch
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.meetings.AuthorizedMeetingsApi
 import app.meetacy.sdk.types.annotation.UnsafeConstructor
@@ -21,7 +22,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.test.runTest
 import java.io.File
 import java.net.BindException
-import java.util.*
 
 class TestServerContext(
     val testScope: CoroutineScope,
@@ -29,11 +29,17 @@ class TestServerContext(
 ) : CoroutineScope by testScope
 
 fun runTestServer(
+    mockGooglePlacesSearch: GooglePlacesTextSearch = GooglePlacesTextSearch.NoOp,
     block: suspend TestServerContext.() -> Unit
 ) = runTest {
     bruteForcePort { port ->
         coroutineScope {
-            val di = buildDI(port, coroutineScope = this)
+            val di = buildDI(
+                port = port,
+                coroutineScope = this,
+                mockGooglePlacesSearch = mockGooglePlacesSearch
+            )
+
             val fileBasePath: String by di.getting
 
             val context = TestServerContext(
@@ -53,7 +59,11 @@ fun runTestServer(
     }
 }
 
-private fun buildDI(port: Int, coroutineScope: CoroutineScope): DI {
+private fun buildDI(
+    port: Int,
+    coroutineScope: CoroutineScope,
+    mockGooglePlacesSearch: GooglePlacesTextSearch?
+): DI {
     val fileBasePath = File(
         /* parent = */ System.getenv("user.dir"),
         /* child = */ "files-$port-test"
@@ -69,7 +79,8 @@ private fun buildDI(port: Int, coroutineScope: CoroutineScope): DI {
         fileBasePath = fileBasePath,
         fileSizeLimit = FileSize(bytesSize = 99L * 1024 * 1024),
         discordWebhook = null,
-        googlePlacesToken = null
+        googlePlacesToken = null,
+        mockGooglePlacesSearch = mockGooglePlacesSearch
     )
 }
 
