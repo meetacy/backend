@@ -6,11 +6,11 @@ import app.meetacy.backend.constants.EMAIL_MAX_LIMIT
 import app.meetacy.backend.constants.HASH_LENGTH
 import app.meetacy.backend.constants.NICKNAME_MAX_LIMIT
 import app.meetacy.backend.constants.USERNAME_MAX_LIMIT
-import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.feature.users.database.users.UsersTable.ACCESS_HASH
 import app.meetacy.backend.feature.users.database.users.UsersTable.AVATAR_ID
 import app.meetacy.backend.feature.users.database.users.UsersTable.EMAIL
 import app.meetacy.backend.feature.users.database.users.UsersTable.EMAIL_VERIFIED
+import app.meetacy.backend.feature.users.database.users.UsersTable.LINKED_TELEGRAM_ID
 import app.meetacy.backend.feature.users.database.users.UsersTable.NICKNAME
 import app.meetacy.backend.feature.users.database.users.UsersTable.USERNAME
 import app.meetacy.backend.feature.users.database.users.UsersTable.USER_ID
@@ -18,13 +18,20 @@ import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
+import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserIdentity
 import app.meetacy.backend.types.users.Username
 import app.meetacy.backend.types.users.username
 import kotlinx.coroutines.Dispatchers
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.sql.update
 
 object UsersTable : Table() {
     val USER_ID = long("USER_ID").autoIncrement()
@@ -34,6 +41,7 @@ object UsersTable : Table() {
     val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT).nullable()
     val EMAIL_VERIFIED = bool("EMAIL_VERIFIED").default(false)
     val AVATAR_ID = long("AVATAR_ID").nullable()
+    val LINKED_TELEGRAM_ID = long("LINKED_TELEGRAM_ID").nullable()
 
     override val primaryKey: PrimaryKey = PrimaryKey(USER_ID)
 }
@@ -59,7 +67,8 @@ class UsersStorage(private val db: Database) {
             result[USERNAME]?.username,
             result[EMAIL],
             result[EMAIL_VERIFIED],
-            if (avatarId != null) FileId(avatarId) else null
+            if (avatarId != null) FileId(avatarId) else null,
+            result[LINKED_TELEGRAM_ID],
         )
     }
 
@@ -76,8 +85,8 @@ class UsersStorage(private val db: Database) {
     suspend fun isEmailOccupied(
         email: String
     ): Boolean = newSuspendedTransaction(Dispatchers.IO, db) {
-       val result = UsersTable.select { (EMAIL eq email) and EMAIL_VERIFIED}.firstOrNull()
-       return@newSuspendedTransaction result != null
+        val result = UsersTable.select { (EMAIL eq email) and EMAIL_VERIFIED }.firstOrNull()
+        return@newSuspendedTransaction result != null
     }
 
     private fun ResultRow.toUser(): FullUser {
@@ -91,7 +100,8 @@ class UsersStorage(private val db: Database) {
             this[USERNAME]?.username,
             this[EMAIL],
             this[EMAIL_VERIFIED],
-            if (avatarId != null) FileId(avatarId) else null
+            if (avatarId != null) FileId(avatarId) else null,
+            this[LINKED_TELEGRAM_ID],
         )
     }
 
@@ -127,11 +137,28 @@ class UsersStorage(private val db: Database) {
             }
         }
         return@newSuspendedTransaction UsersTable.select { USER_ID eq userId.long }
-            .first<ResultRow>()
+            .first()
             .toUser()
     }
 
     suspend fun isUsernameOccupied(username: Username): Boolean = newSuspendedTransaction(Dispatchers.IO, db) {
         UsersTable.select { USERNAME eq username.string }.any()
+    }
+
+    suspend fun getLinkedTelegramUserOrNull(
+        telegramId: Long
+    ): FullUser? = newSuspendedTransaction(Dispatchers.IO, db) {
+        UsersTable.select { LINKED_TELEGRAM_ID eq telegramId }
+            .firstOrNull()
+            ?.toUser()
+    }
+
+    suspend fun setLinkedTelegramUser(
+        telegramId: Long,
+        userId: UserId
+    ) = newSuspendedTransaction(Dispatchers.IO, db) {
+        UsersTable.update({ USER_ID eq userId.long }) { statement ->
+            statement[LINKED_TELEGRAM_ID] = telegramId
+        }
     }
 }

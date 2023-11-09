@@ -2,16 +2,14 @@ package app.meetacy.backend.feature.telegram.endpoints.await
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.rsocket.failRSocket
-import app.meetacy.backend.feature.telegram.endpoints.await.AwaitRepository.Result
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.AccessToken
-import io.ktor.server.routing.*
+import io.ktor.server.routing.Route
 import io.rsocket.kotlin.RSocketRequestHandler
 import io.rsocket.kotlin.ktor.server.rSocket
 import io.rsocket.kotlin.payload.Payload
 import io.rsocket.kotlin.payload.buildPayload
 import io.rsocket.kotlin.payload.data
-import kotlinx.coroutines.Deferred
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -26,29 +24,32 @@ data class AwaitParams(
     val apiVersion: Int
 )
 
-@Serializable
-data class AwaitResult(val token: AccessIdentity)
-
 interface AwaitRepository {
-    suspend fun async(
+    suspend fun await(
         token: AccessToken
-    ): Result
-
-    sealed interface Result {
-        data object TokenInvalid : Result
-        class Ready(val result: Deferred<AwaitResult>) : Result
-    }
+    ): AwaitResult
 }
 
-fun Routing.await(
+sealed interface AwaitResult {
+    data object TokenInvalid : AwaitResult
+    class Success(val token: AccessIdentity) : AwaitResult
+}
+
+fun Route.telegramAwait(
     repository: AwaitRepository
 ) = rSocket("/await") {
     RSocketRequestHandler {
         requestResponse { payload ->
+            println(1)
             val initial = payload.decodeToInit()
-            when (val deferred = repository.async(initial.temporalToken)) {
-                is Result.Ready -> deferred.result.await().encodeToPayload()
-                is Result.TokenInvalid -> failRSocket(Failure.InvalidToken)
+            println(2)
+            when (val result = repository.await(initial.temporalToken).also {
+                println(it)
+            }) {
+                is AwaitResult.Success -> result.encodeToPayload().also {
+                    println("PAYLOAD: $it")
+                }
+                is AwaitResult.TokenInvalid -> failRSocket(Failure.InvalidToken)
             }
         }
     }
@@ -57,6 +58,6 @@ fun Routing.await(
 private fun Payload.decodeToInit(): AwaitParams =
     Json.decodeFromString(data.readText())
 
-private fun AwaitResult.encodeToPayload() = buildPayload {
+private fun AwaitResult.Success.encodeToPayload() = buildPayload {
     data(Json.encodeToString(this@encodeToPayload))
 }

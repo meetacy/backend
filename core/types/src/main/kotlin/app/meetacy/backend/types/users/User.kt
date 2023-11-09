@@ -10,7 +10,8 @@ data class FullUser(
     val username: Username?,
     val email: String?,
     val emailVerified: Boolean?,
-    val avatarId: FileId?
+    val avatarId: FileId?,
+    val telegramId: Long?,
 )
 
 data class UserView(

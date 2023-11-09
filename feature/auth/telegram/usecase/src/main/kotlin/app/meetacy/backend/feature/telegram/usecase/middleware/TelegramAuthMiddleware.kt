@@ -13,12 +13,12 @@ class TelegramAuthMiddleware(
 ) {
     private val events = MutableSharedFlow<Pair<TemporaryTelegramHash, AccessIdentity>>()
 
-    suspend fun addAccessIdentity(
-        telegramHash: TemporaryTelegramHash,
-        accessIdentity: AccessIdentity
+    suspend fun saveAccessIdentity(
+        accessIdentity: AccessIdentity,
+        telegramHash: TemporaryTelegramHash
     ) {
-        storage.addAccessIdentity(telegramHash, accessIdentity)
         events.emit(value = telegramHash to accessIdentity)
+        storage.addAccessIdentity(telegramHash, accessIdentity)
     }
 
     suspend fun getAccessIdentity(

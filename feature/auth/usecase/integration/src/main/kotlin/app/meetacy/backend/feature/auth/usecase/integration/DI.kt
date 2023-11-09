@@ -4,5 +4,6 @@ import app.meetacy.di.builder.DIBuilder
 
 fun DIBuilder.auth() {
     createTokenUsecase()
+    generateAuthUsecase()
     generateTokenUsecase()
 }

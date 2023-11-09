@@ -1,21 +1,25 @@
-package app.meetacy.backend.feature.telegram.usecase
+package app.meetacy.backend.feature.telegram.usecase.prelogin
 
 import app.meetacy.backend.types.access.AccessToken
+import app.meetacy.backend.types.auth.telegram.TemporaryTelegramHash
 import app.meetacy.backend.types.generator.AccessHashGenerator
-import app.meetacy.backend.types.prelogin.TemporaryTelegramHash
 
-
-class GenerateTelegramTemporaryTokenUsecase(
+class TelegramAuthPreloginUsecase(
     private val storage: Storage,
     private val telegramHashGenerator: HashGenerator,
     private val linkProvider: LinkProvider,
     private val tokenGenerator: AccessHashGenerator
 ) {
 
-    suspend fun generateToken(): Result {
+    data class Result(
+        val temporalToken: AccessToken,
+        val telegramLink: String
+    )
+
+    suspend fun prelogin(): Result {
         val token = AccessToken(tokenGenerator.generate())
         val hash = telegramHashGenerator.generate()
-        storage.saveTemporalToken(token, hash)
+        storage.saveTemporalHash(token, hash)
         val link = linkProvider.link(hash)
         return Result(token, link)
     }
@@ -25,18 +29,13 @@ class GenerateTelegramTemporaryTokenUsecase(
     }
 
     interface LinkProvider {
-        fun link(token: TemporaryTelegramHash): String
+        fun link(hash: TemporaryTelegramHash): String
     }
 
-    data class Result(
-        val temporalToken: AccessToken,
-        val telegramLink: String
-    )
-
     interface Storage {
-        suspend fun saveTemporalToken(
+        suspend fun saveTemporalHash(
             temporalToken: AccessToken,
-            telegramHash: TemporaryTelegramHash
+            hash: TemporaryTelegramHash
         )
     }
 }

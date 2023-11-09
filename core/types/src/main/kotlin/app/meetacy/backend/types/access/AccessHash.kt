@@ -6,7 +6,7 @@ import app.meetacy.backend.constants.HASH_LENGTH
 value class AccessHash(val string: String) {
 
     init {
-        require(string.length == LENGTH) { "Telegram token length must be $LENGTH, but was ${string.length}" }
+        require(string.length == LENGTH) { "Hash length must be $LENGTH, but was ${string.length}" }
     }
 
     companion object {

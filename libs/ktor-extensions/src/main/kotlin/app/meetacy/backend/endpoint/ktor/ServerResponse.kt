@@ -20,11 +20,12 @@ data class Failure(
     val errorCode: Int,
     val errorMessage: String
 ) {
-    // next errorCode -- 23
+    // next errorCode -- 24
     companion object {
         fun BadRequestException(message: String) = Failure(false, 0, "Bad request. $message")
 
         val InvalidToken = Failure(false, 1, "Please provide a valid token")
+        val InvalidTelegramTemporaryHash = Failure(false, 23, "Your Telegram authorization was expired")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingId")
         val InvalidFileIdentity = Failure(false, 3, "Please provide a valid fileId")
         val InvalidLink = Failure(false, 4, "This link is invalid. Please consider to create a new one")

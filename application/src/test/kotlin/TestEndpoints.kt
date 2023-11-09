@@ -14,15 +14,14 @@ import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
-import io.ktor.client.*
-import io.ktor.client.plugins.logging.*
-import io.rsocket.kotlin.ktor.server.RSocketSupport
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
+import java.io.File
+import java.net.BindException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import org.jetbrains.exposed.sql.Database
-import java.io.File
-import java.net.BindException
 
 class TestServerContext(
     val testScope: TestScope,
@@ -60,7 +59,8 @@ private fun buildDI(port: Int): DI {
         databaseConfig = DatabaseConfig.Mock(port),
         fileBasePath = fileBasePath,
         fileSizeLimit = FileSize(bytesSize = 99L * 1024 * 1024),
-        discordWebhook = null
+        discordWebhook = null,
+        telegramAuthBotUsername = null
     )
 }
 
