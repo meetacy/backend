@@ -1,6 +1,8 @@
 package app.meetacy.backend.feature.telegram.endpoints.await
 
 import app.meetacy.backend.endpoint.ktor.Failure
+import app.meetacy.backend.endpoint.ktor.Success
+import app.meetacy.backend.endpoint.ktor.buildSuccessPayload
 import app.meetacy.backend.endpoint.ktor.rsocket.failRSocket
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.AccessToken
@@ -32,7 +34,7 @@ interface AwaitRepository {
 
 sealed interface AwaitResult {
     data object TokenInvalid : AwaitResult
-    class Success(val token: AccessIdentity) : AwaitResult
+    data class Success(val permanentToken: AccessIdentity) : AwaitResult
 }
 
 fun Route.telegramAwait(
@@ -40,15 +42,9 @@ fun Route.telegramAwait(
 ) = rSocket("/await") {
     RSocketRequestHandler {
         requestResponse { payload ->
-            println(1)
             val initial = payload.decodeToInit()
-            println(2)
-            when (val result = repository.await(initial.temporalToken).also {
-                println(it)
-            }) {
-                is AwaitResult.Success -> result.encodeToPayload().also {
-                    println("PAYLOAD: $it")
-                }
+            when (val result = repository.await(initial.temporalToken)) {
+                is AwaitResult.Success -> buildSuccessPayload(result.permanentToken)
                 is AwaitResult.TokenInvalid -> failRSocket(Failure.InvalidToken)
             }
         }
@@ -57,7 +53,3 @@ fun Route.telegramAwait(
 
 private fun Payload.decodeToInit(): AwaitParams =
     Json.decodeFromString(data.readText())
-
-private fun AwaitResult.Success.encodeToPayload() = buildPayload {
-    data(Json.encodeToString(this@encodeToPayload))
-}

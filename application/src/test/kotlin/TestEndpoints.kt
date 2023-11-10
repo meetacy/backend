@@ -83,8 +83,6 @@ fun testApi(port: Int) = MeetacyApi(
             level = LogLevel.NONE
 //            level = LogLevel.ALL
         }
-        expectSuccess = true
-        developmentMode = true
     }
 )
 
