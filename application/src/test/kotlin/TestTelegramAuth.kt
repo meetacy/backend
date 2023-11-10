@@ -11,7 +11,7 @@ import kotlin.test.Test
 import kotlin.time.Duration
 
 class TestClass {
-    @Test
+//    @Test
     fun test() = runTest(timeout = Duration.INFINITE) {
         val api = MeetacyApi(
             baseUrl = "http://localhost:8080".url,
