@@ -89,7 +89,7 @@ fun testApi(port: Int) = MeetacyApi(
 suspend fun TestServerContext.generateTestAccount(
     postfix: String? = null
 ): AuthorizedSelfUserRepository {
-    val newClient = testApi.auth.generateAuthorizedApi(
+    val newClient = testApi.auth.generate(
         nickname = listOfNotNull("Test Account", postfix)
             .joinToString(separator = " ")
     )

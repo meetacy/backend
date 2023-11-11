@@ -1,35 +1,70 @@
-import app.meetacy.sdk.MeetacyApi
-import app.meetacy.sdk.production
+@file:OptIn(UnstableApi::class)
+
 import app.meetacy.sdk.types.annotation.UnstableApi
-import app.meetacy.sdk.types.auth.Token
-import app.meetacy.sdk.types.url.url
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logging
-import kotlinx.coroutines.test.runTest
-import kotlin.test.Test
-import kotlin.time.Duration
+import app.meetacy.sdk.types.auth.telegram.SecretTelegramBotKey
+import app.meetacy.sdk.types.auth.telegram.TemporalTelegramHash
+import kotlinx.coroutines.async
+import org.junit.jupiter.api.Test
 
-class TestClass {
-//    @Test
-    fun test() = runTest(timeout = Duration.INFINITE) {
-        val api = MeetacyApi(
-            baseUrl = "http://localhost:8080".url,
-            httpClient = HttpClient {
-                developmentMode = true
-            }
+class TestTelegramAuth {
+
+    @Test
+    fun `test telegram auth`() = runTestServer {
+        val firstTelegramId = 0L
+        val secondTelegramId = 1L
+        val username = "username"
+        val firstName = "Name"
+        val lastName = "Surname"
+        val newUsername = "new_username"
+        val newFirstName = "new Name"
+        val newLastName = "new Surname"
+
+        val firstTempAuth = testApi.auth.telegram.prelogin()
+        val firstTempHash = TemporalTelegramHash(firstTempAuth.botLink.string)
+        val async = async { firstTempAuth.await() }
+        testApi.auth.telegram.finish(
+            temporalHash = firstTempHash,
+            secretBotKey = SecretTelegramBotKey(""),
+            telegramId = firstTelegramId,
+            username = username,
+            firstName = firstName,
+            lastName = lastName,
         )
 
-        // в приложении после редиректа вызываем await
-        val token = api.auth.telegram.await(
-            temporalToken = Token("BubA6u8AU4yXkzqezmynRvUSzovQAOAmo88bSuMyCgyStTLZpvdJmROJSG3IzU2f5WkLNSpzjwkDcOZto43TIsgi6YtBBUz0QFYYM1svXjnOp1SNEMLkQWq4N7XCNb8ga4ZMm9JyCd1nta0i9GgsWQE9ZN7kB7XPhAaBA5DysaHu8PWDncvWekOguwQGn7jdmAf1nkt6IXgKYSjPowA795kRsuKSSCdEh8t0SlBdFvX50IPC0uBTFycATLg5rXPg")
+        val firstUser = async.await().getMe()
+        require(firstUser.username?.string == username)
+        require(firstUser.nickname == "$firstName $lastName")
+
+        val repeatedTempAuth = testApi.auth.telegram.prelogin()
+        val repeatedTempHash = TemporalTelegramHash(repeatedTempAuth.botLink.string)
+        testApi.auth.telegram.finish(
+            temporalHash = repeatedTempHash,
+            secretBotKey = SecretTelegramBotKey(""),
+            telegramId = firstTelegramId,
+            username = newUsername,
+            firstName = newFirstName,
+            lastName = newLastName,
         )
 
-        // Он ждёт...
-        // Телеграм бот получает клик и отправляет запрос на бек
-        // Получили юзера с никнеймом Alex Sokol, кк в ТГ
-        val authorized = api.authorized(token)
+        val repeatedUser = repeatedTempAuth.await().getMe()
+        require(repeatedUser.id == firstUser.id)
+        require(repeatedUser.username?.string == username)
+        require(repeatedUser.nickname == "$firstName $lastName")
 
-        println(authorized.getMe().data)
+
+        val secondTempAuth = testApi.auth.telegram.prelogin()
+        val secondTempHash = TemporalTelegramHash(secondTempAuth.botLink.string)
+        testApi.auth.telegram.finish(
+            temporalHash = secondTempHash,
+            secretBotKey = SecretTelegramBotKey(""),
+            telegramId = secondTelegramId,
+            username = username,
+            firstName = firstName,
+            lastName = lastName,
+        )
+
+        val secondUser = secondTempAuth.await().getMe()
+        require(secondUser.username == null)
+        require(secondUser.nickname == "$firstName $lastName")
     }
 }
