@@ -3,6 +3,7 @@
 import app.meetacy.backend.application.database.DatabaseConfig
 import app.meetacy.backend.application.endpoints.prepareEndpoints
 import app.meetacy.backend.di.buildDI
+import app.meetacy.backend.types.auth.telegram.SecretTelegramBotKey
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.di.DI
 import app.meetacy.sdk.MeetacyApi
@@ -60,7 +61,8 @@ private fun buildDI(port: Int): DI {
         fileBasePath = fileBasePath,
         fileSizeLimit = FileSize(bytesSize = 99L * 1024 * 1024),
         discordWebhook = null,
-        telegramAuthBotUsername = null
+        telegramAuthBotUsername = null,
+        secretTelegramBotKey = SecretTelegramBotKey("")
     )
 }
 

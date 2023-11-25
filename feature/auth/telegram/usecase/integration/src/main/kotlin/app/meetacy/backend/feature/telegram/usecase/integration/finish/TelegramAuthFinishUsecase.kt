@@ -8,6 +8,7 @@ import app.meetacy.backend.feature.telegram.usecase.middleware.TelegramAuthMiddl
 import app.meetacy.backend.feature.users.database.users.UsersStorage
 import app.meetacy.backend.feature.users.usecase.edit.EditUserUsecase
 import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.auth.telegram.SecretTelegramBotKey
 import app.meetacy.backend.types.auth.telegram.TemporaryTelegramHash
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.users.UserId
@@ -24,6 +25,7 @@ fun DIBuilder.telegramAuthFinishUsecase() {
         val generateTokenUsecase: GenerateTokenUsecase by getting
         val generateAuthUsecase: GenerateAuthUsecase by getting
         val editUserUsecase: EditUserUsecase by getting
+        val secretTelegramBotKey: SecretTelegramBotKey? by getting
 
         val storage = object : TelegramAuthFinishUsecase.Storage {
             override suspend fun checkTemporalHash(hash: TemporaryTelegramHash): Boolean {
@@ -63,7 +65,8 @@ fun DIBuilder.telegramAuthFinishUsecase() {
 
         TelegramAuthFinishUsecase(
             utf8Checker = utf8Checker,
-            storage = storage
+            storage = storage,
+            secretBotKey = secretTelegramBotKey
         )
     }
 }

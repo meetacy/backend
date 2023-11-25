@@ -4,6 +4,7 @@ import app.meetacy.backend.feature.telegram.endpoints.finish.FinishRepository
 import app.meetacy.backend.feature.telegram.endpoints.finish.FinishResult
 import app.meetacy.backend.feature.telegram.endpoints.finish.finish
 import app.meetacy.backend.feature.telegram.usecase.finish.TelegramAuthFinishUsecase
+import app.meetacy.backend.types.serializable.auth.telegram.SecretTelegramBotKey
 import app.meetacy.backend.types.serializable.auth.telegram.TemporaryTelegramHash
 import app.meetacy.backend.types.serializable.auth.telegram.type
 import app.meetacy.di.DI
@@ -15,6 +16,7 @@ internal fun Route.telegramFinish(di: DI) {
     val finishRepository = object : FinishRepository {
         override suspend fun finish(
             temporalHash: TemporaryTelegramHash,
+            secretBotKey: SecretTelegramBotKey,
             telegramId: Long,
             username: String?,
             firstName: String?,
@@ -23,6 +25,7 @@ internal fun Route.telegramFinish(di: DI) {
             return when (
                 authFinishUsecase.finish(
                     temporalHash.type(),
+                    secretBotKey.type(),
                     telegramId,
                     username,
                     firstName,
@@ -31,7 +34,7 @@ internal fun Route.telegramFinish(di: DI) {
             ) {
                 TelegramAuthFinishUsecase.Result.Success -> FinishResult.Success
                 TelegramAuthFinishUsecase.Result.InvalidHash -> FinishResult.InvalidHash
-                TelegramAuthFinishUsecase.Result.InvalidUtf8String ->  FinishResult.InvalidUtf8String
+                TelegramAuthFinishUsecase.Result.InvalidUtf8String -> FinishResult.InvalidUtf8String
             }
         }
     }

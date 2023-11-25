@@ -1,6 +1,7 @@
 package app.meetacy.backend.feature.telegram.usecase.finish
 
 import app.meetacy.backend.types.access.AccessIdentity
+import app.meetacy.backend.types.auth.telegram.SecretTelegramBotKey
 import app.meetacy.backend.types.auth.telegram.TemporaryTelegramHash
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.Username
@@ -9,7 +10,8 @@ import app.meetacy.backend.types.utf8Checker.checkString
 
 class TelegramAuthFinishUsecase(
     private val utf8Checker: Utf8Checker,
-    private val storage: Storage
+    private val storage: Storage,
+    private val secretBotKey: SecretTelegramBotKey?
 ) {
 
     sealed interface Result {
@@ -20,11 +22,14 @@ class TelegramAuthFinishUsecase(
 
     suspend fun finish(
         temporalHash: TemporaryTelegramHash,
+        secretBotKey: SecretTelegramBotKey,
         telegramId: Long,
         username: String?,
         firstName: String?,
         lastName: String?
     ): Result {
+        if (this.secretBotKey == null) error("Please specify SECRET_TELEGRAM_BOT_KEY env variable")
+        if (secretBotKey != this.secretBotKey) return Result.InvalidHash
         if (!storage.checkTemporalHash(temporalHash)) return Result.InvalidHash
 
         listOfNotNull(

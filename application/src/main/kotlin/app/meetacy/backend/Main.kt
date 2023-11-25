@@ -4,6 +4,7 @@ import app.meetacy.backend.application.database.DatabaseConfig
 import app.meetacy.backend.application.endpoints.prepareEndpoints
 import app.meetacy.backend.di.buildDI
 import app.meetacy.backend.run.runProductionServer
+import app.meetacy.backend.types.auth.telegram.SecretTelegramBotKey
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.discord.webhook.ktor.DiscordWebhook
 import java.io.File
@@ -21,6 +22,7 @@ suspend fun main() {
     val useMockDatabase = System.getenv("USE_MOCK_DATABASE")?.toBoolean() ?: (databaseUrl == null)
     val discordWebhook = System.getenv("DISCORD_WEBHOOK_URL")?.let(::DiscordWebhook)
     val telegramAuthBotUsername = System.getenv("TELEGRAM_AUTH_BOT_USERNAME")
+    val secretTelegramBotKey = System.getenv("SECRET_TELEGRAM_BOT_KEY")?.let(::SecretTelegramBotKey)
 
     val databaseConfig = if (useMockDatabase) {
         DatabaseConfig.Mock(port)
@@ -39,7 +41,8 @@ suspend fun main() {
             fileBasePath = filesBasePath,
             fileSizeLimit = FileSize(filesSizeLimit),
             discordWebhook = discordWebhook,
-            telegramAuthBotUsername = telegramAuthBotUsername
+            telegramAuthBotUsername = telegramAuthBotUsername,
+            secretTelegramBotKey = secretTelegramBotKey
         )
 
         val server = prepareEndpoints(di)

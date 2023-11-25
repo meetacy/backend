@@ -30,6 +30,7 @@ sealed interface FinishResult {
 interface FinishRepository {
     suspend fun finish(
         temporalHash: TemporaryTelegramHash,
+        secretBotKey: SecretTelegramBotKey,
         telegramId: Long,
         username: String?,
         firstName: String?,
@@ -44,6 +45,7 @@ fun Route.finish(repository: FinishRepository) {
         when (
             repository.finish(
                 params.temporalHash,
+                params.secretBotKey,
                 params.telegramId,
                 params.username,
                 params.firstName,
