@@ -5,7 +5,8 @@ plugins {
 dependencies {
     api(projects.application.database.migrations)
     implementation(projects.feature.auth.database.integration)
-    implementation(projects.feature.email.database.integration)
+    implementation(projects.feature.auth.telegram.database.integration)
+    implementation(projects.feature.auth.email.database.integration)
     implementation(projects.feature.files.database.integration)
     implementation(projects.feature.friends.database.integration)
     implementation(projects.feature.invitations.database.integration)

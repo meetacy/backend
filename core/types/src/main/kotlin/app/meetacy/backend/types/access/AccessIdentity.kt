@@ -5,7 +5,7 @@ import app.meetacy.backend.types.users.UserId
 // a combination of user id and access token
 @JvmInline
 value class AccessIdentity private constructor(val string: String) {
-    constructor(userIdentity: UserId, accessToken: AccessToken) : this("${userIdentity.long}:${accessToken.string}")
+    constructor(userId: UserId, accessToken: AccessToken) : this("${userId.long}:${accessToken.string}")
 
     val userId get() = string
         .split(":")

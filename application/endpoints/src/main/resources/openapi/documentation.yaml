@@ -96,6 +96,54 @@ paths:
                 $ref: '#/components/schemas/InvalidResponse'
       security:
         - token: []
+  /auth/telegram/prelogin:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - auth
+      summary: Telegram prelogin
+      description: "Request temp token for telegram auth"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelegramPreloginResponse'
+  /auth/telegram/finish:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+    post:
+      tags:
+        - auth
+      summary: Telegram finish
+      description: "Finishing Telegram auth"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelegramFinishRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusTrueResponse'
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
   /auth/generate:
     parameters:
       - name: Api-Version
@@ -1393,6 +1441,25 @@ components:
         - "email"
         - "token"
       additionalProperties: false
+    TelegramFinishRequest:
+      type: "object"
+      properties:
+        temporalHash:
+          type: string
+        secretBotKey:
+          type: string
+        telegramId:
+          type: integer
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+        - "temporalHash"
+        - "secretBotKey"
+        - "telegramId"
     AccessAvatarRequest:
       type: "object"
       properties:
@@ -1513,6 +1580,25 @@ components:
       required:
         - "status"
       additionalProperties: false
+    TelegramPreloginResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        result:
+          type: object
+          properties:
+            token:
+              type: string
+            botLink:
+              type: string
+          required:
+            - "token"
+            - "botLink"
+      required:
+        - "status"
+        - "result"
     DownloadFileSuccessfulResponse:
       type: string
       enum:

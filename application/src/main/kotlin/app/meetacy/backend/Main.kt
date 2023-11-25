@@ -4,6 +4,7 @@ import app.meetacy.backend.application.database.DatabaseConfig
 import app.meetacy.backend.application.endpoints.prepareEndpoints
 import app.meetacy.backend.di.buildDI
 import app.meetacy.backend.run.runProductionServer
+import app.meetacy.backend.types.auth.telegram.SecretTelegramBotKey
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.discord.webhook.ktor.DiscordWebhook
 import kotlinx.coroutines.coroutineScope
@@ -22,6 +23,8 @@ suspend fun main(): Unit = coroutineScope {
     val useMockDatabase = System.getenv("USE_MOCK_DATABASE")?.toBoolean() ?: (databaseUrl == null)
     val discordWebhook = System.getenv("DISCORD_WEBHOOK_URL")?.let(::DiscordWebhook)
     val googlePlacesToken = System.getenv("GOOGLE_PLACES_TOKEN")
+    val telegramAuthBotUsername = System.getenv("TELEGRAM_AUTH_BOT_USERNAME")
+    val secretTelegramBotKey = System.getenv("SECRET_TELEGRAM_BOT_KEY")?.let(::SecretTelegramBotKey)
 
     val databaseConfig = if (useMockDatabase) {
         DatabaseConfig.Mock(port)
@@ -41,7 +44,9 @@ suspend fun main(): Unit = coroutineScope {
             fileBasePath = filesBasePath,
             fileSizeLimit = FileSize(filesSizeLimit),
             discordWebhook = discordWebhook,
-            googlePlacesToken = googlePlacesToken
+            googlePlacesToken = googlePlacesToken,
+            telegramAuthBotUsername = telegramAuthBotUsername,
+            secretTelegramBotKey = secretTelegramBotKey
         )
 
         val server = prepareEndpoints(di)

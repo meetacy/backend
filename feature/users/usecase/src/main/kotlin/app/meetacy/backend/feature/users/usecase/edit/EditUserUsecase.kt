@@ -5,6 +5,8 @@ import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.files.FileIdentity
+import app.meetacy.backend.types.files.FilesRepository
+import app.meetacy.backend.types.files.checkFileIdentity
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.optional.map
@@ -13,8 +15,6 @@ import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserView
 import app.meetacy.backend.types.users.Username
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
-import app.meetacy.backend.types.files.FilesRepository
-import app.meetacy.backend.types.files.checkFileIdentity
 
 class EditUserUsecase(
     private val storage: Storage,
@@ -34,36 +34,44 @@ class EditUserUsecase(
 
     suspend fun editUser(
         token: AccessIdentity,
-        nickname: Optional<String>,
-        usernameOptional: Optional<Username?>,
-        avatarIdentityOptional: Optional<FileIdentity?>,
+        nickname: Optional<String> = Optional.Undefined,
+        username: Optional<Username?> = Optional.Undefined,
+        avatarIdentity: Optional<FileIdentity?> = Optional.Undefined,
+    ): Result {
+        val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
+        return editUser(userId, nickname, username, avatarIdentity)
+    }
+
+    suspend fun editUser(
+        userId: UserId,
+        nickname: Optional<String> = Optional.Undefined,
+        username: Optional<Username?> = Optional.Undefined,
+        avatarIdentity: Optional<FileIdentity?> = Optional.Undefined,
     ): Result {
         val nicknameValue = nickname.value
-
-        val userId = authRepository.authorizeWithUserId(token) { return Result.InvalidAccessIdentity }
         if (nicknameValue != null) if (!utf8Checker.checkString(nicknameValue)) return Result.InvalidUtf8String
 
-        avatarIdentityOptional.ifPresent { identity ->
+        avatarIdentity.ifPresent { identity ->
             if (identity != null) {
                 filesRepository.checkFileIdentity(identity) { return Result.InvalidAvatarIdentity }
             }
         }
 
-        val usernameValue = usernameOptional.value
+        val usernameValue = username.value
 
         if (usernameValue != null && storage.isOccupied(usernameValue)) {
             return Result.UsernameAlreadyOccupied
         }
 
-        if (listOf(nickname, avatarIdentityOptional, usernameOptional).all { it is Optional.Undefined }) {
+        if (listOf(nickname, avatarIdentity, username).all { it is Optional.Undefined }) {
             return Result.NullEditParameters
         }
 
         val fullUser = storage.editUser(
             userId,
             nickname,
-            usernameOptional,
-            avatarIdentityOptional.map { it?.id }
+            username,
+            avatarIdentity.map { it?.id }
         )
 
         return Result.Success(
@@ -76,7 +84,7 @@ class EditUserUsecase(
                     this.username,
                     this.email,
                     this.emailVerified,
-                    avatarIdentityOptional.value
+                    avatarIdentity.value
                 )
             }
         )

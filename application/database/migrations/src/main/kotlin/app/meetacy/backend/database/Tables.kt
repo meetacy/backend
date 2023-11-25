@@ -10,6 +10,7 @@ import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable
 import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsTable
 import app.meetacy.backend.feature.notifications.database.LastReadNotificationsTable
 import app.meetacy.backend.feature.notifications.database.NotificationsTable
+import app.meetacy.backend.feature.telegram.database.TelegramAuthTable
 import app.meetacy.backend.feature.updates.database.updates.UpdatesTable
 import app.meetacy.backend.feature.users.database.users.UsersTable
 import org.jetbrains.exposed.sql.Table
@@ -26,7 +27,8 @@ val tables: List<Table> = listOf(
     LastReadNotificationsTable,
     NotificationsTable,
     FriendsTable,
-    UpdatesTable
+    UpdatesTable,
+    TelegramAuthTable,
 ).apply {
     require(distinctBy { table -> table.tableName }.size == size) { "There were duplicates in `tables` list" }
 }

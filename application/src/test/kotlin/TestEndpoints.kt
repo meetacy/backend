@@ -3,6 +3,7 @@
 import app.meetacy.backend.application.database.DatabaseConfig
 import app.meetacy.backend.application.endpoints.prepareEndpoints
 import app.meetacy.backend.di.buildDI
+import app.meetacy.backend.types.auth.telegram.SecretTelegramBotKey
 import app.meetacy.backend.types.files.FileSize
 import app.meetacy.di.DI
 import app.meetacy.google.maps.GooglePlacesTextSearch
@@ -15,13 +16,14 @@ import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
-import io.ktor.client.*
-import io.ktor.client.plugins.logging.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
+import java.io.File
+import java.net.BindException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.test.runTest
-import java.io.File
-import java.net.BindException
 
 class TestServerContext(
     val testScope: CoroutineScope,
@@ -80,7 +82,9 @@ private fun buildDI(
         fileSizeLimit = FileSize(bytesSize = 99L * 1024 * 1024),
         discordWebhook = null,
         googlePlacesToken = null,
-        mockGooglePlacesSearch = mockGooglePlacesSearch
+        mockGooglePlacesSearch = mockGooglePlacesSearch,
+        telegramAuthBotUsername = null,
+        secretTelegramBotKey = SecretTelegramBotKey("")
     )
 }
 
@@ -112,7 +116,7 @@ fun testApi(port: Int) = MeetacyApi(
 suspend fun TestServerContext.generateTestAccount(
     postfix: String? = null
 ): AuthorizedSelfUserRepository {
-    val newClient = testApi.auth.generateAuthorizedApi(
+    val newClient = testApi.auth.generate(
         nickname = listOfNotNull("Test Account", postfix)
             .joinToString(separator = " ")
     )

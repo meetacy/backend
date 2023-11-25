@@ -8,7 +8,7 @@ dependencies {
     implementation(projects.application.database)
 
     implementation(projects.feature.auth.endpoints.integration)
-    implementation(projects.feature.email.endpoints.integration)
+    implementation(projects.feature.auth.email.endpoints.integration)
     implementation(projects.feature.files.endpoints.integration)
     implementation(projects.feature.invitations.endpoints.integration)
     implementation(projects.feature.notifications.endpoints.integration)
@@ -19,7 +19,7 @@ dependencies {
     implementation(projects.feature.search.endpoints.integration)
 
     implementation(projects.feature.auth.usecase.integration)
-    implementation(projects.feature.email.usecase.integration)
+    implementation(projects.feature.auth.email.usecase.integration)
     implementation(projects.feature.files.usecase.integration)
     implementation(projects.feature.files.database.integration)
     implementation(projects.feature.friends.usecase.integration)

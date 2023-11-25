@@ -2,6 +2,7 @@
 
 package app.meetacy.backend.endpoint.ktor
 
+import io.rsocket.kotlin.payload.Payload
 import io.rsocket.kotlin.payload.buildPayload
 import io.rsocket.kotlin.payload.data
 import kotlinx.serialization.Serializable
@@ -12,7 +13,20 @@ import kotlinx.serialization.json.Json
 data class Success<out T>(
     val status: Boolean,
     val result: T
-)
+) {
+    init {
+        require(status)
+    }
+}
+
+inline fun <reified T> Success<T>.encodeToPayload() = buildPayload {
+    data(Json.encodeToString<Success<T>>(this@encodeToPayload))
+}
+
+inline fun <reified T> buildSuccessPayload(result: T): Payload = Success(
+    status = true,
+    result = result
+).encodeToPayload()
 
 @Serializable
 data class Failure(
@@ -20,11 +34,12 @@ data class Failure(
     val errorCode: Int,
     val errorMessage: String
 ) {
-    // next errorCode -- 23
+    // next errorCode -- 24
     companion object {
         fun BadRequestException(message: String) = Failure(false, 0, "Bad request. $message")
 
         val InvalidToken = Failure(false, 1, "Please provide a valid token")
+        val InvalidTelegramTemporaryHash = Failure(false, 23, "Your Telegram authorization was expired")
         val InvalidMeetingIdentity = Failure(false, 2, "Please provide a valid meetingId")
         val InvalidFileIdentity = Failure(false, 3, "Please provide a valid fileId")
         val InvalidLink = Failure(false, 4, "This link is invalid. Please consider to create a new one")
