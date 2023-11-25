@@ -1,7 +1,16 @@
 package app.meetacy.backend.types.serializable.users
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@JvmInline
-value class Relationship(val string: String)
+enum class Relationship {
+    @SerialName("none")
+    None,
+    @SerialName("subscriber")
+    Subscriber,
+    @SerialName("subscription")
+    Subscription,
+    @SerialName("friend")
+    Friend
+}

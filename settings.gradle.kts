@@ -67,6 +67,8 @@ val libraries = listOf(
     "paging:serializable",
     "paging:serializable:integration",
     "exposed-extensions",
+    "google-maps",
+    "google-maps:ktor",
     "ktor-extensions",
 )
 include(libraries.map { "libs:$it" })
@@ -81,7 +83,8 @@ val features = listOf(
     "meetings",
     "notifications",
     "updates",
-    "users"
+    "users",
+    "search"
 )
 
 features.forEach { feature ->

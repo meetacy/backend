@@ -25,10 +25,12 @@ import app.meetacy.backend.types.users.Username
 import app.meetacy.backend.types.users.username
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.LikePattern
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.update
@@ -80,6 +82,16 @@ class UsersStorage(private val db: Database) {
             .associateBy { user -> user.identity.id }
 
         return@newSuspendedTransaction userIds.map { foundUsers[it] }
+    }
+
+    suspend fun searchUsers(
+        prefix: String,
+        limit: Int
+    ): List<FullUser> = newSuspendedTransaction(Dispatchers.IO, db) {
+        UsersTable.select {
+            (NICKNAME like "%" + LikePattern.ofLiteral(prefix).pattern + "%") or
+                    (USERNAME like "%" + LikePattern.ofLiteral(prefix).pattern + "%")
+        }.limit(limit).map { result -> result.toUser() }
     }
 
     suspend fun isEmailOccupied(

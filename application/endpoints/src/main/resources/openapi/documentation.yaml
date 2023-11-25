@@ -1130,6 +1130,59 @@ paths:
                   $ref: '#/components/examples/AlreadyOccupiedUsername'
                 InvalidUtf8String:
                   $ref: '#/components/examples/InvalidUtf8String'
+      security:
+        - token: [ ]
+  /search:
+    get:
+      summary: Search Users, Meetings and Places
+      tags:
+        - search
+      parameters:
+        - name: Api-Version
+          in: header
+          description: The version of API to invoke request with
+          required: true
+          schema:
+            type: string
+        - name: prompt
+          in: query
+          description: Query to search
+          required: true
+          schema:
+            type: string
+        - name: latitude
+          in: query
+          description: Latitude of the location to search
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: longitude
+          in: query
+          description: Longitude of the location to search
+          required: true
+          schema:
+            type: number
+            format: double
+      responses:
+        "200":
+          description: An example of successful search request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        "400":
+          description: Examples of invalid responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+              examples:
+                InvalidToken:
+                  $ref: '#/components/examples/InvalidToken'
+      security:
+        - token: [ ]
+
 components:
   securitySchemes:
     token:
@@ -1774,6 +1827,76 @@ components:
           example: fiveletterwordormore
       required:
         - username
+    SearchResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchItem'
+      required:
+        - "status"
+        - "result"
+    SearchItem:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              example: "meeting"
+            meeting:
+              $ref: '#/components/schemas/Meeting'
+          required:
+            - "type"
+            - "meeting"
+        - type: object
+          properties:
+            type:
+              type: string
+              example: "user"
+            user:
+              $ref: '#/components/schemas/User'
+          required:
+            - "type"
+            - "user"
+        - type: object
+          properties:
+            type:
+              type: string
+              example: "place"
+            place:
+              $ref: '#/components/schemas/Place'
+          required:
+            - "type"
+            - "place"
+    Place:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+        location:
+          $ref: '#/components/schemas/Location'
+      required:
+        - "address"
+        - "location"
+    Address:
+      type: object
+      properties:
+        country:
+          type: string
+        city:
+          type: string
+        street:
+          type: string
+        placeName:
+          type: string
+      required:
+        - "country"
+        - "city"
+        - "street"
     Invitation:
       type: object
       properties:

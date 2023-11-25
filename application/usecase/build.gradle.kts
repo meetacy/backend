@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.feature.invitations.usecase.integration)
     implementation(projects.feature.meetings.usecase.integration)
     implementation(projects.feature.notifications.usecase.integration)
+    implementation(projects.feature.search.usecase.integration)
     implementation(projects.feature.updates.usecase.integration)
     implementation(projects.feature.users.usecase.integration)
 }
