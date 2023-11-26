@@ -25,6 +25,8 @@ private class DiscordExceptionsHandler(
     private val webhook: DiscordWebhook
 ) : ExceptionsHandler {
     override suspend fun handle(call: ApplicationCall, throwable: Throwable) {
+        println("Unhandled Exception: ${throwable.stackTraceToString()}")
+
         val title = "Unhandled Exception Occurred"
 
         val requestString = buildString {
@@ -57,7 +59,7 @@ private class DiscordExceptionsHandler(
             appendLine()
 
             appendLine("**Stacktrace:**")
-            append("```kotlin")
+            appendLine("```kotlin")
             append(description)
             appendLine("```")
         }
