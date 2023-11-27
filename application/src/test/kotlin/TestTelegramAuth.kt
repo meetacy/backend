@@ -12,10 +12,10 @@ class TestTelegramAuth {
     fun `test telegram auth`() = runTestServer {
         val firstTelegramId = 0L
         val secondTelegramId = 1L
-        val username = "@username"
+        val username = "username"
         val firstName = "Name"
         val lastName = "Surname"
-        val newUsername = "@new_username"
+        val newUsername = "new_username"
         val newFirstName = "new Name"
         val newLastName = "new Surname"
 
@@ -32,7 +32,7 @@ class TestTelegramAuth {
         )
 
         val firstUser = async.await().getMe()
-        require(firstUser.username?.string == username.removePrefix("@"))
+        require(firstUser.username?.string == username)
         require(firstUser.nickname == "$firstName $lastName")
 
         val repeatedTempAuth = testApi.auth.telegram.prelogin()
@@ -48,7 +48,7 @@ class TestTelegramAuth {
 
         val repeatedUser = repeatedTempAuth.await().getMe()
         require(repeatedUser.id == firstUser.id)
-        require(repeatedUser.username?.string == username.removePrefix("@"))
+        require(repeatedUser.username?.string == username)
         require(repeatedUser.nickname == "$firstName $lastName")
 
 
