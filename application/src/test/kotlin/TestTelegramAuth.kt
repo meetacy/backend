@@ -7,6 +7,7 @@ import kotlinx.coroutines.async
 import org.junit.jupiter.api.Test
 
 class TestTelegramAuth {
+
     @Test
     fun `test telegram auth`() = runTestServer {
         val firstTelegramId = 0L
