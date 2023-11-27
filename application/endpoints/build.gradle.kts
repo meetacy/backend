@@ -31,6 +31,7 @@ dependencies {
 
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.cio)
+    implementation(libs.ktor.server.logging)
 
     implementation(libs.ktor.server.websockets)
     implementation(libs.ktor.server.rsocket)

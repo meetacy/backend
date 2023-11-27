@@ -24,7 +24,7 @@ suspend fun main(): Unit = coroutineScope {
     val discordWebhook = System.getenv("DISCORD_WEBHOOK_URL")?.let(::DiscordWebhook)
     val googlePlacesToken = System.getenv("GOOGLE_PLACES_TOKEN")
     val telegramAuthBotUsername = System.getenv("TELEGRAM_AUTH_BOT_USERNAME")
-    val secretTelegramBotKey = System.getenv("SECRET_TELEGRAM_BOT_KEY")?.let(::SecretTelegramBotKey)
+    val secretTelegramBotKey = System.getenv("TELEGRAM_AUTH_BOT_KEY")?.let(::SecretTelegramBotKey)
 
     val databaseConfig = if (useMockDatabase) {
         DatabaseConfig.Mock(port)

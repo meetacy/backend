@@ -12,8 +12,8 @@ class LocationsMiddleware(private val storage: Storage) {
     private val allLocationUpdates = MutableSharedFlow<Update>()
 
     suspend fun setLocation(userId: UserId, location: Location) {
-        allLocationUpdates.emit(Update(userId, location))
         storage.setLocation(userId, location)
+        allLocationUpdates.emit(Update(userId, location))
     }
 
     fun locationFlow(userId: UserId): Flow<LocationSnapshot> = channelFlow {
