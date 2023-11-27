@@ -17,8 +17,8 @@ class TelegramAuthMiddleware(
         accessIdentity: AccessIdentity,
         telegramHash: TemporaryTelegramHash
     ) {
-        events.emit(value = telegramHash to accessIdentity)
         storage.addAccessIdentity(telegramHash, accessIdentity)
+        events.emit(value = telegramHash to accessIdentity)
     }
 
     suspend fun getAccessIdentity(
