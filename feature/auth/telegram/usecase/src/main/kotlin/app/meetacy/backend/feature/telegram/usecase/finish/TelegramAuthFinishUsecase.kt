@@ -28,7 +28,7 @@ class TelegramAuthFinishUsecase(
         firstName: String?,
         lastName: String?
     ): Result {
-        if (this.secretBotKey == null) error("Please specify SECRET_TELEGRAM_BOT_KEY env variable")
+        if (this.secretBotKey == null) error("Please specify TELEGRAM_AUTH_BOT_KEY env variable")
         if (secretBotKey != this.secretBotKey) return Result.InvalidHash
         if (!storage.checkTemporalHash(temporalHash)) return Result.InvalidHash
 
@@ -45,12 +45,15 @@ class TelegramAuthFinishUsecase(
         val accessIdentity = if (userId == null) {
             val nickname = listOfNotNull(firstName, lastName).joinToString(separator = " ")
             val newAccessIdentity = storage.generateAuth(nickname)
-            val parsedUsername = username?.let(Username::parseOrNull)
 
-            if (parsedUsername != null) {
-                storage.saveUsernameSafely(parsedUsername, newAccessIdentity.userId)
-                storage.setLinkedTelegramId(telegramId, newAccessIdentity.userId)
-            }
+            username
+                ?.removePrefix("@")
+                ?.let(Username::parseOrNull)
+                ?.let { parsedUsername ->
+                    storage.saveUsernameSafely(parsedUsername, newAccessIdentity.userId)
+                }
+
+            storage.setLinkedTelegramId(telegramId, newAccessIdentity.userId)
 
             newAccessIdentity
         } else {
