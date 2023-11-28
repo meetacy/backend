@@ -9,6 +9,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
+import kotlinx.serialization.SerializationException
 
 fun interface ExceptionsHandler {
     suspend fun handle(call: ApplicationCall, throwable: Throwable)
@@ -24,20 +25,24 @@ private val websocketsUris = listOf(
 
 fun Application.installExceptionsHandler(handler: ExceptionsHandler) {
     install(StatusPages) {
-        exception { call, throwable: Throwable ->
-            if (throwable is BadRequestException) return@exception
-            if (call.request.uri in websocketsUris && throwable is ClosedReceiveChannelException) {
-                call.respond(HttpStatusCode.OK)
-                return@exception
+        exception { call, cause: Throwable ->
+            when (cause) {
+                is BadRequestException,
+                is SerializationException -> {
+                    val response = Failure.BadRequest(
+                        message = (cause.cause ?: cause).message ?: ""
+                    )
+                    call.respondFailure(response)
+                }
+                else -> {
+                    if (call.request.uri in websocketsUris && cause is ClosedReceiveChannelException) {
+                        call.respond(HttpStatusCode.OK)
+                        return@exception
+                    }
+                    call.respondFailure(Failure.UnhandledException)
+                    handler.handle(call, cause)
+                }
             }
-            call.respondFailure(Failure.UnhandledException)
-            handler.handle(call, throwable)
-        }
-        exception { call, cause: BadRequestException ->
-            val response = Failure.BadRequestException(
-                message = (cause.cause ?: cause).message ?: ""
-            )
-            call.respondFailure(response)
         }
     }
 }

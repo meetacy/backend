@@ -3,9 +3,9 @@ package app.meetacy.backend.feature.invitations.usecase.integration.view
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsStorage
 import app.meetacy.backend.feature.invitations.usecase.get.GetInvitationsViewsUsecase
 import app.meetacy.backend.feature.invitations.usecase.integration.types.mapToUsecase
-import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
+import app.meetacy.backend.types.invitation.FullInvitation
 import app.meetacy.backend.feature.invitations.usecase.types.GetInvitationsViewsRepository
-import app.meetacy.backend.feature.invitations.usecase.types.InvitationView
+import app.meetacy.backend.types.invitation.InvitationView
 import app.meetacy.backend.feature.invitations.usecase.types.ViewInvitationsRepository
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.users.UserId

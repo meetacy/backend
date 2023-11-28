@@ -3,7 +3,7 @@ package app.meetacy.backend.feature.invitations.usecase.integration.cancel
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsStorage
 import app.meetacy.backend.feature.invitations.usecase.cancel.CancelInvitationUsecase
 import app.meetacy.backend.feature.invitations.usecase.integration.types.mapToUsecase
-import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
+import app.meetacy.backend.types.invitation.FullInvitation
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.di.builder.DIBuilder

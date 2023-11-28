@@ -4,7 +4,7 @@ import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsStorage
 import app.meetacy.backend.feature.invitations.usecase.create.CreateInvitationUsecase
 import app.meetacy.backend.feature.invitations.usecase.integration.types.mapToUsecase
-import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
+import app.meetacy.backend.types.invitation.FullInvitation
 import app.meetacy.backend.feature.invitations.usecase.types.GetInvitationsViewsRepository
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsStorage
 import app.meetacy.backend.feature.notifications.usecase.add.AddNotificationUsecase

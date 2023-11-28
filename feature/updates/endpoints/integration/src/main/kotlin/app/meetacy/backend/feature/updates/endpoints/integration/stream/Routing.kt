@@ -6,7 +6,7 @@ import app.meetacy.backend.feature.updates.usecase.updates.stream.StreamUpdatesU
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.update.UpdateId
-import app.meetacy.backend.types.serializable.update.mapToEndpoint
+import app.meetacy.backend.types.serializable.update.serializable
 import app.meetacy.backend.types.serializable.update.type
 import app.meetacy.backend.types.update.UpdateView
 import app.meetacy.di.DI
@@ -25,7 +25,7 @@ internal fun Route.streamUpdates(di: DI) {
                 val result = streamUpdatesUsecase.flow(token.type(), fromId?.type())
             ) {
                 is StreamUpdatesUsecase.Result.Ready -> StreamUpdatesRepository.Result.Ready(
-                    flow = result.flow.map(UpdateView::mapToEndpoint)
+                    flow = result.flow.map(UpdateView::serializable)
                 )
                 is StreamUpdatesUsecase.Result.TokenInvalid -> StreamUpdatesRepository.Result.TokenInvalid
             }

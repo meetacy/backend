@@ -11,7 +11,8 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.amount.type
-import app.meetacy.backend.types.serializable.users.mapToEndpoint
+import app.meetacy.backend.types.serializable.users.serializable
+import app.meetacy.backend.types.users.UserView
 import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
@@ -31,7 +32,7 @@ fun Route.listFriends(di: DI) {
                 is ListFriendsUsecase.Result.Success ->
                     ListFriendsResult.Success(
                         result.paging.map { users ->
-                            users.map { it.mapToEndpoint() }
+                            users.map(UserView::serializable)
                         }.serializable()
                     )
             }
