@@ -1,17 +1,11 @@
 package app.meetacy.backend.types.serializable.update
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import app.meetacy.backend.types.serializable.notification.Notification as NotificationType
+import app.meetacy.backend.types.serializable.notification.serializable
+import app.meetacy.backend.types.update.UpdateView
 
-@Serializable
-sealed interface Update {
-    val id: UpdateId
-
-    @Serializable
-    @SerialName("notification")
-    data class Notification(
-        override val id: UpdateId,
-        val notification: NotificationType
-    ) : Update
+fun UpdateView.serializable(): Update = when (this) {
+    is UpdateView.Notification -> Update.Notification(
+        id = id.serializable(),
+        notification = notification.serializable()
+    )
 }
