@@ -1,8 +1,8 @@
 package app.meetacy.backend.feature.invitations.usecase.integration.view
 
 import app.meetacy.backend.feature.invitations.usecase.get.ViewInvitationsUsecase
-import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
-import app.meetacy.backend.feature.invitations.usecase.types.InvitationView
+import app.meetacy.backend.types.invitation.FullInvitation
+import app.meetacy.backend.types.invitation.InvitationView
 import app.meetacy.backend.feature.invitations.usecase.types.ViewInvitationsRepository
 import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
 import app.meetacy.backend.types.users.GetUsersViewsRepository

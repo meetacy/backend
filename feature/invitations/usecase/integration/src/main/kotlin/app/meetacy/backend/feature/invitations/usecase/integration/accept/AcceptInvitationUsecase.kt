@@ -3,7 +3,7 @@ package app.meetacy.backend.feature.invitations.usecase.integration.accept
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsStorage
 import app.meetacy.backend.feature.invitations.usecase.accept.AcceptInvitationUsecase
 import app.meetacy.backend.feature.invitations.usecase.integration.types.mapToUsecase
-import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
+import app.meetacy.backend.types.invitation.FullInvitation
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsStorage
 import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsStorage
 import app.meetacy.backend.types.auth.AuthRepository

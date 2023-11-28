@@ -10,7 +10,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.amount.type
-import app.meetacy.backend.types.serializable.notification.mapToEndpoint
+import app.meetacy.backend.types.serializable.notification.serializable
 import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
@@ -31,7 +31,7 @@ internal fun Route.list(di: DI) {
             is GetNotificationsUsecase.Result.Success ->
                 ListNotificationsRepository.Result.Success(
                     notifications = result.notifications.mapItems { notification ->
-                        notification.mapToEndpoint()
+                        notification.serializable()
                     }.serializable()
                 )
             is GetNotificationsUsecase.Result.TokenInvalid -> ListNotificationsRepository.Result.InvalidIdentity

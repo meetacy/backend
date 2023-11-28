@@ -7,7 +7,8 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.location.type
-import app.meetacy.backend.types.serializable.users.mapToEndpoint
+import app.meetacy.backend.types.serializable.users.serializable
+import app.meetacy.backend.types.users.UserLocationSnapshot
 import app.meetacy.di.DI
 import io.ktor.server.routing.*
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +28,7 @@ fun Route.streamFriendsLocation(di: DI) {
             )
             return when (result) {
                 is FriendsLocationStreamingUsecase.Result.Ready -> StreamLocationRepository.Result.Ready(
-                    flow = result.flow.map { user -> user.mapToEndpoint() }
+                    flow = result.flow.map(UserLocationSnapshot::serializable)
                 )
                 is FriendsLocationStreamingUsecase.Result.TokenInvalid -> StreamLocationRepository.Result.TokenInvalid
             }

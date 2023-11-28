@@ -1,6 +1,6 @@
 package app.meetacy.backend.feature.invitations.usecase.accept
 
-import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
+import app.meetacy.backend.types.invitation.FullInvitation
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId

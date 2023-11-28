@@ -12,9 +12,9 @@ import app.meetacy.backend.types.meetings.MeetingIdentity
 import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserIdentity
-import app.meetacy.backend.feature.invitations.usecase.types.FullInvitation
+import app.meetacy.backend.types.invitation.FullInvitation
 import app.meetacy.backend.feature.invitations.usecase.types.GetInvitationsViewsRepository
-import app.meetacy.backend.feature.invitations.usecase.types.InvitationView
+import app.meetacy.backend.types.invitation.InvitationView
 import app.meetacy.backend.feature.invitations.usecase.types.getInvitationView
 
 class CreateInvitationUsecase(

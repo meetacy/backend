@@ -3,10 +3,10 @@ package app.meetacy.backend.feature.invitations.endpoints.integration.create
 import app.meetacy.backend.feature.invitations.endpoints.create.CreateInvitationRepository
 import app.meetacy.backend.feature.invitations.endpoints.create.InvitationsCreateResponse
 import app.meetacy.backend.feature.invitations.endpoints.create.invitationCreate
-import app.meetacy.backend.feature.invitations.endpoints.integration.types.toEndpoint
 import app.meetacy.backend.feature.invitations.usecase.create.CreateInvitationUsecase
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
+import app.meetacy.backend.types.serializable.invitation.serializable
 import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
 import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.backend.types.serializable.users.UserIdentity
@@ -35,7 +35,7 @@ internal fun Route.invitationCreate(di: DI) {
                 CreateInvitationUsecase.Result.Unauthorized ->
                     InvitationsCreateResponse.Unauthorized
                 is CreateInvitationUsecase.Result.Success ->
-                    InvitationsCreateResponse.Success(response.invitation.toEndpoint())
+                    InvitationsCreateResponse.Success(response.invitation.serializable())
             }
         }
     }

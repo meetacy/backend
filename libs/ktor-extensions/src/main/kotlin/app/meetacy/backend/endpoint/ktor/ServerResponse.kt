@@ -36,7 +36,7 @@ data class Failure(
 ) {
     // next errorCode -- 24
     companion object {
-        fun BadRequestException(message: String) = Failure(false, 0, "Bad request. $message")
+        fun BadRequest(message: String) = Failure(false, 0, "Bad request. $message")
 
         val InvalidToken = Failure(false, 1, "Please provide a valid token")
         val InvalidTelegramTemporaryHash = Failure(false, 23, "Your Telegram authorization was expired")
