@@ -28,7 +28,7 @@ class TelegramAuthFinishUsecase(
         firstName: String?,
         lastName: String?
     ): Result {
-        if (this.secretBotKey == null) error("Please specify SECRET_TELEGRAM_BOT_KEY env variable")
+        if (this.secretBotKey == null) error("Please specify TELEGRAM_AUTH_BOT_KEY env variable")
         if (secretBotKey != this.secretBotKey) return Result.InvalidHash
         if (!storage.checkTemporalHash(temporalHash)) return Result.InvalidHash
 
@@ -43,16 +43,7 @@ class TelegramAuthFinishUsecase(
         val userId = storage.getLinkedUserIdOrNull(telegramId)
 
         val accessIdentity = if (userId == null) {
-            val nickname = listOfNotNull(firstName, lastName).joinToString(separator = " ")
-            val newAccessIdentity = storage.generateAuth(nickname)
-            val parsedUsername = username?.let(Username::parseOrNull)
-
-            if (parsedUsername != null) {
-                storage.saveUsernameSafely(parsedUsername, newAccessIdentity.userId)
-                storage.setLinkedTelegramId(telegramId, newAccessIdentity.userId)
-            }
-
-            newAccessIdentity
+            generateNewLinkedAccount(telegramId, firstName, lastName, username)
         } else {
             storage.generateToken(userId)
         }
@@ -60,6 +51,22 @@ class TelegramAuthFinishUsecase(
         storage.saveAccessIdentity(accessIdentity, temporalHash)
 
         return Result.Success
+    }
+
+    private suspend fun generateNewLinkedAccount(
+        telegramId: Long,
+        firstName: String?,
+        lastName: String?,
+        username: String?
+    ): AccessIdentity {
+        val nickname = listOfNotNull(firstName, lastName).joinToString(separator = " ")
+        val newAccessIdentity = storage.generateAuth(nickname)
+        val parsedUsername = username?.let(Username::parseOrNull)
+        if (parsedUsername != null) {
+            storage.saveUsernameSafely(newAccessIdentity.userId, parsedUsername)
+        }
+        storage.setLinkedTelegramId(newAccessIdentity.userId, telegramId)
+        return newAccessIdentity
     }
 
     interface Storage {
@@ -80,13 +87,13 @@ class TelegramAuthFinishUsecase(
         ): AccessIdentity
 
         suspend fun setLinkedTelegramId(
-            telegramId: Long,
-            userId: UserId
+            userId: UserId,
+            telegramId: Long
         )
 
         suspend fun saveUsernameSafely(
-            username: Username,
-            userId: UserId
+            userId: UserId,
+            username: Username
         )
 
         suspend fun saveAccessIdentity(

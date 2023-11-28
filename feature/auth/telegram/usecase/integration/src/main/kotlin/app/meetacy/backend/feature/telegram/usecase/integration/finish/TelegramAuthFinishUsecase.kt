@@ -44,11 +44,11 @@ fun DIBuilder.telegramAuthFinishUsecase() {
                 return generateTokenUsecase.generateToken(userId)
             }
 
-            override suspend fun setLinkedTelegramId(telegramId: Long, userId: UserId) {
+            override suspend fun setLinkedTelegramId(userId: UserId, telegramId: Long) {
                 usersStorage.setLinkedTelegramUser(telegramId, userId)
             }
 
-            override suspend fun saveUsernameSafely(username: Username, userId: UserId) {
+            override suspend fun saveUsernameSafely(userId: UserId, username: Username) {
                 editUserUsecase.editUser(
                     userId = userId,
                     username = Optional.Present(username)
