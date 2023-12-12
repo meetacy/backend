@@ -111,6 +111,7 @@ paths:
       description: "Request temp token for telegram auth"
       responses:
         "200":
+          description: ""
           content:
             application/json:
               schema:
@@ -135,11 +136,13 @@ paths:
               $ref: '#/components/schemas/TelegramFinishRequest'
       responses:
         "200":
+          description: ""
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/StatusTrueResponse'
         "400":
+          description: "TODO"
           content:
             application/json:
               schema:
@@ -314,7 +317,7 @@ paths:
         required: true
         schema:
           type: string
-    post:
+    delete:
       summary: Delete friend
       tags:
         - friends
@@ -624,7 +627,7 @@ paths:
         required: true
         schema:
           type: string
-    post:
+    delete:
       summary: Deleting a meeting
       tags:
         - meetings

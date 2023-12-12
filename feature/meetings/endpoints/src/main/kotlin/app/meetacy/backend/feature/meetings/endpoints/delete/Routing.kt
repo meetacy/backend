@@ -26,7 +26,7 @@ interface DeleteMeetingRepository {
     suspend fun deleteMeeting(token: AccessIdentity, meetingId: MeetingIdentity): DeleteMeetingResult
 }
 
-fun Route.deleteMeeting(repository: DeleteMeetingRepository) = post("/delete") {
+fun Route.deleteMeeting(repository: DeleteMeetingRepository) = delete("/delete") {
     val param = call.receive<DeleteMeetingParam>()
     val token = call.accessIdentity()
     when (repository.deleteMeeting(token, param.meetingId)) {
