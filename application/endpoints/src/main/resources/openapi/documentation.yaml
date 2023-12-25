@@ -1492,7 +1492,7 @@ components:
         "date":
           type: string
           example:
-            20232402T100000+0300
+            2023-12-25
         "location":
           $ref: '#/components/schemas/Location'
         "visibility":
@@ -1540,7 +1540,7 @@ components:
         "date":
           type: string
           example:
-            20232402T100000+0300
+            2023-12-25
         "location":
           $ref: '#/components/schemas/Location'
         "visibility":
