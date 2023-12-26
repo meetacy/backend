@@ -49,7 +49,7 @@ interface EditMeetingRepository {
     ): EditMeetingResult
 }
 
-fun Route.editMeeting(repository: EditMeetingRepository) = post("/edit") {
+fun Route.editMeeting(repository: EditMeetingRepository) = put("/edit") {
     val params = call.receive<EditMeetingParams>()
     val token = call.accessIdentity()
 
