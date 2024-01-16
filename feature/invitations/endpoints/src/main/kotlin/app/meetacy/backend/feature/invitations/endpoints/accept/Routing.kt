@@ -16,24 +16,21 @@ data class InvitationAcceptParams(
     val invitationId: InvitationId
 )
 
-fun Route.invitationAccept(invitationsAcceptRepository: AcceptInvitationRepository) {
-    post("/accept") {
-        val acceptParam: InvitationAcceptParams = call.receive()
-        val token = call.accessIdentity()
-
-        when (invitationsAcceptRepository.acceptInvitation(token, acceptParam.invitationId)) {
-            InvitationAcceptResponse.Success -> {
-                call.respondSuccess()
-            }
-            InvitationAcceptResponse.Unauthorized -> {
-                call.respondFailure(Failure.InvalidToken)
-            }
-            InvitationAcceptResponse.NotFound -> {
-                call.respondFailure(Failure.InvitationNotFound)
-            }
-            InvitationAcceptResponse.MeetingNotFound -> {
-                call.respondFailure(Failure.InvalidMeetingIdentity)
-            }
+fun Route.invitationAccept(invitationsAcceptRepository: AcceptInvitationRepository) = post("/accept") {
+    val acceptParam: InvitationAcceptParams = call.receive()
+    val token = call.accessIdentity()
+    when (invitationsAcceptRepository.acceptInvitation(token, acceptParam.invitationId)) {
+        InvitationAcceptResponse.Success -> {
+            call.respondSuccess()
+        }
+        InvitationAcceptResponse.Unauthorized -> {
+            call.respondFailure(Failure.InvalidToken)
+        }
+        InvitationAcceptResponse.NotFound -> {
+            call.respondFailure(Failure.InvitationNotFound)
+        }
+        InvitationAcceptResponse.MeetingNotFound -> {
+            call.respondFailure(Failure.InvalidMeetingIdentity)
         }
     }
 }

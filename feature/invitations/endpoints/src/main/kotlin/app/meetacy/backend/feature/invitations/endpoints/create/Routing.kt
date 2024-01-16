@@ -19,30 +19,28 @@ data class InvitationCreatingForm(
     val userId: UserIdentity
 )
 
-fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationRepository) {
-    post("/create") {
-        val form: InvitationCreatingForm = call.receive()
-        val token = call.accessIdentity()
+fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationRepository) = post("/create") {
+    val form: InvitationCreatingForm = call.receive()
+    val token = call.accessIdentity()
 
-        when (val response = invitationsCreateRepository.createInvitation(token, form.meetingId, form.userId)) {
-            is InvitationsCreateResponse.Success -> {
-                call.respondSuccess(response.response)
-            }
-            InvitationsCreateResponse.UserNotFound -> {
-                call.respondFailure(Failure.FriendNotFound)
-            }
-            InvitationsCreateResponse.MeetingNotFound -> {
-                call.respondFailure(Failure.InvalidMeetingIdentity)
-            }
-            InvitationsCreateResponse.NoPermissions -> {
-                call.respondFailure(Failure.UnableToInvite)
-            }
-            InvitationsCreateResponse.Unauthorized -> {
-                call.respondFailure(Failure.InvalidToken)
-            }
-            InvitationsCreateResponse.UserAlreadyInvited -> {
-                call.respondFailure(Failure.UserAlreadyInvited)
-            }
+    when (val response = invitationsCreateRepository.createInvitation(token, form.meetingId, form.userId)) {
+        is InvitationsCreateResponse.Success -> {
+            call.respondSuccess(response.response)
+        }
+        InvitationsCreateResponse.UserNotFound -> {
+            call.respondFailure(Failure.FriendNotFound)
+        }
+        InvitationsCreateResponse.MeetingNotFound -> {
+            call.respondFailure(Failure.InvalidMeetingIdentity)
+        }
+        InvitationsCreateResponse.NoPermissions -> {
+            call.respondFailure(Failure.UnableToInvite)
+        }
+        InvitationsCreateResponse.Unauthorized -> {
+            call.respondFailure(Failure.InvalidToken)
+        }
+        InvitationsCreateResponse.UserAlreadyInvited -> {
+            call.respondFailure(Failure.UserAlreadyInvited)
         }
     }
 }

@@ -742,17 +742,21 @@ paths:
         required: true
         schema:
           type: string
+      - name: amount
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: pagingId
+        in: path
+        required: false
+        schema:
+          type: string
     get:
       summary: Getting a list of active meetings
       tags:
         - meetings
       description: "Getting a list of meetings by token"
-      requestBody:
-        description: response with an token
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ListMeetingsRequest'
       responses:
         "200":
           description: An example of a successful generated response with an token
@@ -779,17 +783,21 @@ paths:
         required: true
         schema:
           type: string
+      - name: amount
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: pagingId
+        in: path
+        required: false
+        schema:
+          type: string
     get:
       summary: Getting a list of active meetings
       tags:
         - meetings
       description: "Getting a list of meetings by token"
-      requestBody:
-        description: response with an token
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ListMeetingsRequest'
       responses:
         "200":
           description: An example of a successful generated response with an token
