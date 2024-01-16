@@ -24,14 +24,11 @@ interface LinkEmailRepository {
     suspend fun linkEmail(token: AccessIdentity, email: String): ConfirmHashResult
 }
 
-fun Route.linkEmail(repository: LinkEmailRepository) {
-    post("/link") {
-        val parameter = call.receive<LinkParameters>()
-        val token = call.accessIdentity()
-
-        when (repository.linkEmail(token, parameter.email)) {
-            is ConfirmHashResult.Success -> call.respondSuccess()
-            is ConfirmHashResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
-        }
+fun Route.linkEmail(repository: LinkEmailRepository) = post("/link") {
+    val parameter = call.receive<LinkParameters>()
+    val token = call.accessIdentity()
+    when (repository.linkEmail(token, parameter.email)) {
+        is ConfirmHashResult.Success -> call.respondSuccess()
+        is ConfirmHashResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
     }
 }

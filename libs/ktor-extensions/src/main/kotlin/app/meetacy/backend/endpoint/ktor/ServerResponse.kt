@@ -52,6 +52,7 @@ data class Failure(
         val MeetingAlreadyParticipate = Failure(false, 9, "You are already participating in this meeting")
         val NullEditParams = Failure(false, 10, "Specify at least one edit parameter")
 
+
         val FriendAlreadyAdded = Failure(false, 11, "Friend already added")
         val ExpiredLink = Failure(false, 12, "This link was expired. Please consider to create a new one")
 

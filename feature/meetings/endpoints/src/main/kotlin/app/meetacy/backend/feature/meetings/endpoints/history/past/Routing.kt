@@ -1,10 +1,11 @@
 package app.meetacy.backend.feature.meetings.endpoints.history.past
 
 import app.meetacy.backend.core.endpoints.accessIdentity
+import app.meetacy.backend.core.endpoints.amount
+import app.meetacy.backend.core.endpoints.pagingId
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
-import app.meetacy.backend.feature.meetings.endpoints.history.list.ListParam
 import app.meetacy.backend.feature.meetings.endpoints.history.past.ListMeetingsPastResult.InvalidIdentity
 import app.meetacy.backend.feature.meetings.endpoints.history.past.ListMeetingsPastResult.Success
 import app.meetacy.backend.types.paging.serializable.PagingId
@@ -13,7 +14,6 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.meetings.Meeting
 import io.ktor.server.application.*
-import io.ktor.server.request.*
 import io.ktor.server.routing.*
 
 sealed interface ListMeetingsPastResult {
@@ -31,14 +31,15 @@ interface ListMeetingsPastRepository {
 
 @Suppress("DuplicatedCode")
 fun Route.listMeetingsPast(repository: ListMeetingsPastRepository) = get("/past") {
-    val params = call.receive<ListParam>()
+    val amount = call.amount()
+    val pagingId = call.pagingId()
     val token = call.accessIdentity()
 
     when (
         val result = repository.getList(
             accessIdentity = token,
-            amount = params.amount,
-            pagingId = params.pagingId
+            amount = amount,
+            pagingId = pagingId
         )
     ) {
         is InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
