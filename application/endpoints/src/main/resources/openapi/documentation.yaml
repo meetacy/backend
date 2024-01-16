@@ -968,6 +968,7 @@ paths:
                   $ref: '#/components/examples/InvalidToken'
       security:
         - token: []
+      deprecated: true
   /notifications/read:
     parameters:
       - name: Api-Version
@@ -1005,6 +1006,7 @@ paths:
                   $ref: '#/components/examples/LastNotificationIdInvalid'
       security:
         - token: []
+      deprecated: true
   /users/get:
     parameters:
       - name: Api-Version
