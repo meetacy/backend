@@ -19,6 +19,8 @@ fun interface ExceptionsHandler {
 //  выйдет новый релиз rsocket. Возникающая ошибка –
 //  проблема rsocket по информации от его разработчика (@why_oleg)
 
+// убрано? см предыдущие коммиты
+
 fun Application.installExceptionsHandler(handler: ExceptionsHandler) {
     install(StatusPages) {
         exception { call, cause: Throwable ->
