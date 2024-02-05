@@ -2,13 +2,11 @@ package app.meetacy.discord.webhook.ktor
 
 import app.meetacy.discord.webhook.embed.DiscordEmbeds
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
 
 internal class HttpBindings(client: HttpClient) {

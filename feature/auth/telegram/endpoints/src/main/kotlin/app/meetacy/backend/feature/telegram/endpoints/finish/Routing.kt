@@ -38,23 +38,20 @@ interface FinishRepository {
     ): FinishResult
 }
 
-fun Route.finish(repository: FinishRepository) {
-    post("/finish") {
-        val params = call.receive<FinishParams>()
-
-        when (
-            repository.finish(
-                params.temporalHash,
-                params.secretBotKey,
-                params.telegramId,
-                params.username,
-                params.firstName,
-                params.lastName
-            )
-        ) {
-            is FinishResult.Success -> call.respondSuccess()
-            FinishResult.InvalidHash -> call.respondFailure(Failure.InvalidTelegramTemporaryHash)
-            FinishResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
-        }
+fun Route.finish(repository: FinishRepository) = post("/finish") {
+    val params = call.receive<FinishParams>()
+    when (
+        repository.finish(
+            params.temporalHash,
+            params.secretBotKey,
+            params.telegramId,
+            params.username,
+            params.firstName,
+            params.lastName
+        )
+    ) {
+        is FinishResult.Success -> call.respondSuccess()
+        FinishResult.InvalidHash -> call.respondFailure(Failure.InvalidTelegramTemporaryHash)
+        FinishResult.InvalidUtf8String -> call.respondFailure(Failure.InvalidUtf8String)
     }
 }

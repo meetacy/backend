@@ -17,9 +17,7 @@ interface PreloginRepository {
     suspend fun prelogin(): PreloginResult
 }
 
-fun Route.prelogin(repository: PreloginRepository) {
-    get("/prelogin") {
-        val result = repository.prelogin()
-        call.respondSuccess(result)
-    }
+fun Route.prelogin(repository: PreloginRepository) = get("/prelogin") {
+    val result = repository.prelogin()
+    call.respondSuccess(result)
 }

@@ -6,8 +6,8 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
 import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
+import io.rsocket.kotlin.RSocketError.ConnectionError
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.serialization.SerializationException
 
@@ -18,10 +18,6 @@ fun interface ExceptionsHandler {
 // fixme: убрать костыль с вебсокетом когда
 //  выйдет новый релиз rsocket. Возникающая ошибка –
 //  проблема rsocket по информации от его разработчика (@why_oleg)
-private val websocketsUris = listOf(
-    "/auth/telegram/await",
-    "/updates/stream"
-)
 
 fun Application.installExceptionsHandler(handler: ExceptionsHandler) {
     install(StatusPages) {
@@ -35,7 +31,7 @@ fun Application.installExceptionsHandler(handler: ExceptionsHandler) {
                     call.respondFailure(response)
                 }
                 else -> {
-                    if (call.request.uri in websocketsUris && cause is ClosedReceiveChannelException) {
+                    if (cause is ClosedReceiveChannelException || cause is ConnectionError) {
                         call.respond(HttpStatusCode.OK)
                         return@exception
                     }
