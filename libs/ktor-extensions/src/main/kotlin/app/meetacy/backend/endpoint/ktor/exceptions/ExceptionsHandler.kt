@@ -15,9 +15,6 @@ fun interface ExceptionsHandler {
     suspend fun handle(call: ApplicationCall, throwable: Throwable)
 }
 
-// fixme: убрать костыль с вебсокетом когда
-//  выйдет новый релиз rsocket. Возникающая ошибка –
-//  проблема rsocket по информации от его разработчика (@why_oleg)
 fun Application.installExceptionsHandler(handler: ExceptionsHandler) {
     install(StatusPages) {
         exception { call, cause: Throwable ->
