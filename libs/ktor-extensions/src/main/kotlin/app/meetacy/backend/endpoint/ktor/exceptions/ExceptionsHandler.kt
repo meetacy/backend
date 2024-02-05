@@ -18,10 +18,6 @@ fun interface ExceptionsHandler {
 // fixme: убрать костыль с вебсокетом когда
 //  выйдет новый релиз rsocket. Возникающая ошибка –
 //  проблема rsocket по информации от его разработчика (@why_oleg)
-private val websocketsUris = listOf(
-    "/auth/telegram/await",
-    "/updates/stream"
-)
 
 fun Application.installExceptionsHandler(handler: ExceptionsHandler) {
     install(StatusPages) {
