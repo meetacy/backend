@@ -42,7 +42,9 @@ class UsersLocationsStorage(private val db: Database) {
     ) {
         newSuspendedTransaction(Dispatchers.IO, db) {
             if (UsersLocationsTable.select { USER_ID eq userId.long }.any()) {
-                UsersLocationsTable.update { statement ->
+                UsersLocationsTable.update(
+                    where = { USER_ID eq userId.long }
+                ) { statement ->
                     statement[LATITUDE] = location.location.latitude
                     statement[LONGITUDE] = location.longitude
                     statement[UPDATED_TIME] = location.capturedAt.iso8601
@@ -58,8 +60,10 @@ class UsersLocationsStorage(private val db: Database) {
         }
     }
 
-    suspend fun getLocation(userId: UserId): LocationSnapshot? = newSuspendedTransaction {
-        UsersLocationsTable.select { USER_ID eq userId.long }.singleOrNull()?.toLocationSnapshot()
+    suspend fun getLocation(userId: UserId): LocationSnapshot? = newSuspendedTransaction(Dispatchers.IO, db) {
+        UsersLocationsTable.select {
+            USER_ID eq userId.long
+        }.firstOrNull()?.toLocationSnapshot()
     }
 
     @OptIn(UnsafeConstructor::class)

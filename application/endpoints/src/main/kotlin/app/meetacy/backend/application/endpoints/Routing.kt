@@ -14,17 +14,21 @@ import app.meetacy.backend.feature.search.endpoints.integration.search
 import app.meetacy.backend.feature.updates.endpoints.integration.updates
 import app.meetacy.backend.feature.users.endpoints.integration.users
 import app.meetacy.di.DI
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.cio.*
-import io.ktor.server.engine.*
-import io.ktor.server.http.content.*
-import io.ktor.server.plugins.autohead.*
-import io.ktor.server.plugins.cors.routing.*
-import io.ktor.server.plugins.doublereceive.*
-import io.ktor.server.plugins.partialcontent.*
-import io.ktor.server.plugins.swagger.*
-import io.ktor.server.routing.*
+import io.ktor.http.HttpHeaders
+import io.ktor.server.application.call
+import io.ktor.server.application.install
+import io.ktor.server.cio.CIO
+import io.ktor.server.engine.ApplicationEngine
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.http.content.staticResources
+import io.ktor.server.plugins.autohead.AutoHeadResponse
+import io.ktor.server.plugins.cors.routing.CORS
+import io.ktor.server.plugins.doublereceive.DoubleReceive
+import io.ktor.server.plugins.partialcontent.PartialContent
+import io.ktor.server.plugins.swagger.swaggerUI
+import io.ktor.server.response.respondRedirect
+import io.ktor.server.routing.get
+import io.ktor.server.routing.routing
 import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.exposed.sql.Database
 
@@ -64,6 +68,10 @@ suspend fun prepareEndpoints(di: DI): ApplicationEngine {
             search(di)
             updates(di)
             users(di)
+
+            get("/duntsova") {
+                call.respondRedirect("https://дунцова.рф")
+            }
         }
     }
 }
