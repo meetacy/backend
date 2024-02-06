@@ -2,15 +2,10 @@
 
 import app.meetacy.sdk.MeetacyApi
 import app.meetacy.sdk.production
-import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.annotation.UnsafeConstructor
 import app.meetacy.sdk.types.annotation.UnstableApi
 import app.meetacy.sdk.types.auth.Token
-import app.meetacy.sdk.types.file.FileId
-import app.meetacy.sdk.types.optional.Optional
-import app.meetacy.sdk.types.paging.flatten
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
-import kotlinx.coroutines.coroutineScope
 
 private val matthewToken = Token("284:ZVp2JYU6ZheAjuVxB6XdavVxxHrysT2dpqpjyccZVhOU5XUv5MyVUdLjZmcME90WqNT2Wq9s3e95dpRbDfFTiHOL8E5ZoSG5ZbIrdbMGOtoe5ezo9C3WDrO5e88RWBjlNg9fXt5FSO6G3iG3bEGKu5IAJ6F2qCady3sACamC247RVQJYuRmRAy2b6dDtwLaj2BSisos3CGr90flBsBCOVL5VIjusrWv64Bd0pMUaibHcR6H3xlAs3gycXrAJxwqD")
 private val y9san9Token = Token("277:SfEzlwUDCq4UIGhk9d8nvB2UUfkdSZLnyQ8Cb9QDFPhyKEJcqBHeQ7rT2DQFi1wAR6pUUGBQrMY5RrCbadM41te4Nu1jAGuGAlpB5Qbt5ToEjFUEaRTpMCEUnqzL54Gnrrvx2LXN2jAfBj5XzpAQWvU6OkiUw2kQKszRb5FouD5DFLUU6m9UDmvJ612ZAmg4CcQCp8JQulqB2wr7E6rVeHTN7oY2Ewe6CSbNxVxFtbsLClTvzow9gtT7mGH0I6mt")
@@ -33,13 +28,6 @@ private val bogdan = api.authorized(bogdanToken)
 private val demn = api.authorized(demnToken)
 
 private val devs = listOf(y9san9, matthew, kap, yuri, heoh, mixno, bogdan, demn)
-
-suspend fun main(): Unit = coroutineScope {
-//    signupDeveloper()
-    demn.users.edit(
-        avatarId =
-    )
-}
 
 private suspend fun signupDeveloper() {
     val telegram = api.auth.telegram.prelogin()
