@@ -3,7 +3,7 @@
 package app.meetacy.backend.feature.meetings.database.meetings
 
 import app.meetacy.backend.constants.DATE_TIME_MAX_LIMIT
-import app.meetacy.backend.constants.DESCRIPTION_MAX_LIMIT
+import app.meetacy.backend.constants.MEETING_DESCRIPTION_MAX_LIMIT
 import app.meetacy.backend.constants.HASH_LENGTH
 import app.meetacy.backend.constants.MEETING_TITLE_MAX_LIMIT
 import app.meetacy.backend.feature.files.database.FilesTable
@@ -21,6 +21,7 @@ import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.description.Description
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meetings.FullMeeting
@@ -28,6 +29,7 @@ import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingIdentity
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
+import app.meetacy.backend.types.title.Title
 import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -45,8 +47,8 @@ object MeetingsTable : Table() {
     val DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
     val LATITUDE = double("LATITUDE")
     val LONGITUDE = double("LONGITUDE")
-    val TITLE = varchar("TITLE", length = MEETING_TITLE_MAX_LIMIT).nullable()
-    val DESCRIPTION = varchar("DESCRIPTION", length = DESCRIPTION_MAX_LIMIT).nullable()
+    val TITLE = varchar("TITLE", length = MEETING_TITLE_MAX_LIMIT)
+    val DESCRIPTION = varchar("DESCRIPTION", length = MEETING_DESCRIPTION_MAX_LIMIT).nullable()
     val AVATAR_ID = reference("AVATAR_ID", FilesTable.FILE_ID).nullable()
     val VISIBILITY = enumeration("VISIBILITY", klass = FullMeeting.Visibility::class)
 
@@ -59,8 +61,8 @@ class MeetingsStorage(private val db: Database) {
         creatorId: UserId,
         date: Date,
         location: Location,
-        title: String?,
-        description: String?,
+        title: Title,
+        description: Description?,
         visibility: FullMeeting.Visibility,
         avatarId: FileId?
     ): MeetingId =
@@ -71,8 +73,8 @@ class MeetingsStorage(private val db: Database) {
                 statement[DATE] = date.iso8601
                 statement[LATITUDE] = location.latitude
                 statement[LONGITUDE] = location.longitude
-                statement[TITLE] = title
-                statement[DESCRIPTION] = description
+                statement[TITLE] = title.string
+                statement[DESCRIPTION] = description?.string
                 statement[VISIBILITY] = visibility
                 if (avatarId != null) statement[AVATAR_ID] = avatarId.long
             }[MEETING_ID]
@@ -162,8 +164,8 @@ class MeetingsStorage(private val db: Database) {
             creatorId = UserId(this[CREATOR_ID]),
             date = Date(this[DATE]),
             location = Location(this[LATITUDE], this[LONGITUDE]),
-            description = this[DESCRIPTION],
-            title = this[TITLE],
+            description = this[DESCRIPTION]?.let(::Description),
+            title = Title(this[TITLE]),
             avatarId = this[AVATAR_ID]?.let(::FileId),
             visibility = this[VISIBILITY]
         )

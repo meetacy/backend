@@ -6,6 +6,7 @@ import app.meetacy.backend.feature.meetings.usecase.create.CreateMeetingUsecase
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.description.Description
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.files.FilesRepository
 import app.meetacy.backend.types.generator.AccessHashGenerator
@@ -14,6 +15,7 @@ import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingIdentity
 import app.meetacy.backend.types.meetings.ViewMeetingsRepository
+import app.meetacy.backend.types.title.Title
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
 import app.meetacy.di.builder.DIBuilder
@@ -35,8 +37,8 @@ internal fun DIBuilder.createMeetingUsecase() {
                 creatorId: UserId,
                 date: Date,
                 location: Location,
-                title: String?,
-                description: String?,
+                title: Title,
+                description: Description?,
                 visibility: FullMeeting.Visibility,
                 avatarId: FileId?
             ): FullMeeting {

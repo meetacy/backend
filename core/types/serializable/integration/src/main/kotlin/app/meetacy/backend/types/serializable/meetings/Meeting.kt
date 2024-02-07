@@ -3,9 +3,11 @@ package app.meetacy.backend.types.serializable.meetings
 import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.serializable.datetime.serializable
+import app.meetacy.backend.types.serializable.description.serializable
 import app.meetacy.backend.types.serializable.file.serializable
 import app.meetacy.backend.types.serializable.location.serializable
 import app.meetacy.backend.types.serializable.serialization
+import app.meetacy.backend.types.serializable.title.serializable
 import app.meetacy.backend.types.serializable.users.serializable
 import app.meetacy.backend.types.users.UserView
 
@@ -14,8 +16,8 @@ fun MeetingView.serializable() = Meeting(
     creator = creator.serializable(),
     date = date.serializable(),
     location = location.serializable(),
-    title = title,
-    description = description,
+    title = title.serializable(),
+    description = description?.serializable(),
     participantsCount = participantsCount,
     previewParticipants = previewParticipants.map(UserView::serializable),
     isParticipating = isParticipating,

@@ -5,6 +5,8 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.description.Description
+import app.meetacy.backend.types.description.description
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.files.FileIdentity
 import app.meetacy.backend.types.generator.AccessHashGenerator
@@ -14,6 +16,8 @@ import app.meetacy.backend.types.utf8Checker.Utf8Checker
 import app.meetacy.backend.types.files.FilesRepository
 import app.meetacy.backend.types.files.checkFileIdentity
 import app.meetacy.backend.types.meetings.*
+import app.meetacy.backend.types.title.Title
+import app.meetacy.backend.types.title.title
 
 class CreateMeetingUsecase(
     private val hashGenerator: AccessHashGenerator,
@@ -48,7 +52,16 @@ class CreateMeetingUsecase(
 
         val creatorId = authRepository.authorizeWithUserId(token) { return Result.TokenInvalid }
         val accessHash = AccessHash(hashGenerator.generate())
-        val fullMeeting = storage.addMeeting(accessHash, creatorId, date, location, title, description, visibility, avatarIdentity?.id)
+        val fullMeeting = storage.addMeeting(
+            accessHash,
+            creatorId,
+            date,
+            location,
+            title?.title ?: Title("${location.latitude} ${location.longitude}; $date"),
+            description?.description,
+            visibility,
+            avatarIdentity?.id
+        )
 
         storage.addParticipant(creatorId, fullMeeting.id)
 
@@ -63,8 +76,8 @@ class CreateMeetingUsecase(
             creatorId: UserId,
             date: Date,
             location: Location,
-            title: String?,
-            description: String?,
+            title: Title,
+            description: Description?,
             visibility: FullMeeting.Visibility,
             avatarId: FileId?
         ): FullMeeting

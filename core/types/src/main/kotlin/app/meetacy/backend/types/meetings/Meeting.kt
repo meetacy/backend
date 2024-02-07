@@ -1,9 +1,11 @@
 package app.meetacy.backend.types.meetings
 
 import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.description.Description
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.files.FileIdentity
 import app.meetacy.backend.types.location.Location
+import app.meetacy.backend.types.title.Title
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserView
 
@@ -12,8 +14,8 @@ data class FullMeeting(
     val creatorId: UserId,
     val date: Date,
     val location: Location,
-    val title: String?,
-    val description: String?,
+    val title: Title,
+    val description: Description?,
     val avatarId: FileId?,
     val visibility: Visibility
 ) {
@@ -30,8 +32,8 @@ data class MeetingView(
     val creator: UserView,
     val date: Date,
     val location: Location,
-    val title: String?,
-    val description: String?,
+    val title: Title,
+    val description: Description?,
     val participantsCount: Int,
     val previewParticipants: List<UserView>,
     val isParticipating: Boolean,
