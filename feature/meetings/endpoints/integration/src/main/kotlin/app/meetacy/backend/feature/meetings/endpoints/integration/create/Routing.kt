@@ -25,7 +25,7 @@ internal fun Route.createMeeting(di: DI) {
     val repository = object : CreateMeetingRepository {
         override suspend fun createMeeting(
             token: AccessIdentity,
-            title: String?,
+            title: String,
             description: String?,
             date: Date,
             location: Location,
