@@ -42,6 +42,7 @@ class ListMeetingsMapUsecase(
                 getMeetingsViewsRepository.getMeetingsViews(userId, meetingIds)
             }
             .transform { list -> emitAll(list.asFlow()) }
+            // todo: maybe `takeWhile`?
             .filter { view -> view.date.javaLocalDate >= now }
             .take(participatingMeetingsLimit.int)
             .toList()

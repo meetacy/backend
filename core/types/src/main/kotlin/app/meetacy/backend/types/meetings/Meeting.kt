@@ -35,7 +35,7 @@ data class MeetingView(
     val participantsCount: Int,
     val previewParticipants: List<UserView>,
     val isParticipating: Boolean,
-    val avatarIdentity: FileIdentity? = null,
+    val avatarIdentity: FileIdentity?,
     val visibility: Visibility
 ) {
     val id: MeetingId = identity.id

@@ -18,7 +18,7 @@ data class Meeting(
     val participantsCount: Int,
     val previewParticipants: List<User>,
     val isParticipating: Boolean,
-    val avatarIdentity: FileIdentity?,
+    val avatarId: FileIdentity?,
     val visibility: Visibility
 ) {
     @Serializable

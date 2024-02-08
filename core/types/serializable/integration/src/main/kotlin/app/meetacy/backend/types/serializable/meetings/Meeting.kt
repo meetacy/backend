@@ -19,7 +19,7 @@ fun MeetingView.serializable() = Meeting(
     participantsCount = participantsCount,
     previewParticipants = previewParticipants.map(UserView::serializable),
     isParticipating = isParticipating,
-    avatarIdentity = avatarIdentity?.serializable(),
+    avatarId = avatarIdentity?.serializable(),
     visibility = visibility.serializable()
 )
 
