@@ -41,8 +41,9 @@ internal fun DIBuilder.searchUsecase() {
                 limit: Int
             ): List<Place> = runCatching {
                 googlePlacesTextSearch.search(GooglePlace.Location(location.latitude, location.longitude), prompt)
-            }.getOrElse { emptyList() }
-                .take(limit)
+            }.getOrElse {
+                emptyList()
+            }.take(limit)
                 .map { googlePlace ->
                     Place(
                         address = with (googlePlace.address) {

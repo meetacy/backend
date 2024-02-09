@@ -36,7 +36,7 @@ import org.jetbrains.exposed.sql.Database
 suspend fun prepareEndpoints(di: DI): ApplicationEngine {
     val port: Int by di.getting
     val database: Database by di.getting
-    val exceptionsHandler: ExceptionsHandler by di.getting
+    val exceptionHandler: ExceptionHandler by di.getting
     val coroutineScope: CoroutineScope by di.getting
 
     initDatabase(database)
@@ -52,7 +52,7 @@ suspend fun prepareEndpoints(di: DI): ApplicationEngine {
         install(PartialContent)
         install(AutoHeadResponse)
         install(DoubleReceive)
-        installExceptionsHandler(exceptionsHandler.map())
+        installExceptionsHandler(exceptionHandler.map())
         installRSocket()
 
         routing {
