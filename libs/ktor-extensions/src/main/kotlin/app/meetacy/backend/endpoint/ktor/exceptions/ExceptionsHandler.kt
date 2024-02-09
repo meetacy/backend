@@ -10,6 +10,7 @@ import io.ktor.server.response.*
 import io.rsocket.kotlin.RSocketError.ConnectionError
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.serialization.SerializationException
+import java.io.IOException
 
 fun interface ExceptionsHandler {
     suspend fun handle(call: ApplicationCall, throwable: Throwable)
@@ -26,8 +27,12 @@ fun Application.installExceptionsHandler(handler: ExceptionsHandler) {
                     )
                     call.respondFailure(response)
                 }
+                is ClosedReceiveChannelException,
+                is ConnectionError -> {
+
+                }
                 else -> {
-                    if (cause is ClosedReceiveChannelException || cause is ConnectionError) {
+                    if (cause is IOException && cause.message == "Broken pipe") {
                         call.respond(HttpStatusCode.OK)
                         return@exception
                     }
