@@ -1,6 +1,6 @@
 package app.meetacy.backend.discord
 
-import app.meetacy.backend.application.endpoints.ExceptionsHandler
+import app.meetacy.backend.application.endpoints.ExceptionHandler
 import app.meetacy.di.builder.DIBuilder
 import app.meetacy.discord.webhook.DiscordWebhook
 import app.meetacy.discord.webhook.embed.DiscordEmbed
@@ -10,20 +10,20 @@ import io.ktor.server.logging.*
 import io.ktor.server.request.*
 
 fun DIBuilder.exceptionsHandler() {
-    val exceptionsHandler by singleton<ExceptionsHandler> {
+    val exceptionHandler by singleton<ExceptionHandler> {
         val discordWebhook: DiscordWebhook? by getting
         val webhook = discordWebhook
         if (webhook == null) {
-            ExceptionsHandler.Simple
+            ExceptionHandler.Simple
         } else {
-            DiscordExceptionsHandler(webhook)
+            DiscordExceptionHandler(webhook)
         }
     }
 }
 
-private class DiscordExceptionsHandler(
+private class DiscordExceptionHandler(
     private val webhook: DiscordWebhook
-) : ExceptionsHandler {
+) : ExceptionHandler {
     override suspend fun handle(call: ApplicationCall, throwable: Throwable) {
         println("Unhandled Exception: ${throwable.stackTraceToString()}")
 

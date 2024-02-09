@@ -1,11 +1,9 @@
 package app.meetacy.backend.google
 
 import app.meetacy.di.builder.DIBuilder
-import app.meetacy.google.maps.GooglePlace
 import app.meetacy.google.maps.GooglePlacesTextSearch
 import app.meetacy.google.maps.ktor.KtorGooglePlacesTextSearch
 import io.ktor.client.*
-import io.ktor.client.engine.*
 
 fun DIBuilder.google() {
     val googlePlacesTextSearch by singleton<GooglePlacesTextSearch> {
@@ -16,11 +14,13 @@ fun DIBuilder.google() {
         val token = googlePlacesToken
         val search = mockGooglePlacesTextSearch
 
-        if (token != null) {
+        search ?: if (token != null) {
             KtorGooglePlacesTextSearch(
                 token = token,
                 httpClient = httpClient
             )
-        } else search ?: GooglePlacesTextSearch.NoOp
+        } else {
+            GooglePlacesTextSearch.NoOp
+        }
     }
 }

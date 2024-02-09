@@ -139,7 +139,7 @@ class MeetingsStorage(private val db: Database) {
     suspend fun searchMeetings(prefix: String, limit: Int): List<FullMeeting> =
         newSuspendedTransaction(Dispatchers.IO, db) {
             MeetingsTable.select {
-                TITLE like "%" + LikePattern.ofLiteral(prefix).pattern + "%"
+                TITLE.lowerCase() like "%" + LikePattern.ofLiteral(prefix.lowercase()).pattern + "%"
             }.limit(limit).map { statement -> statement.toFullMeeting() }
         }
 
