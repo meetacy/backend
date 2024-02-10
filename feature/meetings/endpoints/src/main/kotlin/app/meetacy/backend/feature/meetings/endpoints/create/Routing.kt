@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateParam(
-    val title: String?,
+    val title: String,
     val description: String?,
     val date: Date,
     val location: Location,
@@ -35,7 +35,7 @@ sealed interface CreateMeetingResult {
 interface CreateMeetingRepository {
     suspend fun createMeeting(
         token: AccessIdentity,
-        title: String?,
+        title: String,
         description: String?,
         date: Date,
         location: Location,
