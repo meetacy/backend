@@ -8,4 +8,5 @@ dependencies {
     api(projects.libs.paging.serializable)
     api(libs.ktor.server.core)
     api(libs.kotlinx.serialization.json)
+
 }

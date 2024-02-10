@@ -1,0 +1,9 @@
+package app.meetacy.backend.core.endpoints
+
+import app.meetacy.backend.types.paging.serializable.PagingId
+import app.meetacy.backend.types.serializable.serialization
+import io.ktor.server.application.*
+
+fun ApplicationCall.pagingId(): PagingId? = serialization {
+    return parameters["pagingId"]?.let { PagingId(it) }
+}

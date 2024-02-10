@@ -16,25 +16,21 @@ data class InvitationDenyingFormSerializable(
     val invitationId: InvitationId
 )
 
-fun Route.invitationDeny(invitationsDenyRepository: DenyInvitationRepository) {
-    post("/deny") {
-        val form: InvitationDenyingFormSerializable = call.receive()
-
-        val token = call.accessIdentity()
-
-        when (invitationsDenyRepository.denyInvitation(token, form.invitationId)) {
-            DenyInvitationResponse.Success -> {
-                call.respondSuccess()
-            }
-            DenyInvitationResponse.Unauthorized -> {
-                call.respondFailure(Failure.InvalidToken)
-            }
-            DenyInvitationResponse.NoPermissions -> {
-                call.respondFailure(Failure.InvitationNotFound)
-            }
-            DenyInvitationResponse.NotFound -> {
-                call.respondFailure(Failure.InvitationNotFound)
-            }
+fun Route.invitationDeny(invitationsDenyRepository: DenyInvitationRepository) = post("/deny") {
+    val form: InvitationDenyingFormSerializable = call.receive()
+    val token = call.accessIdentity()
+    when (invitationsDenyRepository.denyInvitation(token, form.invitationId)) {
+        DenyInvitationResponse.Success -> {
+            call.respondSuccess()
+        }
+        DenyInvitationResponse.Unauthorized -> {
+            call.respondFailure(Failure.InvalidToken)
+        }
+        DenyInvitationResponse.NoPermissions -> {
+            call.respondFailure(Failure.InvitationNotFound)
+        }
+        DenyInvitationResponse.NotFound -> {
+            call.respondFailure(Failure.InvitationNotFound)
         }
     }
 }

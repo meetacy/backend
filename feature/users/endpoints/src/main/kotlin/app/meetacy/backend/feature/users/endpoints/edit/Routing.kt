@@ -39,7 +39,7 @@ interface EditUserRepository {
     ): EditUserResult
 }
 
-fun Route.editUser(provider: EditUserRepository) = post("/edit") {
+fun Route.editUser(provider: EditUserRepository) = put("/edit") {
     val params = call.receive<EditUserParams>()
     val token = call.accessIdentity()
 
