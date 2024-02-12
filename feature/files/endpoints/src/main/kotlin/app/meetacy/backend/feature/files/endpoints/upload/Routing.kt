@@ -11,6 +11,7 @@ import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.SerializationException
 import java.io.InputStream
 
 sealed interface UploadFileResult {
@@ -42,14 +43,12 @@ fun Route.upload(saveFileRepository: SaveFileRepository) = post("/upload") {
                 inputProvider = part.streamProvider
                 fileName = part.originalFileName ?: fileName
             }
-            else -> {}
+            else -> return@forEachPart
         }
         partsToDispose += part
     }
 
-    if (inputProvider == null) {
-        error("Please provide file part")
-    }
+    if (inputProvider == null) throw SerializationException("Please provide file part")
 
     when (val result = saveFileRepository.saveFile(token, fileName, inputProvider!!)) {
         is UploadFileResult.Success -> call.respondSuccess(result.fileIdentity)

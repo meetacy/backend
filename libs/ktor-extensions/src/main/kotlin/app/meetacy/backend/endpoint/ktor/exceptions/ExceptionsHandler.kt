@@ -29,7 +29,8 @@ fun Application.installExceptionsHandler(handler: ExceptionsHandler) {
                 }
                 is ClosedReceiveChannelException,
                 is ConnectionError -> {
-
+                    call.respond(HttpStatusCode.OK)
+                    return@exception
                 }
                 else -> {
                     if (cause is IOException && cause.message == "Broken pipe") {
