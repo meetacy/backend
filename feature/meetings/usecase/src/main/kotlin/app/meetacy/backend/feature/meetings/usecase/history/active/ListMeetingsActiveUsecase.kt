@@ -8,13 +8,13 @@ import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingView
-import app.meetacy.backend.types.meetings.getMeetingView
+import app.meetacy.backend.types.meetings.getMeetingsViews
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.paging.PagingValue
-import app.meetacy.backend.types.paging.pagingId
 import app.meetacy.backend.types.users.UserId
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.toList
 
 class ListMeetingsActiveUsecase(
     private val authRepository: AuthRepository,
@@ -23,7 +23,7 @@ class ListMeetingsActiveUsecase(
 ) {
     sealed interface Result {
         class Success(val paging: PagingResult<MeetingView>) : Result
-        object InvalidAccessIdentity : Result
+        data object InvalidAccessIdentity : Result
     }
 
     suspend fun getActiveMeetingsList(
@@ -33,25 +33,21 @@ class ListMeetingsActiveUsecase(
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidAccessIdentity }
 
-        val list = storage
-            .getJoinHistoryFlow(
-                userId = userId,
-                startPagingId = pagingId
-            ).map { meetingIdPaging ->
-                meetingIdPaging.map { meetingId ->
-                    getMeetingsViewsRepository.getMeetingView(
-                        viewerId = userId,
-                        meetingId = meetingId
-                    )
-                }
-            }.filter { (meeting) -> meeting.date >= Date.today() }
-            .take(amount.int).toList()
+        val pagingValues = storage.getJoinHistoryFlow(userId = userId, startPagingId = pagingId).toList()
+        val pagingValuesIterator = pagingValues.iterator()
+
+        val list = getMeetingsViewsRepository.getMeetingsViews(userId, pagingValues.map { paging: PagingValue<MeetingId> -> paging.value})
+            .filter { meeting -> meeting.date >= Date.today() }
+            .take(amount.int)
+            .map { meetingView -> meetingView to pagingValuesIterator.next().nextPagingId }
+            .toList()
+
+        val nextPagingId = if (list.size == amount.int) list.last().second else null
 
         val paging = PagingResult(
             data = list.map { (meeting) -> meeting },
-            nextPagingId = list.pagingId(amount) { it.nextPagingId }
+            nextPagingId = nextPagingId
         )
-
         return Result.Success(paging)
     }
 

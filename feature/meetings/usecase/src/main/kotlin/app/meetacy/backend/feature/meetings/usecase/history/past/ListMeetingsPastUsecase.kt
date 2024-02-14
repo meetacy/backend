@@ -5,10 +5,7 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
-import app.meetacy.backend.types.meetings.MeetingId
-import app.meetacy.backend.types.meetings.MeetingView
-import app.meetacy.backend.types.meetings.getMeetingView
+import app.meetacy.backend.types.meetings.*
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.paging.PagingValue
@@ -32,14 +29,14 @@ class ListMeetingsPastUsecase(
     ): Result {
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.InvalidAccessIdentity }
 
-        val list = storage.getJoinHistoryFlow(
-            userId = userId,
-            startPagingId = pagingId
-        ).map { (meetingId, nextPagingId) ->
-            getMeetingsViewsRepository.getMeetingView(userId, meetingId) to nextPagingId
-        }.filter { (meeting) ->
-            meeting.date < Date.today()
-        }.take(amount.int).toList()
+        val pagingValues = storage.getJoinHistoryFlow(userId = userId, startPagingId = pagingId).toList()
+        val pagingValuesIterator = pagingValues.iterator()
+
+        val list = getMeetingsViewsRepository.getMeetingsViews(userId, pagingValues.map { paging -> paging.value })
+            .filter { meeting -> meeting.date < Date.today() }
+            .take(amount.int)
+            .map { meetingView -> meetingView to pagingValuesIterator.next().nextPagingId }
+            .toList()
 
         val nextPagingId = if (list.size == amount.int) list.last().second else null
 
