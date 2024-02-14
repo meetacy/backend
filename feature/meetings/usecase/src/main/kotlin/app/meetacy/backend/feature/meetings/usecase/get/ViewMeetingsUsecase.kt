@@ -2,13 +2,13 @@ package app.meetacy.backend.feature.meetings.usecase.get
 
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.amount.amount
+import app.meetacy.backend.types.files.FilesRepository
 import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingView
 import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.getUsersViews
-import app.meetacy.backend.types.files.FilesRepository
 
 class ViewMeetingsUsecase(
     private val getUsersViewsRepository: GetUsersViewsRepository,
@@ -20,12 +20,10 @@ class ViewMeetingsUsecase(
         meetings: List<FullMeeting>,
         randomParticipantsAmount: Amount = 5.amount
     ): List<MeetingView> {
-        val creatorIds: List<UserId> = meetings
-            .map { meeting -> meeting.creatorId }
 
-        val creators = getUsersViewsRepository
-            .getUsersViews(viewerId, creatorIds)
-            .iterator()
+        val creatorIds: List<UserId> = meetings.map { meeting -> meeting.creatorId }
+
+        val creators = getUsersViewsRepository.getUsersViews(viewerId, creatorIds).iterator()
 
         val fileIdentityIterator = filesRepository.getFileIdentities(
             meetings.mapNotNull { meeting -> meeting.avatarId }

@@ -33,7 +33,7 @@ class ListFriendsUsecase(
     }
 
     sealed interface Result {
-        object InvalidToken : Result
+        data object InvalidToken : Result
         class Success(val paging: PagingResult<UserView>) : Result
     }
 

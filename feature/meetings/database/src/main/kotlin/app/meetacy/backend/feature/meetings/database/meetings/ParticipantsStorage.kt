@@ -15,8 +15,7 @@ import app.meetacy.backend.types.paging.PagingValue
 import app.meetacy.backend.types.paging.pagingIdLong
 import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
@@ -38,16 +37,20 @@ class ParticipantsStorage(private val db: Database) {
             }
         }
 
-    suspend fun participantsCount(meetingId: MeetingId): Int =
+    suspend fun participantsCount(meetingIds: List<MeetingId>): List<Int> =
         newSuspendedTransaction(Dispatchers.IO, db) {
-            ParticipantsTable.select { (MEETING_ID eq meetingId.long) }
-                .count()
-                .toInt()
+            meetingIds.map { meetingId ->
+                ParticipantsTable.select { MEETING_ID eq meetingId.long }
+                    .count()
+                    .toInt()
+            }
         }
 
-    suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =
+    suspend fun isParticipating(meetingIds: List<MeetingId>, userId: UserId): List<Boolean> =
         newSuspendedTransaction(Dispatchers.IO, db) {
-            ParticipantsTable.select { (MEETING_ID eq meetingId.long) and (USER_ID eq userId.long) }.any()
+            meetingIds.map { meetingId ->
+                ParticipantsTable.select { (MEETING_ID eq meetingId.long) and (USER_ID eq userId.long) }.any()
+            }
         }
 
     suspend fun getJoinHistory(
@@ -80,6 +83,25 @@ class ParticipantsStorage(private val db: Database) {
             data = results.map { UserId(it[USER_ID]) },
             nextPagingId = nextPagingId
         )
+    }
+
+    suspend fun getFirstParticipants(
+        meetingIds: List<MeetingId>,
+        amount: Amount
+    ): List<PagingResult<UserId>> = newSuspendedTransaction(Dispatchers.IO, db) {
+        meetingIds.map { meetingId ->
+            val results = ParticipantsTable.select { (MEETING_ID eq meetingId.long)}
+                .orderBy(ID, SortOrder.DESC)
+                .limit(amount.int)
+                .toList()
+
+            val nextPagingId = if (results.size == amount.int) PagingId(results.last()[ID]) else null
+
+            PagingResult(
+                data = results.map { UserId(it[USER_ID]) },
+                nextPagingId = nextPagingId
+            )
+        }
     }
 
     fun getJoinHistoryFlow(

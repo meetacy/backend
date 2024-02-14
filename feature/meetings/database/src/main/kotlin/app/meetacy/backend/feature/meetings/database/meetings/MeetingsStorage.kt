@@ -145,7 +145,7 @@ class MeetingsStorage(private val db: Database) {
             }.limit(limit).map { statement -> statement.toFullMeeting() }
         }
 
-    fun getPublicMeetingsFlow(): Flow<FullMeeting> = channelFlow {
+    suspend fun getPublicMeetingsFlow(): Flow<FullMeeting> = channelFlow {
         newSuspendedTransaction(Dispatchers.IO, db) {
             MeetingsTable.select { VISIBILITY eq FullMeeting.Visibility.Public }
                 .asFlow()

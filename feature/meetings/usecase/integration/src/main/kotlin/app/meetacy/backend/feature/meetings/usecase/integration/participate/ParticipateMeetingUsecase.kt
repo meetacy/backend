@@ -20,7 +20,7 @@ fun DIBuilder.participateMeetingUsecase() {
                 participantsStorage.addParticipant(participantId, meetingId)
             }
             override suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean {
-                return participantsStorage.isParticipating(meetingId, userId)
+                return participantsStorage.isParticipating(listOf(meetingId), userId).first()
             }
         }
 

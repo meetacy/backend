@@ -15,11 +15,13 @@ class ViewUsersUsecase(
             users.mapNotNull { user -> user.avatarId }
         ).iterator()
 
+        val relationships = getRelationships(users, viewerId).iterator()
+
         return users.map { user ->
             with(user) {
                 UserView(
                     isSelf = viewerId == user.identity.id,
-                    relationship = getRelationship(viewerId),
+                    relationship = relationships.next(),
                     identity = identity,
                     nickname = nickname,
                     username = username,
@@ -31,29 +33,49 @@ class ViewUsersUsecase(
         }
     }
 
-    suspend fun viewUser(viewerId: UserId, user: FullUser) = viewUsers(viewerId, listOf(user)).first()
-
     /**
      * Returns relationship of two users
-     * @param [userId] specifies ID of related user
+     * @param [viewerId] specifies ID of related user
      * @return [Relationship.Friend] if both users are subscribed on each other,
      * [Relationship.Subscription] if related user is subscribed on FullUser,
      * [Relationship.Subscriber] if FullUser is subscribed on related user,
      * null if user tries to get relationship of themselves
      */
-    private suspend fun FullUser.getRelationship(userId: UserId): Relationship? {
-        if (identity.id == userId) return null
-        val isSubscriber = storage.isSubscriber(identity.id, userId)
-        val isSubscribed = storage.isSubscriber(userId, identity.id)
-        return when {
-            isSubscribed && isSubscriber -> Relationship.Friend
-            isSubscribed -> Relationship.Subscription
-            isSubscriber -> Relationship.Subscriber
-            else -> Relationship.None
+    private suspend fun getRelationships(users: List<FullUser>, viewerId: UserId): List<Relationship?> {
+        val subscribers = storage.isSubscribers(
+            users = users.filter { user -> user.identity.id != viewerId }.flatMap { user ->
+                listOf(
+                    IsSubscriber(
+                        userId = user.identity.id,
+                        subscriberId = viewerId
+                    ),
+                    IsSubscriber(
+                        userId = viewerId,
+                        subscriberId = user.identity.id
+                    )
+                )
+            }
+        ).iterator()
+
+        return users.map { user ->
+            if (user.identity.id == viewerId) return@map null
+            val isSubscriber = subscribers.next()
+            val isSubscribed = subscribers.next()
+            when {
+                isSubscribed && isSubscriber -> Relationship.Friend
+                isSubscribed -> Relationship.Subscription
+                isSubscriber -> Relationship.Subscriber
+                else -> Relationship.None
+            }
         }
     }
 
     interface Storage {
-        suspend fun isSubscriber(userId: UserId, subscriberId: UserId): Boolean
+        suspend fun isSubscribers(users: List<IsSubscriber>): List<Boolean>
     }
+
+    data class IsSubscriber(
+        val userId: UserId,
+        val subscriberId: UserId
+    )
 }

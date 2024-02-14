@@ -27,6 +27,7 @@ class ListMeetingsMapUsecase(
         participatingMeetingsLimit: Amount = 10_000.amount,
         publicMeetingsLimit: Amount = 100.amount
     ): Result {
+
         val userId = authRepository.authorizeWithUserId(accessIdentity) {
             return Result.InvalidAccessIdentity
         }
@@ -42,11 +43,9 @@ class ListMeetingsMapUsecase(
                 getMeetingsViewsRepository.getMeetingsViews(userId, meetingIds)
             }
             .transform { list -> emitAll(list.asFlow()) }
-            // todo: maybe `takeWhile`?
-            .filter { view -> view.date.javaLocalDate >= now }
+            .takeWhile { view -> view.date.javaLocalDate >= now }
             .take(participatingMeetingsLimit.int)
             .toList()
-
 
         val public = storage.getPublicMeetingsFlow()
             .filter { meeting ->

@@ -17,13 +17,13 @@ fun DIBuilder.viewMeetingsUsecase() {
             val participantsStorage: ParticipantsStorage by getting
 
             override suspend fun getParticipantsCount(meetingIds: List<MeetingId>): List<Int> =
-                meetingIds.map { participantsStorage.participantsCount(it) }
+                participantsStorage.participantsCount(meetingIds)
 
             override suspend fun getIsParticipates(viewerId: UserId, meetingIds: List<MeetingId>): List<Boolean> =
-                meetingIds.map { participantsStorage.isParticipating(it, viewerId) }
+               participantsStorage.isParticipating(meetingIds, viewerId)
 
             override suspend fun getFirstParticipants(limit: Amount, meetingIds: List<MeetingId>): List<List<UserId>> =
-                meetingIds.map { participantsStorage.getParticipants(it, limit, null).data }
+                participantsStorage.getFirstParticipants(meetingIds, limit).map { it.data }
 
         }
         ViewMeetingsUsecase(getUsersViewsRepository, filesRepository, storage)

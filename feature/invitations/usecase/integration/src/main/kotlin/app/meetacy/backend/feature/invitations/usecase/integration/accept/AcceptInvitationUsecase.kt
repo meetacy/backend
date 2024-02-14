@@ -28,7 +28,7 @@ internal fun DIBuilder.acceptInvitation() {
                 invitationsStorage.getInvitationsOrNull(listOf(id)).singleOrNull()?.mapToUsecase()
 
             override suspend fun isParticipating(meetingId: MeetingId, userId: UserId): Boolean =
-                participantsStorage.isParticipating(meetingId, userId)
+                participantsStorage.isParticipating(listOf(meetingId), userId).first()
 
             override suspend fun markAsAccepted(id: InvitationId) {
                 invitationsStorage.markAsAccepted(id)

@@ -20,10 +20,9 @@ internal fun DIBuilder.getUsersViewsUsecase() {
         }
 
         val viewUserRepository = object : GetUsersViewsUsecase.ViewUserRepository {
-            override suspend fun viewUser(
-                viewerId: UserId,
-                user: FullUser
-            ): UserView = viewUsersUsecase.viewUser(viewerId, user)
+            override suspend fun viewUsers(
+                viewerId: UserId, users: List<FullUser>
+            ): List<UserView> = viewUsersUsecase.viewUsers(viewerId, users)
         }
 
         GetUsersViewsUsecase(
