@@ -44,6 +44,24 @@ class FriendsStorage(private val db: Database) {
         }.any()
     }
 
+    data class IsSubscriber(
+        val userId: UserId,
+        val subscriberId: UserId
+    )
+
+    suspend fun isSubscribers(users: List<IsSubscriber>): List<Boolean> = newSuspendedTransaction(Dispatchers.IO, db) {
+        val results = FriendsTable.select {
+            users.fold(Op.TRUE) { acc: Op<Boolean>, (subscriberId, userId) ->
+                acc or ((USER_ID eq subscriberId.long) and (FRIEND_ID eq userId.long))
+            }
+        }
+        users.map { (subscriberId, userId) ->
+            results.any { result ->
+                result[USER_ID] == subscriberId.long && result[FRIEND_ID] == userId.long
+            }
+        }
+    }
+
     suspend fun getFriends(
         userId: UserId,
         amount: Amount,
