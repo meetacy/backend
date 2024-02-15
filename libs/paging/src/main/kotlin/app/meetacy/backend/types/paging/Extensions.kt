@@ -15,6 +15,11 @@ inline fun <T> List<T>.pagingResult(amount: Amount, getter: (T) -> PagingId): Pa
     return PagingResult(data = this, nextPagingId = pagingId(amount, getter))
 }
 
+fun <T> List<PagingValue<T>>.pagingResult(amount: Amount): PagingResult<T> {
+    return pagingResult(amount) { paging -> paging.nextPagingId }
+        .mapItems { paging -> paging.value }
+}
+
 inline fun <T> List<T>.pagingResultLong(amount: Amount, getter: (T) -> Long): PagingResult<T> {
     return PagingResult(data = this, nextPagingId = pagingIdLong(amount, getter))
 }
