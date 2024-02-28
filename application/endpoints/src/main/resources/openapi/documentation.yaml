@@ -1166,14 +1166,14 @@ paths:
         - name: latitude
           in: query
           description: Latitude of the location to search
-          required: true
+          required: false
           schema:
             type: number
             format: double
         - name: longitude
           in: query
           description: Longitude of the location to search
-          required: true
+          required: false
           schema:
             type: number
             format: double

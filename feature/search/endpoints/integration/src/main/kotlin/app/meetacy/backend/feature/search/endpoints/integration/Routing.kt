@@ -20,10 +20,10 @@ fun Route.search(di: DI) {
     val searchRepository = object : SearchRepository {
         override suspend fun search(
             token: AccessIdentity,
-            location: Location,
+            location: Location?,
             prompt: String
         ): SearchResult = when (
-            val result = searchUsecase.search(token.type(), location.type(), prompt)
+            val result = searchUsecase.search(token.type(), location?.type(), prompt)
         ) {
             is Result.InvalidAccessIdentity -> SearchResult.TokenInvalid
             is Result.Success -> SearchResult.Success(

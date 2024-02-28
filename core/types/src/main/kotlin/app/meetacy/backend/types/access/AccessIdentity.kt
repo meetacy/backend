@@ -21,9 +21,11 @@ value class AccessIdentity private constructor(val string: String) {
     companion object {
         val REGEX = Regex("\\d+:.{256}")
 
-        fun parse(identity: String): AccessIdentity? {
+        fun parseOrNull(identity: String): AccessIdentity? {
             if (!identity.matches(REGEX)) return null
             return AccessIdentity(identity)
         }
+
+        fun parse(identity: String) = parseOrNull(identity) ?: error("Cannot parse authorization token")
     }
 }

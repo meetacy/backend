@@ -1,6 +1,8 @@
 package app.meetacy.backend.feature.search.endpoints
 
 import app.meetacy.backend.core.endpoints.accessIdentity
+import app.meetacy.backend.core.endpoints.latitude
+import app.meetacy.backend.core.endpoints.longitude
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -14,7 +16,7 @@ import io.ktor.server.util.*
 interface SearchRepository {
     suspend fun search(
         token: AccessIdentity,
-        location: Location,
+        location: Location?,
         prompt: String
     ): SearchResult
 }
@@ -27,11 +29,13 @@ sealed interface SearchResult {
 fun Route.search(repository: SearchRepository) = get("/search") {
     val token = call.accessIdentity()
 
-    val latitude: Double by call.parameters
-    val longitude: Double by call.parameters
+    val latitude = call.latitude()
+    val longitude = call.longitude()
     val prompt: String by call.parameters
 
-    when (val result = repository.search(token, Location(latitude, longitude), prompt)) {
+    val location = if (latitude != null && longitude != null) Location(latitude, longitude) else null
+
+    when (val result = repository.search(token, location, prompt)) {
         is SearchResult.TokenInvalid -> call.respondFailure(Failure.InvalidToken)
         is SearchResult.Success -> call.respondSuccess(result.items)
     }
