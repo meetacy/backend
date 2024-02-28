@@ -1,18 +1,18 @@
 package app.meetacy.backend.feature.search.usecase
 
 import app.meetacy.backend.types.access.AccessIdentity
-import app.meetacy.backend.types.address.Address
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.meetings.*
+import app.meetacy.backend.types.meetings.FullMeeting
+import app.meetacy.backend.types.meetings.ViewMeetingsRepository
 import app.meetacy.backend.types.place.Place
 import app.meetacy.backend.types.search.SearchItem
-import app.meetacy.backend.types.users.*
+import app.meetacy.backend.types.users.FullUser
+import app.meetacy.backend.types.users.ViewUsersRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import java.util.Comparator
 
 class SearchUsecase(
     private val storage: Storage,
@@ -22,7 +22,7 @@ class SearchUsecase(
 ) {
     suspend fun search(
         accessIdentity: AccessIdentity,
-        location: Location,
+        location: Location?,
         prompt: String,
         categoryLimit: Int = 5
     ): Result = coroutineScope {
@@ -30,7 +30,7 @@ class SearchUsecase(
             return@coroutineScope Result.InvalidAccessIdentity
         }
 
-        val resultsAsync = listOf(
+        val resultsAsync = listOfNotNull(
             async {
                 storage
                     .getMeetings(prompt, categoryLimit)
@@ -43,13 +43,14 @@ class SearchUsecase(
                     .let { users -> usersRepository.viewUsers(viewerId, users) }
                     .map { user -> SearchItem.User(user) }
             },
-            async {
-                storage
-                    .getAddresses(prompt, location, categoryLimit)
-                    .map { place -> SearchItem.Place(place) }
-            }
+            if (location != null) {
+                async {
+                    storage
+                        .getAddresses(prompt, location, categoryLimit)
+                        .map { place -> SearchItem.Place(place) }
+                }
+            } else null
         )
-
 
         val results = resultsAsync.awaitAll().flatten()
         Result.Success(results)
