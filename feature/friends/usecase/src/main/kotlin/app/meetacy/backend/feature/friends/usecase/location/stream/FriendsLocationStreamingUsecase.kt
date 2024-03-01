@@ -30,9 +30,11 @@ class FriendsLocationStreamingUsecase(
         val userId = authRepository.authorizeWithUserId(accessIdentity) { return Result.TokenInvalid }
 
         val flow = channelFlow {
-            selfLocation.onEach { location ->
+            val shared = selfLocation.onEach { location ->
                 storage.setLocation(userId, location)
-            }.shareIn(this, SharingStarted.Eagerly, 1).firstOrNull() ?: return@channelFlow
+            }.shareIn(this, SharingStarted.Eagerly, 1)
+
+            shared.firstOrNull() ?: return@channelFlow
 
             val friends = storage.getFriends(userId, maxFriends)
             val friendViews = usersViewsRepository.getUsersViews(userId, friends).iterator()

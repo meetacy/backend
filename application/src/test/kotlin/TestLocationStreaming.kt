@@ -33,13 +33,7 @@ class TestLocationStreaming {
             ).collect()
         }
 
-        val streamedLocation = self.friends.location.flow(
-            flow {
-                while (true) {
-                    emit(himselfLocation)
-                }
-            }
-        ).first()
+        val streamedLocation = self.friends.location.flow(flowOf(Location.NullIsland)).first()
 
         job.cancelAndJoin()
         require(streamedLocation.location == expectedLocation)
