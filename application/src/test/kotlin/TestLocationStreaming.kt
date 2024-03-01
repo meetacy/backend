@@ -1,10 +1,7 @@
 import app.meetacy.sdk.exception.MeetacyUnauthorizedException
 import app.meetacy.sdk.types.location.Location
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import kotlin.test.Test
 
 class TestLocationStreaming {
@@ -13,6 +10,11 @@ class TestLocationStreaming {
         val expectedLocation = Location(
             latitude = 20.0,
             longitude = 23.0
+        )
+
+        val himselfLocation = Location(
+            latitude = 15.0,
+            longitude = 30.0
         )
 
         val self = generateTestAccount()
@@ -31,9 +33,15 @@ class TestLocationStreaming {
             ).collect()
         }
 
-        val streamedLocation = self.friends.location.flow(emptyFlow()).first()
-        job.cancelAndJoin()
+        val streamedLocation = self.friends.location.flow(
+            flow {
+                while (true) {
+                    emit(himselfLocation)
+                }
+            }
+        ).first()
 
+        job.cancelAndJoin()
         require(streamedLocation.location == expectedLocation)
     }
 
