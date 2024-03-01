@@ -10,10 +10,9 @@ import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.UserLocationSnapshot
-import app.meetacy.backend.types.users.getUserView
+import app.meetacy.backend.types.users.getUsersViews
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 class FriendsLocationStreamingUsecase(
@@ -33,22 +32,23 @@ class FriendsLocationStreamingUsecase(
         val flow = channelFlow {
             selfLocation.onEach { location ->
                 storage.setLocation(userId, location)
-            }.launchIn(scope = this)
+            }.shareIn(this, SharingStarted.Eagerly, 1).firstOrNull() ?: return@channelFlow
 
-            val friendIds = storage.getFriends(userId, maxFriends)
+            val friends = storage.getFriends(userId, maxFriends)
+            val friendViews = usersViewsRepository.getUsersViews(userId, friends).iterator()
 
-            for (friendId in friendIds) launch {
+            friends.onEach { friendId ->
                 storage
                     .locationFlow(friendId)
                     .sample(300.milliseconds)
-                    .collect { location ->
-                        val updatedFriend = usersViewsRepository.getUserView(userId, friendId)
-                        channel.send(
-                            element = UserLocationSnapshot(
-                                user = updatedFriend,
-                                location = location
-                            )
+                    .map { location ->
+                        UserLocationSnapshot(
+                            user = friendViews.next(),
+                            location = location
                         )
+                    }
+                    .collect { userLocationSnapshot ->
+                        channel.send(userLocationSnapshot)
                     }
             }
         }
@@ -57,7 +57,7 @@ class FriendsLocationStreamingUsecase(
     }
 
     sealed interface Result {
-        object TokenInvalid : Result
+        data object TokenInvalid : Result
         class Ready(val flow: Flow<UserLocationSnapshot>) : Result
     }
 
@@ -66,5 +66,4 @@ class FriendsLocationStreamingUsecase(
         suspend fun getFriends(userId: UserId, maxAmount: Amount): List<UserId>
         fun locationFlow(userId: UserId): Flow<LocationSnapshot>
     }
-
 }

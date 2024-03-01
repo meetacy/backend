@@ -62,7 +62,7 @@ class UsersLocationsStorage(private val db: Database) {
 
     suspend fun getLocation(userId: UserId): LocationSnapshot? = newSuspendedTransaction(Dispatchers.IO, db) {
         UsersLocationsTable.select {
-            USER_ID eq userId.long
+            (USER_ID eq userId.long)
         }.firstOrNull()?.toLocationSnapshot()
     }
 
