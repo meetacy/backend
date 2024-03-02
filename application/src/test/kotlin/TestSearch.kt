@@ -1,7 +1,9 @@
 import app.meetacy.google.maps.GooglePlace
 import app.meetacy.google.maps.GooglePlacesTextSearch
 import app.meetacy.sdk.types.location.Location
+import app.meetacy.sdk.types.optional.Optional
 import app.meetacy.sdk.types.search.SearchItem
+import app.meetacy.sdk.types.user.username
 import kotlin.test.Test
 
 class TestSearch {
@@ -22,6 +24,20 @@ class TestSearch {
         val searchItem = searchResults.first().data
         require(searchItem is SearchItem.User)
         require(self.data == searchItem.user)
+    }
+
+    @Test
+    fun `test that leading at is removed`() = runTestServer {
+        val self = generateTestAccount()
+        self.edited(
+            username = Optional.Present("test_username".username)
+        )
+        val searchResults = self.api.search(
+            location = null,
+            prompt = "@test_username"
+        )
+        val searchItem = searchResults.first().data
+        require(searchItem is SearchItem.User)
     }
 
     @Test

@@ -82,7 +82,7 @@ class UsersStorage(private val db: Database) {
     ): List<FullUser> = newSuspendedTransaction(Dispatchers.IO, db) {
         UsersTable.select {
             (NICKNAME.lowerCase() like "%" + LikePattern.ofLiteral(prefix.lowercase()).pattern + "%") or
-                    (USERNAME.lowerCase() like "%" + LikePattern.ofLiteral(prefix.lowercase()).pattern + "%")
+                    (USERNAME.lowerCase() like "%" + LikePattern.ofLiteral(prefix.lowercase().removePrefix("@")).pattern + "%")
         }.limit(limit).map { result -> result.toUser() }
     }
 
