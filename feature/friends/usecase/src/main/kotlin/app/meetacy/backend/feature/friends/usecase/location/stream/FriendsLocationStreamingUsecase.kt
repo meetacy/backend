@@ -13,6 +13,7 @@ import app.meetacy.backend.types.users.UserLocationSnapshot
 import app.meetacy.backend.types.users.getUsersViews
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 class FriendsLocationStreamingUsecase(
@@ -32,24 +33,20 @@ class FriendsLocationStreamingUsecase(
         val flow = channelFlow {
             val shared = selfLocation.onEach { location ->
                 storage.setLocation(userId, location)
-            }.shareIn(this, SharingStarted.Eagerly, 1)
+            }.shareIn(this, SharingStarted.Eagerly, replay = 1)
 
             shared.firstOrNull() ?: return@channelFlow
 
             val friends = storage.getFriends(userId, maxFriends)
             val friendViews = usersViewsRepository.getUsersViews(userId, friends).iterator()
 
-            friends.onEach { friendId ->
+            for (friend in friendViews) launch {
                 storage
-                    .locationFlow(friendId)
+                    .locationFlow(friend.identity.id)
                     .sample(300.milliseconds)
                     .map { location ->
-                        UserLocationSnapshot(
-                            user = friendViews.next(),
-                            location = location
-                        )
-                    }
-                    .collect { userLocationSnapshot ->
+                        UserLocationSnapshot(friend, location)
+                    }.collect { userLocationSnapshot ->
                         channel.send(userLocationSnapshot)
                     }
             }
