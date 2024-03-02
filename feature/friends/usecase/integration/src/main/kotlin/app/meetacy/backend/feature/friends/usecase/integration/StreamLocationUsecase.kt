@@ -6,6 +6,7 @@ import app.meetacy.backend.feature.friends.usecase.location.LocationsMiddleware
 import app.meetacy.backend.feature.friends.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.users.GetUsersViewsRepository
@@ -13,6 +14,7 @@ import app.meetacy.backend.types.users.UserId
 import app.meetacy.di.builder.DIBuilder
 import kotlinx.coroutines.flow.Flow
 import org.jetbrains.exposed.sql.Database
+import kotlin.time.Duration.Companion.hours
 
 fun DIBuilder.locationMiddleware() {
     val locationMiddleware by singleton<LocationsMiddleware> {
@@ -24,8 +26,8 @@ fun DIBuilder.locationMiddleware() {
                 table.saveLocation(userId, location)
             }
 
-            override suspend fun getLocation(userId: UserId): LocationSnapshot? {
-                return table.getLocation(userId)
+            override suspend fun getLocation(userId: UserId, from: DateTime): LocationSnapshot? {
+                return table.getLocation(userId, from)
             }
         }
         LocationsMiddleware(storage)

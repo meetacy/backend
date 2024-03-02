@@ -1,5 +1,6 @@
 package app.meetacy.backend.feature.friends.usecase.location
 
+import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
@@ -7,6 +8,7 @@ import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.hours
 
 class LocationsMiddleware(private val storage: Storage) {
     private val allLocationUpdates = MutableSharedFlow<Update>()
@@ -25,7 +27,9 @@ class LocationsMiddleware(private val storage: Storage) {
                 .collect(channel::send)
         }
 
-        val defaultLocation = storage.getLocation(userId)
+        val lastHour = System.currentTimeMillis() - 1.hours.inWholeMilliseconds
+
+        val defaultLocation = storage.getLocation(userId, DateTime.ofEpochMillis(lastHour))
         if (defaultLocation != null) {
             send(defaultLocation)
         }
@@ -42,7 +46,7 @@ class LocationsMiddleware(private val storage: Storage) {
 
     interface Storage {
         suspend fun setLocation(userId: UserId, location: Location)
-        suspend fun getLocation(userId: UserId): LocationSnapshot?
+        suspend fun getLocation(userId: UserId, from: DateTime): LocationSnapshot?
     }
 
     private data class Update(
