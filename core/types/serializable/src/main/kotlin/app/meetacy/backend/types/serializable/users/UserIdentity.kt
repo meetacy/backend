@@ -5,4 +5,4 @@ import kotlinx.serialization.Serializable
 
 @JvmInline
 @Serializable
-value class UserIdentity(val string: String)
+value class UserIdentity(val identity: String)

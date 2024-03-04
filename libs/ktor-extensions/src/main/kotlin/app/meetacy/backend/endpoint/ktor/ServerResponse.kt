@@ -48,9 +48,10 @@ data class Failure(
 
         val UsernameAlreadyOccupied = Failure(false, 6, "This username is not a unique username")
         val FriendNotFound = Failure(false, 7, "Friend was not found")
-        val UserNotFound = Failure(false, 8, "User not found")
+        val UserNotFound = Failure(false, 8, "FullUser not found")
         val MeetingAlreadyParticipate = Failure(false, 9, "You are already participating in this meeting")
         val NullEditParams = Failure(false, 10, "Specify at least one edit parameter")
+
 
         val FriendAlreadyAdded = Failure(false, 11, "Friend already added")
         val ExpiredLink = Failure(false, 12, "This link was expired. Please consider to create a new one")
