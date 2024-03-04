@@ -23,7 +23,7 @@ class TestSearch {
         val searchResults = self.api.search(Location.NullIsland, "testSearch")
         val searchItem = searchResults.first().data
         require(searchItem is SearchItem.User)
-        require(self.data == searchItem.user)
+        require(self.toUser().data == searchItem.user)
     }
 
     @Test

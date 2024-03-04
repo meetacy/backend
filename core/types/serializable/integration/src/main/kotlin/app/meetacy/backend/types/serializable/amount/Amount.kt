@@ -6,3 +6,6 @@ import app.meetacy.backend.types.serializable.amount.Amount as AmountSerializabl
 
 fun AmountSerializable.type() = serialization { Amount.parse(int) }
 fun Amount.serializable(): AmountSerializable = AmountSerializable(int)
+
+fun AmountSerializable.OrZero.type() = serialization { Amount.OrZero.parse(int) }
+fun Amount.OrZero.serializable() = AmountSerializable.OrZero(int)

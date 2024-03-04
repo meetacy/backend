@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @JvmInline
-value class Amount(val int: Int)
-
-fun Amount.serializable() = Amount(int)
+value class Amount(val int: Int) {
+    @Serializable
+    @JvmInline
+    value class OrZero(val int: Int)
+}

@@ -15,6 +15,7 @@ import app.meetacy.sdk.types.auth.Token
 import app.meetacy.sdk.types.datetime.Date
 import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.url.url
+import app.meetacy.sdk.users.AuthorizedSelfUserDetailsRepository
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.logging.LogLevel
@@ -115,7 +116,7 @@ fun testApi(port: Int) = MeetacyApi(
 
 suspend fun TestServerContext.generateTestAccount(
     postfix: String? = null
-): AuthorizedSelfUserRepository {
+): AuthorizedSelfUserDetailsRepository {
     val newClient = testApi.auth.generate(
         nickname = listOfNotNull("Test Account", postfix)
             .joinToString(separator = " ")
