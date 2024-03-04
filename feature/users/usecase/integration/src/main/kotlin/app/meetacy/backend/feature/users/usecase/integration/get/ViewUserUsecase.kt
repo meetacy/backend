@@ -2,7 +2,9 @@ package app.meetacy.backend.feature.users.usecase.integration.get
 
 import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
 import app.meetacy.backend.feature.users.usecase.get.ViewUsersUsecase
+import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.files.FilesRepository
+import app.meetacy.backend.types.users.UserId
 import app.meetacy.di.builder.DIBuilder
 
 internal fun DIBuilder.viewUserUsecase() {
@@ -18,7 +20,6 @@ internal fun DIBuilder.viewUserUsecase() {
                         FriendsStorage.IsSubscriber(isSubscriber.userId, isSubscriber.subscriberId)
                     }
                 )
-
         }
 
         ViewUsersUsecase(filesRepository, storage)

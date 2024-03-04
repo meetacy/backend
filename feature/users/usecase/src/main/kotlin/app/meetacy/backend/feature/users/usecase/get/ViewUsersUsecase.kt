@@ -15,7 +15,9 @@ class ViewUsersUsecase(
             users.mapNotNull { user -> user.avatarId }
         ).iterator()
 
-        val relationships = getRelationships(users, viewerId).iterator()
+        val userIds = users.map { userId -> userId.identity.id }
+
+        val relationships = getRelationships(userIds, viewerId).iterator()
 
         return users.map { user ->
             with(user) {
@@ -41,24 +43,24 @@ class ViewUsersUsecase(
      * [Relationship.Subscriber] if FullUser is subscribed on related user,
      * null if user tries to get relationship of themselves
      */
-    private suspend fun getRelationships(users: List<FullUser>, viewerId: UserId): List<Relationship?> {
+    private suspend fun getRelationships(users: List<UserId>, viewerId: UserId): List<Relationship?> {
         val subscribers = storage.isSubscribers(
-            users = users.filter { user -> user.identity.id != viewerId }.flatMap { user ->
+            users = users.filter { userId -> userId != viewerId }.flatMap { userId ->
                 listOf(
                     IsSubscriber(
-                        userId = user.identity.id,
+                        userId = userId,
                         subscriberId = viewerId
                     ),
                     IsSubscriber(
                         userId = viewerId,
-                        subscriberId = user.identity.id
+                        subscriberId = userId
                     )
                 )
             }
         ).iterator()
 
-        return users.map { user ->
-            if (user.identity.id == viewerId) return@map null
+        return users.map { userId ->
+            if (userId == viewerId) return@map null
             val isSubscriber = subscribers.next()
             val isSubscribed = subscribers.next()
             when {

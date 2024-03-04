@@ -6,6 +6,7 @@ import app.meetacy.backend.feature.friends.database.friends.FriendsTable.FRIEND_
 import app.meetacy.backend.feature.friends.database.friends.FriendsTable.ID
 import app.meetacy.backend.feature.friends.database.friends.FriendsTable.USER_ID
 import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.amount.amountOrZero
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.paging.pagingIdLong
@@ -85,6 +86,22 @@ class FriendsStorage(private val db: Database) {
     suspend fun getSubscriptions(userId: UserId): List<UserId> = newSuspendedTransaction(Dispatchers.IO, db) {
         FriendsTable.select { (USER_ID eq userId.long) }
             .map { result -> UserId(result[FRIEND_ID]) }
+    }
+
+    suspend fun getSubscribersAmount(userId: UserId): Amount.OrZero = newSuspendedTransaction(Dispatchers.IO, db) {
+        val count = USER_ID.count()
+        FriendsTable
+            .slice(count)
+            .select { (FRIEND_ID eq userId.long) }
+            .first()[count].toInt().amountOrZero
+    }
+
+    suspend fun getSubscriptionsAmount(userId: UserId): Amount.OrZero = newSuspendedTransaction(Dispatchers.IO, db) {
+        val count = USER_ID.count()
+        FriendsTable
+            .slice(count)
+            .select { (USER_ID eq userId.long) }
+            .first()[count].toInt().amountOrZero
     }
 
     suspend fun deleteFriend(userId: UserId, friendId: UserId) =
