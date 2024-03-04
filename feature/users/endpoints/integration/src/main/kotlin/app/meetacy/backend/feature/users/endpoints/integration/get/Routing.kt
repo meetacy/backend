@@ -15,8 +15,8 @@ import io.ktor.server.routing.*
 internal fun Route.getUser(di: DI) {
     val usecase: GetUserSafeUsecase by di.getting
     val repository = object : UserRepository {
-        override suspend fun getUser(id: UserIdentity?, token: AccessIdentity): GetUserResult =
-            when (val result = usecase.getUser(toUsecase(id, token))) {
+        override suspend fun getUser(identity: UserIdentity?, token: AccessIdentity): GetUserResult =
+            when (val result = usecase.getUser(toUsecase(identity, token))) {
                 GetUserSafeUsecase.Result.InvalidToken -> GetUserResult.InvalidIdentity
                 GetUserSafeUsecase.Result.UserNotFound -> GetUserResult.UserNotFound
                 is GetUserSafeUsecase.Result.Success -> GetUserResult.Success(result.user.serializable())

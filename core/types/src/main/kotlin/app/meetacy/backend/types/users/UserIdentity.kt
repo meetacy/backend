@@ -21,9 +21,11 @@ value class UserIdentity private constructor(val string: String) {
     companion object {
         val REGEX = Regex("\\d+:.{256}")
 
-        fun parse(identity: String): UserIdentity? {
+        fun parseOrNull(identity: String): UserIdentity? {
             if (!identity.matches(REGEX)) return null
             return UserIdentity(identity)
         }
+
+        fun parse(identity: String) = parseOrNull(identity) ?: error("Cannot parse user identity")
     }
 }

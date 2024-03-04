@@ -1007,7 +1007,7 @@ paths:
       security:
         - token: []
       deprecated: true
-  /users/get:
+  /users/getUser:
     parameters:
       - name: Api-Version
         in: header
@@ -1015,17 +1015,16 @@ paths:
         required: true
         schema:
           type: string
-    post:
+      - name: id
+        in: path
+        required: false
+        schema:
+          type: string
+    get:
       summary: Getting user object
       tags:
         - user
       description: "Getting user data. Nickname, Id [not to be confused with token] and email verification status"
-      requestBody:
-        description: Body for get user or me
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetUserRequest'
       responses:
         "200":
           description: An example of a successful generated response with an token
