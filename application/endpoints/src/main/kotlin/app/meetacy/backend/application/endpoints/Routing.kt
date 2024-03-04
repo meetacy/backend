@@ -1,5 +1,6 @@
 package app.meetacy.backend.application.endpoints
 
+import app.meetacy.backend.application.endpoints.deeplink.deeplinks
 import app.meetacy.backend.database.initDatabase
 import app.meetacy.backend.endpoint.ktor.exceptions.installExceptionsHandler
 import app.meetacy.backend.endpoint.ktor.rsocket.installRSocket
@@ -68,6 +69,8 @@ suspend fun prepareEndpoints(di: DI): ApplicationEngine {
             search(di)
             updates(di)
             users(di)
+
+            deeplinks()
 
             get("/duntsova") {
                 call.respondRedirect("https://дунцова.рф")
