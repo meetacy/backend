@@ -11,6 +11,9 @@ private val iso8601DateTimeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
     timeZone = TimeZone.getTimeZone("UTC")
 }
 
+@Synchronized
+private fun parseDateTime(iso8601: String): JavaDate = iso8601DateTimeFormat.parse(iso8601)
+
 @JvmInline
 value class DateTime @UnsafeConstructor constructor(val iso8601: String) {
     operator fun compareTo(now: DateTime): Int =
@@ -20,7 +23,7 @@ value class DateTime @UnsafeConstructor constructor(val iso8601: String) {
 
     val javaInstant: JavaInstant get() = javaDate.toInstant()
 
-    val javaDate: JavaDate get() = iso8601DateTimeFormat.parse(iso8601)
+    val javaDate: JavaDate get() = parseDateTime(iso8601)
 
     val epochMillis: Long get() = javaInstant.toEpochMilli()
 

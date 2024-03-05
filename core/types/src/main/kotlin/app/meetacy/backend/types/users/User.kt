@@ -1,5 +1,6 @@
 package app.meetacy.backend.types.users
 
+import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.files.FileIdentity
 
@@ -25,3 +26,15 @@ data class UserView(
     val avatarIdentity: FileIdentity?
 )
 
+data class UserDetails(
+    val isSelf: Boolean,
+    val relationship: Relationship?,
+    val identity: UserIdentity,
+    val nickname: String,
+    val username: Username?,
+    val email: String?,
+    val emailVerified: Boolean?,
+    val avatarIdentity: FileIdentity?,
+    val subscribersAmount: Amount.OrZero,
+    val subscriptionsAmount: Amount.OrZero
+)

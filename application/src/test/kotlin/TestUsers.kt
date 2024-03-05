@@ -1,5 +1,6 @@
 import app.meetacy.backend.hash.HashGenerator
 import app.meetacy.sdk.exception.MeetacyUsernameAlreadyOccupiedException
+import app.meetacy.sdk.types.amount.amountOrZero
 import app.meetacy.sdk.types.optional.Optional
 import app.meetacy.sdk.types.user.username
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,7 +19,7 @@ class TestUsers {
 
         require(editedUser.nickname == newNickname)
 
-        val updatedUser = editedUser.updated()
+        val updatedUser = editedUser.details()
 
         require(updatedUser.nickname == newNickname)
     }
@@ -33,9 +34,26 @@ class TestUsers {
 
         require(editedUser.username == newUsername)
 
-        val updatedUser = editedUser.updated()
+        val updatedUser = editedUser.details()
 
         require(updatedUser.username == newUsername)
+    }
+
+    @Test
+    fun `test followers`() = runTestServer {
+        val user = generateTestAccount()
+
+        require(user.subscribersAmount == 0.amountOrZero)
+        require(user.subscriptionsAmount == 0.amountOrZero)
+
+        val subscriber = generateTestAccount(postfix = "subscriber")
+        subscriber.friends.add(user.id)
+
+        val updatedUser = user.updated()
+        val updatedSubscriber = subscriber.updated()
+
+        require(updatedUser.subscribersAmount == 1.amountOrZero)
+        require(updatedSubscriber.subscriptionsAmount == 1.amountOrZero)
     }
 
     @Test

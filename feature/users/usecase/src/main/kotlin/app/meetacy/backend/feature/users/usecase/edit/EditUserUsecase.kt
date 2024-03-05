@@ -10,17 +10,15 @@ import app.meetacy.backend.types.files.checkFileIdentity
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
 import app.meetacy.backend.types.optional.map
-import app.meetacy.backend.types.users.FullUser
-import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.types.users.UserView
-import app.meetacy.backend.types.users.Username
+import app.meetacy.backend.types.users.*
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
 
 class EditUserUsecase(
     private val storage: Storage,
     private val authRepository: AuthRepository,
     private val filesRepository: FilesRepository,
-    private val utf8Checker: Utf8Checker
+    private val utf8Checker: Utf8Checker,
+    private val viewUser: ViewUsersRepository
 ) {
 
     sealed interface Result {
@@ -74,20 +72,12 @@ class EditUserUsecase(
             avatarIdentity.map { it?.id }
         )
 
-        return Result.Success(
-            with(fullUser) {
-                UserView(
-                    isSelf = true,
-                    relationship = null,
-                    this.identity,
-                    this.nickname,
-                    this.username,
-                    this.email,
-                    this.emailVerified,
-                    avatarIdentity.value
-                )
-            }
-        )
+        val userView = viewUser.viewUsers(
+            viewerId = fullUser.identity.id,
+            users = listOf(fullUser)
+        ).first()
+
+        return Result.Success(userView)
     }
 
     interface Storage {

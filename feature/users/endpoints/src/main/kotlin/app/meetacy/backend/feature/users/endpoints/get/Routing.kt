@@ -6,7 +6,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.backend.types.serializable.users.User
+import app.meetacy.backend.types.serializable.users.UserDetails
 import app.meetacy.backend.types.serializable.users.UserIdentity
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
@@ -18,7 +18,7 @@ interface UserRepository {
 sealed interface GetUserResult {
     data object InvalidIdentity : GetUserResult
     data object UserNotFound : GetUserResult
-    class Success(val user: User) : GetUserResult
+    data class Success(val user: UserDetails) : GetUserResult
 }
 
 fun Route.getUser(provider: UserRepository) = get("/get") {

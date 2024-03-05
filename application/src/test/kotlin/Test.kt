@@ -6,6 +6,7 @@ import app.meetacy.sdk.types.annotation.UnsafeConstructor
 import app.meetacy.sdk.types.annotation.UnstableApi
 import app.meetacy.sdk.types.auth.Token
 import app.meetacy.sdk.types.location.Location
+import app.meetacy.sdk.users.AuthorizedSelfUserDetailsRepository
 import app.meetacy.sdk.users.AuthorizedSelfUserRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -55,7 +56,7 @@ private suspend fun signupDeveloper() {
     println(user.token)
 }
 
-private suspend fun addDevsToFriends(user: AuthorizedSelfUserRepository) {
+private suspend fun addDevsToFriends(user: AuthorizedSelfUserDetailsRepository) {
     val devs = devs.map { it.getMe() }
 
     for (dev in devs) {

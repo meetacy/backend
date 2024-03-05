@@ -12,11 +12,6 @@ class TestLocationStreaming {
             longitude = 23.0
         )
 
-        val himselfLocation = Location(
-            latitude = 15.0,
-            longitude = 30.0
-        )
-
         val self = generateTestAccount()
         val friend = generateTestAccount(postfix = "Friend")
 

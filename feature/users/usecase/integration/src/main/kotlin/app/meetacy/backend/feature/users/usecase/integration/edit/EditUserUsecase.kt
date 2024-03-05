@@ -9,17 +9,15 @@ import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.users.FullUser
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.backend.types.users.Username
+import app.meetacy.backend.types.users.ViewUsersRepository
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
 import app.meetacy.di.builder.DIBuilder
 
 internal fun DIBuilder.editUserUsecase() {
     val editUserUsecase by singleton {
-        val authRepository: AuthRepository by getting
-        val filesRepository: FilesRepository by getting
-        val utf8Checker: Utf8Checker by getting
         val usersStorage: UsersStorage by getting
-        val storage = object : EditUserUsecase.Storage {
 
+        val storage = object : EditUserUsecase.Storage {
             override suspend fun editUser(
                 userId: UserId, nickname: Optional<String>,
                 username: Optional<Username?>,
@@ -30,6 +28,12 @@ internal fun DIBuilder.editUserUsecase() {
             override suspend fun isOccupied(username: Username): Boolean =
                 usersStorage.isUsernameOccupied(username)
         }
-        EditUserUsecase(storage, authRepository, filesRepository, utf8Checker)
+
+        val authRepository: AuthRepository by getting
+        val filesRepository: FilesRepository by getting
+        val utf8Checker: Utf8Checker by getting
+        val viewUser: ViewUsersRepository by getting
+
+        EditUserUsecase(storage, authRepository, filesRepository, utf8Checker, viewUser)
     }
 }
