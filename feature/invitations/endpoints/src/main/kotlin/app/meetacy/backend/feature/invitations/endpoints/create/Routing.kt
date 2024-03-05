@@ -5,8 +5,8 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.invitation.Invitation
-import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
-import app.meetacy.backend.types.serializable.users.UserIdentity
+import app.meetacy.backend.types.serializable.meetings.MeetingId
+import app.meetacy.backend.types.serializable.users.UserId
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -15,8 +15,8 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 
 @Serializable
 data class InvitationCreatingForm(
-    val meetingId: MeetingIdentity,
-    val userId: UserIdentity
+    val meetingId: MeetingId,
+    val userId: UserId
 )
 
 fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationRepository) = post("/create") {
@@ -46,7 +46,7 @@ fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationReposito
 }
 
 interface CreateInvitationRepository {
-    suspend fun createInvitation(token: AccessIdentity, meetingId: MeetingIdentity, userId: UserIdentity): InvitationsCreateResponse
+    suspend fun createInvitation(token: AccessIdentity, meetingId: MeetingId, userId: UserId): InvitationsCreateResponse
 }
 
 sealed interface InvitationsCreateResponse {

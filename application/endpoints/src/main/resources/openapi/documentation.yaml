@@ -1017,7 +1017,10 @@ paths:
           type: string
       - name: id
         in: path
-        required: false
+        schema:
+          type: string
+      - name: username
+        in: path
         schema:
           type: string
     get:

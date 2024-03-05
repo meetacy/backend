@@ -5,7 +5,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.backend.types.serializable.file.FileIdentity
+import app.meetacy.backend.types.serializable.file.FileId
 import app.meetacy.backend.types.serializable.file.FileSize
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -15,7 +15,7 @@ import kotlinx.serialization.SerializationException
 import java.io.InputStream
 
 sealed interface UploadFileResult {
-    data class Success(val fileIdentity: FileIdentity) : UploadFileResult
+    data class Success(val fileId: FileId) : UploadFileResult
     data object InvalidIdentity : UploadFileResult
     data class LimitSize(val filesSize: FileSize, val filesSizeLimit: FileSize) : UploadFileResult
 }
@@ -51,7 +51,7 @@ fun Route.upload(saveFileRepository: SaveFileRepository) = post("/upload") {
     if (inputProvider == null) throw SerializationException("Please provide file part")
 
     when (val result = saveFileRepository.saveFile(token, fileName, inputProvider!!)) {
-        is UploadFileResult.Success -> call.respondSuccess(result.fileIdentity)
+        is UploadFileResult.Success -> call.respondSuccess(result.fileId)
         is UploadFileResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
         is UploadFileResult.LimitSize -> {
             val filesSizeLimit = result.filesSizeLimit

@@ -6,7 +6,7 @@ import app.meetacy.backend.feature.friends.endpoints.delete.deleteFriend
 import app.meetacy.backend.feature.friends.usecase.delete.DeleteFriendUsecase
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serializable.users.UserIdentity
+import app.meetacy.backend.types.serializable.users.UserId
 import app.meetacy.backend.types.serializable.users.type
 import app.meetacy.di.DI
 import io.ktor.server.routing.*
@@ -14,7 +14,7 @@ import io.ktor.server.routing.*
 fun Route.deleteFriend(di: DI) {
     val usecase: DeleteFriendUsecase by di.getting
     val repository = object : DeleteFriendRepository {
-        override suspend fun deleteFriend(token: AccessIdentity, friendId: UserIdentity): DeleteFriendResult {
+        override suspend fun deleteFriend(token: AccessIdentity, friendId: UserId): DeleteFriendResult {
             return when (usecase.deleteFriendUsecase(token.type(), friendId.type())) {
                 DeleteFriendUsecase.Result.FriendNotFound ->
                     DeleteFriendResult.FriendNotFound

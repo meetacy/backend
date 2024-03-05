@@ -55,7 +55,7 @@ fun Route.upload(di: DI) {
                     filesSizeLimit = result.limitSize.serializable()
                 )
                 is Result.Success -> UploadFileResult.Success(
-                    fileIdentity = result.fileIdentity.serializable()
+                    fileId = result.fileIdentity.serializable()
                 )
             }
         }

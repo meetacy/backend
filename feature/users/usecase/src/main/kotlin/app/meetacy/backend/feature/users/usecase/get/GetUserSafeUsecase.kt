@@ -9,23 +9,45 @@ import app.meetacy.backend.types.users.*
 class GetUserSafeUsecase(
     private val storage: Storage,
     private val authRepository: AuthRepository,
-    private val usersViewsRepository: GetUsersViewsRepository,
+    private val getUsersViewsRepository: GetUsersViewsRepository,
+    private val viewUsersRepository: ViewUsersRepository
 ) {
-    suspend fun getUser(params: Params): Result {
-        val ownerId = authRepository.authorizeWithUserId(params.accessIdentity) { return Result.InvalidToken }
-
-        val userId = when (params) {
-            is Params.Self -> ownerId
-            is Params.User -> params.identity.id
+    suspend fun getUser(identifier: Identifier): Result {
+        val viewerId = authRepository.authorizeWithUserId(identifier.accessIdentity) {
+            return Result.InvalidToken
         }
 
-        val user = usersViewsRepository.getUserViewOrNull(ownerId, userId)
+        val userId = when (identifier) {
+            is Identifier.Self -> viewerId
+            is Identifier.ByUserId -> identifier.identity.id
+            is Identifier.ByUsername -> return getUser(identifier, viewerId)
+        }
+
+        val user = getUsersViewsRepository.getUserViewOrNull(viewerId, userId)
             ?: return Result.UserNotFound
 
-        if (params is Params.User && params.identity.accessHash != user.identity.accessHash)
-            return Result.UserNotFound
+        if (identifier is Identifier.ByUserId) {
+            val expectedHash = identifier.identity.accessHash
+            val actualHash = user.identity.accessHash
+            if (expectedHash != actualHash) return Result.UserNotFound
+        }
 
-        val userDetails = UserDetails(
+        val details = getUserDetails(user)
+        return Result.Success(details)
+    }
+
+    private suspend fun getUser(
+        identifier: Identifier.ByUsername,
+        viewerId: UserId
+    ): Result {
+        val fullUser = storage.getUserByUsername(identifier.username) ?: return Result.UserNotFound
+        val userView = viewUsersRepository.viewUsers(viewerId, listOf(fullUser)).first()
+        val details = getUserDetails(userView)
+        return Result.Success(details)
+    }
+
+    private suspend fun getUserDetails(user: UserView): UserDetails {
+        return UserDetails(
             isSelf = user.isSelf,
             relationship = user.relationship,
             identity = user.identity,
@@ -34,17 +56,16 @@ class GetUserSafeUsecase(
             email = user.email,
             emailVerified = user.emailVerified,
             avatarIdentity = user.avatarIdentity,
-            subscribersAmount = storage.getSubscribers(userId),
-            subscriptionsAmount = storage.getSubscriptions(userId),
+            subscribersAmount = storage.getSubscribers(user.identity.id),
+            subscriptionsAmount = storage.getSubscriptions(user.identity.id),
         )
-
-        return Result.Success(userDetails)
     }
 
-    sealed interface Params {
+    sealed interface Identifier {
         val accessIdentity: AccessIdentity
-        class Self(override val accessIdentity: AccessIdentity) : Params
-        class User(val identity: UserIdentity, override val accessIdentity: AccessIdentity) : Params
+        data class Self(override val accessIdentity: AccessIdentity) : Identifier
+        data class ByUserId(val identity: UserIdentity, override val accessIdentity: AccessIdentity) : Identifier
+        data class ByUsername(val username: Username, override val accessIdentity: AccessIdentity) : Identifier
     }
 
     sealed interface Result {
@@ -54,6 +75,7 @@ class GetUserSafeUsecase(
     }
 
     interface Storage {
+        suspend fun getUserByUsername(username: Username): FullUser?
         suspend fun getSubscribers(userId: UserId): Amount.OrZero
         suspend fun getSubscriptions(userId: UserId): Amount.OrZero
     }

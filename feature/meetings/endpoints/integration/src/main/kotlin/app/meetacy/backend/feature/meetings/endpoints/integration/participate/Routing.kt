@@ -7,7 +7,7 @@ import app.meetacy.backend.feature.meetings.usecase.participate.ParticipateMeeti
 import app.meetacy.backend.feature.meetings.usecase.participate.ParticipateMeetingUsecase.Result
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
+import app.meetacy.backend.types.serializable.meetings.MeetingId
 import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.di.DI
 import io.ktor.server.routing.*
@@ -17,11 +17,11 @@ fun Route.participateMeeting(di: DI) {
 
     val repository = object : ParticipateMeetingRepository {
         override suspend fun participateMeeting(
-            meetingIdentity: MeetingIdentity,
+            meetingId: MeetingId,
             accessIdentity: AccessIdentity
         ): ParticipateMeetingResult = when (
             participateMeetingUsecase.participateMeeting(
-                meetingIdentity = meetingIdentity.type(),
+                meetingIdentity = meetingId.type(),
                 accessIdentity = accessIdentity.type()
             )
         ) {

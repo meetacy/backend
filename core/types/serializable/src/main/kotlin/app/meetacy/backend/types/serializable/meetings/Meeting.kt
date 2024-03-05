@@ -1,26 +1,24 @@
 package app.meetacy.backend.types.serializable.meetings
 
 import app.meetacy.backend.types.serializable.datetime.Date
-import app.meetacy.backend.types.serializable.description.Description
-import app.meetacy.backend.types.serializable.file.FileIdentity
+import app.meetacy.backend.types.serializable.file.FileId
 import app.meetacy.backend.types.serializable.location.Location
-import app.meetacy.backend.types.serializable.title.Title
 import app.meetacy.backend.types.serializable.users.User
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Meeting(
-    val id: MeetingIdentity,
+    val id: MeetingId,
     val creator: User,
     val date: Date?,
     val location: Location,
-    val title: Title,
-    val description: Description?,
+    val title: MeetingTitle,
+    val description: MeetingDescription?,
     val participantsCount: Int,
     val previewParticipants: List<User>,
     val isParticipating: Boolean,
-    val avatarId: FileIdentity?,
+    val avatarId: FileId?,
     val visibility: Visibility
 ) {
     @Serializable

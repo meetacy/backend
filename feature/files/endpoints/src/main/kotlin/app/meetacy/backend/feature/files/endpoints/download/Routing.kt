@@ -2,7 +2,7 @@ package app.meetacy.backend.feature.files.endpoints.download
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
-import app.meetacy.backend.types.serializable.file.FileIdentity
+import app.meetacy.backend.types.serializable.file.FileId
 import app.meetacy.backend.types.serializable.file.FileSize
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -19,14 +19,14 @@ sealed interface GetFileResult {
 }
 
 interface GetFileRepository {
-    suspend fun getFile(fileId: FileIdentity): GetFileResult
+    suspend fun getFile(fileId: FileId): GetFileResult
 }
 
 fun Route.download(getFileRepository: GetFileRepository) = get("/download") {
 
-    val fileIdentity = FileIdentity(call.parameters["fileId"]!!)
+    val fileId = FileId(call.parameters["fileId"]!!)
 
-    when (val result = getFileRepository.getFile(fileIdentity)) {
+    when (val result = getFileRepository.getFile(fileId)) {
         GetFileResult.InvalidFileIdentity -> call.respondFailure(Failure.InvalidFileIdentity)
 
         is GetFileResult.Success -> {

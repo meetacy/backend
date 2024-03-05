@@ -6,10 +6,10 @@ import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.datetime.Date
-import app.meetacy.backend.types.serializable.file.FileIdentity
+import app.meetacy.backend.types.serializable.file.FileId
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.meetings.Meeting
-import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
+import app.meetacy.backend.types.serializable.meetings.MeetingId
 import app.meetacy.backend.types.serializable.optional.Optional
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -18,8 +18,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EditMeetingParams(
-    val meetingId: MeetingIdentity,
-    val avatarId: Optional<FileIdentity?> = Optional.Undefined,
+    val meetingId: MeetingId,
+    val avatarId: Optional<FileId?> = Optional.Undefined,
     val title: String?,
     val description: String?,
     val location: Location?,
@@ -39,8 +39,8 @@ sealed interface EditMeetingResult {
 interface EditMeetingRepository {
     suspend fun editMeeting(
         token: AccessIdentity,
-        meetingId: MeetingIdentity,
-        avatarId: Optional<FileIdentity?>,
+        meetingId: MeetingId,
+        avatarId: Optional<FileId?>,
         title: String?,
         description: String?,
         location: Location?,
