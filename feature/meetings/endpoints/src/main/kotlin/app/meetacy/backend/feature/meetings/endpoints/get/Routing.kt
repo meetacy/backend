@@ -5,7 +5,7 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.meetings.Meeting
-import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
+import app.meetacy.backend.types.serializable.meetings.MeetingId
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -14,7 +14,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 
 @Serializable
 data class GetMeetingsParam(
-    val meetingId: MeetingIdentity
+    val meetingId: MeetingId
 )
 
 sealed interface GetMeetingResult {
@@ -26,7 +26,7 @@ sealed interface GetMeetingResult {
 interface GetMeetingRepository {
     suspend fun getMeeting(
         accessIdentity: AccessIdentity,
-        meetingIdentity: MeetingIdentity
+        meetingId: MeetingId
     ): GetMeetingResult
 }
 

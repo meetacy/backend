@@ -1,8 +1,8 @@
 package app.meetacy.backend.feature.meetings.endpoints.history.active
 
 import app.meetacy.backend.core.endpoints.accessIdentity
-import app.meetacy.backend.core.endpoints.amount
-import app.meetacy.backend.core.endpoints.pagingId
+import app.meetacy.backend.core.endpoints.amountOrNull
+import app.meetacy.backend.core.endpoints.pagingIdOrNull
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -15,6 +15,7 @@ import app.meetacy.backend.types.serializable.amount.Amount
 import app.meetacy.backend.types.serializable.meetings.Meeting
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.SerializationException
 
 sealed interface ListMeetingsActiveResult {
     data class Success(val meetings: PagingResult<Meeting>) : ListMeetingsActiveResult
@@ -30,8 +31,8 @@ interface ListMeetingsActiveRepository {
 }
 
 fun Route.listMeetingsActive(repository: ListMeetingsActiveRepository) = get("/active") {
-    val amount = call.amount()
-    val pagingId = call.pagingId()
+    val amount = call.parameters.amountOrNull() ?: throw SerializationException("Bad request. Illegal input: param 'amount' is required for type with serial name, but it was missing at path: $")
+    val pagingId = call.parameters.pagingIdOrNull()
     val token = call.accessIdentity()
 
     when (

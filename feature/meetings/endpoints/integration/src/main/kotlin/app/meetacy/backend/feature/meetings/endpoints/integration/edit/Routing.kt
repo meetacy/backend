@@ -10,7 +10,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.datetime.Date
 import app.meetacy.backend.types.serializable.datetime.type
-import app.meetacy.backend.types.serializable.file.FileIdentity
+import app.meetacy.backend.types.serializable.file.FileId
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.location.type
@@ -26,8 +26,8 @@ fun Route.editMeeting(di: DI) {
     val repository = object : EditMeetingRepository {
         override suspend fun editMeeting(
             token: AccessIdentity,
-            meetingId: MeetingIdentity,
-            avatarId: Optional<FileIdentity?>,
+            meetingId: MeetingId,
+            avatarId: Optional<FileId?>,
             title: String?,
             description: String?,
             location: Location?,

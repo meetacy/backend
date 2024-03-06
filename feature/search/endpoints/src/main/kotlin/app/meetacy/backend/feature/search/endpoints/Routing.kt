@@ -1,8 +1,8 @@
 package app.meetacy.backend.feature.search.endpoints
 
 import app.meetacy.backend.core.endpoints.accessIdentity
-import app.meetacy.backend.core.endpoints.latitude
-import app.meetacy.backend.core.endpoints.longitude
+import app.meetacy.backend.core.endpoints.latitudeOrNull
+import app.meetacy.backend.core.endpoints.longitudeOrNull
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
@@ -29,8 +29,9 @@ sealed interface SearchResult {
 fun Route.search(repository: SearchRepository) = get("/search") {
     val token = call.accessIdentity()
 
-    val latitude = call.latitude()
-    val longitude = call.longitude()
+    val latitude = call.parameters.latitudeOrNull()
+    val longitude = call.parameters.longitudeOrNull()
+
     val prompt: String by call.parameters
 
     val location = if (latitude != null && longitude != null) Location(latitude, longitude) else null

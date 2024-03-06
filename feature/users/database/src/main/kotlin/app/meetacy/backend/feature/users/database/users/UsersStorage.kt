@@ -76,6 +76,12 @@ class UsersStorage(private val db: Database) {
         return@newSuspendedTransaction userIds.map { foundUsers[it] }
     }
 
+    suspend fun getUserByUsername(username: Username): FullUser? = newSuspendedTransaction(Dispatchers.IO, db) {
+        UsersTable.select { USERNAME eq username.string }
+            .firstOrNull()
+            ?.toUser()
+    }
+
     suspend fun searchUsers(
         prefix: String,
         limit: Int

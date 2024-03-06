@@ -7,9 +7,9 @@ import app.meetacy.backend.feature.invitations.usecase.create.CreateInvitationUs
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.invitation.serializable
-import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
+import app.meetacy.backend.types.serializable.meetings.MeetingId
 import app.meetacy.backend.types.serializable.meetings.type
-import app.meetacy.backend.types.serializable.users.UserIdentity
+import app.meetacy.backend.types.serializable.users.UserId
 import app.meetacy.backend.types.serializable.users.type
 import app.meetacy.di.DI
 import io.ktor.server.routing.*
@@ -17,7 +17,7 @@ import io.ktor.server.routing.*
 internal fun Route.invitationCreate(di: DI) {
     val usecase: CreateInvitationUsecase by di.getting
     val repository = object : CreateInvitationRepository {
-        override suspend fun createInvitation(token: AccessIdentity, meetingId: MeetingIdentity, userId: UserIdentity): InvitationsCreateResponse {
+        override suspend fun createInvitation(token: AccessIdentity, meetingId: MeetingId, userId: UserId): InvitationsCreateResponse {
             val response = usecase.createInvitation(
                 token = token.type(),
                 meetingIdentity = meetingId.type(),

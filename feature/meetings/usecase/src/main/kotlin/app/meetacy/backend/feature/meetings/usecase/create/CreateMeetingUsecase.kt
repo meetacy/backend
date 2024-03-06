@@ -5,8 +5,6 @@ import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.description.Description
-import app.meetacy.backend.types.description.description
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.files.FileIdentity
 import app.meetacy.backend.types.generator.AccessHashGenerator
@@ -16,8 +14,6 @@ import app.meetacy.backend.types.utf8Checker.Utf8Checker
 import app.meetacy.backend.types.files.FilesRepository
 import app.meetacy.backend.types.files.checkFileIdentity
 import app.meetacy.backend.types.meetings.*
-import app.meetacy.backend.types.title.Title
-import app.meetacy.backend.types.title.title
 
 class CreateMeetingUsecase(
     private val hashGenerator: AccessHashGenerator,
@@ -37,14 +33,14 @@ class CreateMeetingUsecase(
 
     suspend fun createMeeting(
         token: AccessIdentity,
-        title: String?,
+        title: String,
         description: String?,
         date: Date,
         location: Location,
         visibility: FullMeeting.Visibility,
         avatarIdentity: FileIdentity?
     ): Result {
-        if (title != null) if (!utf8Checker.checkString(title)) return Result.InvalidUtf8String
+        if (!utf8Checker.checkString(title)) return Result.InvalidUtf8String
         if (description != null) if (!utf8Checker.checkString(description)) return Result.InvalidUtf8String
         if (avatarIdentity != null && !filesRepository.checkFileIdentity(avatarIdentity)) {
             return Result.InvalidFileIdentity
@@ -57,8 +53,8 @@ class CreateMeetingUsecase(
             creatorId,
             date,
             location,
-            title?.title ?: Title("${location.latitude} ${location.longitude}; $date"),
-            description?.description,
+            MeetingTitle(title),
+            description?.let(::MeetingDescription),
             visibility,
             avatarIdentity?.id
         )
@@ -76,8 +72,8 @@ class CreateMeetingUsecase(
             creatorId: UserId,
             date: Date,
             location: Location,
-            title: Title,
-            description: Description?,
+            title: MeetingTitle,
+            description: MeetingDescription?,
             visibility: FullMeeting.Visibility,
             avatarId: FileId?
         ): FullMeeting

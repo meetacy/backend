@@ -21,15 +21,11 @@ import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.access.AccessHash
 import app.meetacy.backend.types.annotation.UnsafeConstructor
 import app.meetacy.backend.types.datetime.Date
-import app.meetacy.backend.types.description.Description
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.meetings.FullMeeting
-import app.meetacy.backend.types.meetings.MeetingId
-import app.meetacy.backend.types.meetings.MeetingIdentity
+import app.meetacy.backend.types.meetings.*
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
-import app.meetacy.backend.types.title.Title
 import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -61,8 +57,8 @@ class MeetingsStorage(private val db: Database) {
         creatorId: UserId,
         date: Date,
         location: Location,
-        title: Title,
-        description: Description?,
+        title: MeetingTitle,
+        description: MeetingDescription?,
         visibility: FullMeeting.Visibility,
         avatarId: FileId?
     ): MeetingId =
@@ -164,8 +160,8 @@ class MeetingsStorage(private val db: Database) {
             creatorId = UserId(this[CREATOR_ID]),
             date = Date(this[DATE]),
             location = Location(this[LATITUDE], this[LONGITUDE]),
-            description = this[DESCRIPTION]?.let(::Description),
-            title = Title(this[TITLE]),
+            description = this[DESCRIPTION]?.let(::MeetingDescription),
+            title = MeetingTitle(this[TITLE]),
             avatarId = this[AVATAR_ID]?.let(::FileId),
             visibility = this[VISIBILITY]
         )

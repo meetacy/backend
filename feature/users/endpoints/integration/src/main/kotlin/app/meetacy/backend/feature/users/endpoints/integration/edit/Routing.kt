@@ -7,7 +7,7 @@ import app.meetacy.backend.feature.users.usecase.edit.EditUserUsecase
 import app.meetacy.backend.types.optional.map
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serializable.file.FileIdentity
+import app.meetacy.backend.types.serializable.file.FileId
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.optional.Optional
 import app.meetacy.backend.types.serializable.optional.type
@@ -24,7 +24,7 @@ internal fun Route.editUser(di: DI) {
             token: AccessIdentity,
             nickname: Optional<String>,
             username: Optional<Username?>,
-            avatarId: Optional<FileIdentity?>
+            avatarId: Optional<FileId?>
         ): EditUserResult = when (
             val result = usecase.editUser(
                 token.type(),

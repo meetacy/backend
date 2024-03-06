@@ -7,7 +7,7 @@ import app.meetacy.backend.feature.meetings.usecase.delete.DeleteMeetingUsecase
 import app.meetacy.backend.feature.meetings.usecase.delete.DeleteMeetingUsecase.Result
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
-import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
+import app.meetacy.backend.types.serializable.meetings.MeetingId
 import app.meetacy.backend.types.serializable.meetings.type
 import app.meetacy.di.DI
 import io.ktor.server.routing.*
@@ -17,7 +17,7 @@ fun Route.deleteMeeting(di: DI) {
 
     val repository = object : DeleteMeetingRepository {
         override suspend fun deleteMeeting(
-            token: AccessIdentity, meetingId: MeetingIdentity
+            token: AccessIdentity, meetingId: MeetingId
         ): DeleteMeetingResult =
             when (
                 deleteMeetingUsecase.deleteMeeting(

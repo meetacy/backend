@@ -9,7 +9,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.access.type
 import app.meetacy.backend.types.serializable.datetime.Date
 import app.meetacy.backend.types.serializable.datetime.type
-import app.meetacy.backend.types.serializable.file.FileIdentity
+import app.meetacy.backend.types.serializable.file.FileId
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.location.type
@@ -30,7 +30,7 @@ internal fun Route.createMeeting(di: DI) {
             date: Date,
             location: Location,
             visibility: Meeting.Visibility,
-            avatarId: FileIdentity?
+            avatarId: FileId?
         ): CreateMeetingResult = when (
             val result =
                 createMeetingUsecase.createMeeting(

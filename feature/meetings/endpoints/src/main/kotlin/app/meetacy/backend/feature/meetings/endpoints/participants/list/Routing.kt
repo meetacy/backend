@@ -7,7 +7,7 @@ import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.paging.serializable.PagingId
 import app.meetacy.backend.types.paging.serializable.PagingResult
 import app.meetacy.backend.types.serializable.amount.Amount
-import app.meetacy.backend.types.serializable.meetings.MeetingIdentity
+import app.meetacy.backend.types.serializable.meetings.MeetingId
 import app.meetacy.backend.types.serializable.users.User
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -17,7 +17,7 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 
 @Serializable
 data class ListMeetingParticipantsParams(
-    val meetingId: MeetingIdentity,
+    val meetingId: MeetingId,
     val amount: Amount,
     val pagingId: PagingId? = null
 )
@@ -25,7 +25,7 @@ data class ListMeetingParticipantsParams(
 fun interface ListMeetingParticipantsRepository {
     suspend fun listParticipants(
         token: AccessIdentity,
-        meetingId: MeetingIdentity,
+        meetingId: MeetingId,
         amount: Amount,
         pagingId: PagingId?
     ): ListParticipantsResult
