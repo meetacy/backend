@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.friends.usecase.integration
+package app.meetacy.backend.feature.friends.usecase.integration.delete
 
 import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
 import app.meetacy.backend.feature.friends.usecase.delete.DeleteFriendUsecase

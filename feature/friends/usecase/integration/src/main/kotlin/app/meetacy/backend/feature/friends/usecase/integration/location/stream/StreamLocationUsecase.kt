@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.friends.usecase.integration
+package app.meetacy.backend.feature.friends.usecase.integration.location.stream
 
 import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
 import app.meetacy.backend.feature.friends.database.location.UsersLocationsStorage
@@ -15,24 +15,6 @@ import app.meetacy.di.builder.DIBuilder
 import kotlinx.coroutines.flow.Flow
 import org.jetbrains.exposed.sql.Database
 import kotlin.time.Duration.Companion.hours
-
-fun DIBuilder.locationMiddleware() {
-    val locationMiddleware by singleton<LocationsMiddleware> {
-        val storage = object : LocationsMiddleware.Storage {
-            private val database: Database by getting
-            private val table = UsersLocationsStorage(database)
-
-            override suspend fun setLocation(userId: UserId, location: Location) {
-                table.saveLocation(userId, location)
-            }
-
-            override suspend fun getLocation(userId: UserId, from: DateTime): LocationSnapshot? {
-                return table.getLocation(userId, from)
-            }
-        }
-        LocationsMiddleware(storage)
-    }
-}
 
 fun DIBuilder.locationStreamingUsecase() {
     val locationStreamingUsecase by singleton<FriendsLocationStreamingUsecase> {
