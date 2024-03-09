@@ -28,8 +28,8 @@ fun Route.editMeeting(di: DI) {
             token: AccessIdentity,
             meetingId: MeetingId,
             avatarId: Optional<FileId?>,
-            title: String?,
-            description: String?,
+            title: MeetingTitle?,
+            description: MeetingDescription?,
             location: Location?,
             date: Date?,
             visibility: Meeting.Visibility?
@@ -39,8 +39,8 @@ fun Route.editMeeting(di: DI) {
                     token = token.type(),
                     meetingIdentity = meetingId.type(),
                     avatarIdentityOptional = avatarId.type().map { it?.type() },
-                    title = title,
-                    description = description,
+                    title = title?.type(),
+                    description = description?.type(),
                     location = location?.type(),
                     date = date?.type(),
                     visibility = visibility?.typeFullMeeting()

@@ -7,10 +7,7 @@ import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.files.FilesRepository
 import app.meetacy.backend.types.location.Location
-import app.meetacy.backend.types.meetings.FullMeeting
-import app.meetacy.backend.types.meetings.GetMeetingsViewsRepository
-import app.meetacy.backend.types.meetings.MeetingId
-import app.meetacy.backend.types.meetings.ViewMeetingsRepository
+import app.meetacy.backend.types.meetings.*
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.utf8Checker.Utf8Checker
 import app.meetacy.di.builder.DIBuilder
@@ -29,8 +26,8 @@ internal fun DIBuilder.editMeetingUsecase() {
             override suspend fun editMeeting(
                 meetingId: MeetingId,
                 avatarId: Optional<FileId?>,
-                title: String?,
-                description: String?,
+                title: MeetingTitle?,
+                description: MeetingDescription?,
                 location: Location?,
                 date: Date?,
                 visibility: FullMeeting.Visibility?

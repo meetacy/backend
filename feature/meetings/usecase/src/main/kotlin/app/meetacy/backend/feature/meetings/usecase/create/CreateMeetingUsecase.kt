@@ -33,15 +33,15 @@ class CreateMeetingUsecase(
 
     suspend fun createMeeting(
         token: AccessIdentity,
-        title: String,
-        description: String?,
+        title: MeetingTitle,
+        description: MeetingDescription?,
         date: Date,
         location: Location,
         visibility: FullMeeting.Visibility,
         avatarIdentity: FileIdentity?
     ): Result {
-        if (!utf8Checker.checkString(title)) return Result.InvalidUtf8String
-        if (description != null) if (!utf8Checker.checkString(description)) return Result.InvalidUtf8String
+        if (!utf8Checker.checkString(title.string)) return Result.InvalidUtf8String
+        if (description != null) if (!utf8Checker.checkString(description.string)) return Result.InvalidUtf8String
         if (avatarIdentity != null && !filesRepository.checkFileIdentity(avatarIdentity)) {
             return Result.InvalidFileIdentity
         }
@@ -53,8 +53,8 @@ class CreateMeetingUsecase(
             creatorId,
             date,
             location,
-            MeetingTitle(title),
-            description?.let(::MeetingDescription),
+            title,
+            description,
             visibility,
             avatarIdentity?.id
         )

@@ -13,9 +13,7 @@ import app.meetacy.backend.types.serializable.file.FileId
 import app.meetacy.backend.types.serializable.file.type
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.location.type
-import app.meetacy.backend.types.serializable.meetings.Meeting
-import app.meetacy.backend.types.serializable.meetings.serializable
-import app.meetacy.backend.types.serializable.meetings.typeFullMeeting
+import app.meetacy.backend.types.serializable.meetings.*
 import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
@@ -25,8 +23,8 @@ internal fun Route.createMeeting(di: DI) {
     val repository = object : CreateMeetingRepository {
         override suspend fun createMeeting(
             token: AccessIdentity,
-            title: String,
-            description: String?,
+            title: MeetingTitle,
+            description: MeetingDescription?,
             date: Date,
             location: Location,
             visibility: Meeting.Visibility,
@@ -35,8 +33,8 @@ internal fun Route.createMeeting(di: DI) {
             val result =
                 createMeetingUsecase.createMeeting(
                     token = token.type(),
-                    title = title,
-                    description = description,
+                    title = title.type(),
+                    description = description?.type(),
                     date = date.type(),
                     location = location.type(),
                     visibility = visibility.typeFullMeeting(),
