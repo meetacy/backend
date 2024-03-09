@@ -282,4 +282,19 @@ class TestMeetings {
 
         assert(user2.meetings.history.active(10.amount).data.all { it.data.id == meeting.id })
     }
+
+    @Test
+    fun `test quit meeting`() = runTestServer {
+        val user = generateTestAccount()
+        val participant = generateTestAccount("participant")
+
+        val meeting = user.meetings.createTestMeeting("Test Quit")
+        participant.meetings.participate(meeting.id)
+        val participantsListBeforeQuit = meeting.participants.paging(10.amount).asFlow().toList().flatten()
+        require(participantsListBeforeQuit.size == 2)
+
+        participant.meetings.quit(meeting.id)
+        val participantsListAfterQuit = meeting.participants.paging(10.amount).asFlow().toList().flatten()
+        require(participantsListAfterQuit.size == 1)
+    }
 }
