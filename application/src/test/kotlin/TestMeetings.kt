@@ -10,13 +10,11 @@ import app.meetacy.sdk.types.meeting.MeetingId
 import app.meetacy.sdk.types.optional.Optional
 import app.meetacy.sdk.types.paging.asFlow
 import app.meetacy.sdk.types.paging.data
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import java.time.Duration
 import java.time.Instant
 import kotlin.test.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class TestMeetings {
 
     @Test
@@ -281,5 +279,43 @@ class TestMeetings {
         user2.meetings.participate(meeting.id)
 
         assert(user2.meetings.history.active(10.amount).data.all { it.data.id == meeting.id })
+    }
+
+    @Test
+    fun `test meeting with invalid title length`() = runTestServer {
+        val self = generateTestAccount()
+        val invalidTitle = buildString {
+            repeat(44) {
+                append("ass")
+            }
+        }
+
+        val exception = try {
+            self.meetings.create(invalidTitle, Date.today(), Location.NullIsland, "TestInvalidTitle")
+            null
+        } catch (exception: MeetacyInternalException) {
+            exception
+        }
+
+        require(exception is MeetacyInternalException)
+    }
+
+    @Test
+    fun `test meeting with invalid description length`() = runTestServer {
+        val self = generateTestAccount()
+        val invalidDescription = buildString {
+            repeat(200) {
+                append("ass")
+            }
+        }
+
+        val exception = try {
+            self.meetings.create("titleky", Date.today(), Location.NullIsland, invalidDescription)
+            null
+        } catch (exception: MeetacyInternalException) {
+            exception
+        }
+
+        require(exception is MeetacyInternalException)
     }
 }
