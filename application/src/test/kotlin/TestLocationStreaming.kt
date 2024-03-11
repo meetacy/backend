@@ -35,6 +35,22 @@ class TestLocationStreaming {
     }
 
     @Test
+    fun `push location`() = runTestServer {
+        val expectedLocation = Location.NullIsland
+
+        val self = generateTestAccount()
+        val friend = generateTestAccount()
+
+        self.friends.add(friend.id)
+        friend.friends.add(self.id)
+
+        friend.friends.location.push(expectedLocation)
+        val actualLocation = self.friends.location.flow(flowOf(Location.NullIsland)).first()
+
+        require(actualLocation.location == expectedLocation)
+    }
+
+    @Test
     fun `test location streaming with invalid token`() = runTestServer {
         assertThrows<MeetacyUnauthorizedException> {
             testApi.friends.location.flow(
