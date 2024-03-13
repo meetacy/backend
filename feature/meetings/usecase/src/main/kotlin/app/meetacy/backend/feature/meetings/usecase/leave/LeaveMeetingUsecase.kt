@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.meetings.usecase.quit
+package app.meetacy.backend.feature.meetings.usecase.leave
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.auth.AuthRepository
@@ -9,12 +9,12 @@ import app.meetacy.backend.types.meetings.MeetingIdentity
 import app.meetacy.backend.types.meetings.getMeetingViewOrNull
 import app.meetacy.backend.types.users.UserId
 
-class QuitMeetingUsecase(
+class LeaveMeetingUsecase(
     private val authRepository: AuthRepository,
     private val getMeetingsViewsRepository: GetMeetingsViewsRepository,
     private val storage: Storage
 ) {
-    suspend fun quitMeeting(
+    suspend fun leaveMeeting(
         accessIdentity: AccessIdentity,
         meetingIdentity: MeetingIdentity
     ): Result {
@@ -27,7 +27,7 @@ class QuitMeetingUsecase(
         if (meetingIdentity.accessHash != meeting.identity.accessHash)
             return Result.MeetingNotFound
 
-        storage.quitMeeting(meetingIdentity.id, userId)
+        storage.leaveMeeting(meetingIdentity.id, userId)
         return Result.Success
     }
 
@@ -38,6 +38,6 @@ class QuitMeetingUsecase(
     }
 
     interface Storage {
-        suspend fun quitMeeting(meetingId: MeetingId, userId: UserId)
+        suspend fun leaveMeeting(meetingId: MeetingId, userId: UserId)
     }
 }

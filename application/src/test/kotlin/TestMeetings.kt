@@ -284,16 +284,16 @@ class TestMeetings {
     }
 
     @Test
-    fun `test quit meeting`() = runTestServer {
+    fun `test leave meeting`() = runTestServer {
         val user = generateTestAccount()
         val participant = generateTestAccount("participant")
 
-        val meeting = user.meetings.createTestMeeting("Test Quit")
+        val meeting = user.meetings.createTestMeeting("Test Leave")
         participant.meetings.participate(meeting.id)
         val participantsListBeforeQuit = meeting.participants.paging(10.amount).asFlow().toList().flatten()
         require(participantsListBeforeQuit.size == 2)
 
-        participant.meetings.quit(meeting.id)
+        participant.meetings.leave(meeting.id)
         val participantsListAfterQuit = meeting.participants.paging(10.amount).asFlow().toList().flatten()
         require(participantsListAfterQuit.size == 1)
     }

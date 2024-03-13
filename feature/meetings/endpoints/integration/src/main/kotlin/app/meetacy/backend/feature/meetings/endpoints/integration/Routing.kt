@@ -8,7 +8,7 @@ import app.meetacy.backend.feature.meetings.endpoints.integration.history.meetin
 import app.meetacy.backend.feature.meetings.endpoints.integration.map.meetingsMap
 import app.meetacy.backend.feature.meetings.endpoints.integration.participants.meetingParticipants
 import app.meetacy.backend.feature.meetings.endpoints.integration.participate.participateMeeting
-import app.meetacy.backend.feature.meetings.endpoints.integration.quit.quitMeeting
+import app.meetacy.backend.feature.meetings.endpoints.integration.leave.leaveMeeting
 import app.meetacy.di.DI
 import io.ktor.server.routing.*
 
@@ -19,7 +19,7 @@ fun Route.meetings(di: DI) = route("/meetings") {
 
     createMeeting(di)
     deleteMeeting(di)
-    quitMeeting(di)
+    leaveMeeting(di)
     editMeeting(di)
     getMeeting(di)
     participateMeeting(di)

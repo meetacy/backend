@@ -9,7 +9,7 @@ import app.meetacy.backend.feature.meetings.usecase.integration.history.history
 import app.meetacy.backend.feature.meetings.usecase.integration.map.list.listMeetingsMapUsecase
 import app.meetacy.backend.feature.meetings.usecase.integration.participants.list.listMeetingParticipantsUsecase
 import app.meetacy.backend.feature.meetings.usecase.integration.participate.participateMeetingUsecase
-import app.meetacy.backend.feature.meetings.usecase.integration.quit.quitMeetingUsecase
+import app.meetacy.backend.feature.meetings.usecase.integration.leave.leaveMeetingUsecase
 import app.meetacy.backend.feature.meetings.usecase.integration.view.viewMeetingsUsecase
 import app.meetacy.di.builder.DIBuilder
 
@@ -18,7 +18,7 @@ fun DIBuilder.meetings() {
 
     createMeetingUsecase()
     deleteMeetingUsecase()
-    quitMeetingUsecase()
+    leaveMeetingUsecase()
     editMeetingUsecase()
     getMeetingUsecase()
     getMeetingViewsUsecase()

@@ -38,7 +38,7 @@ class ParticipantsStorage(private val db: Database) {
             }
         }
 
-    suspend fun quitMeeting(meetingId: MeetingId, userId: UserId) =
+    suspend fun leaveMeeting(meetingId: MeetingId, userId: UserId) =
         newSuspendedTransaction(Dispatchers.IO, db) {
             ParticipantsTable.deleteWhere { ((MEETING_ID eq meetingId.long) and (USER_ID eq userId.long)) }
         }
