@@ -103,7 +103,7 @@ class MeetingsStorage(private val db: Database) {
 
     suspend fun deleteMeeting(meetingId: MeetingId) =
         newSuspendedTransaction(Dispatchers.IO, db) {
-            MeetingsTable.deleteWhere { ((MEETING_ID eq meetingId.long)) }
+            MeetingsTable.deleteWhere { MEETING_ID eq meetingId.long }
         }
 
     suspend fun editMeeting(
