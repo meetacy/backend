@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.ktor.server.requestValidation)
     implementation(libs.ktor.server.serverStatusPage)
     implementation(libs.ktor.server.doubleReceive)
+    implementation(libs.ktor.server.html)
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.slf4j.simple)
