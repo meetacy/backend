@@ -37,14 +37,14 @@ class EditMeetingUsecase(
         token: AccessIdentity,
         meetingIdentity: MeetingIdentity,
         avatarIdentityOptional: Optional<FileIdentity?>,
-        title: String?,
-        description: String?,
+        title: MeetingTitle?,
+        description: MeetingDescription?,
         location: Location?,
         date: Date?,
         visibility: FullMeeting.Visibility?
     ): Result {
-        if (title != null) if (!utf8Checker.checkString(title)) return Result.InvalidUtf8String
-        if (description != null) if (!utf8Checker.checkString(description)) return Result.InvalidUtf8String
+        if (title != null) if (!utf8Checker.checkString(title.string)) return Result.InvalidUtf8String
+        if (description != null) if (!utf8Checker.checkString(description.string)) return Result.InvalidUtf8String
 
         avatarIdentityOptional.ifPresent { avatarIdentity ->
             avatarIdentity ?: return@ifPresent
@@ -85,8 +85,8 @@ class EditMeetingUsecase(
         suspend fun editMeeting(
             meetingId: MeetingId,
             avatarId: Optional<FileId?>,
-            title: String?,
-            description: String?,
+            title: MeetingTitle?,
+            description: MeetingDescription?,
             location: Location?,
             date: Date?,
             visibility: FullMeeting.Visibility?

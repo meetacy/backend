@@ -10,6 +10,8 @@ import app.meetacy.backend.types.serializable.datetime.Date
 import app.meetacy.backend.types.serializable.file.FileId
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.meetings.Meeting
+import app.meetacy.backend.types.serializable.meetings.MeetingDescription
+import app.meetacy.backend.types.serializable.meetings.MeetingTitle
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
@@ -17,8 +19,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateParam(
-    val title: String,
-    val description: String?,
+    val title: MeetingTitle,
+    val description: MeetingDescription?,
     val date: Date,
     val location: Location,
     val visibility: Meeting.Visibility,
@@ -35,8 +37,8 @@ sealed interface CreateMeetingResult {
 interface CreateMeetingRepository {
     suspend fun createMeeting(
         token: AccessIdentity,
-        title: String,
-        description: String?,
+        title: MeetingTitle,
+        description: MeetingDescription?,
         date: Date,
         location: Location,
         visibility: Meeting.Visibility,

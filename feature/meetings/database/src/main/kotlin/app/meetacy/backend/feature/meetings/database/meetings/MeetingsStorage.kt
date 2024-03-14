@@ -109,15 +109,15 @@ class MeetingsStorage(private val db: Database) {
     suspend fun editMeeting(
         meetingId: MeetingId,
         avatarId: Optional<FileId?>,
-        title: String?,
-        description: String?,
+        title: MeetingTitle?,
+        description: MeetingDescription?,
         location: Location?,
         date: Date?,
         visibility: FullMeeting.Visibility?
     ): FullMeeting = newSuspendedTransaction(Dispatchers.IO, db) {
         MeetingsTable.update({ MEETING_ID eq meetingId.long }) { statement ->
-            title?.let { statement[TITLE] = it }
-            description?.let { statement[DESCRIPTION] = it }
+            title?.let { statement[TITLE] = it.string }
+            description?.let { statement[DESCRIPTION] = it.string }
             location?.let {
                 statement[LATITUDE] = it.latitude
                 statement[LONGITUDE] = it.longitude

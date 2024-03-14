@@ -9,7 +9,9 @@ import app.meetacy.backend.types.serializable.datetime.Date
 import app.meetacy.backend.types.serializable.file.FileId
 import app.meetacy.backend.types.serializable.location.Location
 import app.meetacy.backend.types.serializable.meetings.Meeting
+import app.meetacy.backend.types.serializable.meetings.MeetingDescription
 import app.meetacy.backend.types.serializable.meetings.MeetingId
+import app.meetacy.backend.types.serializable.meetings.MeetingTitle
 import app.meetacy.backend.types.serializable.optional.Optional
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -20,8 +22,8 @@ import kotlinx.serialization.Serializable
 data class EditMeetingParams(
     val meetingId: MeetingId,
     val avatarId: Optional<FileId?> = Optional.Undefined,
-    val title: String?,
-    val description: String?,
+    val title: MeetingTitle?,
+    val description: MeetingDescription?,
     val location: Location?,
     val date: Date?,
     val visibility: Meeting.Visibility?
@@ -41,8 +43,8 @@ interface EditMeetingRepository {
         token: AccessIdentity,
         meetingId: MeetingId,
         avatarId: Optional<FileId?>,
-        title: String?,
-        description: String?,
+        title: MeetingTitle?,
+        description: MeetingDescription?,
         location: Location?,
         date: Date?,
         visibility: Meeting.Visibility?
