@@ -67,7 +67,7 @@ class EditUserUsecase(
 
         val fullUser = storage.editUser(
             userId,
-            nickname,
+            nickname.map(String::trim),
             username,
             avatarIdentity.map { it?.id }
         )
