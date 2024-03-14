@@ -77,6 +77,7 @@ ktor-server-logging = { module = "io.ktor:ktor-server-call-logging", version.ref
 ktor-server-requestValidation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
 ktor-server-serverStatusPage = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
 ktor-server-doubleReceive = { module = "io.ktor:ktor-server-double-receive", version.ref = "ktor" }
+ktor-server-html = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor" }
 
 # gradle
 
