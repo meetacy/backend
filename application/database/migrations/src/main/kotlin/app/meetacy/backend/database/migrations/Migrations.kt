@@ -8,7 +8,10 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
-private val migrations = listOf(`Migration 0-1`, `Migration 1-2`, `Migration 2-3`, `Migration3-4`)
+private val migrations = listOf(
+    `Migration 0-1`, `Migration 1-2`, `Migration 2-3`,
+    `Migration3-4`, `Migration4-5`
+)
 
 suspend fun runMigrations(db: Database) {
     val wdater = Wdater {
