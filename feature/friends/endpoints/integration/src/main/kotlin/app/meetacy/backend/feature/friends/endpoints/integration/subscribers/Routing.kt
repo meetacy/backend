@@ -1,9 +1,9 @@
-package app.meetacy.backend.feature.friends.endpoints.integration.relationship.subscribers
+package app.meetacy.backend.feature.friends.endpoints.integration.subscribers
 
-import app.meetacy.backend.feature.friends.endpoints.relationship.subscribers.GetSubscribersRepository
-import app.meetacy.backend.feature.friends.endpoints.relationship.subscribers.GetSubscribersResult
-import app.meetacy.backend.feature.friends.endpoints.relationship.subscribers.getSubscribers
-import app.meetacy.backend.feature.friends.usecase.relationship.subscribers.GetSubscribersUsecase
+import app.meetacy.backend.feature.friends.endpoints.subscribers.GetSubscribersRepository
+import app.meetacy.backend.feature.friends.endpoints.subscribers.GetSubscribersResult
+import app.meetacy.backend.feature.friends.endpoints.subscribers.getSubscribers
+import app.meetacy.backend.feature.friends.usecase.subscribers.GetSubscribersUsecase
 import app.meetacy.backend.types.paging.serializable.serializable
 import app.meetacy.backend.types.paging.serializable.type
 import app.meetacy.backend.types.serializable.access.type

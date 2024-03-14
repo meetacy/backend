@@ -1,7 +1,7 @@
-package app.meetacy.backend.feature.friends.usecase.integration.relationship.subscribers
+package app.meetacy.backend.feature.friends.usecase.integration.subscriptions
 
 import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
-import app.meetacy.backend.feature.friends.usecase.relationship.subscribers.GetSubscribersUsecase
+import app.meetacy.backend.feature.friends.usecase.subscriptions.GetSubscriptionsUsecase
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.paging.PagingId
@@ -10,25 +10,25 @@ import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.di.builder.DIBuilder
 
-fun DIBuilder.getSubscribersUsecase() {
-    val getSubscribersUsecase by singleton<GetSubscribersUsecase> {
+fun DIBuilder.getSubscriptionsUsecase() {
+    val getSubscriptionsUsecase by singleton<GetSubscriptionsUsecase> {
         val authRepository: AuthRepository by getting
         val getUsersViewsRepository: GetUsersViewsRepository by getting
-        val storage = object : GetSubscribersUsecase.Storage {
+        val storage = object : GetSubscriptionsUsecase.Storage {
             private val friendsStorage: FriendsStorage by getting
 
-            override suspend fun getSubscribers(
+            override suspend fun getSubscriptions(
                 userId: UserId,
                 amount: Amount,
                 pagingId: PagingId?
-            ): PagingResult<UserId> = friendsStorage.getSubscribers(
+            ): PagingResult<UserId> = friendsStorage.getSubscriptions(
                 userId,
                 amount,
                 pagingId
             )
 
             override suspend fun getCountSubscribers(userId: UserId): Amount.OrZero{
-                return friendsStorage.getSubscribersAmount(userId)
+                return friendsStorage.getSubscriptionsAmount(userId)
             }
 
             override suspend fun getCountSubscriptions(userId: UserId): Amount.OrZero {
@@ -36,6 +36,6 @@ fun DIBuilder.getSubscribersUsecase() {
             }
         }
 
-        GetSubscribersUsecase(storage, authRepository, getUsersViewsRepository)
+        GetSubscriptionsUsecase(storage, authRepository, getUsersViewsRepository)
     }
 }
