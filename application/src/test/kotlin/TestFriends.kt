@@ -31,7 +31,7 @@ class TestFriends {
         }
 
         val actualFriends = self.friends
-            .paging(chunkSize = 2.amount).flatten()
+            .listPaging(chunkSize = 2.amount).flatten()
             .asFlow().toList()
 
         assert(actualFriends.size == friendsAmount)

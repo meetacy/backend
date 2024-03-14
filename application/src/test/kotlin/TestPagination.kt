@@ -20,21 +20,21 @@ class TestPagination {
         }
 
         val chunkedList = mutableListOf<List<UserId>>()
-        for (resultChunk in self.friends.paging(chunkSize = 2.amount)) {
+        for (resultChunk in self.friends.listPaging(chunkSize = 2.amount)) {
             chunkedList.add(resultChunk.map { it.id })
         }
 
         require(chunkedList.flatten().asReversed() == friends.map { it.id })
 
         val flattenedList = mutableListOf<UserId>()
-        for (resultFriend in self.friends.paging(chunkSize = 2.amount).flatten()) {
+        for (resultFriend in self.friends.listPaging(chunkSize = 2.amount).flatten()) {
             flattenedList.add(resultFriend.id)
         }
 
         require(chunkedList.flatten().asReversed() == friends.map { it.id })
 
         val result = self.friends
-            .paging(chunkSize = 2.amount)
+            .listPaging(chunkSize = 2.amount)
             .flatten()
             .asFlow()
             .toList()
