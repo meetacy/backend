@@ -1,5 +1,8 @@
 
+import app.meetacy.backend.constants.MEETING_DESCRIPTION_MAX_LIMIT
+import app.meetacy.backend.constants.MEETING_TITLE_MAX_LIMIT
 import app.meetacy.backend.hash.HashGenerator
+import app.meetacy.backend.types.meetings.MeetingDescription
 import app.meetacy.sdk.exception.MeetacyInternalException
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.Date
@@ -284,39 +287,21 @@ class TestMeetings {
     @Test
     fun `test meeting with invalid title length`() = runTestServer {
         val self = generateTestAccount()
-        val invalidTitle = buildString {
-            repeat(44) {
-                append("ass")
-            }
-        }
+        val invalidTitle = CharArray(MEETING_TITLE_MAX_LIMIT + 1) { '0' }.concatToString()
 
-        val exception = try {
-            self.meetings.create(invalidTitle, Date.today(), Location.NullIsland, "TestInvalidTitle")
-            null
-        } catch (exception: MeetacyInternalException) {
-            exception
+        assertThrows<MeetacyInternalException> {
+            self.meetings.create(invalidTitle, Date.today(), Location.NullIsland)
         }
-
-        require(exception is MeetacyInternalException)
     }
 
     @Test
     fun `test meeting with invalid description length`() = runTestServer {
         val self = generateTestAccount()
-        val invalidDescription = buildString {
-            repeat(200) {
-                append("ass")
-            }
-        }
+        val invalidDescription = CharArray(MEETING_DESCRIPTION_MAX_LIMIT + 1) { '0' }.concatToString()
 
-        val exception = try {
+        assertThrows<MeetacyInternalException> {
             self.meetings.create("titleky", Date.today(), Location.NullIsland, invalidDescription)
-            null
-        } catch (exception: MeetacyInternalException) {
-            exception
         }
-
-        require(exception is MeetacyInternalException)
     }
     
     fun `test leave meeting`() = runTestServer {
