@@ -318,4 +318,18 @@ class TestMeetings {
 
         require(exception is MeetacyInternalException)
     }
+    
+    fun `test leave meeting`() = runTestServer {
+        val user = generateTestAccount()
+        val participant = generateTestAccount("participant")
+
+        val meeting = user.meetings.createTestMeeting("Test Leave")
+        participant.meetings.participate(meeting.id)
+        val participantsListBeforeQuit = meeting.participants.paging(10.amount).asFlow().toList().flatten()
+        require(participantsListBeforeQuit.size == 2)
+
+        participant.meetings.leave(meeting.id)
+        val participantsListAfterQuit = meeting.participants.paging(10.amount).asFlow().toList().flatten()
+        require(participantsListAfterQuit.size == 1)
+    }
 }

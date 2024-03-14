@@ -17,6 +17,7 @@ import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 object ParticipantsTable : Table() {
@@ -35,6 +36,11 @@ class ParticipantsStorage(private val db: Database) {
                 statement[MEETING_ID] = meetingId.long
                 statement[USER_ID] = participantId.long
             }
+        }
+
+    suspend fun leaveMeeting(meetingId: MeetingId, userId: UserId) =
+        newSuspendedTransaction(Dispatchers.IO, db) {
+            ParticipantsTable.deleteWhere { ((MEETING_ID eq meetingId.long) and (USER_ID eq userId.long)) }
         }
 
     suspend fun participantsCount(meetingIds: List<MeetingId>): List<Int> =
