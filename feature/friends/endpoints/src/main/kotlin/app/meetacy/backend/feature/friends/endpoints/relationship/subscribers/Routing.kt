@@ -44,7 +44,7 @@ sealed interface GetSubscribersResult {
     class Success(val paging: PagingResult<UserDetails>) : GetSubscribersResult
 }
 
-fun Route.getSubscribers(provider: GetSubscribersRepository) = post("/subscribers") {
+fun Route.getSubscribers(provider: GetSubscribersRepository) = get("/subscribers") {
     val token = call.accessIdentity()
     val id = call.parameters.userIdOrNull(name = "id")
     val amount = call.parameters.amount()

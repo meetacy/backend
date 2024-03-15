@@ -11,7 +11,7 @@ import app.meetacy.backend.types.paging.serializable.PagingId
 import app.meetacy.backend.types.paging.serializable.PagingResult
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.amount.Amount
-import app.meetacy.backend.types.serializable.users.User
+import app.meetacy.backend.types.serializable.users.UserDetails
 import app.meetacy.backend.types.serializable.users.UserId
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
@@ -41,10 +41,10 @@ interface GetSubscriptionsRepository {
 sealed interface GetSubscriptionsResult {
     data object InvalidIdentity : GetSubscriptionsResult
     data object UserNotFound : GetSubscriptionsResult
-    class Success(val paging: PagingResult<User>) : GetSubscriptionsResult
+    class Success(val paging: PagingResult<UserDetails>) : GetSubscriptionsResult
 }
 
-fun Route.getSubscriptions(provider: GetSubscriptionsRepository) = post("/subscriptions") {
+fun Route.getSubscriptions(provider: GetSubscriptionsRepository) = get("/subscriptions") {
     val token = call.accessIdentity()
     val id = call.parameters.userIdOrNull(name = "id")
     val amount = call.parameters.amount()
