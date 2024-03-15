@@ -87,6 +87,7 @@ class FriendsStorage(private val db: Database) {
     ): PagingResult<UserId> {
         val results = newSuspendedTransaction(Dispatchers.IO, db) {
             FriendsTable.select { (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
+                .orderBy(ID, SortOrder.DESC)
                 .asFlow()
                 .take(amount.int)
                 .toList()
@@ -105,6 +106,7 @@ class FriendsStorage(private val db: Database) {
     ): PagingResult<UserId> {
         val results = newSuspendedTransaction(Dispatchers.IO, db) {
             FriendsTable.select { (FRIEND_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
+                .orderBy(ID, SortOrder.DESC)
                 .asFlow()
                 .take(amount.int)
                 .toList()

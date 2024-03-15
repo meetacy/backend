@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.friends.usecase.subscribers
+package app.meetacy.backend.feature.friends.usecase.subscriptions.list
 
 import app.meetacy.backend.types.access.AccessIdentity
 import app.meetacy.backend.types.amount.Amount
@@ -8,12 +8,12 @@ import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.users.*
 
-class GetSubscribersUsecase(
+class ListSubscriptionsUsecase(
     private val storage: Storage,
     private val authRepository: AuthRepository,
     private val getUsersViewsRepository: GetUsersViewsRepository
 ) {
-    suspend fun getSubscribers(identifier: Identifier): Result {
+    suspend fun listSubscriptions(identifier: Identifier): Result {
         val viewerId = authRepository.authorizeWithUserId(identifier.accessIdentity) {
             return Result.InvalidToken
         }
@@ -32,32 +32,14 @@ class GetSubscribersUsecase(
             if (expectedHash != actualHash) return Result.UserNotFound
         }
 
-        val subscriberIdsPaging = storage.getSubscribers(userId, identifier.amount, identifier.pagingId)
+        val subscriberIdsPaging = storage.getSubscriptions(userId, identifier.amount, identifier.pagingId)
 
         val subscribersPaging = subscriberIdsPaging.map { subscriberIds ->
-            val subscribersViews = getUsersViewsRepository.getUsersViews(userId, subscriberIds)
-            getUsersDetails(subscribersViews)
+            getUsersViewsRepository.getUsersViews(userId, subscriberIds)
         }
 
 
         return Result.Success(subscribersPaging)
-    }
-
-    private suspend fun getUsersDetails(users: List<UserView>): List<UserDetails> {
-        return users.map { user ->
-            UserDetails(
-                isSelf = user.isSelf,
-                relationship = user.relationship,
-                identity = user.identity,
-                nickname = user.nickname,
-                username = user.username,
-                email = user.email,
-                emailVerified = user.emailVerified,
-                avatarIdentity = user.avatarIdentity,
-                subscribersAmount = storage.getCountSubscribers(user.identity.id),
-                subscriptionsAmount = storage.getCountSubscriptions(user.identity.id)
-            )
-        }
     }
 
     sealed interface Identifier {
@@ -81,17 +63,14 @@ class GetSubscribersUsecase(
     sealed interface Result {
         data object InvalidToken : Result
         data object UserNotFound : Result
-        data class Success(val paging: PagingResult<UserDetails>) : Result
+        data class Success(val paging: PagingResult<UserView>) : Result
     }
 
     interface Storage {
-        suspend fun getSubscribers(
+        suspend fun getSubscriptions(
             userId: UserId,
             amount: Amount,
             pagingId: PagingId?
         ): PagingResult<UserId>
-
-        suspend fun getCountSubscribers(userId: UserId): Amount.OrZero
-        suspend fun getCountSubscriptions(userId: UserId): Amount.OrZero
     }
 }

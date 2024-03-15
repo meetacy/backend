@@ -1,4 +1,4 @@
-package app.meetacy.backend.feature.friends.endpoints.subscriptions
+package app.meetacy.backend.feature.friends.endpoints.subscribers.list
 
 import app.meetacy.backend.core.endpoints.accessIdentity
 import app.meetacy.backend.core.endpoints.amount
@@ -11,13 +11,14 @@ import app.meetacy.backend.types.paging.serializable.PagingId
 import app.meetacy.backend.types.paging.serializable.PagingResult
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.amount.Amount
+import app.meetacy.backend.types.serializable.users.User
 import app.meetacy.backend.types.serializable.users.UserDetails
 import app.meetacy.backend.types.serializable.users.UserId
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
-interface GetSubscriptionsRepository {
-    suspend fun getSubscriptions(identifier: Identifier): GetSubscriptionsResult
+interface ListSubscribersRepository {
+    suspend fun listSubscribers(identifier: Identifier): ListSubscribersResult
 
     sealed interface Identifier {
         val accessIdentity: AccessIdentity
@@ -38,27 +39,26 @@ interface GetSubscriptionsRepository {
     }
 }
 
-sealed interface GetSubscriptionsResult {
-    data object InvalidIdentity : GetSubscriptionsResult
-    data object UserNotFound : GetSubscriptionsResult
-    class Success(val paging: PagingResult<UserDetails>) : GetSubscriptionsResult
+sealed interface ListSubscribersResult {
+    data object InvalidIdentity : ListSubscribersResult
+    data object UserNotFound : ListSubscribersResult
+    class Success(val paging: PagingResult<User>) : ListSubscribersResult
 }
 
-fun Route.getSubscriptions(provider: GetSubscriptionsRepository) = get("/subscriptions") {
+fun Route.listSubscribers(provider: ListSubscribersRepository) = get("/list") {
     val token = call.accessIdentity()
-    val id = call.parameters.userIdOrNull(name = "id")
+    val id = call.parameters.userIdOrNull()
     val amount = call.parameters.amount()
     val pagingId = call.parameters.pagingIdOrNull()
 
     val identifier = when {
-        id != null -> GetSubscriptionsRepository.Identifier.ByUserId(id, token, amount, pagingId)
-        else -> GetSubscriptionsRepository.Identifier.Self(token, amount, pagingId)
+        id != null -> ListSubscribersRepository.Identifier.ByUserId(id, token, amount, pagingId)
+        else -> ListSubscribersRepository.Identifier.Self(token, amount, pagingId)
     }
 
-    when (val result = provider.getSubscriptions(identifier)) {
-        is GetSubscriptionsResult.Success -> call.respondSuccess(result.paging)
-        GetSubscriptionsResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
-        GetSubscriptionsResult.UserNotFound -> call.respondFailure(Failure.UserNotFound)
+    when (val result = provider.listSubscribers(identifier)) {
+        is ListSubscribersResult.Success -> call.respondSuccess(result.paging)
+        ListSubscribersResult.InvalidIdentity -> call.respondFailure(Failure.InvalidToken)
+        ListSubscribersResult.UserNotFound -> call.respondFailure(Failure.UserNotFound)
     }
 }
-

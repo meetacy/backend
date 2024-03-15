@@ -1,4 +1,3 @@
-import app.meetacy.sdk.types.amount.Amount
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.paging.asFlow
 import app.meetacy.sdk.types.paging.data
@@ -31,7 +30,7 @@ class TestFriends {
         }
 
         val actualFriends = self.friends
-            .listPaging(chunkSize = 2.amount).flatten()
+            .paging(chunkSize = 2.amount).flatten()
             .asFlow().toList()
 
         assert(actualFriends.size == friendsAmount)
@@ -67,7 +66,7 @@ class TestFriends {
         val friend = generateTestAccount("Friend")
 
         self.friends.add(friend.id)
-        val pagingSubscriptions = self.friends.subscriptions(Amount(5))
+        val pagingSubscriptions = self.friends.subscriptions.list(5.amount)
         assert(pagingSubscriptions.data.first().id == friend.id)
     }
 
@@ -77,7 +76,7 @@ class TestFriends {
         val friend = generateTestAccount("Friend")
 
         friend.friends.add(self.id)
-        val pagingSubscriptions = self.friends.subscribers(Amount(5))
+        val pagingSubscriptions = self.friends.subscribers.list(5.amount)
         assert(pagingSubscriptions.data.first().id == friend.id)
     }
 
@@ -87,7 +86,7 @@ class TestFriends {
         val friend = generateTestAccount("Friend")
 
         self.friends.add(friend.id)
-        val pagingSubscriptions = friend.friends.subscriptions(Amount(5), userId = self.id)
+        val pagingSubscriptions = friend.friends.subscriptions.list(1.amount, userId = self.id)
         assert(pagingSubscriptions.data.first().id == friend.id)
     }
 
@@ -97,7 +96,7 @@ class TestFriends {
         val friend = generateTestAccount("Friend")
 
         friend.friends.add(self.id)
-        val pagingSubscriptions = friend.friends.subscribers(Amount(5), userId = self.id)
+        val pagingSubscriptions = friend.friends.subscribers.list(1.amount, userId = self.id)
         assert(pagingSubscriptions.data.first().id == friend.id)
     }
 }
