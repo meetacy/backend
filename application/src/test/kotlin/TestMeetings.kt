@@ -294,7 +294,6 @@ class TestMeetings {
         val self = generateTestAccount()
         self.meetings.create("Very past meet", Date.parse("2024-01-11"), Location.NullIsland)
         self.meetings.createTestMeeting()
-        println(self.meetings.history.past(10.amount).data.map { it.data })
         require(self.meetings.history.past(10.amount).data.size == 1)
     }
 
