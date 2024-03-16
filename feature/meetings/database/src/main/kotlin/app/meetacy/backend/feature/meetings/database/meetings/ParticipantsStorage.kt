@@ -16,12 +16,11 @@ import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object ParticipantsTable : Table() {
     val ID = long("ID").autoIncrement()
     val MEETING_ID = reference("MEETING_ID", MeetingsTable.MEETING_ID)
-    val MEETING_DATE_EPOCH_DAYS = long("MEETING_DATE")
+    val MEETING_DATE_EPOCH_DAYS = long("MEETING_DATE_EPOCH_DAYS")
     val USER_ID = reference("USER_ID", UsersTable.USER_ID)
 
     override val primaryKey = PrimaryKey(ID)

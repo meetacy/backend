@@ -1,3 +1,5 @@
+@file:Suppress("ClassName")
+
 package app.meetacy.backend.database.migrations
 
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable
@@ -9,21 +11,10 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
 
-object `Migration5-6` : Migration {
-    override val fromVersion = 5
+object `Migration 7-8` : Migration {
+    override val fromVersion = 7
 
     override suspend fun MigrationContext.migrate() {
-        MeetingsTable.selectAll().toList().map { meeting ->
-            val meetingId = meeting[MeetingsTable.MEETING_ID]
-            val date = Date.parseOrNull(meeting[MeetingsTable.DATE])
-            if (date != null) return@map
-            MeetingsTable.update({ MeetingsTable.MEETING_ID eq meetingId }) { statement ->
-                statement[DATE] = Date.yesterday().iso8601
-            }
-        }
-
-        ParticipantsTable.MEETING_DATE_EPOCH_DAYS.create(0)
-
         val dates = ParticipantsTable.selectAll().associate { result ->
             val id = result[ParticipantsTable.MEETING_ID]
             val date = MeetingsTable
@@ -40,6 +31,5 @@ object `Migration5-6` : Migration {
                 statement[MEETING_DATE_EPOCH_DAYS] = dates[meetingId]?.epochDays ?: 0
             }
         }
-
     }
 }
