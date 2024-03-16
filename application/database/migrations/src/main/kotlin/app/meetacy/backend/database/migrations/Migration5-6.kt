@@ -22,7 +22,7 @@ object `Migration5-6` : Migration {
             }
         }
 
-        ParticipantsTable.MEETING_DATE.create(0)
+        ParticipantsTable.MEETING_DATE_EPOCH_DAYS.create(0)
 
         val dates = ParticipantsTable.selectAll().associate { result ->
             val id = result[ParticipantsTable.MEETING_ID]
@@ -37,7 +37,7 @@ object `Migration5-6` : Migration {
         ParticipantsTable.selectAll().toList().forEach { row ->
             val meetingId = row[ParticipantsTable.MEETING_ID]
             ParticipantsTable.update({ ParticipantsTable.MEETING_ID eq meetingId }) { statement ->
-                statement[MEETING_DATE] = dates[meetingId]?.epochDays ?: 0
+                statement[MEETING_DATE_EPOCH_DAYS] = dates[meetingId]?.epochDays ?: 0
             }
         }
 

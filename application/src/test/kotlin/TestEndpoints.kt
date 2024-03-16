@@ -13,6 +13,8 @@ import app.meetacy.sdk.types.annotation.UnsafeConstructor
 import app.meetacy.sdk.types.annotation.UnstableApi
 import app.meetacy.sdk.types.auth.Token
 import app.meetacy.sdk.types.datetime.Date
+import app.meetacy.sdk.types.datetime.javaLocalDate
+import app.meetacy.sdk.types.datetime.meetacyDate
 import app.meetacy.sdk.types.location.Location
 import app.meetacy.sdk.types.url.url
 import app.meetacy.sdk.users.AuthorizedSelfUserDetailsRepository
