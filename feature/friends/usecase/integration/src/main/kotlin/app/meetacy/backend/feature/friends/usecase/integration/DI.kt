@@ -6,12 +6,16 @@ import app.meetacy.backend.feature.friends.usecase.integration.list.listFriendsU
 import app.meetacy.backend.feature.friends.usecase.integration.location.locationMiddleware
 import app.meetacy.backend.feature.friends.usecase.integration.location.push.pushLocationUsecase
 import app.meetacy.backend.feature.friends.usecase.integration.location.stream.locationStreamingUsecase
+import app.meetacy.backend.feature.friends.usecase.integration.subscribers.getSubscribersUsecase
+import app.meetacy.backend.feature.friends.usecase.integration.subscriptions.getSubscriptionsUsecase
 import app.meetacy.di.builder.DIBuilder
 
 fun DIBuilder.friends() {
     addFriendUsecase()
     deleteFriendUsecase()
     listFriendsUsecase()
+    getSubscribersUsecase()
+    getSubscriptionsUsecase()
     locationStreamingUsecase()
     pushLocationUsecase()
     locationMiddleware()

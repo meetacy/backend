@@ -12,10 +12,7 @@ import app.meetacy.backend.types.paging.PagingResult
 import app.meetacy.backend.types.paging.pagingIdLong
 import app.meetacy.backend.types.users.UserId
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -83,9 +80,42 @@ class FriendsStorage(private val db: Database) {
         )
     }
 
-    suspend fun getSubscriptions(userId: UserId): List<UserId> = newSuspendedTransaction(Dispatchers.IO, db) {
-        FriendsTable.select { (USER_ID eq userId.long) }
-            .map { result -> UserId(result[FRIEND_ID]) }
+    suspend fun getSubscriptions(
+        userId: UserId,
+        amount: Amount,
+        pagingId: PagingId?
+    ): PagingResult<UserId> {
+        val results = newSuspendedTransaction(Dispatchers.IO, db) {
+            FriendsTable.select { (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
+                .orderBy(ID, SortOrder.DESC)
+                .asFlow()
+                .take(amount.int)
+                .toList()
+        }
+
+        return PagingResult(
+            data = results.map { result -> UserId(result[FRIEND_ID]) },
+            nextPagingId = results.pagingIdLong(amount) { it[ID] }
+        )
+    }
+
+    suspend fun getSubscribers(
+        userId: UserId,
+        amount: Amount,
+        pagingId: PagingId?
+    ): PagingResult<UserId> {
+        val results = newSuspendedTransaction(Dispatchers.IO, db) {
+            FriendsTable.select { (FRIEND_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
+                .orderBy(ID, SortOrder.DESC)
+                .asFlow()
+                .take(amount.int)
+                .toList()
+        }
+
+        return PagingResult(
+            data = results.map { result -> UserId(result[USER_ID]) },
+            nextPagingId = results.pagingIdLong(amount) { it[ID] }
+        )
     }
 
     suspend fun getSubscribersAmount(userId: UserId): Amount.OrZero = newSuspendedTransaction(Dispatchers.IO, db) {

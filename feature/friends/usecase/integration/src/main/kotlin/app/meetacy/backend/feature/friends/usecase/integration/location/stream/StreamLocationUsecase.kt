@@ -1,20 +1,16 @@
 package app.meetacy.backend.feature.friends.usecase.integration.location.stream
 
 import app.meetacy.backend.feature.friends.database.friends.FriendsStorage
-import app.meetacy.backend.feature.friends.database.location.UsersLocationsStorage
 import app.meetacy.backend.feature.friends.usecase.location.LocationsMiddleware
 import app.meetacy.backend.feature.friends.usecase.location.stream.FriendsLocationStreamingUsecase
 import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.auth.AuthRepository
-import app.meetacy.backend.types.datetime.DateTime
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.location.LocationSnapshot
 import app.meetacy.backend.types.users.GetUsersViewsRepository
 import app.meetacy.backend.types.users.UserId
 import app.meetacy.di.builder.DIBuilder
 import kotlinx.coroutines.flow.Flow
-import org.jetbrains.exposed.sql.Database
-import kotlin.time.Duration.Companion.hours
 
 fun DIBuilder.locationStreamingUsecase() {
     val locationStreamingUsecase by singleton<FriendsLocationStreamingUsecase> {

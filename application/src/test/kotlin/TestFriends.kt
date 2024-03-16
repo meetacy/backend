@@ -1,5 +1,6 @@
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.paging.asFlow
+import app.meetacy.sdk.types.paging.data
 import app.meetacy.sdk.types.paging.flatten
 import app.meetacy.sdk.types.user.Relationship
 import kotlinx.coroutines.flow.toList
@@ -57,5 +58,45 @@ class TestFriends {
         friend.friends.add(self.id)
         assert(self.users.get(friend.id).relationship == Relationship.Friend)
         assert(friend.users.get(self.id).relationship == Relationship.Friend)
+    }
+
+    @Test
+    fun `test get self subscriptions`() = runTestServer {
+        val self = generateTestAccount()
+        val friend = generateTestAccount("Friend")
+
+        self.friends.add(friend.id)
+        val pagingSubscriptions = self.friends.subscriptions.list(5.amount)
+        assert(pagingSubscriptions.data.first().id == friend.id)
+    }
+
+    @Test
+    fun `test get self subscribers`() = runTestServer {
+        val self = generateTestAccount()
+        val friend = generateTestAccount("Friend")
+
+        friend.friends.add(self.id)
+        val pagingSubscriptions = self.friends.subscribers.list(5.amount)
+        assert(pagingSubscriptions.data.first().id == friend.id)
+    }
+
+    @Test
+    fun `test get user subscriptions`() = runTestServer {
+        val self = generateTestAccount()
+        val friend = generateTestAccount("Friend")
+
+        self.friends.add(friend.id)
+        val pagingSubscriptions = friend.friends.subscriptions.list(1.amount, userId = self.id)
+        assert(pagingSubscriptions.data.first().id == friend.id)
+    }
+
+    @Test
+    fun `test get user subscribers`() = runTestServer {
+        val self = generateTestAccount()
+        val friend = generateTestAccount("Friend")
+
+        friend.friends.add(self.id)
+        val pagingSubscriptions = friend.friends.subscribers.list(1.amount, userId = self.id)
+        assert(pagingSubscriptions.data.first().id == friend.id)
     }
 }
