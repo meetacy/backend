@@ -48,9 +48,7 @@ class ListMeetingsPastUsecase(
             val views = getMeetingsViewsRepository.getMeetingsViews(
                 viewerId = userId,
                 meetingIds = meetingIds.map { (meetingId) -> meetingId }
-            )
-                .filter { view -> view.date.javaLocalDate < now }
-                .iterator()
+            ).iterator()
 
             meetingIds.map { paging -> paging.map { views.next() } }
         }
