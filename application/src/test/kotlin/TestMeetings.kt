@@ -315,7 +315,8 @@ class TestMeetings {
             self.meetings.create("titleky", Date.today(), Location.NullIsland, invalidDescription)
         }
     }
-    
+
+    @Test
     fun `test leave meeting`() = runTestServer {
         val user = generateTestAccount()
         val participant = generateTestAccount("participant")
