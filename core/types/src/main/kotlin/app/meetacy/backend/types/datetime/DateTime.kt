@@ -36,7 +36,7 @@ value class DateTime @UnsafeConstructor constructor(val iso8601: String) {
         fun parse(iso8601: String): DateTime = parseOrNull(iso8601)
             ?: error("Given string '$iso8601' is not in iso8601 format for date-time")
         fun parseOrNull(iso8601: String): DateTime? = try {
-            iso8601DateTimeFormat.parse(iso8601)
+            JavaInstant.parse(iso8601)
             DateTime(iso8601)
         } catch (_: ParseException) {
             null

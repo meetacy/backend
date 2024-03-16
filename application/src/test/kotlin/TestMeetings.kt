@@ -292,8 +292,9 @@ class TestMeetings {
     @Test
     fun `test past meetings`() = runTestServer {
         val self = generateTestAccount()
-        self.meetings.create("Past meet", Date.parse("2024-03-17"), Location.NullIsland)
-        require(self.meetings.history.past(10.amount).data.isEmpty())
+        self.meetings.create("Very past meet", Date.parse("2024-01-11"), Location.NullIsland)
+        self.meetings.createTestMeeting()
+        require(self.meetings.history.past(10.amount).data.size == 1)
     }
 
     @Test

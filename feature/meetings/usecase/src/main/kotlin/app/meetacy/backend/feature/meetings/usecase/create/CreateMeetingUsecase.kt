@@ -59,7 +59,7 @@ class CreateMeetingUsecase(
             avatarIdentity?.id
         )
 
-        storage.addParticipant(creatorId, fullMeeting.id)
+        storage.addParticipant(creatorId, fullMeeting.id, date)
 
         val meetingView = viewMeetingsRepository.viewMeeting(creatorId, fullMeeting)
 
@@ -78,6 +78,6 @@ class CreateMeetingUsecase(
             avatarId: FileId?
         ): FullMeeting
 
-        suspend fun addParticipant(participantId: UserId, meetingId: MeetingId)
+        suspend fun addParticipant(participantId: UserId, meetingId: MeetingId, meetingDate: Date)
     }
 }

@@ -4,10 +4,12 @@ package app.meetacy.backend.feature.meetings.database.meetings
 
 import app.meetacy.backend.database.exposed.query.wrapTransactionAsFlow
 import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsTable.ID
+import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsTable.MEETING_DATE
 import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsTable.MEETING_ID
 import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsTable.USER_ID
 import app.meetacy.backend.feature.users.database.users.UsersTable
 import app.meetacy.backend.types.amount.Amount
+import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.paging.PagingId
 import app.meetacy.backend.types.paging.PagingResult
@@ -23,6 +25,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 object ParticipantsTable : Table() {
     val ID = long("ID").autoIncrement()
     val MEETING_ID = reference("MEETING_ID", MeetingsTable.MEETING_ID)
+    val MEETING_DATE = long("MEETING_DATE")
     val USER_ID = reference("USER_ID", UsersTable.USER_ID)
 
     override val primaryKey = PrimaryKey(ID)
@@ -30,11 +33,12 @@ object ParticipantsTable : Table() {
 
 class ParticipantsStorage(private val db: Database) {
 
-    suspend fun addParticipant(participantId: UserId, meetingId: MeetingId) =
+    suspend fun addParticipant(participantId: UserId, meetingId: MeetingId, meetingDate: Date) =
         newSuspendedTransaction(Dispatchers.IO, db) {
             ParticipantsTable.insert { statement ->
                 statement[MEETING_ID] = meetingId.long
                 statement[USER_ID] = participantId.long
+                statement[MEETING_DATE] = meetingDate.epochDays
             }
         }
 
@@ -115,7 +119,7 @@ class ParticipantsStorage(private val db: Database) {
         pagingId: PagingId?,
     ): Flow<PagingValue<MeetingId>> = ParticipantsTable
         .select { (USER_ID eq userId.long) and (ID less (pagingId?.long ?: Long.MAX_VALUE)) }
-        .orderBy(ID, SortOrder.DESC)
+        .orderBy(MEETING_DATE, SortOrder.ASC)
         .wrapTransactionAsFlow(db)
         .map { row ->
             PagingValue(

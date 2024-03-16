@@ -62,8 +62,12 @@ internal fun DIBuilder.createMeetingUsecase() {
                 )
             }
 
-            override suspend fun addParticipant(participantId: UserId, meetingId: MeetingId) {
-                participantsStorage.addParticipant(participantId, meetingId)
+            override suspend fun addParticipant(
+                participantId: UserId,
+                meetingId: MeetingId,
+                meetingDate: Date
+            ) {
+                participantsStorage.addParticipant(participantId, meetingId, meetingDate)
             }
         }
 
