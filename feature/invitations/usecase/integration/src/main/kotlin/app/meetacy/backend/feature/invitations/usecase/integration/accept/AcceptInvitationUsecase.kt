@@ -7,6 +7,7 @@ import app.meetacy.backend.types.invitation.FullInvitation
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsStorage
 import app.meetacy.backend.feature.meetings.database.meetings.ParticipantsStorage
 import app.meetacy.backend.types.auth.AuthRepository
+import app.meetacy.backend.types.datetime.Date
 import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
@@ -34,8 +35,8 @@ internal fun DIBuilder.acceptInvitation() {
                 invitationsStorage.markAsAccepted(id)
             }
 
-            override suspend fun addParticipant(meetingId: MeetingId, userId: UserId) {
-                participantsStorage.addParticipant(userId, meetingId)
+            override suspend fun addParticipant(participantId: UserId, meetingId: MeetingId, meetingDate: Date) {
+                participantsStorage.addParticipant(participantId, meetingId, meetingDate)
             }
         }
 
