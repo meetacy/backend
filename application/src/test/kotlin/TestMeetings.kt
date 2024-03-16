@@ -2,7 +2,6 @@
 import app.meetacy.backend.constants.MEETING_DESCRIPTION_MAX_LIMIT
 import app.meetacy.backend.constants.MEETING_TITLE_MAX_LIMIT
 import app.meetacy.backend.hash.HashGenerator
-import app.meetacy.backend.types.meetings.MeetingDescription
 import app.meetacy.sdk.exception.MeetacyInternalException
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.datetime.Date
@@ -279,9 +278,22 @@ class TestMeetings {
         val user1 = generateTestAccount()
         val user2 = generateTestAccount()
         val meeting = user1.meetings.createTestMeeting()
+        user1.meetings.create(
+            "Past meeting",
+            Date.parse("2024-03-13"),
+            Location.NullIsland
+        )
         user2.meetings.participate(meeting.id)
 
         assert(user2.meetings.history.active(10.amount).data.all { it.data.id == meeting.id })
+        require(user2.meetings.history.active(10.amount).data.size == 1)
+    }
+
+    @Test
+    fun `test past meetings`() = runTestServer {
+        val self = generateTestAccount()
+        self.meetings.create("Past meet", Date.parse("2024-03-17"), Location.NullIsland)
+        require(self.meetings.history.past(10.amount).data.isEmpty())
     }
 
     @Test
