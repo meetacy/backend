@@ -1,3 +1,5 @@
+@file:Suppress("ClassName")
+
 package app.meetacy.backend.database.migrations
 
 import app.meetacy.backend.constants.DATE_TIME_MAX_LIMIT
@@ -6,7 +8,7 @@ import app.meetacy.backend.feature.friends.database.location.UsersLocationsTable
 import app.meetacy.database.updater.Migration
 import app.meetacy.database.updater.MigrationContext
 
-object `Migration3-4` : Migration {
+object `Migration 3-4` : Migration {
     override val fromVersion = 3
 
     override suspend fun MigrationContext.migrate() {

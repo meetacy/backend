@@ -6,6 +6,8 @@ import app.meetacy.backend.types.amount.Amount
 import app.meetacy.backend.types.amount.amount
 import app.meetacy.backend.types.auth.AuthRepository
 import app.meetacy.backend.types.auth.authorizeWithUserId
+import app.meetacy.backend.types.datetime.Date
+import app.meetacy.backend.types.datetime.meetacyDate
 import app.meetacy.backend.types.location.Location
 import app.meetacy.backend.types.meetings.*
 import app.meetacy.backend.types.meters.kilometers
@@ -37,15 +39,13 @@ class ListMeetingsMapUsecase(
             .toLocalDate()
             .minusDays(1)
 
-        val history = storage
-            .getMeetingsHistoryFlow(userId)
-            .chunked(chunkSize.int) { meetingIds ->
-                getMeetingsViewsRepository.getMeetingsViews(userId, meetingIds)
-            }
-            .transform { list -> emitAll(list.asFlow()) }
-            .takeWhile { view -> view.date.javaLocalDate >= now }
-            .take(participatingMeetingsLimit.int)
-            .toList()
+        val history = storage.getMeetingsHistoryFlowAscending(
+            userId = userId,
+            amount = participatingMeetingsLimit,
+            afterDate = now.minusDays(1).meetacyDate
+        ).let { meetingIds ->
+            getMeetingsViewsRepository.getMeetingsViews(userId, meetingIds)
+        }
 
         val public = storage.getPublicMeetingsFlow()
             .filter { meeting ->
@@ -70,7 +70,11 @@ class ListMeetingsMapUsecase(
     }
 
     interface Storage {
-        suspend fun getMeetingsHistoryFlow(userId: UserId): Flow<MeetingId>
+        suspend fun getMeetingsHistoryFlowAscending(
+            userId: UserId,
+            amount: Amount,
+            afterDate: Date
+        ): List<MeetingId>
         suspend fun getPublicMeetingsFlow(): Flow<FullMeeting>
     }
 }
