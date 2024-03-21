@@ -1,9 +1,28 @@
 package app.meetacy.backend.types.users
 
 import app.meetacy.backend.types.annotation.UnsafeConstructor
+import app.meetacy.backend.types.annotation.UnsafeRawUsername
 
-@JvmInline
-value class Username @UnsafeConstructor constructor(val string: String) {
+@OptIn(UnsafeRawUsername::class)
+class Username @UnsafeConstructor constructor(
+    @property:UnsafeRawUsername
+    val withoutAt: String
+) {
+    @UnsafeRawUsername
+    val at: String get() = "@$withoutAt"
+
+    override fun hashCode(): Int {
+        return withoutAt.lowercase().hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Username && other.withoutAt.lowercase() == withoutAt.lowercase()
+    }
+
+    override fun toString(): String {
+        return "Username(string=$withoutAt)"
+    }
+
     @OptIn(UnsafeConstructor::class)
     companion object {
         fun parse(string: String): Username {
