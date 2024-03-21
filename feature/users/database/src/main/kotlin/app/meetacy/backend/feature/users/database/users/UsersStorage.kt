@@ -15,6 +15,7 @@ import app.meetacy.backend.feature.users.database.users.UsersTable.NICKNAME
 import app.meetacy.backend.feature.users.database.users.UsersTable.USERNAME
 import app.meetacy.backend.feature.users.database.users.UsersTable.USER_ID
 import app.meetacy.backend.types.access.AccessHash
+import app.meetacy.backend.types.annotation.UnsafeRawUsername
 import app.meetacy.backend.types.files.FileId
 import app.meetacy.backend.types.optional.Optional
 import app.meetacy.backend.types.optional.ifPresent
@@ -31,6 +32,7 @@ object UsersTable : Table() {
     val USER_ID = long("USER_ID").autoIncrement()
     val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
     val NICKNAME = varchar("NICKNAME", length = NICKNAME_MAX_LIMIT)
+    @UnsafeRawUsername
     val USERNAME = varchar("USERNAME", length = USERNAME_MAX_LIMIT).nullable()
     val EMAIL = varchar("EMAIL", length = EMAIL_MAX_LIMIT).nullable()
     val EMAIL_VERIFIED = bool("EMAIL_VERIFIED").default(false)
@@ -42,6 +44,7 @@ object UsersTable : Table() {
 
 class UsersStorage(private val db: Database) {
 
+    @OptIn(UnsafeRawUsername::class)
     suspend fun addUser(
         accessHash: AccessHash,
         nickname: String
@@ -76,12 +79,14 @@ class UsersStorage(private val db: Database) {
         return@newSuspendedTransaction userIds.map { foundUsers[it] }
     }
 
+    @OptIn(UnsafeRawUsername::class)
     suspend fun getUserByUsername(username: Username): FullUser? = newSuspendedTransaction(Dispatchers.IO, db) {
-        UsersTable.select { USERNAME eq username.string }
+        UsersTable.select { USERNAME.lowerCase() eq username.withoutAt.lowercase() }
             .firstOrNull()
             ?.toUser()
     }
 
+    @OptIn(UnsafeRawUsername::class)
     suspend fun searchUsers(
         prefix: String,
         limit: Int
@@ -99,6 +104,7 @@ class UsersStorage(private val db: Database) {
         return@newSuspendedTransaction result != null
     }
 
+    @OptIn(UnsafeRawUsername::class)
     private fun ResultRow.toUser(): FullUser {
         val avatarId = this[AVATAR_ID]
         return FullUser(
@@ -129,6 +135,7 @@ class UsersStorage(private val db: Database) {
             }
         }
 
+    @OptIn(UnsafeRawUsername::class)
     suspend fun editUser(
         userId: UserId,
         nickname: Optional<String>,
@@ -143,7 +150,7 @@ class UsersStorage(private val db: Database) {
                 statement[AVATAR_ID] = it?.long
             }
             username.ifPresent {
-                statement[USERNAME] = it?.string
+                statement[USERNAME] = it?.withoutAt
             }
         }
         return@newSuspendedTransaction UsersTable.select { USER_ID eq userId.long }
@@ -151,8 +158,9 @@ class UsersStorage(private val db: Database) {
             .toUser()
     }
 
+    @OptIn(UnsafeRawUsername::class)
     suspend fun isUsernameOccupied(username: Username): Boolean = newSuspendedTransaction(Dispatchers.IO, db) {
-        UsersTable.select { USERNAME eq username.string }.any()
+        UsersTable.select { USERNAME.lowerCase() eq username.withoutAt.lowercase() }.any()
     }
 
     suspend fun getLinkedTelegramUserOrNull(
