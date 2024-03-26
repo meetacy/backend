@@ -14,8 +14,7 @@ class GetMeetingsViewsUsecase(
     suspend fun getMeetingsViewsOrNull(
         viewerId: UserId, meetingIds: List<MeetingId>
     ): List<MeetingView?> {
-        val meetings = meetingsProvider
-                .getMeetings(meetingIds)
+        val meetings = meetingsProvider.getMeetings(meetingIds)
 
         val meetingViews = viewMeetingsRepository
             .viewMeetings(viewerId, meetings.filterNotNull())

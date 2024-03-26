@@ -2,10 +2,7 @@
 
 package app.meetacy.backend.feature.users.database.users
 
-import app.meetacy.backend.constants.EMAIL_MAX_LIMIT
-import app.meetacy.backend.constants.HASH_LENGTH
-import app.meetacy.backend.constants.NICKNAME_MAX_LIMIT
-import app.meetacy.backend.constants.USERNAME_MAX_LIMIT
+import app.meetacy.backend.constants.*
 import app.meetacy.backend.feature.users.database.users.UsersTable.ACCESS_HASH
 import app.meetacy.backend.feature.users.database.users.UsersTable.AVATAR_ID
 import app.meetacy.backend.feature.users.database.users.UsersTable.EMAIL
@@ -30,7 +27,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 
 object UsersTable : Table() {
     val USER_ID = long("USER_ID").autoIncrement()
-    val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
+    val ACCESS_HASH = varchar("ACCESS_HASH", length = ACCESS_HASH_LENGTH)
     val NICKNAME = varchar("NICKNAME", length = NICKNAME_MAX_LIMIT)
     @UnsafeRawUsername
     val USERNAME = varchar("USERNAME", length = USERNAME_MAX_LIMIT).nullable()

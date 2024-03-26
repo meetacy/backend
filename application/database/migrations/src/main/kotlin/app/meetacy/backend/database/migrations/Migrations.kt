@@ -13,7 +13,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 private val migrations = listOf(
     `Migration 0-1`, `Migration 1-2`, `Migration 2-3`,
     `Migration 3-4`, `Migration 4-5`, `Migration 5-6`,
-    `Migration 6-7`, `Migration 7-8`
+    `Migration 6-7`, `Migration 7-8`, `Migration 8-9`
 )
 
 suspend fun runMigrations(db: Database) {

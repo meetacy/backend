@@ -2,8 +2,8 @@
 
 package app.meetacy.backend.feature.email.database
 
+import app.meetacy.backend.constants.ACCESS_HASH_LENGTH
 import app.meetacy.backend.constants.EMAIL_MAX_LIMIT
-import app.meetacy.backend.constants.HASH_LENGTH
 import app.meetacy.backend.feature.email.database.ConfirmationTable.CONFIRM_HASH
 import app.meetacy.backend.feature.email.database.ConfirmationTable.EMAIL
 import app.meetacy.backend.feature.email.database.ConfirmationTable.OWNER_ID
@@ -16,7 +16,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 object ConfirmationTable : Table() {
     val OWNER_ID = long("OWNER_ID")
     val EMAIL = varchar("EMAIL", EMAIL_MAX_LIMIT)
-    val CONFIRM_HASH = varchar("CONFIRM_HASH", HASH_LENGTH)
+    val CONFIRM_HASH = varchar("CONFIRM_HASH", ACCESS_HASH_LENGTH)
 }
 
 class ConfirmationStorage(private val db: Database) {

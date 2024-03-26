@@ -19,7 +19,7 @@ value class AccessIdentity private constructor(val string: String) {
         .let(::AccessToken)
 
     companion object {
-        val REGEX = Regex("\\d+:.{256}")
+        val REGEX = Regex("\\d+:.{${AccessToken.LENGTH}}")
 
         fun parseOrNull(identity: String): AccessIdentity? {
             if (!identity.matches(REGEX)) return null

@@ -1,6 +1,6 @@
 package app.meetacy.backend.types.access
 
-import app.meetacy.backend.constants.HASH_LENGTH
+import app.meetacy.backend.constants.ACCESS_HASH_LENGTH
 
 @JvmInline
 value class AccessHash(val string: String) {
@@ -10,6 +10,6 @@ value class AccessHash(val string: String) {
     }
 
     companion object {
-        const val LENGTH = HASH_LENGTH
+        const val LENGTH = ACCESS_HASH_LENGTH
     }
 }

@@ -6,9 +6,8 @@ import app.meetacy.backend.types.generator.AccessHashGenerator
 
 class TelegramAuthPreloginUsecase(
     private val storage: Storage,
-    private val telegramHashGenerator: HashGenerator,
-    private val linkProvider: LinkProvider,
-    private val tokenGenerator: AccessHashGenerator
+    private val hashGenerator: HashGenerator,
+    private val linkProvider: LinkProvider
 ) {
 
     data class Result(
@@ -17,15 +16,16 @@ class TelegramAuthPreloginUsecase(
     )
 
     suspend fun prelogin(): Result {
-        val token = AccessToken(tokenGenerator.generate())
-        val hash = telegramHashGenerator.generate()
+        val token = hashGenerator.generateToken()
+        val hash = hashGenerator.generateTelegramHash()
         storage.saveTemporalHash(token, hash)
         val link = linkProvider.link(hash)
         return Result(token, link)
     }
 
     interface HashGenerator {
-        fun generate(): TemporaryTelegramHash
+        fun generateTelegramHash(): TemporaryTelegramHash
+        fun generateToken(): AccessToken
     }
 
     interface LinkProvider {

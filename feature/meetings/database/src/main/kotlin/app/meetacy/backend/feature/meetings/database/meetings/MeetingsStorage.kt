@@ -2,10 +2,7 @@
 
 package app.meetacy.backend.feature.meetings.database.meetings
 
-import app.meetacy.backend.constants.DATE_TIME_MAX_LIMIT
-import app.meetacy.backend.constants.MEETING_DESCRIPTION_MAX_LIMIT
-import app.meetacy.backend.constants.HASH_LENGTH
-import app.meetacy.backend.constants.MEETING_TITLE_MAX_LIMIT
+import app.meetacy.backend.constants.*
 import app.meetacy.backend.feature.files.database.FilesTable
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable.ACCESS_HASH
 import app.meetacy.backend.feature.meetings.database.meetings.MeetingsTable.AVATAR_ID
@@ -38,7 +35,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 
 object MeetingsTable : Table() {
     val MEETING_ID = long("MEETING_ID").autoIncrement()
-    val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
+    val ACCESS_HASH = varchar("ACCESS_HASH", length = ACCESS_HASH_LENGTH)
     val CREATOR_ID = reference("CREATOR_ID", UsersTable.USER_ID)
     val DATE = varchar("DATE", length = DATE_TIME_MAX_LIMIT)
     val LATITUDE = double("LATITUDE")
