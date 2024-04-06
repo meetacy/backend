@@ -1,6 +1,7 @@
 
 import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.sdk.exception.MeetacyInternalException
+import app.meetacy.sdk.invitations.AuthorizedInvitationRepository
 import app.meetacy.sdk.types.amount.amount
 import app.meetacy.sdk.types.paging.asFlow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,11 +21,43 @@ class TestInvitations {
         val invited = generateTestAccount()
         val meeting = invitor.meetings.createTestMeeting()
         invited.friends.add(invitor.id)
-        val invitation = invitor.invitations.create(
-            invited.id,
-            meeting.id
+
+        val actual = invitor.invitations.create(
+            usersIds = listOf(invited.id),
+            meetingId = meeting.id
+        ).first()
+
+        assertEquals(invited.id, actual.invitedUser.id)
+        assertEquals(invitor.id, actual.invitorUser.id)
+        assertEquals(meeting.id, actual.meeting.id)
+    }
+
+    @Test
+    fun `test invitations creation`() = runTestServer {
+        val invitor = generateTestAccount()
+
+        val firstInvited = generateTestAccount(postfix = "First")
+        val secondInvited = generateTestAccount(postfix = "Second")
+
+        val meeting = invitor.meetings.createTestMeeting()
+        firstInvited.friends.add(invitor.id)
+        secondInvited.friends.add(invitor.id)
+
+        val actual = invitor.invitations.create(
+            usersIds = listOf(firstInvited.id, secondInvited.id),
+            meetingId = meeting.id
         )
-        assertEquals(invitation.meeting.id, meeting.id)
+
+        val firstActual = actual[0]
+        val secondActual = actual[1]
+
+        assertEquals(firstInvited.id, firstActual.invitedUser.id)
+        assertEquals(invitor.id, firstActual.invitorUser.id)
+        assertEquals(meeting.id, firstActual.meeting.id)
+
+        assertEquals(secondInvited.id, secondActual.invitedUser.id)
+        assertEquals(invitor.id, secondActual.invitorUser.id)
+        assertEquals(meeting.id, secondActual.meeting.id)
     }
 
     @Test
@@ -34,9 +67,9 @@ class TestInvitations {
         val meeting = invitor.meetings.createTestMeeting()
         invited.friends.add(invitor.id)
         val invitation = invitor.invitations.create(
-            invited.id,
+            listOf(invited.id) ,
             meeting.id
-        )
+        ).first()
         invited.invitations.accept(invitation.id)
         val participants = meeting.participants.paging(10.amount).asFlow().toList().flatten()
 
@@ -59,9 +92,9 @@ class TestInvitations {
         invited.friends.add(invitor.id)
 
         val invitation = invitor.invitations.create(
-            invited.id,
+            listOf(invited.id),
             meeting.id
-        )
+        ).first()
 
         try {
             alice.invitations.deny(invitation.id)
@@ -90,7 +123,7 @@ class TestInvitations {
 
         invited.friends.add(inviter.id)
         val meeting = inviter.meetings.createTestMeeting()
-        val invitation = inviter.invitations.create(invited.id, meeting.id)
+        val invitation = inviter.invitations.create(listOf(invited.id), meeting.id).first()
 
         var aliceThrowable: Throwable? = null
         try {

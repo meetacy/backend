@@ -68,6 +68,12 @@ class InvitationsStorage(private val db: Database) {
                 .map { it.toInvitation() }
         }
 
+    suspend fun getInvitations(userId: UserId, meetingId: MeetingId): List<DatabaseInvitation> =
+        newSuspendedTransaction(Dispatchers.IO, db) {
+            InvitationsTable.select { (INVITER_USER_ID eq userId.long) and (MEETING_ID eq meetingId.long) }
+                .map { it.toInvitation() }
+        }
+
     suspend fun markAsAccepted(
         invitationId: InvitationId
     ): Boolean = newSuspendedTransaction(Dispatchers.IO, db) {

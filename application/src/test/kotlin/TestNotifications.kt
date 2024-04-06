@@ -35,7 +35,7 @@ class TestNotifications {
         )
 
         other.invitations.create(
-            userId = self.id,
+            usersIds = listOf(self.id),
             meetingId = meeting.id
         )
 

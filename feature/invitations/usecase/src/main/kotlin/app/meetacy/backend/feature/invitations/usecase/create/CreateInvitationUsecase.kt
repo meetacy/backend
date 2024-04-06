@@ -9,76 +9,83 @@ import app.meetacy.backend.types.invitation.InvitationId
 import app.meetacy.backend.types.meetings.FullMeeting
 import app.meetacy.backend.types.meetings.MeetingId
 import app.meetacy.backend.types.meetings.MeetingIdentity
-import app.meetacy.backend.types.users.FullUser
-import app.meetacy.backend.types.users.UserId
-import app.meetacy.backend.types.users.UserIdentity
 import app.meetacy.backend.types.invitation.FullInvitation
 import app.meetacy.backend.feature.invitations.usecase.types.GetInvitationsViewsRepository
-import app.meetacy.backend.types.invitation.InvitationView
 import app.meetacy.backend.feature.invitations.usecase.types.getInvitationView
+import app.meetacy.backend.types.invitation.InvitationView
+import app.meetacy.backend.types.users.*
 
 class CreateInvitationUsecase(
     private val authRepository: AuthRepository,
     private val storage: Storage,
     private val hashGenerator: AccessHashGenerator,
-    private val invitationsRepository: GetInvitationsViewsRepository
+    private val invitationsRepository: GetInvitationsViewsRepository,
+    private val getUsersUsersViewsRepository: GetUsersViewsRepository
 ) {
     sealed interface Result {
-        data class Success(val invitation: InvitationView): Result
-        data object Unauthorized: Result
-        data object NoPermissions: Result
-        data object UserNotFound: Result
-        data object MeetingNotFound: Result
-        data object UserAlreadyInvited: Result
+        data class Success(val invitations: List<InvitationView>) : Result
+        data object Unauthorized : Result
+        data object NoPermissions : Result
+        data object UserNotFound : Result
+        data object MeetingNotFound : Result
+        data object UserAlreadyInvited : Result
     }
 
-    suspend fun createInvitation(
+    suspend fun createInvitations(
         token: AccessIdentity,
         meetingIdentity: MeetingIdentity,
-        userIdentity: UserIdentity
+        usersIdentities: List<UserIdentity>
     ): Result {
         val inviterId = authRepository.authorizeWithUserId(token) { return Result.Unauthorized }
 
         storage.getMeeting(meetingIdentity.id)
             ?.apply { require(identity == meetingIdentity) } ?: return Result.MeetingNotFound
-        storage.getUser(userIdentity.id)
-            ?.apply { require(identity == userIdentity) } ?: return Result.UserNotFound
 
-        when {
-            !storage.isSubscriberOf(userIdentity.id, inviterId) -> return Result.NoPermissions
-            storage.getInvitationsFrom(inviterId)
-                .any { it.invitedUserId == userIdentity.id && it.meetingId == meetingIdentity.id }
-            -> return Result.UserAlreadyInvited
+        val usersViews = getUsersUsersViewsRepository.getUsersViewsOrNull(inviterId, usersIdentities)
 
-            else -> {
-                val id = storage.createInvitation(
-                    AccessHash(hashGenerator.generate()),
-                    userIdentity.id,
-                    inviterId,
-                    meetingIdentity.id
-                )
-                storage.addNotification(
-                    userId = userIdentity.id,
-                    inviterId = inviterId,
-                    meetingId = meetingIdentity.id
-                )
-
-                return Result.Success(invitation = invitationsRepository.getInvitationView(inviterId, id))
-            }
+        for (userView in usersViews) {
+            userView ?: return Result.UserNotFound
         }
+
+        val usersIds: Set<UserId> = usersIdentities.map(UserIdentity::id).toSet()
+
+        if (storage.isSubscribers(usersIds.toList(), inviterId).any { !it })
+            return Result.NoPermissions
+
+        val alreadyInvitedUsersIds: Set<UserId> = storage.getInvitations(inviterId, meetingIdentity.id)
+            .mapNotNull { invitation -> invitation.takeIf { it.invitedUserId in usersIds }?.invitedUserId }
+            .toSet()
+
+        val newInvitationsIds = usersIds - alreadyInvitedUsersIds
+
+        val invitations = newInvitationsIds.map { userId ->
+            val invitationId = storage.createInvitation(
+                accessHash = AccessHash(hashGenerator.generate()),
+                invitedUserId = userId,
+                inviterUserId = inviterId,
+                meetingId = meetingIdentity.id
+            )
+            storage.addNotification(
+                userId = userId,
+                inviterId = inviterId,
+                meetingId = meetingIdentity.id
+            )
+            invitationsRepository.getInvitationView(inviterId, invitationId)
+        }
+        return Result.Success(invitations)
     }
 
     interface Storage {
-        suspend fun isSubscriberOf(subscriberId: UserId, authorId: UserId): Boolean
+        suspend fun isSubscribers(subscribersIds: List<UserId>, userId: UserId): List<Boolean>
         suspend fun getMeeting(meetingId: MeetingId): FullMeeting?
-        suspend fun getUser(id: UserId): FullUser?
-        suspend fun getInvitationsFrom(authorId: UserId): List<FullInvitation>
+        suspend fun getInvitations(inviterId: UserId, meetingId: MeetingId): List<FullInvitation>
         suspend fun createInvitation(
             accessHash: AccessHash,
             invitedUserId: UserId,
             inviterUserId: UserId,
             meetingId: MeetingId
         ): InvitationId
+
         suspend fun addNotification(
             userId: UserId,
             inviterId: UserId,
