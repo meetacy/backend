@@ -8,13 +8,13 @@ import app.meetacy.backend.types.users.UserId
 
 class GenerateTokenUsecase(
     private val storage: Storage,
-    private val tokenGenerator: AccessHashGenerator
+    private val tokenGenerator: TokenGenerator
 ) {
 
     suspend fun generateToken(userId: UserId): AccessIdentity {
         val token = AccessIdentity(
-            userId,
-            AccessToken(tokenGenerator.generate())
+            userId = userId,
+            accessToken = tokenGenerator.generate()
         )
         storage.addToken(token)
         return token
@@ -22,5 +22,9 @@ class GenerateTokenUsecase(
 
     interface Storage {
         suspend fun addToken(accessIdentity: AccessIdentity)
+    }
+
+    fun interface TokenGenerator {
+        fun generate(): AccessToken
     }
 }

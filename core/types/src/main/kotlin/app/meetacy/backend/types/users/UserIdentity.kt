@@ -19,7 +19,7 @@ value class UserIdentity private constructor(val string: String) {
         .let(::AccessHash)
 
     companion object {
-        val REGEX = Regex("\\d+:.{256}")
+        val REGEX = Regex("\\d+:.{${AccessHash.LENGTH}}")
 
         fun parseOrNull(identity: String): UserIdentity? {
             if (!identity.matches(REGEX)) return null

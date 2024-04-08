@@ -11,7 +11,6 @@ import app.meetacy.di.builder.DIBuilder
 internal fun DIBuilder.telegramAuthPreloginUsecase() {
     val telegramAuthPreloginUsecase by singleton {
         val telegramAuthStorage: TelegramAuthStorage by getting
-        val accessHashGenerator: AccessHashGenerator by getting
         val telegramAuthBotUsername: String? by getting
 
         val storage = object : TelegramAuthPreloginUsecase.Storage {
@@ -21,9 +20,14 @@ internal fun DIBuilder.telegramAuthPreloginUsecase() {
         }
 
         val telegramHashGenerator = object : TelegramAuthPreloginUsecase.HashGenerator {
-            override fun generate(): TemporaryTelegramHash {
+            override fun generateTelegramHash(): TemporaryTelegramHash {
                 val result = HashGenerator.generate(TemporaryTelegramHash.LENGTH)
                 return TemporaryTelegramHash(result)
+            }
+
+            override fun generateToken(): AccessToken {
+                val result = HashGenerator.generate(AccessToken.LENGTH)
+                return AccessToken(result)
             }
         }
 
@@ -36,9 +40,8 @@ internal fun DIBuilder.telegramAuthPreloginUsecase() {
 
         TelegramAuthPreloginUsecase(
             storage = storage,
-            telegramHashGenerator = telegramHashGenerator,
-            linkProvider = linkProvider,
-            tokenGenerator = accessHashGenerator,
+            hashGenerator = telegramHashGenerator,
+            linkProvider = linkProvider
         )
     }
 }

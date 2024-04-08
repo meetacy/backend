@@ -743,12 +743,12 @@ paths:
         schema:
           type: string
       - name: amount
-        in: path
+        in: query
         required: true
         schema:
           type: integer
       - name: pagingId
-        in: path
+        in: query
         required: false
         schema:
           type: string
@@ -784,12 +784,12 @@ paths:
         schema:
           type: string
       - name: amount
-        in: path
+        in: query
         required: true
         schema:
           type: integer
       - name: pagingId
-        in: path
+        in: query
         required: false
         schema:
           type: string
@@ -1016,11 +1016,11 @@ paths:
         schema:
           type: string
       - name: id
-        in: path
+        in: query
         schema:
           type: string
       - name: username
-        in: path
+        in: query
         schema:
           type: string
     get:

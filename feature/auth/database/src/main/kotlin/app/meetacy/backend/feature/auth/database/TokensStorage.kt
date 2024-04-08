@@ -2,7 +2,7 @@
 
 package app.meetacy.backend.feature.auth.database
 
-import app.meetacy.backend.constants.HASH_LENGTH
+import app.meetacy.backend.constants.ACCESS_TOKEN_LENGTH
 import app.meetacy.backend.feature.auth.database.TokensTable.ACCESS_TOKEN
 import app.meetacy.backend.feature.auth.database.TokensTable.OWNER_ID
 import app.meetacy.backend.types.access.AccessIdentity
@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 
 object TokensTable : Table() {
     val OWNER_ID = long("OWNER_ID")
-    val ACCESS_TOKEN = varchar("ACCESS_TOKEN", HASH_LENGTH)
+    val ACCESS_TOKEN = varchar("ACCESS_TOKEN", ACCESS_TOKEN_LENGTH)
 }
 
 class TokensStorage(private val db: Database) {

@@ -18,7 +18,7 @@ value class FileIdentity private constructor(val string: String) {
         .let(::AccessHash)
 
     companion object {
-        val REGEX = Regex("\\d+:.{256}")
+        val REGEX = Regex("\\d+:.{${AccessHash.LENGTH}}")
 
         fun parse(identity: String): FileIdentity? {
             if (!identity.matches(REGEX)) return null

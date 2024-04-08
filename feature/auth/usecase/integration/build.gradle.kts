@@ -8,4 +8,5 @@ dependencies {
     api(projects.feature.auth.database)
 
     implementation(projects.feature.users.database)
+    implementation(projects.libs.hashGenerator)
 }

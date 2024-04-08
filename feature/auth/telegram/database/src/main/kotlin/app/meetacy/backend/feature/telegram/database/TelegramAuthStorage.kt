@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.update
 
 object TelegramAuthTable : Table() {
-    val TEMPORAL_TOKEN = varchar("TEMPORAL_TOKEN", AccessHash.LENGTH)
+    val TEMPORAL_TOKEN = varchar("TEMPORAL_TOKEN", AccessToken.LENGTH)
     val TEMPORAL_HASH = varchar("TEMPORAL_HASH", TemporaryTelegramHash.LENGTH)
     val PERMANENT_USER_ID = long("PERMANENT_USER_ID").nullable()
     val PERMANENT_TOKEN = varchar("PERMANENT_TOKEN", AccessToken.LENGTH).nullable()

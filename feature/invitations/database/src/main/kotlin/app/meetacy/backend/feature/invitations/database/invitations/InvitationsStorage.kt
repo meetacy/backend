@@ -2,7 +2,7 @@
 
 package app.meetacy.backend.feature.invitations.database.invitations
 
-import app.meetacy.backend.constants.HASH_LENGTH
+import app.meetacy.backend.constants.ACCESS_HASH_LENGTH
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsTable.INVITATION_ID
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsTable.INVITED_USER_ID
 import app.meetacy.backend.feature.invitations.database.invitations.InvitationsTable.INVITER_USER_ID
@@ -24,7 +24,7 @@ object InvitationsTable : Table() {
     val INVITATION_ID = long("INVITATION_ID").autoIncrement()
     val INVITED_USER_ID = reference("INVITED_USER_ID", UsersTable.USER_ID)
     val INVITER_USER_ID = reference("INVITER_USER_ID", UsersTable.USER_ID)
-    val ACCESS_HASH = varchar("ACCESS_HASH", length = HASH_LENGTH)
+    val ACCESS_HASH = varchar("ACCESS_HASH", length = ACCESS_HASH_LENGTH)
     val MEETING_ID = reference("MEETING_ID", MeetingsTable.MEETING_ID)
     val IS_ACCEPTED = bool("IS_ACCEPTED").nullable().default(null)
 
