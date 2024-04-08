@@ -16,16 +16,16 @@ import app.meetacy.backend.types.serializable.access.AccessIdentity
 @Serializable
 data class InvitationCreatingForm(
     val meetingId: MeetingId,
-    val userId: UserId
+    val usersIds: List<UserId>
 )
 
 fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationRepository) = post("/create") {
     val form: InvitationCreatingForm = call.receive()
     val token = call.accessIdentity()
 
-    when (val response = invitationsCreateRepository.createInvitation(token, form.meetingId, form.userId)) {
+    when (val response = invitationsCreateRepository.createInvitations(token, form.meetingId, form.usersIds)) {
         is InvitationsCreateResponse.Success -> {
-            call.respondSuccess(response.response)
+            call.respondSuccess(response.invitations)
         }
         InvitationsCreateResponse.UserNotFound -> {
             call.respondFailure(Failure.FriendNotFound)
@@ -46,11 +46,11 @@ fun Route.invitationCreate(invitationsCreateRepository: CreateInvitationReposito
 }
 
 interface CreateInvitationRepository {
-    suspend fun createInvitation(token: AccessIdentity, meetingId: MeetingId, userId: UserId): InvitationsCreateResponse
+    suspend fun createInvitations(token: AccessIdentity, meetingId: MeetingId, usersIds: List<UserId>): InvitationsCreateResponse
 }
 
 sealed interface InvitationsCreateResponse {
-    @Serializable data class Success(val response: Invitation) : InvitationsCreateResponse
+    @Serializable data class Success(val invitations: List<Invitation>) : InvitationsCreateResponse
     data object Unauthorized : InvitationsCreateResponse
     data object NoPermissions : InvitationsCreateResponse
     data object UserAlreadyInvited : InvitationsCreateResponse

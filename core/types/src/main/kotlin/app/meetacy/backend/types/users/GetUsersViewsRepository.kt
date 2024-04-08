@@ -18,3 +18,13 @@ suspend fun GetUsersViewsRepository.getUserViewOrNull(viewerId: UserId, userId: 
 
 suspend fun GetUsersViewsRepository.getUserView(viewerId: UserId, userId: UserId): UserView =
     getUserViewOrNull(viewerId, userId) ?: error("Cannot find the user with id $userId")
+
+suspend fun GetUsersViewsRepository.getUsersViewsOrNull(
+    viewerId: UserId,
+    userIdentities: List<UserIdentity>
+): List<UserView?> {
+    val users = getUsersViewsOrNull(viewerId, userIdentities.map(UserIdentity::id))
+    return users.zip(userIdentities) { user, userIdentity ->
+        user?.takeIf { user.identity == userIdentity }
+    }
+}

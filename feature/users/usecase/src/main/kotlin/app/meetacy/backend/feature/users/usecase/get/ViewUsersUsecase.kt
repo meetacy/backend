@@ -45,15 +45,15 @@ class ViewUsersUsecase(
      */
     private suspend fun getRelationships(users: List<UserId>, viewerId: UserId): List<Relationship?> {
         val subscribers = storage.isSubscribers(
-            users = users.filter { userId -> userId != viewerId }.flatMap { userId ->
+            subscriptionData = users.filter { userId -> userId != viewerId }.flatMap { userId ->
                 listOf(
-                    IsSubscriber(
-                        userId = userId,
-                        subscriberId = viewerId
-                    ),
-                    IsSubscriber(
+                    SubscriptionData(
                         userId = viewerId,
                         subscriberId = userId
+                    ),
+                    SubscriptionData(
+                        userId = userId,
+                        subscriberId = viewerId
                     )
                 )
             }
@@ -73,10 +73,10 @@ class ViewUsersUsecase(
     }
 
     interface Storage {
-        suspend fun isSubscribers(users: List<IsSubscriber>): List<Boolean>
+        suspend fun isSubscribers(subscriptionData: List<SubscriptionData>): List<Boolean>
     }
 
-    data class IsSubscriber(
+    data class SubscriptionData(
         val userId: UserId,
         val subscriberId: UserId
     )
