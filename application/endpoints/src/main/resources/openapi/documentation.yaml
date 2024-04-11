@@ -317,17 +317,16 @@ paths:
         required: true
         schema:
           type: string
+      - name: friendId
+        in: query
+        required: true
+        schema:
+          type: string
     delete:
       summary: Delete friend
       tags:
         - friends
       description: "Unsubscribing from a user, as a result of which he ceases to be your friend"
-      requestBody:
-        description: Creation token based on nickname
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccessFriendRequest'
       responses:
         "200":
           description: An example of a successful generated response with an token
@@ -627,17 +626,16 @@ paths:
         required: true
         schema:
           type: string
+      - name: meetingId
+        in: query
+        required: true
+        schema:
+          type: string
     delete:
       summary: Deleting a meeting
       tags:
         - meetings
       description: "Removing a meeting from the database"
-      requestBody:
-        description: response with an token
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccessMeetingIdRequest'
       responses:
         "200":
           description: An example of a successful generated response with an token
@@ -1299,7 +1297,7 @@ components:
           example: "John"
       required:
         - "nickname"
-      additionalProperties: false
+      additionalProperties: true
     GenerateIdentityResponse:
       type: "object"
       properties:
@@ -1312,7 +1310,7 @@ components:
       required:
         - "status"
         - "result"
-      additionalProperties: false
+      additionalProperties: true
     AccessMeetingIdRequest:
       type: "object"
       properties:
@@ -1322,7 +1320,7 @@ components:
       required:
         - "token"
         - "meetingId"
-      additionalProperties: false
+      additionalProperties: true
     ListMeetingParticipantsRequest:
       type: "object"
       properties:
@@ -1337,7 +1335,7 @@ components:
         - "token"
         - "meetingId"
         - "amount"
-      additionalProperties: false
+      additionalProperties: true
     ListMeetingParticipantsResponse:
       type: "object"
       properties:
@@ -1358,7 +1356,7 @@ components:
       required:
         - "result"
         - "status"
-      additionalProperties: false
+      additionalProperties: true
     ListMapMeetingsRequest:
       type: object
       properties:
@@ -1385,7 +1383,7 @@ components:
             - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
       required:
         - "accessIdentity"
-      additionalProperties: false
+      additionalProperties: true
     IdentityRequest:
       type: object
       properties:
@@ -1399,7 +1397,7 @@ components:
             - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
       required:
         - "id"
-      additionalProperties: false
+      additionalProperties: true
     AccessFriendRequest:
       type: "object"
       properties:
@@ -1408,7 +1406,7 @@ components:
           example: "5:PjvgzvEu2YsHIm5OP4L0apfqtQV9Ck9I02ZuhJxDqJ4VeS9SwQJGpBRV0QhvbaDJjsTaMZRVRzsM3yn9uSvBffdY1ul9k3J7IDgWqgbQXHlI0quTL0ORJAUONHzzRfLHs6sOmTAf7AlRP4AmGu9aqwN6hALE9MeDITcY3LlNJR6HPE5z3SK1aE5OC2YKpjhX0xQLBQd6wlkdeoCPhyJRevx60u1T1kVIhpnjBLyXQZwbHYGPCIVJ5ryeVByQCQI8"
       required:
         - "friendId"
-      additionalProperties: false
+      additionalProperties: true
     ListFriendsRequest:
       type: "object"
       properties:
@@ -1445,7 +1443,7 @@ components:
       required:
         - "email"
         - "confirmHash"
-      additionalProperties: false
+      additionalProperties: true
     EmailLinkRequest:
       type: "object"
       properties:
@@ -1455,7 +1453,7 @@ components:
       required:
         - "email"
         - "token"
-      additionalProperties: false
+      additionalProperties: true
     TelegramFinishRequest:
       type: "object"
       properties:
@@ -1489,7 +1487,7 @@ components:
       required:
         - "accessIdentity"
         - "fileIdentityIdentity"
-      additionalProperties: false
+      additionalProperties: true
     CreateMeetingRequest:
       type: "object"
       properties:
@@ -1521,7 +1519,7 @@ components:
         - "date"
         - "location"
         - "visibility"
-      additionalProperties: false
+      additionalProperties: true
     EditMeetingResponse:
       type: object
       properties:
@@ -1566,7 +1564,7 @@ components:
       required:
         - "token"
         - "meetingId"
-      additionalProperties: false
+      additionalProperties: true
     InvalidResponse:
       type: object
       properties:
@@ -1585,7 +1583,7 @@ components:
         - "status"
         - "errorCode"
         - "errorMessage"
-      additionalProperties: false
+      additionalProperties: true
     StatusTrueResponse:
       type: object
       properties:
@@ -1594,7 +1592,7 @@ components:
           example: true
       required:
         - "status"
-      additionalProperties: false
+      additionalProperties: true
     TelegramPreloginResponse:
       type: object
       properties:
@@ -1819,7 +1817,7 @@ components:
           example: "8:bqLhYy1hjNTL0wXcN0dnmSeyZDMt2akkGYMDdaa81oc8fPhOHBWTuFWzMdWNqu7gTHHrfhvC64RE2ZEtngYD5YVpOAGz8Nx1ii7l6BxpBCfHgaL6hHzkEqsmuGlea2gijOEZFkDEhebZ9lwkav13DMTdWJUm4GMm0VQgXzX8s3B528XsMxkXiu5ps9JrRB4m2m4vnZHEaskq9SXEGfhxzeuVft4d2eHWlp5V06NPmfhuyehq9J3GwWxYSkN3Doun"
       required:
         - token
-      additionalProperties: false
+      additionalProperties: true
     EditUserRequest:
       type: object
       properties:
