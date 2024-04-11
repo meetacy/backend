@@ -6,11 +6,9 @@ import app.meetacy.backend.endpoint.ktor.Failure
 import app.meetacy.backend.endpoint.ktor.respondFailure
 import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
-import app.meetacy.backend.types.serializable.users.UserId as UserIdentitySerializable
 import io.ktor.server.application.*
-import io.ktor.server.request.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
+import app.meetacy.backend.types.serializable.users.UserId as UserIdentitySerializable
 
 interface DeleteFriendRepository {
     suspend fun deleteFriend(token: AccessIdentity, friendId: UserIdentitySerializable): DeleteFriendResult

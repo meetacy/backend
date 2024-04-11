@@ -8,9 +8,7 @@ import app.meetacy.backend.endpoint.ktor.respondSuccess
 import app.meetacy.backend.types.serializable.access.AccessIdentity
 import app.meetacy.backend.types.serializable.meetings.MeetingId
 import io.ktor.server.application.*
-import io.ktor.server.request.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
 
 sealed interface DeleteMeetingResult {
     data object Success : DeleteMeetingResult
