@@ -25,10 +25,10 @@ fun Route.userDeeplinks() = get("/u/{username}") {
         attributes["prefix"] = "og: http://ogp.me/ns/profile#"
 
         head {
-            title(content = "@$username | Meetacy")
+            title(content = "${username.at} | Meetacy")
             meta(name = "twitter:card", content = "summary_large_image")
             meta(property = "og:type", content = "profile")
-            meta(property = "og:title", content = "@$username | Meetacy")
+            meta(property = "og:title", content = "${username.at} | Meetacy")
             meta(property = "og:image", content = "https://avatars.githubusercontent.com/u/86232130?s=50")
             meta(property = "og:description", content = "Click the link to view profile!")
         }
