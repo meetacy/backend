@@ -416,6 +416,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListSubsResponse'
+        "400":
+          description: An example of a successful generated response with an token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
       security:
         - token: [ ]
   /friends/subscriptions/list:
@@ -453,6 +459,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListSubsResponse'
+        "400":
+          description: An example of a successful generated response with an token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
       security:
         - token: [ ]
   /invitations/create:
