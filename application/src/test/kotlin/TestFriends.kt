@@ -46,6 +46,20 @@ class TestFriends {
     }
 
     @Test
+    fun `test friend delete`() = runTestServer {
+        val self = generateTestAccount()
+        val friend = generateTestAccount()
+
+        self.friends.add(friend.id)
+        friend.friends.add(self.id)
+
+        require(self.friends.list(1.amount).data.first().id == friend.id)
+
+        self.friends.delete(friend.id)
+        require(self.friends.list(1.amount).data.isEmpty())
+    }
+
+    @Test
     fun `test relationship property`() = runTestServer {
         val self = generateTestAccount()
         val friend = generateTestAccount()

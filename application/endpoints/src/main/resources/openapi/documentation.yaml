@@ -317,17 +317,16 @@ paths:
         required: true
         schema:
           type: string
+      - name: friendId
+        in: query
+        required: true
+        schema:
+          type: string
     delete:
       summary: Delete friend
       tags:
         - friends
       description: "Unsubscribing from a user, as a result of which he ceases to be your friend"
-      requestBody:
-        description: Creation token based on nickname
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccessFriendRequest'
       responses:
         "200":
           description: An example of a successful generated response with an token
@@ -382,6 +381,92 @@ paths:
                 $ref: '#/components/schemas/InvalidResponse'
       security:
         - token: []
+  /friends/subscribers/list:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: amount
+        in: query
+        required: true
+        schema:
+          type: integer
+      - name: pagingId
+        in: query
+        required: false
+        schema:
+          type: string
+    get:
+      tags:
+        - friends
+      summary: List of subscribers
+      description: "Request a list of subscribers"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSubsResponse'
+        "400":
+          description: An example of a successful generated response with an token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+      security:
+        - token: [ ]
+  /friends/subscriptions/list:
+    parameters:
+      - name: Api-Version
+        in: header
+        description: The version of API to invoke request with
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: amount
+        in: query
+        required: true
+        schema:
+          type: integer
+      - name: pagingId
+        in: query
+        required: false
+        schema:
+          type: string
+    get:
+      tags:
+        - friends
+      summary: List of subscriptions
+      description: "Request a list of subscriptions"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSubsResponse'
+        "400":
+          description: An example of a successful generated response with an token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidResponse'
+      security:
+        - token: [ ]
   /invitations/create:
     parameters:
       - name: Api-Version
@@ -627,17 +712,16 @@ paths:
         required: true
         schema:
           type: string
+      - name: meetingId
+        in: query
+        required: true
+        schema:
+          type: string
     delete:
       summary: Deleting a meeting
       tags:
         - meetings
       description: "Removing a meeting from the database"
-      requestBody:
-        description: response with an token
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AccessMeetingIdRequest'
       responses:
         "200":
           description: An example of a successful generated response with an token
@@ -1235,11 +1319,6 @@ components:
         status: false
         errorCode: 14
         errorMessage: "Specify at least one meeting edit parameter"
-    InvalidTitleOrDescription:
-      value:
-        status: false
-        errorCode: 7
-        errorMessage: "Please provide a valid title or description"
     InvalidFileId:
       value:
         status: false
@@ -1299,7 +1378,7 @@ components:
           example: "John"
       required:
         - "nickname"
-      additionalProperties: false
+      additionalProperties: true
     GenerateIdentityResponse:
       type: "object"
       properties:
@@ -1312,7 +1391,7 @@ components:
       required:
         - "status"
         - "result"
-      additionalProperties: false
+      additionalProperties: true
     AccessMeetingIdRequest:
       type: "object"
       properties:
@@ -1322,7 +1401,7 @@ components:
       required:
         - "token"
         - "meetingId"
-      additionalProperties: false
+      additionalProperties: true
     ListMeetingParticipantsRequest:
       type: "object"
       properties:
@@ -1337,7 +1416,7 @@ components:
         - "token"
         - "meetingId"
         - "amount"
-      additionalProperties: false
+      additionalProperties: true
     ListMeetingParticipantsResponse:
       type: "object"
       properties:
@@ -1358,7 +1437,7 @@ components:
       required:
         - "result"
         - "status"
-      additionalProperties: false
+      additionalProperties: true
     ListMapMeetingsRequest:
       type: object
       properties:
@@ -1367,39 +1446,6 @@ components:
       required:
         - "token"
         - "location"
-    TokenRequest:
-      type: object
-      properties:
-        token:
-          type: string
-          example:
-            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
-      required:
-        - "properties"
-    AccessIdentityRequest:
-      type: "object"
-      properties:
-        accessIdentity:
-          type: string
-          example:
-            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
-      required:
-        - "accessIdentity"
-      additionalProperties: false
-    IdentityRequest:
-      type: object
-      properties:
-        id:
-          type: string
-          example:
-            - "46:QTZepulLdiPsDLNNjinSQ8HJeyidzrdMrYATwD5fmb080VGxzQCUXRubsbxx8DqhojU2y80LiXXBT1N0FQhZZ3rYNTqQZoaDJDYRM31Qd3ugkzBV7QWwtCdAjQ2AxZAAukUCgvwiy2wGmuxSlXhME224gPXRq53WqlFVjMDsAZiIo9HGr0qmclO2EZUPRVlyd5plu83UApbIrOVHeXksq1NbSXxloAhDq6iK9C2Ck8BNoZS8wQWsXdCXBqnPVb85"
-        token:
-          type: string
-          example:
-            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
-      required:
-        - "id"
-      additionalProperties: false
     AccessFriendRequest:
       type: "object"
       properties:
@@ -1408,7 +1454,7 @@ components:
           example: "5:PjvgzvEu2YsHIm5OP4L0apfqtQV9Ck9I02ZuhJxDqJ4VeS9SwQJGpBRV0QhvbaDJjsTaMZRVRzsM3yn9uSvBffdY1ul9k3J7IDgWqgbQXHlI0quTL0ORJAUONHzzRfLHs6sOmTAf7AlRP4AmGu9aqwN6hALE9MeDITcY3LlNJR6HPE5z3SK1aE5OC2YKpjhX0xQLBQd6wlkdeoCPhyJRevx60u1T1kVIhpnjBLyXQZwbHYGPCIVJ5ryeVByQCQI8"
       required:
         - "friendId"
-      additionalProperties: false
+      additionalProperties: true
     ListFriendsRequest:
       type: "object"
       properties:
@@ -1445,7 +1491,7 @@ components:
       required:
         - "email"
         - "confirmHash"
-      additionalProperties: false
+      additionalProperties: true
     EmailLinkRequest:
       type: "object"
       properties:
@@ -1455,7 +1501,7 @@ components:
       required:
         - "email"
         - "token"
-      additionalProperties: false
+      additionalProperties: true
     TelegramFinishRequest:
       type: "object"
       properties:
@@ -1475,21 +1521,6 @@ components:
         - "temporalHash"
         - "secretBotKey"
         - "telegramId"
-    AccessAvatarRequest:
-      type: "object"
-      properties:
-        accessIdentity:
-          type: string
-          example:
-            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
-        fileIdentity:
-          type: string
-          example:
-            - "14:BtEpi2o77Uia9NvwQqbumtNggJzjlEVS5gTS1Z8SDs9BmXk7E8lGxji5MBHxcor0j9X1tMgTjiYwbVvuqjdhkdDTr4XtZY6lFhURbKYG17LlfgqPVi6xJpoAdwQyxLz6wILAaiJdBy3wK1PZ3t0Zg3oBGeyeKJtfestgJylmEMCBjH7eXkBP9Bi93xkV4u68kB4OBKPesxJrTpUHlQjwuP8bCpj8Q591BUdUm9t9dXR4xSksMKWWWe4t4Y4ZrAfA"
-      required:
-        - "accessIdentity"
-        - "fileIdentityIdentity"
-      additionalProperties: false
     CreateMeetingRequest:
       type: "object"
       properties:
@@ -1521,7 +1552,7 @@ components:
         - "date"
         - "location"
         - "visibility"
-      additionalProperties: false
+      additionalProperties: true
     EditMeetingResponse:
       type: object
       properties:
@@ -1566,7 +1597,7 @@ components:
       required:
         - "token"
         - "meetingId"
-      additionalProperties: false
+      additionalProperties: true
     InvalidResponse:
       type: object
       properties:
@@ -1585,7 +1616,7 @@ components:
         - "status"
         - "errorCode"
         - "errorMessage"
-      additionalProperties: false
+      additionalProperties: true
     StatusTrueResponse:
       type: object
       properties:
@@ -1594,7 +1625,7 @@ components:
           example: true
       required:
         - "status"
-      additionalProperties: false
+      additionalProperties: true
     TelegramPreloginResponse:
       type: object
       properties:
@@ -1614,6 +1645,29 @@ components:
       required:
         - "status"
         - "result"
+    ListSubsResponse:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example:
+            - true
+        result:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/RegularUserResponse'
+            nextPagingId:
+              type: string
+              example: "11"
+          required:
+            - "data"
+      required:
+        - "status"
+        - "result"
+      additionalProperties: true
     DownloadFileSuccessfulResponse:
       type: string
       enum:
@@ -1644,21 +1698,6 @@ components:
     RegularUserResponse:
       allOf:
         - $ref: '#/components/schemas/User'
-    CreatorMeetingResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "12:eKAouJLbWqDmtwQOWuAhi9MYiBYHxKw4LTZBD39nAhtMDiV73QBPDVjE3HRNYm4xwtRJta3FdNdua90evNSgvuvqfyUjdwhXlSlDiEpPE1DJGTzuuAdm5WDowDNJOTdHDpYAGzztJMaKwXiFlguVwO88AZhoByf4SaP9HLXftFs5XVIwNWf4mntyJ48GLaWchngpjvgJW5vABjwwRJiCkCYvMiFpCvwSrzdjwzuvDxM3egDzg15U63yTBSJv0dSo"
-        nickname:
-          type: string
-          example: David Lepaski
-        email:
-          type: string
-          example: "*depending on the privacy settings of the meeting creator, his mail will be displayed*"
-        emailVerified:
-          type: boolean
-          example: false
     Location:
       type: object
       properties:
@@ -1767,17 +1806,6 @@ components:
           example: true
         result:
           $ref: '#/components/schemas/User'
-    EditUserResponse:
-      type: object
-      properties:
-        status:
-          type: boolean
-          example: true
-        result:
-          $ref: '#/components/schemas/User'
-      required:
-        - "status"
-        - "result"
     User:
       type: object
       properties:
@@ -1810,16 +1838,6 @@ components:
         - id
         - nickname
         - isSelf
-    GetUserRequest:
-      description: response with an token
-      type: object
-      properties:
-        id:
-          type: string
-          example: "8:bqLhYy1hjNTL0wXcN0dnmSeyZDMt2akkGYMDdaa81oc8fPhOHBWTuFWzMdWNqu7gTHHrfhvC64RE2ZEtngYD5YVpOAGz8Nx1ii7l6BxpBCfHgaL6hHzkEqsmuGlea2gijOEZFkDEhebZ9lwkav13DMTdWJUm4GMm0VQgXzX8s3B528XsMxkXiu5ps9JrRB4m2m4vnZHEaskq9SXEGfhxzeuVft4d2eHWlp5V06NPmfhuyehq9J3GwWxYSkN3Doun"
-      required:
-        - token
-      additionalProperties: false
     EditUserRequest:
       type: object
       properties:
